@@ -116,6 +116,11 @@
     [device setReport:ackData];
 }
 
+- (void)sensing:(NSData *)data
+{
+    NSLog(@"sensing data received %@", data);
+}
+
 - (void)usbHidDevice:(FDUSBHIDDevice *)device inputReport:(NSData *)data
 {
     NSLog(@"inputReport %@", data);
@@ -128,6 +133,9 @@
     switch (code) {
         case FD_SYNC_DATA:
             [self sync:device data:data];
+            break;
+        case 0xff:
+            [self sensing:data];
             break;
     }
 }
@@ -203,7 +211,8 @@
 
 - (void)centralManagerPoweredOn
 {
-    [_centralManager scanForPeripheralsWithServices:nil options:nil];
+    [_centralManager scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:@"310a0001-1b95-5091-b0bd-b7a681846399"]] options:nil];
+//    [_centralManager scanForPeripheralsWithServices:nil options:nil];
 }
 
 - (void)centralManagerDidUpdateState:(CBCentralManager *)central

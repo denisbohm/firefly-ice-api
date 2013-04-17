@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9207F58A171E3C2600107066 /* FDBinary.m in Sources */ = {isa = PBXBuildFile; fileRef = 9207F589171E3C2600107066 /* FDBinary.m */; };
+		9207F58F171E458E00107066 /* FDDetour.m in Sources */ = {isa = PBXBuildFile; fileRef = 9207F58E171E458E00107066 /* FDDetour.m */; };
 		926D3561170D0FA0001E1966 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 926D3560170D0FA0001E1966 /* Cocoa.framework */; };
 		926D356B170D0FA0001E1966 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 926D3569170D0FA0001E1966 /* InfoPlist.strings */; };
 		926D356D170D0FA0001E1966 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 926D356C170D0FA0001E1966 /* main.m */; };
@@ -50,6 +52,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9207F588171E3C2600107066 /* FDBinary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDBinary.h; sourceTree = "<group>"; };
+		9207F589171E3C2600107066 /* FDBinary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDBinary.m; sourceTree = "<group>"; };
+		9207F58D171E458E00107066 /* FDDetour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDDetour.h; sourceTree = "<group>"; };
+		9207F58E171E458E00107066 /* FDDetour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDetour.m; sourceTree = "<group>"; };
 		926D355D170D0FA0001E1966 /* Sync.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sync.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		926D3560170D0FA0001E1966 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		926D3563170D0FA0001E1966 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -157,6 +163,10 @@
 				926D3595170D0FE8001E1966 /* FDFireflyDevice.m */,
 				9277AF37171715A6004DE3FB /* FDUSBHIDMonitor.h */,
 				9277AF38171715A6004DE3FB /* FDUSBHIDMonitor.m */,
+				9207F588171E3C2600107066 /* FDBinary.h */,
+				9207F589171E3C2600107066 /* FDBinary.m */,
+				9207F58D171E458E00107066 /* FDDetour.h */,
+				9207F58E171E458E00107066 /* FDDetour.m */,
 			);
 			path = Sync;
 			sourceTree = "<group>";
@@ -338,6 +348,8 @@
 				926D3574170D0FA0001E1966 /* FDAppDelegate.m in Sources */,
 				926D3596170D0FE8001E1966 /* FDFireflyDevice.m in Sources */,
 				9277AF39171715A6004DE3FB /* FDUSBHIDMonitor.m in Sources */,
+				9207F58A171E3C2600107066 /* FDBinary.m in Sources */,
+				9207F58F171E458E00107066 /* FDDetour.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

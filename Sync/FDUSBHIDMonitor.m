@@ -128,7 +128,7 @@ void FDUSBHIDMonitorRemovalCallback(void *context, IOReturn result, void *sender
     device.hidDeviceRef = hidDeviceRef;
     [_devices addObject:device];
     
-    IOHIDDeviceRegisterRemovalCallback(hidDeviceRef, FDUSBHIDMonitorRemovalCallback, (__bridge void*)self);
+    IOHIDDeviceRegisterRemovalCallback(hidDeviceRef, FDUSBHIDMonitorRemovalCallback, (__bridge void*)device);
     
     [_delegate usbHidMonitor:self deviceAdded:device];
 }

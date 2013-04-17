@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 Firefly Design. All rights reserved.
 //
 
+#import "FDBinary.h"
+#import "FDDetour.h"
 #import "FDFireflyDevice.h"
 
 #if TARGET_OS_IPHONE
@@ -18,6 +20,7 @@
 
 @property CBPeripheral *peripheral;
 @property CBCharacteristic *characteristic;
+@property FDDetour *detour;
 
 @end
 
@@ -28,6 +31,7 @@
     if (self = [super init]) {
         _peripheral = peripheral;
         _peripheral.delegate = self;
+        _detour = [[FDDetour alloc] init];
     }
     return self;
 }
@@ -39,6 +43,7 @@
 
 - (void)didDisconnectPeripheralError:(NSError *)error
 {
+    [_detour clear];
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
@@ -46,9 +51,31 @@
     NSLog(@"didWriteValueForCharacteristic %@", error);
 }
 
+- (void)process:(NSData *)data
+{
+    FDBinary *binary = [[FDBinary alloc] initWithData:data];
+    uint8_t code = [binary getUint8];
+    float ax = [binary getFloat32];
+    float ay = [binary getFloat32];
+    float az = [binary getFloat32];
+    float mx = [binary getFloat32];
+    float my = [binary getFloat32];
+    float mz = [binary getFloat32];
+    NSLog(@"code:%u ax:%f ay:%f az:%f mx:%f my:%f mz:%f", code, ax, ay, az, mx, my, mz);
+}
+
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 {
     NSLog(@"didUpdateValueForCharacteristic %@ %@", characteristic.value, error);
+    [_detour detourEvent:characteristic.value];
+    if (_detour.state == FDDetourStateSuccess) {
+        [self process:_detour.data];
+        [_detour clear];
+    } else
+    if (_detour.state == FDDetourStateError) {
+        NSLog(@"detour error");
+        [_detour clear];
+    }
 }
 
 - (void)write
@@ -71,11 +98,11 @@
 
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error
 {
-    CBUUID *ledUUID = [CBUUID UUIDWithString:@"310a0002-1b95-5091-b0bd-b7a681846399"];
+    CBUUID *characteristicUUID = [CBUUID UUIDWithString:@"310a0002-1b95-5091-b0bd-b7a681846399"];
     NSLog(@"didDiscoverCharacteristicsForService %@", service.UUID);
     for (CBCharacteristic *characteristic in service.characteristics) {
         NSLog(@"didDiscoverServiceCharacteristic %@", characteristic.UUID);
-        if ([ledUUID isEqualTo:characteristic.UUID]) {
+        if ([characteristicUUID isEqualTo:characteristic.UUID]) {
             NSLog(@"found characteristic value");
             _characteristic = characteristic;
             
