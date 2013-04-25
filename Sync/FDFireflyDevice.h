@@ -13,13 +13,16 @@
 
 @protocol FDFireflyDeviceDelegate <NSObject>
 
-- (void)fireflyDeviceDiscovered:(FDFireflyDevice *)fireflyDevice peripheral:(CBPeripheral *)peripheral;
+- (void)fireflyDevice:(FDFireflyDevice *)fireflyDevice
+                   ax:(float)ax ay:(float)ay az:(float)az
+                   mx:(float)mx my:(float)my mz:(float)mz;
 
 @end
 
 @interface FDFireflyDevice : NSObject
 
 @property (readonly) CBPeripheral *peripheral;
+@property id<FDFireflyDeviceDelegate> delegate;
 
 - (id)initWithPeripheral:(CBPeripheral *)peripheral;
 

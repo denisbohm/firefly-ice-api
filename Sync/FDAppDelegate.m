@@ -11,6 +11,11 @@
 
 #import "FDUSBHIDMonitor.h"
 
+#import <ARMSerialWireDebug/FDSerialEngine.h>
+#import <ARMSerialWireDebug/FDSerialWireDebug.h>
+#import <ARMSerialWireDebug/FDUSBDevice.h>
+#import <ARMSerialWireDebug/FDUSBMonitor.h>
+
 #if TARGET_OS_IPHONE
 #import <CoreBluetooth/CoreBluetooth.h>
 #else
@@ -45,7 +50,7 @@
 
 @end
 
-@interface FDAppDelegate () <CBCentralManagerDelegate, FDUSBHIDMonitorDelegate, FDUSBHIDDeviceDelegate, NSTableViewDataSource>
+@interface FDAppDelegate () <CBCentralManagerDelegate, FDUSBMonitorDelegate, FDUSBHIDMonitorDelegate, FDUSBHIDDeviceDelegate, FDFireflyDeviceDelegate, NSTableViewDataSource>
 
 @property (assign) IBOutlet NSTableView *bluetoothTableView;
 @property CBCentralManager *centralManager;
@@ -54,6 +59,18 @@
 @property (assign) IBOutlet NSTableView *usbTableView;
 @property FDUSBHIDMonitor *usbMonitor;
 @property FDUSBTableViewDataSource *usbTableViewDataSource;
+
+@property (assign) IBOutlet NSTableView *swdTableView;
+@property FDUSBMonitor *swdMonitor;
+@property FDUSBTableViewDataSource *swdTableViewDataSource;
+
+@property (assign) IBOutlet NSSlider *axSlider;
+@property (assign) IBOutlet NSSlider *aySlider;
+@property (assign) IBOutlet NSSlider *azSlider;
+
+@property (assign) IBOutlet NSSlider *mxSlider;
+@property (assign) IBOutlet NSSlider *mySlider;
+@property (assign) IBOutlet NSSlider *mzSlider;
 
 @end
 
@@ -72,7 +89,89 @@
     _usbTableViewDataSource = [[FDUSBTableViewDataSource alloc] init];
     _usbTableView.dataSource = _usbTableViewDataSource;
     
+    _swdMonitor = [[FDUSBMonitor alloc] init];
+    _swdMonitor.vendor = 0x15ba;
+    _swdMonitor.product = 0x002a;
+    _swdMonitor.delegate = self;
+    _swdTableViewDataSource = [[FDUSBTableViewDataSource alloc] init];
+    _swdTableView.dataSource = _swdTableViewDataSource;
+    
     [_usbMonitor start];
+    [_swdMonitor start];
+}
+
+- (void)usbMonitor:(FDUSBMonitor *)usbMonitor usbDeviceAdded:(FDUSBDevice *)device
+{
+    [_swdTableViewDataSource.devices addObject:device];
+    [_swdTableView reloadData];
+}
+
+- (void)usbMonitor:(FDUSBMonitor *)usbMonitor usbDeviceRemoved:(FDUSBDevice *)device
+{
+    [_swdTableViewDataSource.devices removeObject:device];
+    [_swdTableView reloadData];
+}
+
+- (FDUSBDevice *)getSelectedSwdDevice
+{
+    NSInteger row = _swdTableView.selectedRow;
+    if (row < 0) {
+        return nil;
+    }
+    return [_swdTableViewDataSource.devices objectAtIndex:row];
+}
+
+#define EnergyMicro_DebugPort_IdentifcationCode 0x2ba01477
+
+- (IBAction)swdReset:(id)sender
+{
+    FDUSBDevice *usbDevice = [self getSelectedSwdDevice];
+    [usbDevice open];
+    FDSerialEngine *serialEngine = [[FDSerialEngine alloc] init];
+    serialEngine.usbDevice = usbDevice;
+    FDSerialWireDebug *serialWireDebug = [[FDSerialWireDebug alloc] init];
+    serialWireDebug.serialEngine = serialEngine;
+    [serialWireDebug initialize];
+    [serialWireDebug setGpioIndicator:true];
+    [serialWireDebug setGpioReset:true];
+    [serialEngine write];
+    [NSThread sleepForTimeInterval:0.001];
+    [serialWireDebug setGpioReset:false];
+    [serialEngine write];
+    [NSThread sleepForTimeInterval:0.100];
+    
+    [serialWireDebug resetDebugAccessPort];
+    uint32_t debugPortIDCode = [serialWireDebug readDebugPortIDCode];
+    NSLog(@"DPID = %08x", debugPortIDCode);
+    if (debugPortIDCode != EnergyMicro_DebugPort_IdentifcationCode) {
+        NSLog(@"unexpected debug port identification code");
+    }
+    [serialWireDebug initializeDebugAccessPort];
+    NSLog(@"read CPU ID");
+    uint32_t cpuID = [serialWireDebug readCPUID];
+    NSLog(@"CPUID = %08x", cpuID);
+    if ((cpuID & 0xfffffff0) == 0x412FC230) {
+        uint32_t n = cpuID & 0x0000000f;
+        NSLog(@"ARM Cortex-M3 r2p%d", n);
+    }
+    
+    [serialWireDebug halt];
+    
+    NSLog(@"write memory");
+    uint32_t address = 0x20000000;
+    [serialWireDebug writeMemory:address value:0x01234567];
+    [serialWireDebug checkDebugPortStatus];
+    [serialWireDebug writeMemory:address+4 value:0x76543210];
+    NSLog(@"read memory");
+    uint32_t m0 = [serialWireDebug readMemory:address];
+    uint32_t m1 = [serialWireDebug readMemory:address+4];
+    
+    NSLog(@"write register");
+    [serialWireDebug writeRegister:0 value:0x01234567];
+    [serialWireDebug writeRegister:1 value:0x76543210];
+    NSLog(@"read register");
+    uint32_t r0 = [serialWireDebug readRegister:0];
+    uint32_t r1 = [serialWireDebug readRegister:1];
 }
 
 - (void)usbHidMonitor:(FDUSBHIDMonitor *)monitor deviceAdded:(FDUSBHIDDevice *)device
@@ -172,6 +271,19 @@
     [device setReport:data];
 }
 
+- (void)fireflyDevice:(FDFireflyDevice *)fireflyDevice
+                   ax:(float)ax ay:(float)ay az:(float)az
+                   mx:(float)mx my:(float)my mz:(float)mz
+{
+    _axSlider.floatValue = ax;
+    _aySlider.floatValue = ay;
+    _azSlider.floatValue = az;
+
+    _mxSlider.floatValue = mx;
+    _mySlider.floatValue = my;
+    _mzSlider.floatValue = mz;
+}
+
 - (FDFireflyDevice *)getSelectedFireflyDevice
 {
     NSInteger row = _bluetoothTableView.selectedRow;
@@ -183,19 +295,21 @@
 
 - (IBAction)bluetoothConnect:(id)sender
 {
-    FDFireflyDevice * fireflyDevice = [self getSelectedFireflyDevice];
+    FDFireflyDevice *fireflyDevice = [self getSelectedFireflyDevice];
+    fireflyDevice.delegate = self;
     [_centralManager connectPeripheral:fireflyDevice.peripheral options:nil];
 }
 
 - (IBAction)bluetoothDisconnect:(id)sender
 {
-    FDFireflyDevice * fireflyDevice = [self getSelectedFireflyDevice];
+    FDFireflyDevice *fireflyDevice = [self getSelectedFireflyDevice];
+    fireflyDevice.delegate = nil;
     [_centralManager cancelPeripheralConnection:fireflyDevice.peripheral];
 }
 
 - (IBAction)bluetoothWrite:(id)sender
 {
-    FDFireflyDevice * fireflyDevice = [self getSelectedFireflyDevice];
+    FDFireflyDevice *fireflyDevice = [self getSelectedFireflyDevice];
     [fireflyDevice write];
 }
 
@@ -212,7 +326,6 @@
 - (void)centralManagerPoweredOn
 {
     [_centralManager scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:@"310a0001-1b95-5091-b0bd-b7a681846399"]] options:nil];
-//    [_centralManager scanForPeripheralsWithServices:nil options:nil];
 }
 
 - (void)centralManagerDidUpdateState:(CBCentralManager *)central

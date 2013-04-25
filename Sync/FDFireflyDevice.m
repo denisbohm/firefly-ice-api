@@ -61,6 +61,7 @@
     float mx = [binary getFloat32];
     float my = [binary getFloat32];
     float mz = [binary getFloat32];
+    [_delegate fireflyDevice:self ax:ax ay:ay az:az mx:mx my:my mz:mz];
     NSLog(@"code:%u ax:%f ay:%f az:%f mx:%f my:%f mz:%f", code, ax, ay, az, mx, my, mz);
 }
 
