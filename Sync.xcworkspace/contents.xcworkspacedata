@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:../firefly-arm-swd/ARMSerialWireDebug.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "container:Sync.xcodeproj">
    </FileRef>
 </Workspace>

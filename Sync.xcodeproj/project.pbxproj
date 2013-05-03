@@ -23,8 +23,6 @@
 		926D3598170D1029001E1966 /* IOBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 926D3597170D1029001E1966 /* IOBluetooth.framework */; };
 		9277AF39171715A6004DE3FB /* FDUSBHIDMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 9277AF38171715A6004DE3FB /* FDUSBHIDMonitor.m */; };
 		9277AF3B171723D0004DE3FB /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9277AF3A171723D0004DE3FB /* IOKit.framework */; };
-		92929C8E1715F88900E566BE /* ARMSerialWireDebug.xcodeproj in Resources */ = {isa = PBXBuildFile; fileRef = 92929C8D1715F88900E566BE /* ARMSerialWireDebug.xcodeproj */; };
-		92929C901715F8C300E566BE /* ARMSerialWireDebug.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92929C8F1715F8C300E566BE /* ARMSerialWireDebug.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,20 +32,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 926D355C170D0FA0001E1966;
 			remoteInfo = Sync;
-		};
-		929ED8201716318F00F49301 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92929C8D1715F88900E566BE /* ARMSerialWireDebug.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 92B8B82816FF70BD00BE38ED;
-			remoteInfo = ARMSerialWireDebug;
-		};
-		929ED8221716318F00F49301 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92929C8D1715F88900E566BE /* ARMSerialWireDebug.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 92B8B84016FF70BD00BE38ED;
-			remoteInfo = ARMSerialWireDebugTests;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -81,8 +65,6 @@
 		9277AF37171715A6004DE3FB /* FDUSBHIDMonitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDUSBHIDMonitor.h; sourceTree = "<group>"; };
 		9277AF38171715A6004DE3FB /* FDUSBHIDMonitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDUSBHIDMonitor.m; sourceTree = "<group>"; };
 		9277AF3A171723D0004DE3FB /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
-		92929C8D1715F88900E566BE /* ARMSerialWireDebug.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ARMSerialWireDebug.xcodeproj; path = "../firefly-arm-swd/ARMSerialWireDebug.xcodeproj"; sourceTree = "<group>"; };
-		92929C8F1715F8C300E566BE /* ARMSerialWireDebug.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ARMSerialWireDebug.framework; path = "../firefly-arm-swd/build/Release/ARMSerialWireDebug.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,7 +72,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				92929C901715F8C300E566BE /* ARMSerialWireDebug.framework in Frameworks */,
 				926D3561170D0FA0001E1966 /* Cocoa.framework in Frameworks */,
 				926D3598170D1029001E1966 /* IOBluetooth.framework in Frameworks */,
 				9277AF3B171723D0004DE3FB /* IOKit.framework in Frameworks */,
@@ -112,7 +93,6 @@
 		926D3554170D0F9F001E1966 = {
 			isa = PBXGroup;
 			children = (
-				92929C8D1715F88900E566BE /* ARMSerialWireDebug.xcodeproj */,
 				926D3566170D0FA0001E1966 /* Sync */,
 				926D3583170D0FA0001E1966 /* SyncTests */,
 				926D355F170D0FA0001E1966 /* Frameworks */,
@@ -132,7 +112,6 @@
 		926D355F170D0FA0001E1966 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				92929C8F1715F8C300E566BE /* ARMSerialWireDebug.framework */,
 				926D3560170D0FA0001E1966 /* Cocoa.framework */,
 				926D3597170D1029001E1966 /* IOBluetooth.framework */,
 				9277AF3A171723D0004DE3FB /* IOKit.framework */,
@@ -202,15 +181,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		929ED81C1716318F00F49301 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				929ED8211716318F00F49301 /* ARMSerialWireDebug.framework */,
-				929ED8231716318F00F49301 /* ARMSerialWireDebugTests.octest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -270,12 +240,6 @@
 			mainGroup = 926D3554170D0F9F001E1966;
 			productRefGroup = 926D355E170D0FA0001E1966 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 929ED81C1716318F00F49301 /* Products */;
-					ProjectRef = 92929C8D1715F88900E566BE /* ARMSerialWireDebug.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				926D355C170D0FA0001E1966 /* Sync */,
@@ -283,23 +247,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		929ED8211716318F00F49301 /* ARMSerialWireDebug.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ARMSerialWireDebug.framework;
-			remoteRef = 929ED8201716318F00F49301 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		929ED8231716318F00F49301 /* ARMSerialWireDebugTests.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = ARMSerialWireDebugTests.octest;
-			remoteRef = 929ED8221716318F00F49301 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		926D355B170D0FA0001E1966 /* Resources */ = {
@@ -309,7 +256,6 @@
 				926D356B170D0FA0001E1966 /* InfoPlist.strings in Resources */,
 				926D3571170D0FA0001E1966 /* Credits.rtf in Resources */,
 				926D3577170D0FA0001E1966 /* MainMenu.xib in Resources */,
-				92929C8E1715F88900E566BE /* ARMSerialWireDebug.xcodeproj in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -434,6 +380,8 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -461,6 +409,8 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx;
 			};
@@ -470,10 +420,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../firefly-arm-swd/build/Release\"",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Sync/Sync-Prefix.pch";
 				INFOPLIST_FILE = "Sync/Sync-Info.plist";
@@ -486,10 +433,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../firefly-arm-swd/build/Release\"",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Sync/Sync-Prefix.pch";
 				INFOPLIST_FILE = "Sync/Sync-Info.plist";
