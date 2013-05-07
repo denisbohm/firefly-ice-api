@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		9207F58A171E3C2600107066 /* FDBinary.m in Sources */ = {isa = PBXBuildFile; fileRef = 9207F589171E3C2600107066 /* FDBinary.m */; };
 		9207F58F171E458E00107066 /* FDDetour.m in Sources */ = {isa = PBXBuildFile; fileRef = 9207F58E171E458E00107066 /* FDDetour.m */; };
+		923ABD2C173452BD00DD10A4 /* FDFireflyUsb.m in Sources */ = {isa = PBXBuildFile; fileRef = 923ABD2B173452BD00DD10A4 /* FDFireflyUsb.m */; };
+		923ABD2F173467FC00DD10A4 /* FDDetourSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 923ABD2E173467FC00DD10A4 /* FDDetourSource.m */; };
 		926D3561170D0FA0001E1966 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 926D3560170D0FA0001E1966 /* Cocoa.framework */; };
 		926D356B170D0FA0001E1966 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 926D3569170D0FA0001E1966 /* InfoPlist.strings */; };
 		926D356D170D0FA0001E1966 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 926D356C170D0FA0001E1966 /* main.m */; };
@@ -19,10 +21,12 @@
 		926D3580170D0FA0001E1966 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 926D3560170D0FA0001E1966 /* Cocoa.framework */; };
 		926D3588170D0FA0001E1966 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 926D3586170D0FA0001E1966 /* InfoPlist.strings */; };
 		926D358B170D0FA0001E1966 /* SyncTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 926D358A170D0FA0001E1966 /* SyncTests.m */; };
-		926D3596170D0FE8001E1966 /* FDFireflyDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 926D3595170D0FE8001E1966 /* FDFireflyDevice.m */; };
+		926D3596170D0FE8001E1966 /* FDFireflyBle.m in Sources */ = {isa = PBXBuildFile; fileRef = 926D3595170D0FE8001E1966 /* FDFireflyBle.m */; };
 		926D3598170D1029001E1966 /* IOBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 926D3597170D1029001E1966 /* IOBluetooth.framework */; };
 		9277AF39171715A6004DE3FB /* FDUSBHIDMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 9277AF38171715A6004DE3FB /* FDUSBHIDMonitor.m */; };
 		9277AF3B171723D0004DE3FB /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9277AF3A171723D0004DE3FB /* IOKit.framework */; };
+		928E670017340F7B002D08E8 /* CorePlot.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 928E66FA17340F38002D08E8 /* CorePlot.framework */; };
+		928E670117340FBD002D08E8 /* CorePlot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 928E66FA17340F38002D08E8 /* CorePlot.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,13 +37,52 @@
 			remoteGlobalIDString = 926D355C170D0FA0001E1966;
 			remoteInfo = Sync;
 		};
+		928E66F917340F38002D08E8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 928E66F317340F38002D08E8 /* CorePlot.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
+			remoteInfo = CorePlot;
+		};
+		928E66FB17340F38002D08E8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 928E66F317340F38002D08E8 /* CorePlot.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0730F600109492D800E95162;
+			remoteInfo = UnitTests;
+		};
+		928E66FD17340F5A002D08E8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 928E66F317340F38002D08E8 /* CorePlot.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
+			remoteInfo = CorePlot;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		928E66FF17340F73002D08E8 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				928E670017340F7B002D08E8 /* CorePlot.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		9207F588171E3C2600107066 /* FDBinary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDBinary.h; sourceTree = "<group>"; };
 		9207F589171E3C2600107066 /* FDBinary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDBinary.m; sourceTree = "<group>"; };
 		9207F58D171E458E00107066 /* FDDetour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDDetour.h; sourceTree = "<group>"; };
 		9207F58E171E458E00107066 /* FDDetour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDetour.m; sourceTree = "<group>"; };
+		923ABD291734517300DD10A4 /* FDFirefly.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDFirefly.h; sourceTree = "<group>"; };
+		923ABD2A173452BD00DD10A4 /* FDFireflyUsb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFireflyUsb.h; sourceTree = "<group>"; };
+		923ABD2B173452BD00DD10A4 /* FDFireflyUsb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFireflyUsb.m; sourceTree = "<group>"; };
+		923ABD2D173467FC00DD10A4 /* FDDetourSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDDetourSource.h; sourceTree = "<group>"; };
+		923ABD2E173467FC00DD10A4 /* FDDetourSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDetourSource.m; sourceTree = "<group>"; };
 		926D355D170D0FA0001E1966 /* Sync.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sync.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		926D3560170D0FA0001E1966 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		926D3563170D0FA0001E1966 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -59,12 +102,13 @@
 		926D3587170D0FA0001E1966 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		926D3589170D0FA0001E1966 /* SyncTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SyncTests.h; sourceTree = "<group>"; };
 		926D358A170D0FA0001E1966 /* SyncTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SyncTests.m; sourceTree = "<group>"; };
-		926D3594170D0FE8001E1966 /* FDFireflyDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFireflyDevice.h; sourceTree = "<group>"; };
-		926D3595170D0FE8001E1966 /* FDFireflyDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFireflyDevice.m; sourceTree = "<group>"; };
+		926D3594170D0FE8001E1966 /* FDFireflyBle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFireflyBle.h; sourceTree = "<group>"; };
+		926D3595170D0FE8001E1966 /* FDFireflyBle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFireflyBle.m; sourceTree = "<group>"; };
 		926D3597170D1029001E1966 /* IOBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOBluetooth.framework; path = System/Library/Frameworks/IOBluetooth.framework; sourceTree = SDKROOT; };
 		9277AF37171715A6004DE3FB /* FDUSBHIDMonitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDUSBHIDMonitor.h; sourceTree = "<group>"; };
 		9277AF38171715A6004DE3FB /* FDUSBHIDMonitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDUSBHIDMonitor.m; sourceTree = "<group>"; };
 		9277AF3A171723D0004DE3FB /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		928E66F317340F38002D08E8 /* CorePlot.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CorePlot.xcodeproj; path = ../CorePlot_1.2/Source/framework/CorePlot.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +119,7 @@
 				926D3561170D0FA0001E1966 /* Cocoa.framework in Frameworks */,
 				926D3598170D1029001E1966 /* IOBluetooth.framework in Frameworks */,
 				9277AF3B171723D0004DE3FB /* IOKit.framework in Frameworks */,
+				928E670117340FBD002D08E8 /* CorePlot.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,6 +138,7 @@
 		926D3554170D0F9F001E1966 = {
 			isa = PBXGroup;
 			children = (
+				928E66F317340F38002D08E8 /* CorePlot.xcodeproj */,
 				926D3566170D0FA0001E1966 /* Sync */,
 				926D3583170D0FA0001E1966 /* SyncTests */,
 				926D355F170D0FA0001E1966 /* Frameworks */,
@@ -138,14 +184,19 @@
 				926D3575170D0FA0001E1966 /* MainMenu.xib */,
 				926D3572170D0FA0001E1966 /* FDAppDelegate.h */,
 				926D3573170D0FA0001E1966 /* FDAppDelegate.m */,
-				926D3594170D0FE8001E1966 /* FDFireflyDevice.h */,
-				926D3595170D0FE8001E1966 /* FDFireflyDevice.m */,
+				923ABD291734517300DD10A4 /* FDFirefly.h */,
+				926D3594170D0FE8001E1966 /* FDFireflyBle.h */,
+				926D3595170D0FE8001E1966 /* FDFireflyBle.m */,
+				923ABD2A173452BD00DD10A4 /* FDFireflyUsb.h */,
+				923ABD2B173452BD00DD10A4 /* FDFireflyUsb.m */,
 				9277AF37171715A6004DE3FB /* FDUSBHIDMonitor.h */,
 				9277AF38171715A6004DE3FB /* FDUSBHIDMonitor.m */,
 				9207F588171E3C2600107066 /* FDBinary.h */,
 				9207F589171E3C2600107066 /* FDBinary.m */,
 				9207F58D171E458E00107066 /* FDDetour.h */,
 				9207F58E171E458E00107066 /* FDDetour.m */,
+				923ABD2D173467FC00DD10A4 /* FDDetourSource.h */,
+				923ABD2E173467FC00DD10A4 /* FDDetourSource.m */,
 			);
 			path = Sync;
 			sourceTree = "<group>";
@@ -181,6 +232,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		928E66F417340F38002D08E8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				928E66FA17340F38002D08E8 /* CorePlot.framework */,
+				928E66FC17340F38002D08E8 /* UnitTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -191,10 +251,12 @@
 				926D3559170D0FA0001E1966 /* Sources */,
 				926D355A170D0FA0001E1966 /* Frameworks */,
 				926D355B170D0FA0001E1966 /* Resources */,
+				928E66FF17340F73002D08E8 /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				928E66FE17340F5A002D08E8 /* PBXTargetDependency */,
 			);
 			name = Sync;
 			productName = Sync;
@@ -240,6 +302,12 @@
 			mainGroup = 926D3554170D0F9F001E1966;
 			productRefGroup = 926D355E170D0FA0001E1966 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 928E66F417340F38002D08E8 /* Products */;
+					ProjectRef = 928E66F317340F38002D08E8 /* CorePlot.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				926D355C170D0FA0001E1966 /* Sync */,
@@ -247,6 +315,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		928E66FA17340F38002D08E8 /* CorePlot.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CorePlot.framework;
+			remoteRef = 928E66F917340F38002D08E8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		928E66FC17340F38002D08E8 /* UnitTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = UnitTests.octest;
+			remoteRef = 928E66FB17340F38002D08E8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		926D355B170D0FA0001E1966 /* Resources */ = {
@@ -292,10 +377,12 @@
 			files = (
 				926D356D170D0FA0001E1966 /* main.m in Sources */,
 				926D3574170D0FA0001E1966 /* FDAppDelegate.m in Sources */,
-				926D3596170D0FE8001E1966 /* FDFireflyDevice.m in Sources */,
+				926D3596170D0FE8001E1966 /* FDFireflyBle.m in Sources */,
 				9277AF39171715A6004DE3FB /* FDUSBHIDMonitor.m in Sources */,
 				9207F58A171E3C2600107066 /* FDBinary.m in Sources */,
 				9207F58F171E458E00107066 /* FDDetour.m in Sources */,
+				923ABD2C173452BD00DD10A4 /* FDFireflyUsb.m in Sources */,
+				923ABD2F173467FC00DD10A4 /* FDDetourSource.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -314,6 +401,11 @@
 			isa = PBXTargetDependency;
 			target = 926D355C170D0FA0001E1966 /* Sync */;
 			targetProxy = 926D3581170D0FA0001E1966 /* PBXContainerItemProxy */;
+		};
+		928E66FE17340F5A002D08E8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = CorePlot;
+			targetProxy = 928E66FD17340F5A002D08E8 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -366,6 +458,7 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -384,6 +477,7 @@
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -401,6 +495,7 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -412,6 +507,7 @@
 				HEADER_SEARCH_PATHS = /usr/local/include;
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
 			};
 			name = Release;

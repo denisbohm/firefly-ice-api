@@ -8,6 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+#import <CorePlot/CorePlot.h>
+
 @interface FDAppDelegate : NSObject <NSApplicationDelegate>
 
 @property (assign) IBOutlet NSWindow *window;

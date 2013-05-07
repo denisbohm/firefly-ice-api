@@ -7,7 +7,9 @@
 //
 
 #import "FDAppDelegate.h"
-#import "FDFireflyDevice.h"
+#import "FDBinary.h"
+#import "FDFireflyBle.h"
+#import "FDFireflyUsb.h"
 #import "FDUSBHIDMonitor.h"
 
 #if TARGET_OS_IPHONE
@@ -44,7 +46,54 @@
 
 @end
 
-@interface FDAppDelegate () <CBCentralManagerDelegate, FDUSBHIDMonitorDelegate, FDUSBHIDDeviceDelegate, FDFireflyDeviceDelegate, NSTableViewDataSource>
+@interface FDActivityPlotDataSource : NSObject <CPTPlotDataSource>
+
+@property NSMutableArray *data;
+@property NSNumber *xField;
+@property NSNumber *yField;
+
+@end
+
+@implementation FDActivityPlotDataSource
+
+- (id)init
+{
+    if (self = [super init]) {
+        _data = [NSMutableArray array];
+        _xField = [NSNumber numberWithInteger:CPTScatterPlotFieldX];
+        _yField = [NSNumber numberWithInteger:CPTScatterPlotFieldY];
+    }
+    return self;
+}
+
+- (void)removeAll
+{
+    [_data removeAllObjects];
+}
+
+- (void)addActivityTime:(uint32)time value:(double)value
+{
+    [_data addObject:@{_xField:[NSNumber numberWithInteger:time], _yField: [NSNumber numberWithDouble:value]}];
+}
+
+- (NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot
+{
+    return _data.count;
+}
+
+- (NSNumber *)fieldFor:(NSUInteger)fieldEnum
+{
+    return (fieldEnum == CPTScatterPlotFieldX) ? _xField : _yField;
+}
+
+- (NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
+{
+    return [[_data objectAtIndex:index] objectForKey:[self fieldFor:fieldEnum]];
+}
+
+@end
+
+@interface FDAppDelegate () <CBCentralManagerDelegate, FDUSBHIDMonitorDelegate, FDFireflyDelegate, NSTableViewDataSource>
 
 @property (assign) IBOutlet NSTableView *bluetoothTableView;
 @property CBCentralManager *centralManager;
@@ -61,6 +110,11 @@
 @property (assign) IBOutlet NSSlider *mxSlider;
 @property (assign) IBOutlet NSSlider *mySlider;
 @property (assign) IBOutlet NSSlider *mzSlider;
+
+@property (assign) IBOutlet CPTGraphHostingView *graphHostingView;
+@property CPTXYGraph *activityGraph;
+@property CPTScatterPlot *activityPlot;
+@property FDActivityPlotDataSource *activityPlotDataSource;
 
 @end
 
@@ -79,30 +133,103 @@
     _usbTableViewDataSource = [[FDUSBTableViewDataSource alloc] init];
     _usbTableView.dataSource = _usbTableViewDataSource;
     
+    [self setupGraph];
+    
     [_usbMonitor start];
+}
+
+- (void)setupGraph
+{
+    // Create graph and apply a dark theme
+    _activityGraph = [(CPTXYGraph *)[CPTXYGraph alloc] initWithFrame:NSRectToCGRect(_graphHostingView.bounds)];
+    _graphHostingView.hostedGraph = _activityGraph;
+    
+    // Graph title
+    _activityGraph.title = @"Activity";
+    CPTMutableTextStyle *textStyle = [CPTMutableTextStyle textStyle];
+    textStyle.color = [CPTColor grayColor];
+    textStyle.fontName = @"Helvetica-Bold";
+    textStyle.fontSize = 14.0;
+    _activityGraph.titleTextStyle = textStyle;
+    _activityGraph.titleDisplacement = CGPointMake(0.0, 10.0);
+    _activityGraph.titlePlotAreaFrameAnchor = CPTRectAnchorTop;
+    
+    // Graph padding
+    _activityGraph.paddingLeft = 20.0;
+    _activityGraph.paddingTop = 20.0;
+    _activityGraph.paddingRight = 20.0;
+    _activityGraph.paddingBottom = 20.0;
+    
+    _activityPlotDataSource = [[FDActivityPlotDataSource alloc] init];
+    
+    _activityPlot = [[CPTScatterPlot alloc] init];
+    _activityPlot.identifier = @"Activity";
+    CPTMutableLineStyle *lineStyle = [_activityPlot.dataLineStyle mutableCopy];
+    lineStyle.lineWidth = 3.0;
+    lineStyle.lineColor = [CPTColor redColor];
+    _activityPlot.dataLineStyle = lineStyle;
+    _activityPlot.dataSource = _activityPlotDataSource;
+    [_activityGraph addPlot:_activityPlot];
+    
+    CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)_activityGraph.defaultPlotSpace;
+    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromInteger(0) length:CPTDecimalFromInteger(10)];
+    plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromInteger(0) length:CPTDecimalFromInteger(10)];
+}
+
+- (void)refreshPlot
+{
+    NSDictionary *query = @{@"query": @{@"type": @"vmas", @"end": @"$max", @"duration": @"1d"}};
+    NSError *error = nil;
+    NSData* data = [NSJSONSerialization dataWithJSONObject:query options:0 error:&error];
+    NSURL *url = [NSURL URLWithString:@"http://localhost:5000/query"];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [request setHTTPMethod:@"GET"];
+    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:[NSString stringWithFormat:@"%ld", data.length] forHTTPHeaderField:@"Content-Length"];
+    [request setHTTPBody:data];
+    
+    NSURLResponse *response = nil;
+    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+    id result = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&error];
+    NSArray *vmasArray = result[@"vmas"];
+    [_activityPlotDataSource removeAll];
+    for (NSDictionary *vmas in vmasArray) {
+        uint32_t time = [vmas[@"time"] int32Value];
+        uint16_t interval = [vmas[@"interval"] integerValue];
+        NSArray *values = vmas[@"values"];
+        for (NSNumber *value in values) {
+            [_activityPlotDataSource addActivityTime:time value:[value doubleValue]];
+            time += interval;
+        }
+    }
+    CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)_activityGraph.defaultPlotSpace;
+    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromInteger(0) length:CPTDecimalFromInteger(10)];
+    plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromInteger(0) length:CPTDecimalFromInteger(10)];
 }
 
 - (void)usbHidMonitor:(FDUSBHIDMonitor *)monitor deviceAdded:(FDUSBHIDDevice *)device
 {
-    device.delegate = self;
-    
-    [_usbTableViewDataSource.devices addObject:device];
+    FDFireflyUsb *fireflyUsb = [[FDFireflyUsb alloc] initWithDevice:device];
+    fireflyUsb.delegate = self;
+    [_usbTableViewDataSource.devices addObject:fireflyUsb];
     [_usbTableView reloadData];
 }
 
 - (void)usbHidMonitor:(FDUSBHIDMonitor *)monitor deviceRemoved:(FDUSBHIDDevice *)device
 {
-    device.delegate = nil;
-    
-    [_usbTableViewDataSource.devices removeObject:device];
-    [_usbTableView reloadData];
+    for (FDFireflyUsb *fireflyUsb in _usbTableViewDataSource.devices) {
+        if (fireflyUsb.device == device) {
+            [fireflyUsb close];
+            
+            [_usbTableViewDataSource.devices removeObject:fireflyUsb];
+            [_usbTableView reloadData];
+            
+            break;
+        }
+    }
 }
 
-#define FD_SYNC_START 1
-#define FD_SYNC_DATA 2
-#define FD_SYNC_ACK 3
-
-- (void)sync:(FDUSBHIDDevice *)device data:(NSData *)data
+- (void)sync:(id<FDFirefly>)firefly data:(NSData *)data
 {
     NSURL *url = [NSURL URLWithString:@"http://localhost:5000/sync"];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -114,40 +241,43 @@
     NSURLResponse *response = nil;
     NSError *error = nil;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-    
-    uint8_t sequence_number = 0x00;
-    uint16_t length = responseData.length;
-    uint8_t bytes[] = {sequence_number, length, length >> 8};
-    NSMutableData *ackData = [NSMutableData dataWithBytes:bytes length:sizeof(bytes)];
-    [ackData appendData:responseData];
-    [device setReport:ackData];
+    [firefly send:responseData];
 }
 
-- (void)sensing:(NSData *)data
+- (void)sensing:(id<FDFirefly>)firefly data:(NSData *)data
 {
-    NSLog(@"sensing data received %@", data);
+    FDBinary *binary = [[FDBinary alloc] initWithData:data];
+    float ax = [binary getFloat32];
+    float ay = [binary getFloat32];
+    float az = [binary getFloat32];
+    float mx = [binary getFloat32];
+    float my = [binary getFloat32];
+    float mz = [binary getFloat32];
+    
+    _axSlider.floatValue = ax;
+    _aySlider.floatValue = ay;
+    _azSlider.floatValue = az;
+    
+    _mxSlider.floatValue = mx;
+    _mySlider.floatValue = my;
+    _mzSlider.floatValue = mz;
 }
 
-- (void)usbHidDevice:(FDUSBHIDDevice *)device inputReport:(NSData *)data
+- (void)fireflyPacket:(id<FDFirefly>)firefly data:(NSData *)data
 {
-    NSLog(@"inputReport %@", data);
-    
-    if (data.length < 1) {
-        return;
-    }
-    
-    uint8_t code = ((uint8_t *)data.bytes)[0];
+    FDBinary *binary = [[FDBinary alloc] initWithData:data];
+    uint8_t code = [binary getUint8];
     switch (code) {
         case FD_SYNC_DATA:
-            [self sync:device data:data];
+            [self sync:firefly data:[data subdataWithRange:NSMakeRange(1, data.length - 1)]];
             break;
         case 0xff:
-            [self sensing:data];
+            [self sensing:firefly data:[data subdataWithRange:NSMakeRange(1, data.length - 1)]];
             break;
     }
 }
 
-- (FDUSBHIDDevice *)getSelectedUsbDevice
+- (FDFireflyUsb *)getSelectedUsbDevice
 {
     NSInteger row = _usbTableView.selectedRow;
     if (row < 0) {
@@ -158,41 +288,24 @@
 
 - (IBAction)usbOpen:(id)sender
 {
-    FDUSBHIDDevice *device = [self getSelectedUsbDevice];
-    [device open];
+    FDFireflyUsb *firefly = [self getSelectedUsbDevice];
+    [firefly open];
 }
 
 - (IBAction)usbClose:(id)sender
 {
-    FDUSBHIDDevice *device = [self getSelectedUsbDevice];
-    [device close];
+    FDFireflyUsb *firefly = [self getSelectedUsbDevice];
+    [firefly close];
 }
 
 - (IBAction)usbWrite:(id)sender
 {
-    uint8_t sequence_number = 0x00;
-    uint16_t length = 1;
-    uint8_t bytes[] = {sequence_number, length, length >> 8, FD_SYNC_START};
-    NSData *data = [NSData dataWithBytes:bytes length:sizeof(bytes)];
-
-    FDUSBHIDDevice *device = [self getSelectedUsbDevice];
-    [device setReport:data];
+    FDFireflyUsb *firefly = [self getSelectedUsbDevice];
+    uint8_t bytes[] = {FD_SYNC_START};
+    [firefly send:[NSData dataWithBytes:&bytes length:sizeof(bytes)]];
 }
 
-- (void)fireflyDevice:(FDFireflyDevice *)fireflyDevice
-                   ax:(float)ax ay:(float)ay az:(float)az
-                   mx:(float)mx my:(float)my mz:(float)mz
-{
-    _axSlider.floatValue = ax;
-    _aySlider.floatValue = ay;
-    _azSlider.floatValue = az;
-
-    _mxSlider.floatValue = mx;
-    _mySlider.floatValue = my;
-    _mzSlider.floatValue = mz;
-}
-
-- (FDFireflyDevice *)getSelectedFireflyDevice
+- (FDFireflyBle *)getSelectedFireflyDevice
 {
     NSInteger row = _bluetoothTableView.selectedRow;
     if (row < 0) {
@@ -203,22 +316,24 @@
 
 - (IBAction)bluetoothConnect:(id)sender
 {
-    FDFireflyDevice *fireflyDevice = [self getSelectedFireflyDevice];
+    FDFireflyBle *fireflyDevice = [self getSelectedFireflyDevice];
     fireflyDevice.delegate = self;
     [_centralManager connectPeripheral:fireflyDevice.peripheral options:nil];
 }
 
-- (IBAction)bluetoothDisconnect:(id)sender
-{
-    FDFireflyDevice *fireflyDevice = [self getSelectedFireflyDevice];
-    fireflyDevice.delegate = nil;
-    [_centralManager cancelPeripheralConnection:fireflyDevice.peripheral];
-}
-
 - (IBAction)bluetoothWrite:(id)sender
 {
-    FDFireflyDevice *fireflyDevice = [self getSelectedFireflyDevice];
-    [fireflyDevice write];
+    FDFireflyBle *firefly = [self getSelectedFireflyDevice];
+    uint8_t bytes[] = {FD_SYNC_START};
+    [firefly send:[NSData dataWithBytes:&bytes length:sizeof(bytes)]];
+}
+
+
+- (IBAction)bluetoothDisconnect:(id)sender
+{
+    FDFireflyBle *fireflyDevice = [self getSelectedFireflyDevice];
+    fireflyDevice.delegate = nil;
+    [_centralManager cancelPeripheralConnection:fireflyDevice.peripheral];
 }
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
@@ -252,9 +367,9 @@
     }
 }
 
-- (FDFireflyDevice *)getFireflyDeviceByPeripheral:(CBPeripheral *)peripheral
+- (FDFireflyBle *)getFireflyDeviceByPeripheral:(CBPeripheral *)peripheral
 {
-    for (FDFireflyDevice *fireflyDevice in _fireflyDevices) {
+    for (FDFireflyBle *fireflyDevice in _fireflyDevices) {
         if (fireflyDevice.peripheral == peripheral) {
             return fireflyDevice;
         }
@@ -267,13 +382,13 @@
      advertisementData:(NSDictionary *)advertisementData
                   RSSI:(NSNumber *)RSSI
 {
-    FDFireflyDevice *fireflyDevice = [self getFireflyDeviceByPeripheral:peripheral];
+    FDFireflyBle *fireflyDevice = [self getFireflyDeviceByPeripheral:peripheral];
     if (fireflyDevice != nil) {
         return;
     }
 
     NSLog(@"didDiscoverPeripheral %@", peripheral);
-    fireflyDevice = [[FDFireflyDevice alloc] initWithPeripheral:peripheral];
+    fireflyDevice = [[FDFireflyBle alloc] initWithPeripheral:peripheral];
     [_fireflyDevices addObject:fireflyDevice];
     
     [_bluetoothTableView reloadData];
@@ -282,14 +397,14 @@
 - (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral
 {
     NSLog(@"didConnectPeripheral %@", peripheral.name);
-    FDFireflyDevice *fireflyDevice = [self getFireflyDeviceByPeripheral:peripheral];
+    FDFireflyBle *fireflyDevice = [self getFireflyDeviceByPeripheral:peripheral];
     [fireflyDevice didConnectPeripheral];
 }
 
 - (void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error
 {
     NSLog(@"didDisconnectPeripheral %@ : %@", peripheral.name, error);
-    FDFireflyDevice *fireflyDevice = [self getFireflyDeviceByPeripheral:peripheral];
+    FDFireflyBle *fireflyDevice = [self getFireflyDeviceByPeripheral:peripheral];
     [fireflyDevice didDisconnectPeripheralError:error];
 }
 
