@@ -176,14 +176,14 @@
     plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromInteger(0) length:CPTDecimalFromInteger(10)];
 }
 
-- (void)refreshPlot
+- (IBAction)refreshPlot:(id)sender
 {
     NSDictionary *query = @{@"query": @{@"type": @"vmas", @"end": @"$max", @"duration": @"1d"}};
     NSError *error = nil;
     NSData* data = [NSJSONSerialization dataWithJSONObject:query options:0 error:&error];
     NSURL *url = [NSURL URLWithString:@"http://localhost:5000/query"];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    [request setHTTPMethod:@"GET"];
+    [request setHTTPMethod:@"POST"];
     [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request setValue:[NSString stringWithFormat:@"%ld", data.length] forHTTPHeaderField:@"Content-Length"];
     [request setHTTPBody:data];
@@ -269,7 +269,7 @@
     uint8_t code = [binary getUint8];
     switch (code) {
         case FD_SYNC_DATA:
-            [self sync:firefly data:[data subdataWithRange:NSMakeRange(1, data.length - 1)]];
+            [self sync:firefly data:data];
             break;
         case 0xff:
             [self sensing:firefly data:[data subdataWithRange:NSMakeRange(1, data.length - 1)]];
