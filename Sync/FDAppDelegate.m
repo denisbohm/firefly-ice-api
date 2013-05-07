@@ -190,21 +190,31 @@
     
     NSURLResponse *response = nil;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-    id result = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&error];
+    id responseJson = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&error];
+    NSDictionary *result = responseJson[@"result"];
     NSArray *vmasArray = result[@"vmas"];
     [_activityPlotDataSource removeAll];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss z"];
     for (NSDictionary *vmas in vmasArray) {
-        uint32_t time = [vmas[@"time"] int32Value];
+        NSString *s = vmas[@"time"];
+        s = [s stringByReplacingOccurrencesOfString:@"UTC" withString:@"+0000"];
+        NSDate *d = [formatter dateFromString:s];
+        NSTimeInterval t = [d timeIntervalSince1970];
+        uint32_t time = (uint32_t)t;
         uint16_t interval = [vmas[@"interval"] integerValue];
         NSArray *values = vmas[@"values"];
         for (NSNumber *value in values) {
-            [_activityPlotDataSource addActivityTime:time value:[value doubleValue]];
+            double v = [value doubleValue] * 10000;
+            NSLog(@"point %u, %0.1f", time, v);
+            [_activityPlotDataSource addActivityTime:time value:v];
             time += interval;
         }
     }
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)_activityGraph.defaultPlotSpace;
-    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromInteger(0) length:CPTDecimalFromInteger(10)];
+    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromInteger(0) length:CPTDecimalFromInteger(200)];
     plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromInteger(0) length:CPTDecimalFromInteger(10)];
+    [_activityGraph reloadData];
 }
 
 - (void)usbHidMonitor:(FDUSBHIDMonitor *)monitor deviceAdded:(FDUSBHIDDevice *)device
