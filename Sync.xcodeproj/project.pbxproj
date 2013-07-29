@@ -9,8 +9,11 @@
 /* Begin PBXBuildFile section */
 		9207F58A171E3C2600107066 /* FDBinary.m in Sources */ = {isa = PBXBuildFile; fileRef = 9207F589171E3C2600107066 /* FDBinary.m */; };
 		9207F58F171E458E00107066 /* FDDetour.m in Sources */ = {isa = PBXBuildFile; fileRef = 9207F58E171E458E00107066 /* FDDetour.m */; };
-		923ABD2C173452BD00DD10A4 /* FDFireflyUsb.m in Sources */ = {isa = PBXBuildFile; fileRef = 923ABD2B173452BD00DD10A4 /* FDFireflyUsb.m */; };
+		9211F92517A5B09A0072064D /* FDObservable.m in Sources */ = {isa = PBXBuildFile; fileRef = 9211F92417A5B09A0072064D /* FDObservable.m */; };
+		923ABD2C173452BD00DD10A4 /* FDFireflyIceChannelUSB.m in Sources */ = {isa = PBXBuildFile; fileRef = 923ABD2B173452BD00DD10A4 /* FDFireflyIceChannelUSB.m */; };
 		923ABD2F173467FC00DD10A4 /* FDDetourSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 923ABD2E173467FC00DD10A4 /* FDDetourSource.m */; };
+		925ECEDC1799C33C00A497C3 /* FDFireflyIceCoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 925ECEDB1799C33C00A497C3 /* FDFireflyIceCoder.m */; };
+		925ECEE01799C3DB00A497C3 /* FDFireflyIceChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = 925ECEDF1799C3DB00A497C3 /* FDFireflyIceChannel.m */; };
 		926D3561170D0FA0001E1966 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 926D3560170D0FA0001E1966 /* Cocoa.framework */; };
 		926D356B170D0FA0001E1966 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 926D3569170D0FA0001E1966 /* InfoPlist.strings */; };
 		926D356D170D0FA0001E1966 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 926D356C170D0FA0001E1966 /* main.m */; };
@@ -21,12 +24,13 @@
 		926D3580170D0FA0001E1966 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 926D3560170D0FA0001E1966 /* Cocoa.framework */; };
 		926D3588170D0FA0001E1966 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 926D3586170D0FA0001E1966 /* InfoPlist.strings */; };
 		926D358B170D0FA0001E1966 /* SyncTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 926D358A170D0FA0001E1966 /* SyncTests.m */; };
-		926D3596170D0FE8001E1966 /* FDFireflyBle.m in Sources */ = {isa = PBXBuildFile; fileRef = 926D3595170D0FE8001E1966 /* FDFireflyBle.m */; };
+		926D3596170D0FE8001E1966 /* FDFireflyIceChannelBLE.m in Sources */ = {isa = PBXBuildFile; fileRef = 926D3595170D0FE8001E1966 /* FDFireflyIceChannelBLE.m */; };
 		926D3598170D1029001E1966 /* IOBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 926D3597170D1029001E1966 /* IOBluetooth.framework */; };
 		9277AF39171715A6004DE3FB /* FDUSBHIDMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 9277AF38171715A6004DE3FB /* FDUSBHIDMonitor.m */; };
 		9277AF3B171723D0004DE3FB /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9277AF3A171723D0004DE3FB /* IOKit.framework */; };
 		928E670017340F7B002D08E8 /* CorePlot.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 928E66FA17340F38002D08E8 /* CorePlot.framework */; };
 		928E670117340FBD002D08E8 /* CorePlot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 928E66FA17340F38002D08E8 /* CorePlot.framework */; };
+		9293E36F1798C9D00010CC76 /* FDFireflyIce.m in Sources */ = {isa = PBXBuildFile; fileRef = 9293E36E1798C9D00010CC76 /* FDFireflyIce.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,11 +82,16 @@
 		9207F589171E3C2600107066 /* FDBinary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDBinary.m; sourceTree = "<group>"; };
 		9207F58D171E458E00107066 /* FDDetour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDDetour.h; sourceTree = "<group>"; };
 		9207F58E171E458E00107066 /* FDDetour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDetour.m; sourceTree = "<group>"; };
-		923ABD291734517300DD10A4 /* FDFirefly.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDFirefly.h; sourceTree = "<group>"; };
-		923ABD2A173452BD00DD10A4 /* FDFireflyUsb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFireflyUsb.h; sourceTree = "<group>"; };
-		923ABD2B173452BD00DD10A4 /* FDFireflyUsb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFireflyUsb.m; sourceTree = "<group>"; };
+		9211F92317A5B09A0072064D /* FDObservable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDObservable.h; sourceTree = "<group>"; };
+		9211F92417A5B09A0072064D /* FDObservable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDObservable.m; sourceTree = "<group>"; };
+		923ABD291734517300DD10A4 /* FDFireflyIceChannel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDFireflyIceChannel.h; sourceTree = "<group>"; };
+		923ABD2A173452BD00DD10A4 /* FDFireflyIceChannelUSB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFireflyIceChannelUSB.h; sourceTree = "<group>"; };
+		923ABD2B173452BD00DD10A4 /* FDFireflyIceChannelUSB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFireflyIceChannelUSB.m; sourceTree = "<group>"; };
 		923ABD2D173467FC00DD10A4 /* FDDetourSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDDetourSource.h; sourceTree = "<group>"; };
 		923ABD2E173467FC00DD10A4 /* FDDetourSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDetourSource.m; sourceTree = "<group>"; };
+		925ECEDA1799C33C00A497C3 /* FDFireflyIceCoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFireflyIceCoder.h; sourceTree = "<group>"; };
+		925ECEDB1799C33C00A497C3 /* FDFireflyIceCoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFireflyIceCoder.m; sourceTree = "<group>"; };
+		925ECEDF1799C3DB00A497C3 /* FDFireflyIceChannel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFireflyIceChannel.m; sourceTree = "<group>"; };
 		926D355D170D0FA0001E1966 /* Sync.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sync.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		926D3560170D0FA0001E1966 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		926D3563170D0FA0001E1966 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -102,13 +111,15 @@
 		926D3587170D0FA0001E1966 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		926D3589170D0FA0001E1966 /* SyncTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SyncTests.h; sourceTree = "<group>"; };
 		926D358A170D0FA0001E1966 /* SyncTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SyncTests.m; sourceTree = "<group>"; };
-		926D3594170D0FE8001E1966 /* FDFireflyBle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFireflyBle.h; sourceTree = "<group>"; };
-		926D3595170D0FE8001E1966 /* FDFireflyBle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFireflyBle.m; sourceTree = "<group>"; };
+		926D3594170D0FE8001E1966 /* FDFireflyIceChannelBLE.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFireflyIceChannelBLE.h; sourceTree = "<group>"; };
+		926D3595170D0FE8001E1966 /* FDFireflyIceChannelBLE.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFireflyIceChannelBLE.m; sourceTree = "<group>"; };
 		926D3597170D1029001E1966 /* IOBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOBluetooth.framework; path = System/Library/Frameworks/IOBluetooth.framework; sourceTree = SDKROOT; };
 		9277AF37171715A6004DE3FB /* FDUSBHIDMonitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDUSBHIDMonitor.h; sourceTree = "<group>"; };
 		9277AF38171715A6004DE3FB /* FDUSBHIDMonitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDUSBHIDMonitor.m; sourceTree = "<group>"; };
 		9277AF3A171723D0004DE3FB /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		928E66F317340F38002D08E8 /* CorePlot.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CorePlot.xcodeproj; path = ../CorePlot_1.2/Source/framework/CorePlot.xcodeproj; sourceTree = "<group>"; };
+		9293E36D1798C9D00010CC76 /* FDFireflyIce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFireflyIce.h; sourceTree = "<group>"; };
+		9293E36E1798C9D00010CC76 /* FDFireflyIce.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFireflyIce.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -184,11 +195,16 @@
 				926D3575170D0FA0001E1966 /* MainMenu.xib */,
 				926D3572170D0FA0001E1966 /* FDAppDelegate.h */,
 				926D3573170D0FA0001E1966 /* FDAppDelegate.m */,
-				923ABD291734517300DD10A4 /* FDFirefly.h */,
-				926D3594170D0FE8001E1966 /* FDFireflyBle.h */,
-				926D3595170D0FE8001E1966 /* FDFireflyBle.m */,
-				923ABD2A173452BD00DD10A4 /* FDFireflyUsb.h */,
-				923ABD2B173452BD00DD10A4 /* FDFireflyUsb.m */,
+				9293E36D1798C9D00010CC76 /* FDFireflyIce.h */,
+				9293E36E1798C9D00010CC76 /* FDFireflyIce.m */,
+				925ECEDA1799C33C00A497C3 /* FDFireflyIceCoder.h */,
+				925ECEDB1799C33C00A497C3 /* FDFireflyIceCoder.m */,
+				923ABD291734517300DD10A4 /* FDFireflyIceChannel.h */,
+				925ECEDF1799C3DB00A497C3 /* FDFireflyIceChannel.m */,
+				926D3594170D0FE8001E1966 /* FDFireflyIceChannelBLE.h */,
+				926D3595170D0FE8001E1966 /* FDFireflyIceChannelBLE.m */,
+				923ABD2A173452BD00DD10A4 /* FDFireflyIceChannelUSB.h */,
+				923ABD2B173452BD00DD10A4 /* FDFireflyIceChannelUSB.m */,
 				9277AF37171715A6004DE3FB /* FDUSBHIDMonitor.h */,
 				9277AF38171715A6004DE3FB /* FDUSBHIDMonitor.m */,
 				9207F588171E3C2600107066 /* FDBinary.h */,
@@ -197,6 +213,8 @@
 				9207F58E171E458E00107066 /* FDDetour.m */,
 				923ABD2D173467FC00DD10A4 /* FDDetourSource.h */,
 				923ABD2E173467FC00DD10A4 /* FDDetourSource.m */,
+				9211F92317A5B09A0072064D /* FDObservable.h */,
+				9211F92417A5B09A0072064D /* FDObservable.m */,
 			);
 			path = Sync;
 			sourceTree = "<group>";
@@ -377,12 +395,16 @@
 			files = (
 				926D356D170D0FA0001E1966 /* main.m in Sources */,
 				926D3574170D0FA0001E1966 /* FDAppDelegate.m in Sources */,
-				926D3596170D0FE8001E1966 /* FDFireflyBle.m in Sources */,
+				926D3596170D0FE8001E1966 /* FDFireflyIceChannelBLE.m in Sources */,
 				9277AF39171715A6004DE3FB /* FDUSBHIDMonitor.m in Sources */,
 				9207F58A171E3C2600107066 /* FDBinary.m in Sources */,
 				9207F58F171E458E00107066 /* FDDetour.m in Sources */,
-				923ABD2C173452BD00DD10A4 /* FDFireflyUsb.m in Sources */,
+				923ABD2C173452BD00DD10A4 /* FDFireflyIceChannelUSB.m in Sources */,
 				923ABD2F173467FC00DD10A4 /* FDDetourSource.m in Sources */,
+				9293E36F1798C9D00010CC76 /* FDFireflyIce.m in Sources */,
+				925ECEDC1799C33C00A497C3 /* FDFireflyIceCoder.m in Sources */,
+				925ECEE01799C3DB00A497C3 /* FDFireflyIceChannel.m in Sources */,
+				9211F92517A5B09A0072064D /* FDObservable.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

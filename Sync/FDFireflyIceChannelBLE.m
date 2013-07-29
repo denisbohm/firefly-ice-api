@@ -1,5 +1,5 @@
 //
-//  FDFireflyBle.m
+//  FDFireflyIceChannelBLE.m
 //  Sync
 //
 //  Created by Denis Bohm on 4/3/13.
@@ -9,7 +9,7 @@
 #import "FDBinary.h"
 #import "FDDetour.h"
 #import "FDDetourSource.h"
-#import "FDFireflyBle.h"
+#import "FDFireflyIceChannelBLE.h"
 
 #if TARGET_OS_IPHONE
 #import <CoreBluetooth/CoreBluetooth.h>
@@ -17,7 +17,7 @@
 #import <IOBluetooth/IOBluetooth.h>
 #endif
 
-@interface FDFireflyBle () <CBPeripheralDelegate>
+@interface FDFireflyIceChannelBLE () <CBPeripheralDelegate>
 
 @property CBPeripheral *peripheral;
 @property CBCharacteristic *characteristic;
@@ -27,7 +27,7 @@
 
 @end
 
-@implementation FDFireflyBle
+@implementation FDFireflyIceChannelBLE
 
 - (id)initWithPeripheral:(CBPeripheral *)peripheral
 {
@@ -62,7 +62,7 @@
     NSLog(@"didUpdateValueForCharacteristic %@ %@", characteristic.value, error);
     [_detour detourEvent:characteristic.value];
     if (_detour.state == FDDetourStateSuccess) {
-        [_delegate fireflyPacket:self data:_detour.data];
+        [_delegate fireflyIceChannelPacket:self data:_detour.data];
         [_detour clear];
     } else
     if (_detour.state == FDDetourStateError) {
@@ -85,7 +85,7 @@
     }
 }
 
-- (void)send:(NSData *)data
+- (void)fireflyIceChannelSend:(NSData *)data
 {
     [_detourSources addObject:[[FDDetourSource alloc] initWithSize:20 data:data]];
     [self checkWrite];
@@ -111,6 +111,8 @@
             _characteristic = characteristic;
             
             [_peripheral setNotifyValue:YES forCharacteristic:_characteristic];
+            
+            [_delegate fireflyIceChannelOpen:self];
         }
     }
 }

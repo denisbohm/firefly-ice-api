@@ -8,8 +8,10 @@
 
 #import "FDAppDelegate.h"
 #import "FDBinary.h"
-#import "FDFireflyBle.h"
-#import "FDFireflyUsb.h"
+#import "FDFireflyIce.h"
+#import "FDFireflyIceChannelBLE.h"
+#import "FDFireflyIceChannelUSB.h"
+#import "FDFireflyIceCoder.h"
 #import "FDUSBHIDMonitor.h"
 
 #if TARGET_OS_IPHONE
@@ -93,7 +95,9 @@
 
 @end
 
-@interface FDAppDelegate () <CBCentralManagerDelegate, FDUSBHIDMonitorDelegate, FDFireflyDelegate, NSTableViewDataSource>
+@interface FDAppDelegate () <CBCentralManagerDelegate, FDUSBHIDMonitorDelegate, NSTableViewDataSource, FDFireflyIceObserver>
+
+@property NSMutableArray *devices;
 
 @property (assign) IBOutlet NSTableView *bluetoothTableView;
 @property CBCentralManager *centralManager;
@@ -122,6 +126,8 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+    _devices = [NSMutableArray array];
+    
     _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
     _fireflyDevices = [NSMutableArray array];
     _bluetoothTableView.dataSource = self;
@@ -136,6 +142,19 @@
     [self setupGraph];
     
     [_usbMonitor start];
+}
+
+- (void)fireflyIceSensing:(id<FDFireflyIceChannel>)channel ax:(float)ax ay:(float)ay az:(float)az mx:(float)mx my:(float)my mz:(float)mz
+{
+    /*
+     _axSlider.floatValue = ax;
+     _aySlider.floatValue = ay;
+     _azSlider.floatValue = az;
+     
+     _mxSlider.floatValue = mx;
+     _mySlider.floatValue = my;
+     _mzSlider.floatValue = mz;
+     */
 }
 
 - (void)setupGraph
@@ -217,77 +236,48 @@
     [_activityGraph reloadData];
 }
 
-- (void)usbHidMonitor:(FDUSBHIDMonitor *)monitor deviceAdded:(FDUSBHIDDevice *)device
+- (void)usbHidMonitor:(FDUSBHIDMonitor *)monitor deviceAdded:(FDUSBHIDDevice *)usbHidDevice
 {
-    FDFireflyUsb *fireflyUsb = [[FDFireflyUsb alloc] initWithDevice:device];
-    fireflyUsb.delegate = self;
-    [_usbTableViewDataSource.devices addObject:fireflyUsb];
+    FDFireflyIce *fireflyIce = [[FDFireflyIce alloc] init];
+    [fireflyIce.observable addObserver:self];
+    [_devices addObject:fireflyIce];
+    FDFireflyIceChannelUSB *channel = [[FDFireflyIceChannelUSB alloc] initWithDevice:usbHidDevice];
+    [fireflyIce setChannelUSB:channel];
+    [_usbTableViewDataSource.devices addObject:channel];
     [_usbTableView reloadData];
+}
+
+- (FDFireflyIceChannelUSB *)channelForUSBDevice:(FDUSBHIDDevice *)device
+{
+    for (FDFireflyIceChannelUSB *channel in _usbTableViewDataSource.devices) {
+        if (channel.device == device) {
+            return channel;
+        }
+    }
+    return nil;
 }
 
 - (void)usbHidMonitor:(FDUSBHIDMonitor *)monitor deviceRemoved:(FDUSBHIDDevice *)device
 {
-    for (FDFireflyUsb *fireflyUsb in _usbTableViewDataSource.devices) {
-        if (fireflyUsb.device == device) {
-            [fireflyUsb close];
-            
-            [_usbTableViewDataSource.devices removeObject:fireflyUsb];
-            [_usbTableView reloadData];
-            
+    FDFireflyIceChannelUSB *channel = [self channelForUSBDevice:device];
+
+    for (FDFireflyIce *fireflyIce in _devices) {
+        if (fireflyIce.channelUSB == channel) {
+            fireflyIce.channelUSB = nil;
+            if (fireflyIce.channelBLE == nil) {
+                [_devices removeObject:fireflyIce];
+            }
             break;
         }
     }
-}
 
-- (void)sync:(id<FDFirefly>)firefly data:(NSData *)data
-{
-    NSURL *url = [NSURL URLWithString:@"http://localhost:5000/sync"];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    [request setHTTPMethod:@"POST"];
-    [request addValue:@"application/octet-stream" forHTTPHeaderField:@"Content-Type"];
-    [request setValue:[NSString stringWithFormat:@"%ld", (unsigned long)data.length] forHTTPHeaderField:@"Content-Length"];
-    [request setHTTPBody:data];
+    [channel close];
     
-    NSURLResponse *response = nil;
-    NSError *error = nil;
-    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-    [firefly send:responseData];
+    [_usbTableViewDataSource.devices removeObject:channel];
+    [_usbTableView reloadData];
 }
 
-- (void)sensing:(id<FDFirefly>)firefly data:(NSData *)data
-{
-    FDBinary *binary = [[FDBinary alloc] initWithData:data];
-    float ax = [binary getFloat32];
-    float ay = [binary getFloat32];
-    float az = [binary getFloat32];
-    float mx = [binary getFloat32];
-    float my = [binary getFloat32];
-    float mz = [binary getFloat32];
-    
-    _axSlider.floatValue = ax;
-    _aySlider.floatValue = ay;
-    _azSlider.floatValue = az;
-    
-    _mxSlider.floatValue = mx;
-    _mySlider.floatValue = my;
-    _mzSlider.floatValue = mz;
-}
-
-- (void)fireflyPacket:(id<FDFirefly>)firefly data:(NSData *)data
-{
-    FDBinary *binary = [[FDBinary alloc] initWithData:data];
-    uint8_t code = [binary getUint8];
-    switch (code) {
-        case FD_SYNC_DATA:
-            [self sync:firefly data:data];
-            break;
-        case 0xff:
-            [self sensing:firefly data:[data subdataWithRange:NSMakeRange(1, data.length - 1)]];
-            break;
-    }
-}
-
-- (FDFireflyUsb *)getSelectedUsbDevice
+- (FDFireflyIceChannelUSB *)getSelectedUsbDevice
 {
     NSInteger row = _usbTableView.selectedRow;
     if (row < 0) {
@@ -298,24 +288,45 @@
 
 - (IBAction)usbOpen:(id)sender
 {
-    FDFireflyUsb *firefly = [self getSelectedUsbDevice];
-    [firefly open];
+    FDFireflyIceChannelUSB *channel = [self getSelectedUsbDevice];
+    [channel open];
 }
 
 - (IBAction)usbClose:(id)sender
 {
-    FDFireflyUsb *firefly = [self getSelectedUsbDevice];
-    [firefly close];
+    FDFireflyIceChannelUSB *channel = [self getSelectedUsbDevice];
+    [channel close];
 }
 
-- (IBAction)usbWrite:(id)sender
+- (IBAction)usbSetTime:(id)sender
 {
-    FDFireflyUsb *firefly = [self getSelectedUsbDevice];
-    uint8_t bytes[] = {FD_SYNC_START};
-    [firefly send:[NSData dataWithBytes:&bytes length:sizeof(bytes)]];
+    FDFireflyIceChannelUSB *channel = [self getSelectedUsbDevice];
+    FDFireflyIceCoder *coder = [[FDFireflyIceCoder alloc] init];
+    [coder sendSetPropertyTime:channel time:[NSDate date]];
 }
 
-- (FDFireflyBle *)getSelectedFireflyDevice
+- (IBAction)usbProvision:(id)sender
+{
+    FDFireflyIceChannelUSB *channel = [self getSelectedUsbDevice];
+    FDFireflyIceCoder *coder = [[FDFireflyIceCoder alloc] init];
+    [coder sendProvision:channel dictionary:@{@"site":@"http://localhost:5000"} options:0];
+}
+
+- (IBAction)usbIndicate:(id)sender
+{
+    FDFireflyIceChannelUSB *channel = [self getSelectedUsbDevice];
+    FDFireflyIceCoder *coder = [[FDFireflyIceCoder alloc] init];
+    [coder sendIndicatorOverride:channel usbOrange:0 usbGreen:0 d0:0 d1:0xff0000 d2:0x00ff00 d3:0x0000ff d4:0 duration:5.0];
+}
+
+- (IBAction)usbSync:(id)sender
+{
+    FDFireflyIceChannelUSB *channel = [self getSelectedUsbDevice];
+    FDFireflyIceCoder *coder = [[FDFireflyIceCoder alloc] init];
+    [coder sendSyncStart:channel];
+}
+
+- (FDFireflyIceChannelBLE *)getSelectedFireflyDevice
 {
     NSInteger row = _bluetoothTableView.selectedRow;
     if (row < 0) {
@@ -326,24 +337,42 @@
 
 - (IBAction)bluetoothConnect:(id)sender
 {
-    FDFireflyBle *fireflyDevice = [self getSelectedFireflyDevice];
-    fireflyDevice.delegate = self;
-    [_centralManager connectPeripheral:fireflyDevice.peripheral options:nil];
+    FDFireflyIceChannelBLE *channel = [self getSelectedFireflyDevice];
+    [_centralManager connectPeripheral:channel.peripheral options:nil];
 }
 
-- (IBAction)bluetoothWrite:(id)sender
+- (IBAction)bluetoothSetTime:(id)sender
 {
-    FDFireflyBle *firefly = [self getSelectedFireflyDevice];
-    uint8_t bytes[] = {FD_SYNC_START};
-    [firefly send:[NSData dataWithBytes:&bytes length:sizeof(bytes)]];
+    FDFireflyIceChannelBLE *channel = [self getSelectedFireflyDevice];
+    FDFireflyIceCoder *coder = [[FDFireflyIceCoder alloc] init];
+    [coder sendSetPropertyTime:channel time:[NSDate date]];
 }
 
+- (IBAction)bluetoothProvision:(id)sender
+{
+    FDFireflyIceChannelBLE *channel = [self getSelectedFireflyDevice];
+    FDFireflyIceCoder *coder = [[FDFireflyIceCoder alloc] init];
+    [coder sendProvision:channel dictionary:@{@"site":@"http://localhost:5000"} options:0];
+}
+
+- (IBAction)bluetoothIndicate:(id)sender
+{
+    FDFireflyIceChannelBLE *channel = [self getSelectedFireflyDevice];
+    FDFireflyIceCoder *coder = [[FDFireflyIceCoder alloc] init];
+    [coder sendIndicatorOverride:channel usbOrange:0 usbGreen:0 d0:0 d1:0xff0000 d2:0x00ff00 d3:0x0000ff d4:0 duration:5.0];
+}
+
+- (IBAction)bluetoothSync:(id)sender
+{
+    FDFireflyIceChannelBLE *channel = [self getSelectedFireflyDevice];
+    FDFireflyIceCoder *coder = [[FDFireflyIceCoder alloc] init];
+    [coder sendSyncStart:channel];
+}
 
 - (IBAction)bluetoothDisconnect:(id)sender
 {
-    FDFireflyBle *fireflyDevice = [self getSelectedFireflyDevice];
-    fireflyDevice.delegate = nil;
-    [_centralManager cancelPeripheralConnection:fireflyDevice.peripheral];
+    FDFireflyIceChannelBLE *channel = [self getSelectedFireflyDevice];
+    [_centralManager cancelPeripheralConnection:channel.peripheral];
 }
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
@@ -377,9 +406,9 @@
     }
 }
 
-- (FDFireflyBle *)getFireflyDeviceByPeripheral:(CBPeripheral *)peripheral
+- (FDFireflyIceChannelBLE *)getFireflyDeviceByPeripheral:(CBPeripheral *)peripheral
 {
-    for (FDFireflyBle *fireflyDevice in _fireflyDevices) {
+    for (FDFireflyIceChannelBLE *fireflyDevice in _fireflyDevices) {
         if (fireflyDevice.peripheral == peripheral) {
             return fireflyDevice;
         }
@@ -392,31 +421,33 @@
      advertisementData:(NSDictionary *)advertisementData
                   RSSI:(NSNumber *)RSSI
 {
-    FDFireflyBle *fireflyDevice = [self getFireflyDeviceByPeripheral:peripheral];
+    FDFireflyIceChannelBLE *fireflyDevice = [self getFireflyDeviceByPeripheral:peripheral];
     if (fireflyDevice != nil) {
         return;
     }
 
     NSLog(@"didDiscoverPeripheral %@", peripheral);
-    fireflyDevice = [[FDFireflyBle alloc] initWithPeripheral:peripheral];
-    [_fireflyDevices addObject:fireflyDevice];
-    
+    FDFireflyIce *fireflyIce = [[FDFireflyIce alloc] init];
+    [fireflyIce.observable addObserver:self];
+    FDFireflyIceChannelBLE *channelBLE = [[FDFireflyIceChannelBLE alloc] initWithPeripheral:peripheral];
+    [fireflyIce setChannelBLE:channelBLE];
+    [_devices addObject:fireflyIce];
+    [_fireflyDevices addObject:channelBLE];
     [_bluetoothTableView reloadData];
 }
 
 - (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral
 {
     NSLog(@"didConnectPeripheral %@", peripheral.name);
-    FDFireflyBle *fireflyDevice = [self getFireflyDeviceByPeripheral:peripheral];
+    FDFireflyIceChannelBLE *fireflyDevice = [self getFireflyDeviceByPeripheral:peripheral];
     [fireflyDevice didConnectPeripheral];
 }
 
 - (void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error
 {
     NSLog(@"didDisconnectPeripheral %@ : %@", peripheral.name, error);
-    FDFireflyBle *fireflyDevice = [self getFireflyDeviceByPeripheral:peripheral];
+    FDFireflyIceChannelBLE *fireflyDevice = [self getFireflyDeviceByPeripheral:peripheral];
     [fireflyDevice didDisconnectPeripheralError:error];
 }
-
 
 @end

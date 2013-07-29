@@ -1,19 +1,19 @@
 //
-//  FDFireflyBle.h
+//  FDFireflyIceChannelBLE.h
 //  Sync
 //
 //  Created by Denis Bohm on 4/3/13.
 //  Copyright (c) 2013 Firefly Design. All rights reserved.
 //
 
-#import "FDFirefly.h"
+#import "FDFireflyIceChannel.h"
 
 @class CBPeripheral;
 
-@interface FDFireflyBle : NSObject <FDFirefly>
+@interface FDFireflyIceChannelBLE : NSObject <FDFireflyIceChannel>
 
 @property (readonly) CBPeripheral *peripheral;
-@property id<FDFireflyDelegate> delegate;
+@property id<FDFireflyIceChannelDelegate> delegate;
 
 - (id)initWithPeripheral:(CBPeripheral *)peripheral;
 

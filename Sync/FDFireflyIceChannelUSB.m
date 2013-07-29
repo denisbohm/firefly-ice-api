@@ -1,5 +1,5 @@
 //
-//  FDFireflyUsb.m
+//  FDFireflyIceChannelUSB.m
 //  Sync
 //
 //  Created by Denis Bohm on 5/3/13.
@@ -8,16 +8,16 @@
 
 #import "FDDetour.h"
 #import "FDDetourSource.h"
-#import "FDFireflyUsb.h"
+#import "FDFireflyIceChannelUSB.h"
 #import "FDUSBHIDMonitor.h"
 
-@interface FDFireflyUsb () <FDUSBHIDDeviceDelegate>
+@interface FDFireflyIceChannelUSB () <FDUSBHIDDeviceDelegate>
 
 @property FDDetour *detour;
 
 @end
 
-@implementation FDFireflyUsb
+@implementation FDFireflyIceChannelUSB
 
 - (id)initWithDevice:(FDUSBHIDDevice *)device
 {
@@ -32,6 +32,7 @@
 {
     _device.delegate = self;
     [_device open];
+    [_delegate fireflyIceChannelOpen:self];
 }
 
 - (void)close
@@ -45,7 +46,7 @@
     NSLog(@"usbHidDevice:inputReport: %@", data);
     [_detour detourEvent:data];
     if (_detour.state == FDDetourStateSuccess) {
-        [_delegate fireflyPacket:self data:_detour.data];
+        [_delegate fireflyIceChannelPacket:self data:_detour.data];
         [_detour clear];
     } else
         if (_detour.state == FDDetourStateError) {
@@ -54,7 +55,7 @@
         }
 }
 
-- (void)send:(NSData *)data
+- (void)fireflyIceChannelSend:(NSData *)data
 {
     FDDetourSource *source = [[FDDetourSource alloc] initWithSize:64 data:data];
     NSData *subdata;

@@ -1,19 +1,19 @@
 //
-//  FDFireflyUsb.h
+//  FDFireflyIceChannelUSB.h
 //  Sync
 //
 //  Created by Denis Bohm on 5/3/13.
 //  Copyright (c) 2013 Firefly Design. All rights reserved.
 //
 
-#import "FDFirefly.h"
+#import "FDFireflyIceChannel.h"
 
 @class FDUSBHIDDevice;
 
-@interface FDFireflyUsb : NSObject <FDFirefly>
+@interface FDFireflyIceChannelUSB : NSObject <FDFireflyIceChannel>
 
 @property (readonly) FDUSBHIDDevice *device;
-@property id<FDFireflyDelegate> delegate;
+@property id<FDFireflyIceChannelDelegate> delegate;
 
 - (id)initWithDevice:(FDUSBHIDDevice *)device;
 

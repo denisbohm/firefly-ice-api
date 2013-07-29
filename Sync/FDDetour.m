@@ -65,7 +65,7 @@
     }
     FDBinary *binary = [[FDBinary alloc] initWithData:data];
     _state = FDDetourStateIntermediate;
-    _length = [binary getUint16];
+    _length = [binary getUInt16];
     _sequence_number = 0;
     _buffer.length = 0;
     [self detourContinue:[binary getRemainingData]];
@@ -77,7 +77,7 @@
         return;
     }
     FDBinary *binary = [[FDBinary alloc] initWithData:data];
-    uint8_t sequence_number = [binary getUint8];
+    uint8_t sequence_number = [binary getUInt8];
     if (sequence_number == 0) {
         if (_sequence_number != 0) {
             [self detourError];
