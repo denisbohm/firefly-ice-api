@@ -161,6 +161,12 @@
     NSURLResponse *response = nil;
     NSError *error = nil;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+    NSString *type = response.MIMEType;
+    if (![@"application/octet-stream" isEqual:[type lowercaseString]]) {
+        NSLog(@"sync data response: %@", [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding]);
+        return;
+    }
+    NSLog(@"sending sync response");
     [channel fireflyIceChannelSend:responseData];    
 }
 

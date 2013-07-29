@@ -215,18 +215,22 @@
     [_activityPlotDataSource removeAll];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss z"];
+    uint32_t firstTime = 0;
     for (NSDictionary *vmas in vmasArray) {
         NSString *s = vmas[@"time"];
         s = [s stringByReplacingOccurrencesOfString:@"UTC" withString:@"+0000"];
         NSDate *d = [formatter dateFromString:s];
         NSTimeInterval t = [d timeIntervalSince1970];
         uint32_t time = (uint32_t)t;
+        if (firstTime == 0) {
+            firstTime = time;
+        }
         uint16_t interval = [vmas[@"interval"] integerValue];
         NSArray *values = vmas[@"values"];
         for (NSNumber *value in values) {
-            double v = [value doubleValue] * 10000;
+            double v = [value doubleValue] * 1000;
             NSLog(@"point %u, %0.1f", time, v);
-            [_activityPlotDataSource addActivityTime:time value:v];
+            [_activityPlotDataSource addActivityTime:firstTime - time value:v];
             time += interval;
         }
     }
@@ -316,7 +320,7 @@
 {
     FDFireflyIceChannelUSB *channel = [self getSelectedUsbDevice];
     FDFireflyIceCoder *coder = [[FDFireflyIceCoder alloc] init];
-    [coder sendIndicatorOverride:channel usbOrange:0 usbGreen:0 d0:0 d1:0xff0000 d2:0x00ff00 d3:0x0000ff d4:0 duration:5.0];
+    [coder sendIndicatorOverride:channel usbOrange:0 usbGreen:0 d0:0 d1:0xff0000 d2:0xffffff d3:0x0000ff d4:0 duration:5.0];
 }
 
 - (IBAction)usbSync:(id)sender
