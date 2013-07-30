@@ -51,7 +51,7 @@ typedef union {
 
 + (NSTimeInterval)unpackTime64:(uint8_t *)buffer {
     uint32_t seconds = [FDBinary unpackUInt32:buffer];
-    uint32_t microseconds = [FDBinary unpackUInt32:buffer];
+    uint32_t microseconds = [FDBinary unpackUInt32:&buffer[4]];
     return seconds + microseconds * 1e-6;
 }
 
