@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Firefly Design. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "FDFireflyIceChannel.h"
 
 // property bits for get/set propery commands
 #define FD_CONTROL_PROPERTY_VERSION     0x00000001
@@ -16,6 +16,9 @@
 #define FD_CONTROL_PROPERTY_POWER       0x00000010
 #define FD_CONTROL_PROPERTY_SITE        0x00000020
 
+#define FD_UPDATE_METADATA_FLAG_ENCRYPTED 0x00000001
+
+@class FDFireflyIceObservable;
 @protocol FDFireflyIceObserver;
 
 @interface FDFireflyIceCoder : NSObject

@@ -7,12 +7,13 @@
 //
 
 #import "FDAppDelegate.h"
-#import "FDBinary.h"
 #import "FDFireflyIce.h"
 #import "FDFireflyIceChannelBLE.h"
 #import "FDFireflyIceChannelUSB.h"
 #import "FDFireflyIceCoder.h"
 #import "FDUSBHIDMonitor.h"
+
+#import <FireflyProduction/FDBinary.h>
 
 #if TARGET_OS_IPHONE
 #import <CoreBluetooth/CoreBluetooth.h>
@@ -320,7 +321,7 @@
 {
     FDFireflyIceChannelUSB *channel = [self getSelectedUsbDevice];
     FDFireflyIceCoder *coder = [[FDFireflyIceCoder alloc] init];
-    [coder sendIndicatorOverride:channel usbOrange:0 usbGreen:0 d0:0 d1:0xff0000 d2:0xffffff d3:0x0000ff d4:0 duration:5.0];
+    [coder sendIndicatorOverride:channel usbOrange:0 usbGreen:0 d0:0 d1:0xff0000 d2:0x00ff00 d3:0x0000ff d4:0 duration:5.0];
 }
 
 - (IBAction)usbSync:(id)sender
@@ -363,7 +364,7 @@
 {
     FDFireflyIceChannelBLE *channel = [self getSelectedFireflyDevice];
     FDFireflyIceCoder *coder = [[FDFireflyIceCoder alloc] init];
-    [coder sendIndicatorOverride:channel usbOrange:0 usbGreen:0 d0:0 d1:0xff0000 d2:0x00ff00 d3:0x0000ff d4:0 duration:5.0];
+    [coder sendIndicatorOverride:channel usbOrange:0 usbGreen:0 d0:0 d1:0xffffff d2:0xffffff d3:0xffffff d4:0 duration:5.0];
 }
 
 - (IBAction)bluetoothSync:(id)sender
@@ -430,7 +431,7 @@
         return;
     }
 
-    NSLog(@"didDiscoverPeripheral %@", peripheral);
+    NSLog(@"didDiscoverPeripheral %@ ad=%@", peripheral, advertisementData);
     FDFireflyIce *fireflyIce = [[FDFireflyIce alloc] init];
     [fireflyIce.observable addObserver:self];
     FDFireflyIceChannelBLE *channelBLE = [[FDFireflyIceChannelBLE alloc] initWithPeripheral:peripheral];

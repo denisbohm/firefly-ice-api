@@ -6,10 +6,12 @@
 //  Copyright (c) 2013 Firefly Design. All rights reserved.
 //
 
-#import "FDBinary.h"
+#import "FDExecutor.h"
 #import "FDFireflyIce.h"
 #import "FDFireflyIceChannel.h"
 #import "FDFireflyIceCoder.h"
+
+#import <FireflyProduction/FDBinary.h>
 
 @implementation FDFireflyIceVersion
 
@@ -48,6 +50,10 @@
 
 @end
 
+@implementation FDFireflyIceSectorHash
+
+@end
+
 @implementation FDFireflyIceObservable
 
 - (id)init
@@ -73,6 +79,7 @@
     if (self = [super init]) {
         _coder = [[FDFireflyIceCoder alloc] init];
         [_coder.observable addObserver:self];
+        _executor = [[FDExecutor alloc] init];
     }
     return self;
 }

@@ -6,10 +6,11 @@
 //  Copyright (c) 2013 Firefly Design. All rights reserved.
 //
 
-#import "FDBinary.h"
 #import "FDDetour.h"
 #import "FDDetourSource.h"
 #import "FDFireflyIceChannelBLE.h"
+
+#import <FireflyProduction/FDBinary.h>
 
 #if TARGET_OS_IPHONE
 #import <CoreBluetooth/CoreBluetooth.h>

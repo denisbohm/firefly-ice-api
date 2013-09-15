@@ -6,10 +6,11 @@
 //  Copyright (c) 2013 Firefly Design. All rights reserved.
 //
 
-#import "FDBinary.h"
 #import "FDFireflyIce.h"
 #import "FDFireflyIceChannel.h"
 #import "FDFireflyIceCoder.h"
+
+#import <FireflyProduction/FDBinary.h>
 
 #define FD_CONTROL_PING 1
 
@@ -287,6 +288,23 @@
     [_observable fireflyIceDirectTestModeReport:channel result:result];
 }
 
+- (void)updateGetSectorHashes:(id<FDFireflyIceChannel>)channel data:(NSData *)data
+{
+    FDBinary *binary = [[FDBinary alloc] initWithData:data];
+    uint8_t sectorCount = [binary getUInt8];
+    NSMutableArray *sectorHashes = [NSMutableArray array];
+    for (NSUInteger i = 0; i < sectorCount; ++i) {
+        uint16_t sector = [binary getUInt16];
+        NSData *hash = [binary getData:16];
+        FDFireflyIceSectorHash *sectorHash = [[FDFireflyIceSectorHash alloc] init];
+        sectorHash.sector = sector;
+        sectorHash.hash = hash;
+        [sectorHashes addObject:sectorHash];
+    }
+    
+    [_observable fireflyIceSectorHashes:channel sectorHashes:sectorHashes];
+}
+
 static
 void putColor(FDBinary *binary, uint32_t color) {
     [binary putUInt8:color >> 16];
@@ -318,7 +336,6 @@ void putColor(FDBinary *binary, uint32_t color) {
 
     [channel fireflyIceChannelSend:binary.dataValue];
 }
-
 
 - (void)sendSyncStart:(id<FDFireflyIceChannel>)channel
 {
@@ -363,6 +380,10 @@ void putColor(FDBinary *binary, uint32_t color) {
             [self radioDirectTestModeReport:channel data:remaining];
             break;
 
+        case FD_CONTROL_UPDATE_GET_SECTOR_HASHES:
+            [self updateGetSectorHashes:channel data:remaining];
+            break;
+            
         case FD_CONTROL_SYNC_DATA:
             [self syncData:channel data:remaining];
             break;

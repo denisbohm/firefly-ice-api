@@ -35,6 +35,11 @@
 @property float temperature;
 @end
 
+@interface FDFireflyIceSectorHash : NSObject
+@property uint16_t sector;
+@property NSData *hash;
+@end
+
 @protocol FDFireflyIceObserver <NSObject>
 
 @optional
@@ -50,6 +55,8 @@
 
 - (void)fireflyIceDirectTestModeReport:(id<FDFireflyIceChannel>)channel result:(uint16_t)result;
 
+- (void)fireflyIceSectorHashes:(id<FDFireflyIceChannel>)channel sectorHashes:(NSArray *)sectorHashes;
+
 - (void)fireflyIceSyncData:(id<FDFireflyIceChannel>)channel data:(NSData *)data;
 
 - (void)fireflyIceSensing:(id<FDFireflyIceChannel>)channel ax:(float)ax ay:(float)ay az:(float)az mx:(float)mx my:(float)my mz:(float)mz;
@@ -57,6 +64,8 @@
 - (void)fireflyIcePing:(id<FDFireflyIceChannel>)channel data:(NSData *)data;
 
 @end
+
+@class FDExecutor;
 
 @interface FDFireflyIceObservable : FDObservable <FDFireflyIceObserver>
 @end
@@ -75,5 +84,7 @@
 @property FDFireflyIceVersion *version;
 @property FDFireflyIceHardwareId *hardwareId;
 @property NSString *site;
+
+@property FDExecutor *executor;
 
 @end

@@ -6,8 +6,9 @@
 //  Copyright (c) 2013 Firefly Design. All rights reserved.
 //
 
-#import "FDBinary.h"
 #import "FDDetour.h"
+
+#import <FireflyProduction/FDBinary.h>
 
 @interface FDDetour ()
 
