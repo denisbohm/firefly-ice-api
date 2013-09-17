@@ -52,8 +52,9 @@
         data = [data subdataWithRange:NSMakeRange(0, _length - _buffer.length)];
     }
     [_buffer appendData:data];
-    if (_buffer.length == _length) {
+    if (_buffer.length >= _length) {
         _state = FDDetourStateSuccess;
+        NSLog(@"detour success: %d %ld %@", _length, (unsigned long)_buffer.length, _buffer);
     } else {
         ++_sequence_number;
     }

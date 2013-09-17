@@ -41,6 +41,8 @@
 #define FD_CONTROL_RESET_WATCHDOG 2
 #define FD_CONTROL_RESET_HARD_FAULT 3
 
+#define HASH_SIZE 20
+
 @implementation FDFireflyIceCoder
 
 - (id)init
@@ -295,7 +297,7 @@
     NSMutableArray *sectorHashes = [NSMutableArray array];
     for (NSUInteger i = 0; i < sectorCount; ++i) {
         uint16_t sector = [binary getUInt16];
-        NSData *hash = [binary getData:16];
+        NSData *hash = [binary getData:HASH_SIZE];
         FDFireflyIceSectorHash *sectorHash = [[FDFireflyIceSectorHash alloc] init];
         sectorHash.sector = sector;
         sectorHash.hash = hash;

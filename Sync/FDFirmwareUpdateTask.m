@@ -18,11 +18,14 @@
 
 @interface FDFirmwareUpdateTask () <FDFireflyIceObserver>
 
+// sector and page size for external flash memory
 @property uint32_t sectorSize;
 @property uint32_t pageSize;
 @property uint32_t pagesPerSector;
+
 @property FDExecutableSection *section;
-@property NSArray *sectorHashes;
+@property NSMutableArray *getSectors;
+@property NSMutableArray *sectorHashes;
 @property NSMutableArray *updateSectors;
 @property NSMutableArray *updatePages;
 
@@ -34,7 +37,7 @@
 {
     if (self = [super init]) {
         _pageSize = 256;
-        _sectorSize = 2048;
+        _sectorSize = 4096;
         _pagesPerSector = _sectorSize / _pageSize;
     }
     return self;
@@ -44,7 +47,7 @@
 {
     [super taskStarted];
     
-    NSArray *sections = [_executable combineAllSectionsType:FDExecutableSectionTypeProgram address:0x00000000 length:0x40000 pageSize:_sectorSize];
+    NSArray *sections = [_executable combineAllSectionsType:FDExecutableSectionTypeProgram address:0x00008000 length:0x38000 pageSize:_sectorSize];
     _section = sections[0];
     
     [self begin];
@@ -59,12 +62,10 @@
 
 - (void)begin
 {
-    _sectorHashes = nil;
     _updateSectors = nil;
     _updatePages = nil;
     
     [self getSectorHashes];
-    [self next:@selector(firstSectorHashesCheck)];
 }
 
 - (void)firstSectorHashesCheck
@@ -78,21 +79,42 @@
     }
 }
 
+- (void)getSomeSectors
+{
+    if (_getSectors.count > 0) {
+        NSUInteger n = MIN(_getSectors.count, 10);
+        NSRange range = NSMakeRange(0, n);
+        NSArray *sectors = [_getSectors subarrayWithRange:range];
+        [_getSectors removeObjectsInRange:range];
+        [self.firefly.coder sendUpdateGetSectorHashes:self.channel sectors:sectors];
+    } else {
+        if (_updatePages == nil) {
+            [self next:@selector(firstSectorHashesCheck)];
+        } else {
+            [self next:@selector(verify)];
+        }
+    }
+}
+
 - (void)getSectorHashes
 {
-    uint16_t sector = (uint16_t)(_section.address / _sectorSize);
-    uint16_t sectorCount = (uint16_t)(_section.data.length / _sectorSize);
-    NSMutableArray *sectors = [NSMutableArray array];
-    for (uint16_t i = 0; i < sectorCount; ++i) {
-        [sectors addObject:[NSNumber numberWithUnsignedShort:sector + i]];
-    }
+    _sectorHashes = [NSMutableArray array];
 
-    [self.firefly.coder sendUpdateGetSectorHashes:self.channel sectors:sectors];
+    uint16_t sectorCount = (uint16_t)(_section.data.length / _sectorSize);
+    _getSectors = [NSMutableArray array];
+    for (uint16_t i = 0; i < sectorCount; ++i) {
+        [_getSectors addObject:[NSNumber numberWithUnsignedShort:i]];
+    }
+    
+    [self getSomeSectors];
 }
 
 - (void)fireflyIceSectorHashes:(id<FDFireflyIceChannel>)channel sectorHashes:(NSArray *)sectorHashes
 {
-    _sectorHashes = sectorHashes;
+    NSLog(@"fireflyIceSectorHashes %@", sectorHashes);
+    [_sectorHashes addObjectsFromArray:sectorHashes];
+    
+    [self getSomeSectors];
 }
 
 - (NSData *)sha1:(NSData *)data
@@ -109,10 +131,9 @@
     
     NSMutableArray *updateSectors = [NSMutableArray array];
     NSMutableArray *updatePages = [NSMutableArray array];
-    uint16_t firstSector = (uint16_t)(_section.address / _sectorSize);
     uint16_t sectorCount = (uint16_t)(_section.data.length / _sectorSize);
     for (uint16_t i = 0; i < sectorCount; ++i) {
-        uint16_t sector = firstSector + i;
+        uint16_t sector = i;
         FDFireflyIceSectorHash *sectorHash = _sectorHashes[i];
         if (sectorHash.sector != sector) {
             @throw [NSException exceptionWithName:@"unexpected" reason:@"unexpected" userInfo:nil];
@@ -126,27 +147,27 @@
             }
         }
     }
-    
+
+    _updateSectors = updateSectors;
+    _updatePages = updatePages;
+
     if (updateSectors.count == 0) {
-        // nothing to update
+        NSLog(@"nothing to update");
         return;
     }
     
-    _updateSectors = updateSectors;
-    _updatePages = updatePages;
+    NSLog(@"updating pages %@", _updatePages);
 }
 
 - (void)writeNextPage
 {
     if (_updatePages.count == 0) {
         // noting left to write, check the hashes to confirm
-        _sectorHashes = nil;
         [self getSectorHashes];
-        [self next:@selector(verify)];
     } else {
         uint16_t page = [_updatePages[0] unsignedShortValue];
         [_updatePages removeObjectAtIndex:0];
-        NSInteger location = page * _pageSize - _section.address;
+        NSInteger location = page * _pageSize;
         NSData *data = [_section.data subdataWithRange:NSMakeRange(location, _pageSize)];
         [self.firefly.coder sendUpdateWritePage:self.channel page:page data:data];
         [self next:@selector(writeNextPage)];
@@ -168,8 +189,7 @@
     uint32_t flags = 0;
     uint32_t length = (uint32_t)_section.data.length;
     NSData *hash = [self sha1:_section.data];
-    NSMutableData *cryptHash = [NSMutableData data];
-    cryptHash.length = 20;
+    NSData *cryptHash = hash;
     NSMutableData *cryptIv = [NSMutableData data];
     cryptIv.length = 16;
     [self.firefly.coder sendUpdateCommit:self.channel flags:flags length:length hash:hash cryptHash:cryptHash cryptIv:cryptIv];
@@ -179,6 +199,7 @@
 - (void)complete
 {
     BOOL isFirmwareUpToDate = (_updatePages.count == 0);
+    NSLog(@"isFirmwareUpToDate = %@", isFirmwareUpToDate ? @"YES" : @"NO");
     [_delegate firmwareUpdateTaskComplete:isFirmwareUpToDate];
     [self done];
 }

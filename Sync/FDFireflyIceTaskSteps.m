@@ -20,43 +20,59 @@
 
 @implementation FDFireflyIceTaskSteps
 
-@synthesize isSuspended;
-@synthesize priority;
+@synthesize timeout = _timeout;
+@synthesize priority = _priority;
+@synthesize isSuspended = _isSuspended;
+
+- (id)init
+{
+    if (self = [super init]) {
+        _timeout = 600; // !!! just for testing -denis
+    }
+    return self;
+}
 
 - (void)taskStarted
 {
+    NSLog(@"task started");
     [_firefly.observable addObserver:self];
 }
 
 - (void)taskSuspended
 {
-    [_firefly.observable removeObserver:self];    
+    NSLog(@"task suspended");
+    [_firefly.observable removeObserver:self];
 }
 
 - (void)taskResumed
 {
-    [_firefly.observable addObserver:self];    
+    NSLog(@"task resumed");
+    [_firefly.observable addObserver:self];
 }
 
 - (void)taskCompleted
 {
+    NSLog(@"task completed");
     [_firefly.observable removeObserver:self];
 }
 
 - (void)fireflyIcePing:(id<FDFireflyIceChannel>)channel data:(NSData *)data
 {
+    NSLog(@"ping received");
     FDBinary *binary = [[FDBinary alloc] initWithData:data];
     uint32_t invocationId = [binary getUInt32];
     if (invocationId != _invocationId) {
-        // unexpected ping
+        NSLog(@"unexpected ping");
         return;
     }
     
     if (_invocation != nil) {
+        NSLog(@"invoking step %@", NSStringFromSelector(_invocation.selector));
         NSInvocation *invocation = _invocation;
         _invocation = nil;
         [invocation invoke];
     } else {
+        NSLog(@"all steps completed");
         [_firefly.executor complete:self];
     }
 }
@@ -72,6 +88,10 @@
 
 - (void)next:(SEL)selector
 {
+    NSLog(@"queing next step %@", NSStringFromSelector(selector));
+    
+    [_firefly.executor feedWatchdog:self];
+    
     _invocation = [self invocation:selector];
     _invocationId = arc4random_uniform(0xffffffff);
     
@@ -83,6 +103,7 @@
 
 - (void)done
 {
+    NSLog(@"task done");
     [_firefly.executor complete:self];
 }
 

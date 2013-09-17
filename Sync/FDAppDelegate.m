@@ -11,9 +11,11 @@
 #import "FDFireflyIceChannelBLE.h"
 #import "FDFireflyIceChannelUSB.h"
 #import "FDFireflyIceCoder.h"
+#import "FDFirmwareUpdateTask.h"
 #import "FDUSBHIDMonitor.h"
 
 #import <FireflyProduction/FDBinary.h>
+#import <FireflyProduction/FDExecutable.h>
 
 #if TARGET_OS_IPHONE
 #import <CoreBluetooth/CoreBluetooth.h>
@@ -378,6 +380,30 @@
 {
     FDFireflyIceChannelBLE *channel = [self getSelectedFireflyDevice];
     [_centralManager cancelPeripheralConnection:channel.peripheral];
+}
+
+- (FDExecutable *)load:(NSString *)name type:(NSString *)type
+{
+    NSString *path = [NSString stringWithFormat:@"/Users/denis/sandbox/denisbohm/firefly-ice-firmware/%@/%@/%@.elf", type, name, name];
+    FDExecutable *executable = [[FDExecutable alloc] init];
+    [executable load:path];
+    NSArray *sections = [executable combineSectionsType:FDExecutableSectionTypeProgram
+                                                address:0
+                                                 length:0x40000
+                                               pageSize:2048];
+    executable.sections = sections;
+    return executable;
+}
+
+- (IBAction)update:(id)sender
+{
+    FDFireflyIceChannelBLE *channel = [self getSelectedFireflyDevice];
+    FDFireflyIce *firefly = _devices[0];
+    FDFirmwareUpdateTask *update = [[FDFirmwareUpdateTask alloc] init];
+    update.firefly = firefly;
+    update.channel = channel;
+    update.executable = [self load:@"FireflyIce" type:@"THUMB Flash Release"];
+    [firefly.executor execute:update];
 }
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView

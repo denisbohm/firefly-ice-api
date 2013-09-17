@@ -10,9 +10,11 @@
 
 @interface FDExecutor ()
 
+@property NSTimer *watchdogTimer;
 @property NSMutableArray *tasks;
 @property NSMutableArray *suspendedTasks;
 @property id<FDExecutorTask> currentTask;
+@property NSDate *currentFeedTime;
 
 @end
 
@@ -44,6 +46,24 @@
     }];
 }
 
+- (void)checkTimeout:(NSTimer *)timer
+{
+    if (_currentTask == nil) {
+        return;
+    }
+    
+    NSTimeInterval duration = [_currentFeedTime timeIntervalSinceNow];
+    if (duration > _currentTask.timeout) {
+        NSLog(@"executor task timeout");
+        [self complete:_currentTask];
+    }
+}
+
+- (void)taskException:(NSException *)exception
+{
+    NSLog(@"task exception %@", exception);
+}
+
 - (void)schedule
 {
     if (_currentTask != nil) {
@@ -58,18 +78,36 @@
         _currentTask = nil;
         [self addTask:task];
         currentTask.isSuspended = YES;
-        [currentTask taskSuspended];
+        @try {
+            [currentTask taskSuspended];
+        } @catch (NSException *e) {
+            [self taskException:e];
+        }
     }
     if (_tasks.count == 0) {
         return;
     }
+    
+    if (_watchdogTimer == nil) {
+        _watchdogTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(checkTimeout:) userInfo:nil repeats:YES];
+    }
+    
     _currentTask = _tasks[0];
     [_tasks removeObjectAtIndex:0];
+    _currentFeedTime = [NSDate date];
     if (_currentTask.isSuspended) {
         _currentTask.isSuspended = NO;
-        [_currentTask taskResumed];
+        @try {
+            [_currentTask taskResumed];
+        } @catch (NSException *e) {
+            [self taskException:e];
+        }
     } else {
-        [_currentTask taskStarted];
+        @try {
+            [_currentTask taskStarted];
+        } @catch (NSException *e) {
+            [self taskException:e];
+        }
     }
 }
 
@@ -80,11 +118,24 @@
     [self schedule];
 }
 
+- (void)feedWatchdog:(id<FDExecutorTask>)task
+{
+    if (_currentTask == task) {
+        _currentFeedTime = [NSDate date];
+    } else {
+        NSLog(@"expected current task to feed watchdog...");
+    }
+}
+
 - (void)complete:(id<FDExecutorTask>)task
 {
     if (_currentTask == task) {
         _currentTask = nil;
-        [task taskCompleted];
+        @try {
+            [task taskCompleted];
+        } @catch (NSException *e) {
+            [self taskException:e];
+        }
         [self schedule];
     } else {
         NSLog(@"expected current task to be complete...");

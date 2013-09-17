@@ -10,6 +10,7 @@
 
 @protocol FDExecutorTask <NSObject>
 
+@property NSTimeInterval timeout;
 @property NSInteger priority;
 @property BOOL isSuspended;
 
@@ -26,6 +27,7 @@
 
 - (void)execute:(id<FDExecutorTask>)task;
 
+- (void)feedWatchdog:(id<FDExecutorTask>)task;
 - (void)complete:(id<FDExecutorTask>)task;
 
 @end
