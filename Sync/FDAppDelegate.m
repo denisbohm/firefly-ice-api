@@ -7,14 +7,15 @@
 //
 
 #import "FDAppDelegate.h"
-#import "FDFireflyIce.h"
-#import "FDFireflyIceChannelBLE.h"
-#import "FDFireflyIceChannelUSB.h"
-#import "FDFireflyIceCoder.h"
-#import "FDFirmwareUpdateTask.h"
-#import "FDUSBHIDMonitor.h"
 
-#import <FireflyProduction/FDBinary.h>
+#import <FireflyDeviceFramework/FDBinary.h>
+#import <FireflyDeviceFramework/FDFireflyIce.h>
+#import <FireflyDeviceFramework/FDFireflyIceChannelBLE.h>
+#import <FireflyDeviceFramework/FDFireflyIceChannelUSB.h>
+#import <FireflyDeviceFramework/FDFireflyIceCoder.h>
+#import <FireflyDeviceFramework/FDFirmwareUpdateTask.h>
+#import <FireflyDeviceFramework/FDUSBHIDMonitor.h>
+
 #import <FireflyProduction/FDExecutable.h>
 
 #if TARGET_OS_IPHONE
@@ -249,7 +250,7 @@
     [fireflyIce.observable addObserver:self];
     [_devices addObject:fireflyIce];
     FDFireflyIceChannelUSB *channel = [[FDFireflyIceChannelUSB alloc] initWithDevice:usbHidDevice];
-    [fireflyIce setChannelUSB:channel];
+    [fireflyIce addChannel:channel type:@"USB"];
     [_usbTableViewDataSource.devices addObject:channel];
     [_usbTableView reloadData];
 }
@@ -269,9 +270,9 @@
     FDFireflyIceChannelUSB *channel = [self channelForUSBDevice:device];
 
     for (FDFireflyIce *fireflyIce in _devices) {
-        if (fireflyIce.channelUSB == channel) {
-            fireflyIce.channelUSB = nil;
-            if (fireflyIce.channelBLE == nil) {
+        if (fireflyIce.channels[@"USB"] == channel) {
+            [fireflyIce removeChannel:@"USB"];
+            if (fireflyIce.channels[@"BLE"] == nil) {
                 [_devices removeObject:fireflyIce];
             }
             break;
@@ -402,7 +403,9 @@
     FDFirmwareUpdateTask *update = [[FDFirmwareUpdateTask alloc] init];
     update.firefly = firefly;
     update.channel = channel;
-    update.executable = [self load:@"FireflyIce" type:@"THUMB Flash Release"];
+    FDExecutable *executable = [self load:@"FireflyIce" type:@"THUMB Flash Release"];
+    FDExecutableSection *section = executable.sections[0];
+    update.firmware = section.data;
     [firefly.executor execute:update];
 }
 
@@ -461,7 +464,7 @@
     FDFireflyIce *fireflyIce = [[FDFireflyIce alloc] init];
     [fireflyIce.observable addObserver:self];
     FDFireflyIceChannelBLE *channelBLE = [[FDFireflyIceChannelBLE alloc] initWithPeripheral:peripheral];
-    [fireflyIce setChannelBLE:channelBLE];
+    [fireflyIce addChannel:channelBLE type:@"BLE"];
     [_devices addObject:fireflyIce];
     [_fireflyDevices addObject:channelBLE];
     [_bluetoothTableView reloadData];
