@@ -29,6 +29,13 @@
     return self;
 }
 
+- (void)setRun:(BOOL)run
+{
+    _run = run;
+    
+    [self schedule];
+}
+
 - (void)addTask:(id<FDExecutorTask>)task
 {
     [_tasks addObject:task];
@@ -66,6 +73,10 @@
 
 - (void)schedule
 {
+    if (!_run) {
+        return;
+    }
+    
     if (_currentTask != nil) {
         if (_tasks.count == 0) {
             return;

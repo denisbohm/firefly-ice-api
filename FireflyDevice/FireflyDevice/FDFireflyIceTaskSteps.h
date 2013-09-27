@@ -11,7 +11,7 @@
 
 @interface FDFireflyIceTaskSteps : NSObject <FDExecutorTask, FDFireflyIceObserver>
 
-@property FDFireflyIce *firefly;
+@property FDFireflyIce *fireflyIce;
 @property id<FDFireflyIceChannel> channel;
 
 - (void)next:(SEL)selector;

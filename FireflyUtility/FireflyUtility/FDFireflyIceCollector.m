@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 Firefly Design. All rights reserved.
 //
 
+#import <FireflyDevice/FDFireflyIceChannel.h>
+#import <FireflyDevice/FDFireflyIceCoder.h>
 #import "FDFireflyIceCollector.h"
 
 @implementation FDFireflyIceCollectorEntry
@@ -40,6 +42,44 @@
     return self;
 }
 
+- (void)complete
+{
+    [self done];
+}
+
+- (void)taskStarted
+{
+    [super taskStarted];
+    
+    [self.fireflyIce.coder sendGetProperties:self.channel properties:
+     FD_CONTROL_PROPERTY_VERSION |
+     FD_CONTROL_PROPERTY_HARDWARE_ID |
+     FD_CONTROL_PROPERTY_DEBUG_LOCK |
+     FD_CONTROL_PROPERTY_RTC |
+     FD_CONTROL_PROPERTY_POWER |
+     FD_CONTROL_PROPERTY_SITE |
+     FD_CONTROL_PROPERTY_RESET |
+     FD_CONTROL_PROPERTY_STORAGE];
+    [self.fireflyIce.coder sendDirectTestModeReport:self.channel];
+    
+    [self next:@selector(complete)];
+}
+
+- (void)taskSuspended
+{
+    NSLog(@"task suspended");
+}
+
+- (void)taskResumed
+{
+    NSLog(@"task resumed");
+}
+
+- (void)taskCompleted
+{
+    NSLog(@"task completed");
+}
+
 - (id)objectForKey:(NSString *)key
 {
     FDFireflyIceCollectorEntry *entry = _dictionary[key];
@@ -55,8 +95,8 @@
     SEL selector = invocation.selector;
     NSString *selectorName = NSStringFromSelector(selector);
     NSArray *parts = [selectorName componentsSeparatedByString:@":"];
-    NSString *key = parts[3];
-    NSObject *object;
+    NSString *key = parts[2];
+    __unsafe_unretained id object;
     [invocation getArgument:&object atIndex:4];
     FDFireflyIceCollectorEntry *entry = [[FDFireflyIceCollectorEntry alloc] init];
     entry.date = [NSDate date];

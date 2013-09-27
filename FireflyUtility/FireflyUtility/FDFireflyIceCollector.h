@@ -6,7 +6,9 @@
 //  Copyright (c) 2013 Firefly Design. All rights reserved.
 //
 
+#import <FireflyDevice/FDExecutor.h>
 #import <FireflyDevice/FDFireflyIce.h>
+#import <FireflyDevice/FDFireflyIceTaskSteps.h>
 
 #import <Foundation/Foundation.h>
 
@@ -23,10 +25,9 @@
 
 @end
 
-@interface FDFireflyIceCollector : NSObject <FDFireflyIceObserver>
+@interface FDFireflyIceCollector : FDFireflyIceTaskSteps
 
 @property id<FDFireflyIceCollectorDelegate> delegate;
-
 @property NSMutableDictionary *dictionary;
 
 - (id)objectForKey:(NSString *)key;

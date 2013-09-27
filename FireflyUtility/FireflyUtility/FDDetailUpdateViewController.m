@@ -56,7 +56,7 @@
     id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
     
     FDFirmwareUpdateTask *task = [[FDFirmwareUpdateTask alloc] init];
-    task.firefly = fireflyIce;
+    task.fireflyIce = fireflyIce;
     task.channel = channel;
     task.delegate = self;
     task.firmware = [self loadFirmware:@"FireflyIce" type:@"THUMB Flash Release"];

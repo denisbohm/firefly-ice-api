@@ -41,6 +41,13 @@
     _lengthLabel.text = [NSString stringWithFormat:@"%d bytes", [self packetLength]];
     _frequencyLabel.text = [NSString stringWithFormat:@"%d MHz", [self packetFrequency]];
     _durationLabel.text = [NSString stringWithFormat:@"%d minutes", [self testDuration]];
+
+    FDFireflyIceDirectTestModeReport *report = [self.device.collector objectForKey:@"directTestModeReport"];
+    if (report.packetCount & 0x8000) {
+        _reportLabel.text = [NSString stringWithFormat:@"%u packets received", report.packetCount & 0x7fff];
+    } else {
+        _reportLabel.text = @"";
+    }
 }
 
 - (unsigned)packetLength
@@ -65,11 +72,6 @@
     return (unsigned)round(_duration.value * 60);
 }
 
-- (void)fireflyIceDirectTestModeReport:(id<FDFireflyIceChannel>)channel result:(uint16_t)result
-{
-    _reportLabel.text = [NSString stringWithFormat:@"%d packets received", result & 0x7fff];
-}
-
 - (IBAction)startDirectTestMode:(id)sender
 {
     FDFireflyIce *fireflyIce = self.device.fireflyIce;
@@ -87,16 +89,12 @@
     [fireflyIce.coder sendDirectTestModeEnter:channel packet:packet duration:duration];
 }
 
-- (IBAction)report:(id)sender
+- (IBAction)valueChanged:(id)sender
 {
-    FDFireflyIce *fireflyIce = self.device.fireflyIce;
-    
-    id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
-
-    [fireflyIce.coder sendDirectTestModeReport:channel];
+    [self configureView];
 }
 
-- (IBAction)valueChanged:(id)sender
+- (void)fireflyIceCollectorEntry:(FDFireflyIceCollectorEntry *)entry
 {
     [self configureView];
 }

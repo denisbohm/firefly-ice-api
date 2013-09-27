@@ -25,6 +25,8 @@
 
 @interface FDExecutor : NSObject
 
+@property(nonatomic) BOOL run;
+
 - (void)execute:(id<FDExecutorTask>)task;
 
 - (void)feedWatchdog:(id<FDExecutorTask>)task;

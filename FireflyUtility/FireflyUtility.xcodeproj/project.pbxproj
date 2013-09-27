@@ -179,6 +179,10 @@
 				92841AA517EDF63D005C0E18 /* Images.xcassets */,
 				92841A9617EDF63D005C0E18 /* FDAppDelegate.h */,
 				92841A9717EDF63D005C0E18 /* FDAppDelegate.m */,
+				92F863FA17F3D0E6000E23AF /* FDDevice.h */,
+				92F863FB17F3D0E6000E23AF /* FDDevice.m */,
+				92F863F617F3C38D000E23AF /* FDFireflyIceCollector.h */,
+				92F863F717F3C38D000E23AF /* FDFireflyIceCollector.m */,
 				92841A9F17EDF63D005C0E18 /* FDMasterViewController.h */,
 				92841AA017EDF63D005C0E18 /* FDMasterViewController.m */,
 				92841AA217EDF63D005C0E18 /* FDDetailViewController.h */,
@@ -197,10 +201,6 @@
 				929CA43517F1242F00A4A992 /* FDDetailResetViewController.m */,
 				928BF64617F2818000370B91 /* FDDetailTabBarController.h */,
 				928BF64717F2818000370B91 /* FDDetailTabBarController.m */,
-				92F863F617F3C38D000E23AF /* FDFireflyIceCollector.h */,
-				92F863F717F3C38D000E23AF /* FDFireflyIceCollector.m */,
-				92F863FA17F3D0E6000E23AF /* FDDevice.h */,
-				92F863FB17F3D0E6000E23AF /* FDDevice.m */,
 			);
 			path = FireflyUtility;
 			sourceTree = "<group>";

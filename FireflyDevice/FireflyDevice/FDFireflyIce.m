@@ -116,6 +116,8 @@
 - (void)fireflyIceChannel:(id<FDFireflyIceChannel>)channel status:(FDFireflyIceChannelStatus)status
 {
     [self.observable fireflyIce:self channel:channel status:status];
+    
+    _executor.run = (status == FDFireflyIceChannelStatusOpen);
 }
 
 - (void)fireflyIceChannelOpen:(id<FDFireflyIceChannel>)channel;

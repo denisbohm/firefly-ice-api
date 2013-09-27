@@ -51,15 +51,6 @@
     
     _productLabel.text = [self toHex:hardwareId.unique];
     
-    _debugLockLabel.text = @"";
-    _siteLabel.text = @"";
-    _batteryLabel.text = @"";
-    _timeLabel.text = @"";
-    _accelerometerLabel.text = @"";
-    _magnetometerLabel.text = @"";
-    _temperatureLabel.text = @"";
-    _dataLabel.text = @"";
-
     FDFireflyIceStorage *storage = [collector objectForKey:@"storage"];
     _dataLabel.text = [NSString stringWithFormat:@"%u pages of data", storage.pageCount];
 

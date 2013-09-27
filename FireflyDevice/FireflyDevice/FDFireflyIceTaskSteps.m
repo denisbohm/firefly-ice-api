@@ -34,25 +34,25 @@
 - (void)taskStarted
 {
     NSLog(@"task started");
-    [_firefly.observable addObserver:self];
+    [_fireflyIce.observable addObserver:self];
 }
 
 - (void)taskSuspended
 {
     NSLog(@"task suspended");
-    [_firefly.observable removeObserver:self];
+    [_fireflyIce.observable removeObserver:self];
 }
 
 - (void)taskResumed
 {
     NSLog(@"task resumed");
-    [_firefly.observable addObserver:self];
+    [_fireflyIce.observable addObserver:self];
 }
 
 - (void)taskCompleted
 {
     NSLog(@"task completed");
-    [_firefly.observable removeObserver:self];
+    [_fireflyIce.observable removeObserver:self];
 }
 
 - (void)fireflyIcePing:(id<FDFireflyIceChannel>)channel data:(NSData *)data
@@ -72,7 +72,7 @@
         [invocation invoke];
     } else {
         NSLog(@"all steps completed");
-        [_firefly.executor complete:self];
+        [_fireflyIce.executor complete:self];
     }
 }
 
@@ -89,7 +89,7 @@
 {
     NSLog(@"queing next step %@", NSStringFromSelector(selector));
     
-    [_firefly.executor feedWatchdog:self];
+    [_fireflyIce.executor feedWatchdog:self];
     
     _invocation = [self invocation:selector];
     _invocationId = arc4random_uniform(0xffffffff);
@@ -97,13 +97,13 @@
     FDBinary *binary = [[FDBinary alloc] init];
     [binary putUInt32:_invocationId];
     NSData *data = [binary dataValue];
-    [_firefly.coder sendPing:_channel data:data];
+    [_fireflyIce.coder sendPing:_channel data:data];
 }
 
 - (void)done
 {
     NSLog(@"task done");
-    [_firefly.executor complete:self];
+    [_fireflyIce.executor complete:self];
 }
 
 @end

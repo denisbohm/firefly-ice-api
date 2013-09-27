@@ -13,7 +13,8 @@
 
 @interface FDDetailResetViewController ()
 
-@property IBOutlet UILabel *lastResetLabel;
+@property IBOutlet UILabel *causeLabel;
+@property IBOutlet UILabel *dateLabel;
 
 @property IBOutlet UISegmentedControl *typeSegmentedControl;
 
@@ -44,14 +45,27 @@
     if (cause & 64) {
         return @"System Request Reset";
     }
-    return [NSString stringWithFormat:@"0x%08x", cause];
+    if (cause == 0) {
+        return @"";
+    }
+    return [NSString stringWithFormat:@"0x%08x Reset", cause];
 }
 
-- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel reset:(FDFireflyIceReset *)reset
+- (void)configureView
 {
+    FDFireflyIceReset *reset = [self.device.collector objectForKey:@"reset"];
+
+    _causeLabel.text = [self causeDescription:reset.cause];
+
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    NSString *date = [dateFormatter stringFromDate:reset.date];
-    _lastResetLabel.text = [NSString stringWithFormat:@"%@ %@", date, [self causeDescription:reset.cause]];
+    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
+    _dateLabel.text = [dateFormatter stringFromDate:reset.date];
+}
+
+- (void)fireflyIceCollectorEntry:(FDFireflyIceCollectorEntry *)entry
+{
+    [self configureView];
 }
 
 - (IBAction)resetDevice:(id)sender

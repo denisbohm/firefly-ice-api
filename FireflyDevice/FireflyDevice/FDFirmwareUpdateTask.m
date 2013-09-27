@@ -76,7 +76,7 @@
     if (_updateSectors.count == 0) {
         [self commit];
     } else {
-        [self.firefly.coder sendUpdateEraseSectors:self.channel sectors:_updateSectors];
+        [self.fireflyIce.coder sendUpdateEraseSectors:self.channel sectors:_updateSectors];
         [self next:@selector(writeNextPage)];
     }
 }
@@ -88,7 +88,7 @@
         NSRange range = NSMakeRange(0, n);
         NSArray *sectors = [_getSectors subarrayWithRange:range];
         [_getSectors removeObjectsInRange:range];
-        [self.firefly.coder sendUpdateGetSectorHashes:self.channel sectors:sectors];
+        [self.fireflyIce.coder sendUpdateGetSectorHashes:self.channel sectors:sectors];
     } else {
         if (_updatePages == nil) {
             [self next:@selector(firstSectorHashesCheck)];
@@ -175,7 +175,7 @@
         [_updatePages removeObjectAtIndex:0];
         NSInteger location = page * _pageSize;
         NSData *data = [_firmware subdataWithRange:NSMakeRange(location, _pageSize)];
-        [self.firefly.coder sendUpdateWritePage:self.channel page:page data:data];
+        [self.fireflyIce.coder sendUpdateWritePage:self.channel page:page data:data];
         [self next:@selector(writeNextPage)];
     }
 }
@@ -198,7 +198,7 @@
     NSData *cryptHash = hash;
     NSMutableData *cryptIv = [NSMutableData data];
     cryptIv.length = 16;
-    [self.firefly.coder sendUpdateCommit:self.channel flags:flags length:length hash:hash cryptHash:cryptHash cryptIv:cryptIv];
+    [self.fireflyIce.coder sendUpdateCommit:self.channel flags:flags length:length hash:hash cryptHash:cryptHash cryptIv:cryptIv];
     [self next:@selector(complete)];
 }
 

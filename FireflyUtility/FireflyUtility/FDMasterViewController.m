@@ -88,6 +88,16 @@
     return nil;
 }
 
+- (FDDevice *)getDeviceByFireflyIce:(FDFireflyIce *)fireflyIce
+{
+    for (FDDevice *device in _devices) {
+        if (device.fireflyIce == fireflyIce) {
+            return device;
+        }
+    }
+    return nil;
+}
+
 - (void)centralManager:(CBCentralManager *)central
  didDiscoverPeripheral:(CBPeripheral *)peripheral
      advertisementData:(NSDictionary *)advertisementData
@@ -99,10 +109,14 @@
     }
     
     fireflyIce = [[FDFireflyIce alloc] init];
-    FDFireflyIceCollector *collector = [[FDFireflyIceCollector alloc] init];
-    [fireflyIce.observable addObserver:collector];
+    
     FDFireflyIceChannelBLE *channel = [[FDFireflyIceChannelBLE alloc] initWithPeripheral:peripheral];
     [fireflyIce addChannel:channel type:@"BLE"];
+    
+    FDFireflyIceCollector *collector = [[FDFireflyIceCollector alloc] init];
+    collector.fireflyIce = fireflyIce;
+    collector.channel = channel;
+    
     FDDevice *device = [[FDDevice alloc] init];
     device.fireflyIce = fireflyIce;
     device.collector = collector;
@@ -201,9 +215,15 @@
     [connectButton setTitle:title forState:UIControlStateNormal];
 }
 
-- (void)fireflyIceStatus:(id<FDFireflyIceChannel>)channel status:(FDFireflyIceChannelStatus)status
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel status:(FDFireflyIceChannelStatus)status
 {
     [self configureConnectButton];
+    if (status == FDFireflyIceChannelStatusOpen) {
+        FDDevice *device = [self getDeviceByFireflyIce:fireflyIce];
+        if (device != nil) {
+            [fireflyIce.executor execute:device.collector];
+        }
+    }
 }
 
 - (void)setDevice:(FDDevice *)device
