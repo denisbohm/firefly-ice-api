@@ -23,9 +23,17 @@
 @property IBOutlet UILabel *temperatureLabel;
 @property IBOutlet UILabel *dataLabel;
 
+@property IBOutlet UIButton *updateButton;
+
 @end
 
 @implementation FDDetailOverviewViewController
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self.buttons addObject:_updateButton];
+}
 
 - (NSString *)toHex:(NSData *)data
 {
@@ -89,6 +97,11 @@
 - (void)fireflyIceCollectorEntry:(FDFireflyIceCollectorEntry *)entry
 {
     [self configureView];
+}
+
+- (IBAction)updateOverview:(id)sender
+{
+    [self.device.fireflyIce.executor execute:self.device.collector];
 }
 
 @end

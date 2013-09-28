@@ -12,6 +12,10 @@
 
 @interface FDDetailViewController : UIViewController <FDFireflyIceObserver, FDFireflyIceCollectorDelegate>
 
+@property NSMutableArray *buttons;
+
 @property(nonatomic) FDDevice *device;
+
+- (void)configureView;
 
 @end

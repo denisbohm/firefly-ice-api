@@ -32,9 +32,17 @@
 @property IBOutlet UISlider *durationSlider;
 @property IBOutlet UILabel *durationLabel;
 
+@property IBOutlet UIButton *overrideButton;
+
 @end
 
 @implementation FDDetailIndicatorsViewController
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self.buttons addObject:_overrideButton];
+}
 
 - (IBAction)pickColor:(id)sender
 {

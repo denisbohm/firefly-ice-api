@@ -17,10 +17,13 @@
 #define FD_CONTROL_PROPERTY_SITE        0x00000020
 #define FD_CONTROL_PROPERTY_RESET       0x00000040
 #define FD_CONTROL_PROPERTY_STORAGE     0x00000080
+#define FD_CONTROL_PROPERTY_MODE        0x00000100
 
 #define FD_CONTROL_RESET_SYSTEM_REQUEST 1
 #define FD_CONTROL_RESET_WATCHDOG 2
 #define FD_CONTROL_RESET_HARD_FAULT 3
+
+#define FD_CONTROL_MODE_STORAGE 1
 
 #define FD_UPDATE_METADATA_FLAG_ENCRYPTED 0x00000001
 
@@ -52,6 +55,7 @@ typedef enum {
 
 - (void)sendGetProperties:(id<FDFireflyIceChannel>)channel properties:(uint32_t)properties;
 - (void)sendSetPropertyTime:(id<FDFireflyIceChannel>)channel time:(NSDate *)time;
+- (void)sendSetPropertyMode:(id<FDFireflyIceChannel>)channel mode:(uint8_t)mode;
 
 - (void)sendProvision:(id<FDFireflyIceChannel>)channel dictionary:(NSDictionary *)dictionary options:(uint32_t)options;
 - (void)sendReset:(id<FDFireflyIceChannel>)channel type:(uint8_t)type;

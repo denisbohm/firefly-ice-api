@@ -55,7 +55,7 @@
     [_fireflyIce.observable removeObserver:self];
 }
 
-- (void)fireflyIcePing:(id<FDFireflyIceChannel>)channel data:(NSData *)data
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel ping:(NSData *)data
 {
     NSLog(@"ping received");
     FDBinary *binary = [[FDBinary alloc] initWithData:data];

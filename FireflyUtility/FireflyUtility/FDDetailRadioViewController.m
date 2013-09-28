@@ -14,10 +14,8 @@
 @interface FDDetailRadioViewController ()
 
 @property IBOutlet UISegmentedControl *mode;
-@property IBOutlet UILabel *modeLabel;
 
 @property IBOutlet UISegmentedControl *type;
-@property IBOutlet UILabel *typeLabel;
 
 @property IBOutlet UISlider *length;
 @property IBOutlet UILabel *lengthLabel;
@@ -30,14 +28,20 @@
 
 @property IBOutlet UILabel *reportLabel;
 
+@property IBOutlet UIButton *testButton;
+
 @end
 
 @implementation FDDetailRadioViewController
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self.buttons addObject:_testButton];
+}
+
 - (void)configureView
 {
-    _modeLabel.text = [_mode titleForSegmentAtIndex:_mode.selectedSegmentIndex];
-    _typeLabel.text = [_type titleForSegmentAtIndex:_type.selectedSegmentIndex];
     _lengthLabel.text = [NSString stringWithFormat:@"%d bytes", [self packetLength]];
     _frequencyLabel.text = [NSString stringWithFormat:@"%d MHz", [self packetFrequency]];
     _durationLabel.text = [NSString stringWithFormat:@"%d minutes", [self testDuration]];

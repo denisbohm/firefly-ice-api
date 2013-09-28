@@ -10,8 +10,14 @@
 
 @implementation FDAppDelegate
 
+void FDUncaughtExceptionHandler(NSException *exception) {
+    NSLog(@"uncaught exception %@\n%@", exception, exception.callStackSymbols);
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    NSSetUncaughtExceptionHandler(FDUncaughtExceptionHandler);
+    
     // Override point for customization after application launch.
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         UISplitViewController *splitViewController = (UISplitViewController *)self.window.rootViewController;

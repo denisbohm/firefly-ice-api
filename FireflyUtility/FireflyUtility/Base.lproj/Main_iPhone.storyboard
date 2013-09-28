@@ -82,28 +82,28 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="battery 35% 3.2 V USB 100 mA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="arb-cQ-jQG">
-                                <rect key="frame" x="20" y="263" width="280" height="21"/>
+                                <rect key="frame" x="20" y="238" width="280" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="site" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pZU-Df-Vle">
-                                <rect key="frame" x="20" y="140" width="280" height="21"/>
+                                <rect key="frame" x="20" y="130" width="280" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="time is ahead 0.12 seconds" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bem-NK-b8z">
-                                <rect key="frame" x="20" y="217" width="280" height="21"/>
+                                <rect key="frame" x="20" y="200" width="280" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="temperature" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rW6-7x-BIk">
-                                <rect key="frame" x="20" y="292" width="280" height="21"/>
+                                <rect key="frame" x="20" y="267" width="280" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -117,21 +117,21 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="accelerometer x, y, z" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tcM-Kk-H1E">
-                                <rect key="frame" x="20" y="338" width="280" height="21"/>
+                                <rect key="frame" x="20" y="306" width="280" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="magnetometer x, y, z" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gOA-tM-N3C">
-                                <rect key="frame" x="20" y="367" width="280" height="21"/>
+                                <rect key="frame" x="20" y="335" width="280" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="32 data pages" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c8a-7U-ohq">
-                                <rect key="frame" x="20" y="169" width="280" height="21"/>
+                                <rect key="frame" x="20" y="159" width="280" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -144,6 +144,16 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fRX-gr-Syb">
+                                <rect key="frame" x="20" y="390" width="280" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Update Overview">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="updateOverview:" destination="H6e-73-opa" eventType="touchUpInside" id="9JH-I5-W0R"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -159,6 +169,7 @@
                         <outlet property="siteLabel" destination="pZU-Df-Vle" id="fXV-Y1-PBD"/>
                         <outlet property="temperatureLabel" destination="rW6-7x-BIk" id="Z72-yF-zcm"/>
                         <outlet property="timeLabel" destination="bem-NK-b8z" id="16s-WV-WIO"/>
+                        <outlet property="updateButton" destination="fRX-gr-Syb" id="xfe-Y6-jbM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Acd-e7-diR" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -236,6 +247,7 @@
                         <outlet property="deviceHashLabel" destination="hCQ-zU-GCB" id="nqd-3z-RJ0"/>
                         <outlet property="deviceVersionLabel" destination="kBb-ze-vCW" id="r8D-3I-Awx"/>
                         <outlet property="progressView" destination="mM3-bp-Vmy" id="e7d-wo-TDa"/>
+                        <outlet property="updateButton" destination="alz-z5-pcS" id="nVy-Sr-2rx"/>
                         <outlet property="updateView" destination="yi8-rb-AYp" id="lP4-xh-y1F"/>
                     </connections>
                 </viewController>
@@ -256,7 +268,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zpt-Rq-m0u">
-                                <rect key="frame" x="20" y="390" width="280" height="30"/>
+                                <rect key="frame" x="20" y="179" width="280" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Reset Device">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -266,7 +278,7 @@
                                 </connections>
                             </button>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Gop-gF-mqw">
-                                <rect key="frame" x="20" y="354" width="280" height="29"/>
+                                <rect key="frame" x="20" y="143" width="280" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
                                     <segment title="System"/>
@@ -286,6 +298,16 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dLu-Yk-OFE">
+                                <rect key="frame" x="20" y="390" width="280" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Enter Storage Mode">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="enterStorageMode:" destination="aeF-lo-CMk" eventType="touchUpInside" id="kRb-44-R3Z"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -293,6 +315,8 @@
                     <connections>
                         <outlet property="causeLabel" destination="8yj-vp-M7n" id="syh-e2-DbB"/>
                         <outlet property="dateLabel" destination="Wwh-vD-tm6" id="6VH-zz-Sej"/>
+                        <outlet property="modeButton" destination="dLu-Yk-OFE" id="jMe-sL-5Ek"/>
+                        <outlet property="resetButton" destination="zpt-Rq-m0u" id="j9h-AK-C6M"/>
                         <outlet property="typeSegmentedControl" destination="Gop-gF-mqw" id="Uhq-Eu-vyS"/>
                     </connections>
                 </viewController>
@@ -438,6 +462,7 @@
                         <outlet property="lengthLabel" destination="IDC-6l-DoG" id="6HW-UM-QrH"/>
                         <outlet property="mode" destination="G1Z-6m-19a" id="NYq-AI-Nc2"/>
                         <outlet property="reportLabel" destination="G6j-2j-7wk" id="pPV-1q-UDZ"/>
+                        <outlet property="testButton" destination="aPt-eX-xBg" id="hha-EE-DSj"/>
                         <outlet property="type" destination="X7m-cO-eD6" id="X3L-Xw-rw8"/>
                     </connections>
                 </viewController>
@@ -584,6 +609,7 @@
                         <outlet property="d4Switch" destination="deb-G2-gOb" id="72d-HK-D2R"/>
                         <outlet property="durationLabel" destination="slZ-VL-cNf" id="q6e-7O-uxQ"/>
                         <outlet property="durationSlider" destination="rIC-EI-mEB" id="zct-Bg-TXc"/>
+                        <outlet property="overrideButton" destination="tkD-5e-hvh" id="qUz-kD-0fx"/>
                         <outlet property="usbColorSegmentedControl" destination="K6b-gL-TTT" id="WHF-xU-Vgk"/>
                         <outlet property="usbSwitch" destination="EoN-to-rX6" id="v6c-lU-0dg"/>
                     </connections>

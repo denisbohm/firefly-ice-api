@@ -65,21 +65,6 @@
     [self next:@selector(complete)];
 }
 
-- (void)taskSuspended
-{
-    NSLog(@"task suspended");
-}
-
-- (void)taskResumed
-{
-    NSLog(@"task resumed");
-}
-
-- (void)taskCompleted
-{
-    NSLog(@"task completed");
-}
-
 - (id)objectForKey:(NSString *)key
 {
     FDFireflyIceCollectorEntry *entry = _dictionary[key];
@@ -87,6 +72,10 @@
 }
 
 - (BOOL)respondsToSelector:(SEL)selector {
+    if ([super respondsToSelector:selector]) {
+        return YES;
+    }
+    
     NSString *selectorName = NSStringFromSelector(selector);
     return [_selectorNames containsObject:selectorName];
 }

@@ -112,7 +112,7 @@
     [self getSomeSectors];
 }
 
-- (void)fireflyIceSectorHashes:(id<FDFireflyIceChannel>)channel sectorHashes:(NSArray *)sectorHashes
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel sectorHashes:(NSArray *)sectorHashes
 {
     NSLog(@"fireflyIceSectorHashes %@", sectorHashes);
     [_sectorHashes addObjectsFromArray:sectorHashes];

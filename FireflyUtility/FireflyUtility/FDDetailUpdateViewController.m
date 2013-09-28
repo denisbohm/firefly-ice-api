@@ -25,9 +25,17 @@
 @property IBOutlet UIProgressView *progressView;
 @property IBOutlet FDUpdateView *updateView;
 
+@property IBOutlet UIButton *updateButton;
+
 @end
 
 @implementation FDDetailUpdateViewController
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self.buttons addObject:_updateButton];
+}
 
 - (void)firmwareUpdateTask:(FDFirmwareUpdateTask *)task progress:(float)progress
 {

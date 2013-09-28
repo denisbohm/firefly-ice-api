@@ -49,10 +49,6 @@
 	
     _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
     _devices = [NSMutableArray array];
-    
-    // !!! just for testing in the simulator
-//    FDFireflyIce *fireflyIce = [[FDFireflyIce alloc] init];
-//    [_fireflyIces insertObject:fireflyIce atIndex:0];
 }
 
 - (void)centralManagerPoweredOn
