@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		927F3DB717FA20A200C933DD /* FDFireflyIceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 927F3DB617FA20A200C933DD /* FDFireflyIceManager.m */; };
 		929EF4BA17EA06580044F6F9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 929EF4B917EA06580044F6F9 /* Foundation.framework */; };
 		929EF4BF17EA06580044F6F9 /* FireflyDevice.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 929EF4BE17EA06580044F6F9 /* FireflyDevice.h */; };
 		929EF4C117EA06580044F6F9 /* FireflyDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 929EF4C017EA06580044F6F9 /* FireflyDevice.m */; };
@@ -82,6 +83,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		927F3DB517FA20A200C933DD /* FDFireflyIceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFireflyIceManager.h; sourceTree = "<group>"; };
+		927F3DB617FA20A200C933DD /* FDFireflyIceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFireflyIceManager.m; sourceTree = "<group>"; };
 		929EF4B617EA06580044F6F9 /* libFireflyDevice.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFireflyDevice.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		929EF4B917EA06580044F6F9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		929EF4BD17EA06580044F6F9 /* FireflyDevice-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FireflyDevice-Prefix.pch"; sourceTree = "<group>"; };
@@ -210,6 +213,8 @@
 				929EF4C017EA06580044F6F9 /* FireflyDevice.m */,
 				92F863F317F3B4E0000E23AF /* FDFireflyIceSync.h */,
 				92F863F417F3B4E0000E23AF /* FDFireflyIceSync.m */,
+				927F3DB517FA20A200C933DD /* FDFireflyIceManager.h */,
+				927F3DB617FA20A200C933DD /* FDFireflyIceManager.m */,
 			);
 			path = FireflyDevice;
 			sourceTree = "<group>";
@@ -352,6 +357,7 @@
 				929EF4FD17EA06C10044F6F9 /* FDFirmwareUpdateTask.m in Sources */,
 				929EF4FE17EA06C10044F6F9 /* FDObservable.m in Sources */,
 				929EF50317EA07D60044F6F9 /* FDBinary.m in Sources */,
+				927F3DB717FA20A200C933DD /* FDFireflyIceManager.m in Sources */,
 				929EF50417EA07D60044F6F9 /* FDCrypto.m in Sources */,
 				929EF50717EA0F420044F6F9 /* FDIntelHex.m in Sources */,
 			);

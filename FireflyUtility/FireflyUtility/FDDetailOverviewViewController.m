@@ -9,6 +9,7 @@
 #import "FDDetailOverviewViewController.h"
 
 #import <FireflyDevice/FDFireflyIce.h>
+#import <FireflyDevice/FDFireflyIceCoder.h>
 
 @interface FDDetailOverviewViewController ()
 
@@ -23,6 +24,7 @@
 @property IBOutlet UILabel *temperatureLabel;
 @property IBOutlet UILabel *dataLabel;
 
+@property IBOutlet UIButton *setTimeButton;
 @property IBOutlet UIButton *updateButton;
 
 @end
@@ -32,6 +34,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.buttons addObject:_setTimeButton];
     [self.buttons addObject:_updateButton];
 }
 
@@ -97,6 +100,13 @@
 - (void)fireflyIceCollectorEntry:(FDFireflyIceCollectorEntry *)entry
 {
     [self configureView];
+}
+
+- (IBAction)setTime:(id)sender
+{
+    FDFireflyIce *fireflyIce = self.device.fireflyIce;
+    id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
+    [fireflyIce.coder sendSetPropertyTime:channel time:[NSDate date]];
 }
 
 - (IBAction)updateOverview:(id)sender

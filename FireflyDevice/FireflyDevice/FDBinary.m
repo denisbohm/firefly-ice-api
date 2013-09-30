@@ -114,6 +114,10 @@ typedef union {
     return [NSData dataWithData:_buffer];
 }
 
+- (NSUInteger)getRemainingLength {
+    return _buffer.length - _getIndex;
+}
+
 - (NSData *)getRemainingData {
     return [_buffer subdataWithRange:NSMakeRange(_getIndex, _buffer.length - _getIndex)];
 }

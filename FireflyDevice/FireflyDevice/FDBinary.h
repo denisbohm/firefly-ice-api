@@ -16,6 +16,7 @@
 - (NSUInteger)length;
 - (NSData *)dataValue;
 
+- (NSUInteger)getRemainingLength;
 - (NSData *)getRemainingData;
 - (NSData *)getData:(NSUInteger)length;
 - (uint8_t)getUInt8;

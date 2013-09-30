@@ -6,8 +6,10 @@
 //  Copyright (c) 2013 Firefly Design. All rights reserved.
 //
 
+#import "FDFireflyIce.h"
+
 #import <Foundation/Foundation.h>
 
-@interface FDFireflyIceSync : NSObject
+@interface FDFireflyIceSync : NSObject <FDFireflyIceObserver>
 
 @end
