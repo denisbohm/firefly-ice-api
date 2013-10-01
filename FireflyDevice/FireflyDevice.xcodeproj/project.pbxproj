@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		927F3DB717FA20A200C933DD /* FDFireflyIceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 927F3DB617FA20A200C933DD /* FDFireflyIceManager.m */; };
+		927F3DBC17FA4F0B00C933DD /* FDFireflyIceSync.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 92F863F317F3B4E0000E23AF /* FDFireflyIceSync.h */; };
+		927F3DBD17FA4F0B00C933DD /* FDFireflyIceManager.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 927F3DB517FA20A200C933DD /* FDFireflyIceManager.h */; };
 		929EF4BA17EA06580044F6F9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 929EF4B917EA06580044F6F9 /* Foundation.framework */; };
 		929EF4BF17EA06580044F6F9 /* FireflyDevice.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 929EF4BE17EA06580044F6F9 /* FireflyDevice.h */; };
 		929EF4C117EA06580044F6F9 /* FireflyDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 929EF4C017EA06580044F6F9 /* FireflyDevice.m */; };
@@ -63,6 +65,8 @@
 			dstPath = "include/${PRODUCT_NAME}";
 			dstSubfolderSpec = 16;
 			files = (
+				927F3DBC17FA4F0B00C933DD /* FDFireflyIceSync.h in CopyFiles */,
+				927F3DBD17FA4F0B00C933DD /* FDFireflyIceManager.h in CopyFiles */,
 				92D7338517EAB5DA007A1254 /* FDBinary.h in CopyFiles */,
 				92D7338617EAB5DA007A1254 /* FDCrypto.h in CopyFiles */,
 				92D7338717EAB5DA007A1254 /* FDDetour.h in CopyFiles */,
