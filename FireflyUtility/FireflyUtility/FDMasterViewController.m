@@ -104,7 +104,10 @@
         return;
     }
     
+    NSString *name = [NSString stringWithFormat:@"%@ %@", advertisementData[CBAdvertisementDataLocalNameKey], [peripheral.identifier UUIDString]];
+    
     fireflyIce = [[FDFireflyIce alloc] init];
+    fireflyIce.name = name;
     
     FDFireflyIceChannelBLE *channel = [[FDFireflyIceChannelBLE alloc] initWithPeripheral:peripheral];
     [fireflyIce addChannel:channel type:@"BLE"];

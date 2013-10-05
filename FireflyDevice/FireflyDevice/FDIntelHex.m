@@ -30,7 +30,7 @@
 + (NSData *)read:(NSString *)filename address:(uint32_t)address length:(uint32_t)length
 {
     NSMutableData *firmware = [NSMutableData data];
-    uint32_t highAddress = 0;
+    uint32_t extendedAddress = 0;
     NSString *content = [NSString stringWithContentsOfFile:filename encoding:NSUTF8StringEncoding error:nil];
     NSArray *lines = [content componentsSeparatedByString:@"\n"];
     for (NSString *line in lines) {
@@ -56,7 +56,7 @@
         bool done = false;
         switch (recordType) {
             case 0: { // Data Record
-                uint32_t dataAddress = highAddress | recordAddress;
+                uint32_t dataAddress = extendedAddress + recordAddress;
                 uint32_t length = dataAddress + (uint32_t)data.length;
                 if (length > firmware.length) {
                     firmware.length = length;
@@ -68,14 +68,14 @@
                 done = true;
             } break;
             case 2: { // Extended Segment Address Record
-                // ignore?
+                uint8_t *bytes = (uint8_t *)data.bytes;
+                extendedAddress = ((bytes[0] << 8) | bytes[1]) << 4;
             } break;
             case 3: { // Start Segment Address Record
                 // ignore
             } break;
             case 4: { // Extended Linear Address Record
-                uint8_t *bytes = (uint8_t *)data.bytes;
-                highAddress = (bytes[0] << 24) | (bytes[1] << 16);
+                // ignore
             } break;
             case 5: { // Start Linear Address Record
                 // ignore

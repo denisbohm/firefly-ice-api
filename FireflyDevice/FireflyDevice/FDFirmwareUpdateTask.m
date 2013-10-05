@@ -7,6 +7,7 @@
 //
 
 #import "FDBinary.h"
+#import "FDCrypto.h"
 #import "FDFireflyIce.h"
 #import "FDFireflyIceCoder.h"
 #import "FDFireflyIceChannel.h"
@@ -30,6 +31,8 @@
 
 @property NSMutableArray *getSectors;
 @property NSMutableArray *sectorHashes;
+
+@property FDFireflyIceUpdateCommit *updateCommit;
 
 @end
 
@@ -120,13 +123,6 @@
     [self getSomeSectors];
 }
 
-- (NSData *)sha1:(NSData *)data
-{
-    unsigned char digest[CC_SHA1_DIGEST_LENGTH];
-    CC_SHA1(data.bytes, (CC_LONG)data.length, digest);
-    return [NSData dataWithBytes:digest length:CC_SHA1_DIGEST_LENGTH];
-}
-
 - (void)checkSectorHashes
 {
     _updateSectors = nil;
@@ -141,7 +137,7 @@
         if (sectorHash.sector != sector) {
             @throw [NSException exceptionWithName:@"unexpected" reason:@"unexpected" userInfo:nil];
         }
-        NSData * hash = [self sha1:[_firmware subdataWithRange:NSMakeRange(i * _sectorSize, _sectorSize)]];
+        NSData * hash = [FDCrypto sha1:[_firmware subdataWithRange:NSMakeRange(i * _sectorSize, _sectorSize)]];
         if (![hash isEqualToData:sectorHash.hash]) {
             [updateSectors addObject:[NSNumber numberWithUnsignedShort:sectorHash.sector]];
             uint16_t page = sector * _pagesPerSector;
@@ -194,18 +190,23 @@
 {
     uint32_t flags = 0;
     uint32_t length = (uint32_t)_firmware.length;
-    NSData *hash = [self sha1:_firmware];
+    NSData *hash = [FDCrypto sha1:_firmware];
     NSData *cryptHash = hash;
     NSMutableData *cryptIv = [NSMutableData data];
     cryptIv.length = 16;
     [self.fireflyIce.coder sendUpdateCommit:self.channel flags:flags length:length hash:hash cryptHash:cryptHash cryptIv:cryptIv];
-    [self next:@selector(complete)];
+}
+
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel updateCommit:(FDFireflyIceUpdateCommit *)updateCommit
+{
+    _updateCommit = updateCommit;
+    [self complete];
 }
 
 - (void)complete
 {
     BOOL isFirmwareUpToDate = (_updatePages.count == 0);
-    NSLog(@"isFirmwareUpToDate = %@", isFirmwareUpToDate ? @"YES" : @"NO");
+    NSLog(@"isFirmwareUpToDate = %@, commit result = %u", isFirmwareUpToDate ? @"YES" : @"NO", _updateCommit.result);
     [_delegate firmwareUpdateTask:self complete:isFirmwareUpToDate];
     [self done];
 }

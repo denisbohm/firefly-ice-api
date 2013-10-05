@@ -106,13 +106,15 @@
     NSUInteger n = [binary getRemainingLength] / 4; //  4 == sizeof(float32)
     for (NSUInteger i = 0; i < n; ++i) {
         float value = [binary getFloat32];
+        [_activityUploader activityValue:value time:time];
+        time += interval;
     }
 }
 
-- (void)sync:(NSData *)data
+- (NSData *)sync:(NSData *)data
 {
     FDBinary *binary = [[FDBinary alloc] initWithData:data];
-    NSData *product = [binary getData:8];
+    NSData *product __unused = [binary getData:8];
     NSData *unique = [binary getData:8];
     NSString *hardwareId = [ZZHardwareId hardwareId:unique];
     uint32_t page = [binary getUInt32];
@@ -121,7 +123,7 @@
     uint32_t type = [binary getUInt32];
 
     if (page == 0xfffffffe) {
-        return; // nothing to sync
+        return nil; // nothing to sync
     }
 
     switch (type) {
@@ -132,10 +134,8 @@
             [self syncVMA:hardwareId binary:binary];
             break;
         default:
-            return; // unknown type
+            return nil; // unknown type
     }
-
-    // content_type 'application/octet-stream'
 
     FDBinary *response = [[FDBinary alloc] init];
     [response putUInt8:FD_CONTROL_SYNC_ACK];
@@ -143,6 +143,7 @@
     [response putUInt16:length];
     [response putUInt16:hash];
     [response putUInt32:type];
+    return response.dataValue;
 }
 
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel syncData:(NSData *)data
@@ -160,23 +161,10 @@
         [self configureUploader];
     }
     
-    NSString *url = [NSString stringWithFormat:@"%@/sync", _site];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
-    [request setHTTPMethod:@"POST"];
-    [request addValue:@"application/octet-stream" forHTTPHeaderField:@"Content-Type"];
-    [request setValue:[NSString stringWithFormat:@"%ld", (unsigned long)data.length] forHTTPHeaderField:@"Content-Length"];
-    [request setHTTPBody:data];
-    
-    NSURLResponse *response = nil;
-    NSError *error = nil;
-    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-    NSString *type = response.MIMEType;
-    if (![@"application/octet-stream" isEqual:[type lowercaseString]]) {
-        NSLog(@"sync data response: %@", [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding]);
-        return;
+    NSData *responseData = [self sync:data];
+    if (responseData != nil) {
+        [channel fireflyIceChannelSend:responseData];
     }
-    NSLog(@"sending sync response");
-    [channel fireflyIceChannelSend:responseData];
 }
 
 @end

@@ -32,6 +32,19 @@
 - (void)putUInt32:(uint32_t)value;
 - (void)putUInt64:(uint64_t)value;
 - (void)putFloat32:(float)value;
--(void)putTime64:(NSTimeInterval)value;
+- (void)putTime64:(NSTimeInterval)value;
+
++ (uint8_t)unpackUInt8:(uint8_t *)buffer;
++ (uint16_t)unpackUInt16:(uint8_t *)buffer;
++ (uint32_t)unpackUInt32:(uint8_t *)buffer;
++ (uint64_t)unpackUInt64:(uint8_t *)buffer;
++ (float)unpackFloat32:(uint8_t *)buffer;+ (NSTimeInterval)unpackTime64:(uint8_t *)buffer;
+
++ (void)packUInt8:(uint8_t *)buffer value:(uint8_t)value;
++ (void)packUInt16:(uint8_t *)buffer value:(uint16_t)value;
++ (void)packUInt32:(uint8_t *)buffer value:(uint32_t)value;
++ (void)packUInt64:(uint8_t *)buffer value:(uint64_t)value;
++ (void)packFloat32:(uint8_t *)buffer value:(float)value;
++ (void)packTime64:(uint8_t *)buffer value:(NSTimeInterval)value;
 
 @end

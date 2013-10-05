@@ -50,6 +50,17 @@
 @end
 
 @implementation FDFireflyIceSectorHash
+
+- (NSString *)description
+{
+    NSMutableString *string = [NSMutableString stringWithFormat:@"sector %u hash 0x", _sector];
+    uint8_t *bytes = (uint8_t *)_hash.bytes;
+    for (NSUInteger i = 0; i < _hash.length; ++i) {
+        [string appendFormat:@"%02x", bytes[i]];
+    }
+    return string;
+}
+
 @end
 
 @implementation FDFireflyIceReset
@@ -91,8 +102,14 @@
         [_coder.observable addObserver:self];
         _executor = [[FDExecutor alloc] init];
         _channels = [NSMutableDictionary dictionary];
+        _name = @"anonymous";
     }
     return self;
+}
+
+- (NSString *)description
+{
+    return _name;
 }
 
 - (FDFireflyIceObservable *)observable

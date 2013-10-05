@@ -33,6 +33,9 @@
 #define FD_CONTROL_SYNC_DATA 16
 #define FD_CONTROL_SYNC_ACK 17
 
+#define FD_CONTROL_UPDATE_GET_EXTERNAL_HASH 18
+#define FD_CONTROL_UPDATE_READ_PAGE 19
+
 // property bits for get/set property commands
 #define FD_CONTROL_PROPERTY_VERSION     0x00000001
 #define FD_CONTROL_PROPERTY_HARDWARE_ID 0x00000002
@@ -85,6 +88,8 @@ typedef enum {
 - (void)sendProvision:(id<FDFireflyIceChannel>)channel dictionary:(NSDictionary *)dictionary options:(uint32_t)options;
 - (void)sendReset:(id<FDFireflyIceChannel>)channel type:(uint8_t)type;
 
+- (void)sendUpdateGetExternalHash:(id<FDFireflyIceChannel>)channel address:(uint32_t)address length:(uint32_t)length;
+- (void)sendUpdateReadPage:(id<FDFireflyIceChannel>)channel page:(uint32_t)page;
 - (void)sendUpdateGetSectorHashes:(id<FDFireflyIceChannel>)channel sectors:(NSArray *)sectors;
 - (void)sendUpdateEraseSectors:(id<FDFireflyIceChannel>)channel sectors:(NSArray *)sectors;
 - (void)sendUpdateWritePage:(id<FDFireflyIceChannel>)channel page:(uint16_t)page data:(NSData *)data;

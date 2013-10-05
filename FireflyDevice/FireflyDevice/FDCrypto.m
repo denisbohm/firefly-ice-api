@@ -11,7 +11,6 @@
 #include <CommonCrypto/CommonCryptor.h>
 #include <CommonCrypto/CommonDigest.h>
 
-
 @implementation FDCrypto
 
 + (NSData *)sha1:(NSData *)data

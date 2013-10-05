@@ -42,6 +42,7 @@
 		929CD2DC17F7BC54004CE8ED /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 929CD2DB17F7BC54004CE8ED /* libz.dylib */; };
 		92F863F817F3C38D000E23AF /* FDFireflyIceCollector.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F863F717F3C38D000E23AF /* FDFireflyIceCollector.m */; };
 		92F863FC17F3D0E6000E23AF /* FDDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F863FB17F3D0E6000E23AF /* FDDevice.m */; };
+		92FE8F2817FF774300502781 /* FireflyIce.hex in Resources */ = {isa = PBXBuildFile; fileRef = 92FE8F2717FF774300502781 /* FireflyIce.hex */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -133,6 +134,7 @@
 		92F863F717F3C38D000E23AF /* FDFireflyIceCollector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFireflyIceCollector.m; sourceTree = "<group>"; };
 		92F863FA17F3D0E6000E23AF /* FDDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDDevice.h; sourceTree = "<group>"; };
 		92F863FB17F3D0E6000E23AF /* FDDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDevice.m; sourceTree = "<group>"; };
+		92FE8F2717FF774300502781 /* FireflyIce.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FireflyIce.hex; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -236,6 +238,7 @@
 		92841A8E17EDF63D005C0E18 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				92FE8F2717FF774300502781 /* FireflyIce.hex */,
 				92841A8F17EDF63D005C0E18 /* FireflyUtility-Info.plist */,
 				92841A9017EDF63D005C0E18 /* InfoPlist.strings */,
 				92841A9317EDF63D005C0E18 /* main.m */,
@@ -392,6 +395,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				92FE8F2817FF774300502781 /* FireflyIce.hex in Resources */,
 				92841A9E17EDF63D005C0E18 /* Main_iPad.storyboard in Resources */,
 				92841AA617EDF63D005C0E18 /* Images.xcassets in Resources */,
 				92841A9B17EDF63D005C0E18 /* Main_iPhone.storyboard in Resources */,

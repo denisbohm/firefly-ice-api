@@ -34,6 +34,7 @@
 
 - (NSString *)causeDescription:(uint32_t)cause
 {
+    NSLog(@"reset cause %08x", cause);
     if (cause & 1) {
         return @"Power On Reset";
     }

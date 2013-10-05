@@ -9,6 +9,7 @@
 #import "FDDetailUpdateViewController.h"
 #import "FDUpdateView.h"
 
+#import <FireflyDevice/FDCrypto.h>
 #import <FireflyDevice/FDFireflyIce.h>
 #import <FireflyDevice/FDFireflyIceCoder.h>
 #import <FireflyDevice/FDFirmwareUpdateTask.h>
@@ -51,9 +52,28 @@
 
 - (NSData *)loadFirmware:(NSString *)name type:(NSString *)type
 {
-    NSString *path = [NSString stringWithFormat:@"/Users/denis/sandbox/denisbohm/firefly-ice-firmware/%@/%@/%@.hex", type, name, name];
-    return [FDIntelHex read:path address:0x08000 length:0x40000 - 0x08000];
+    NSString *path = [[NSBundle bundleForClass: [self class]] pathForResource:name ofType:@"hex"];
+    NSMutableData *data = [NSMutableData dataWithData:[FDIntelHex read:path address:0x08000 length:0x40000 - 0x08000]];
+    // pad to sector multiple (firmware update expects full sectors)
+    NSUInteger sectorSize = 4096;
+    NSUInteger length = data.length;
+    length = ((length + sectorSize - 1) / sectorSize) * sectorSize;
+    NSLog(@"firmware has %u sectors", length / sectorSize);
+    data.length = length;
+    return data;
 }
+
+/*
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel externalHash:(NSData *)externalHash
+{
+    NSLog(@"external hash %@", externalHash);
+}
+
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel pageData:(NSData *)pageData
+{
+    NSLog(@"page data %@", pageData);
+}
+*/
 
 - (IBAction)startFirmwareUpdate:(id)sender
 {
@@ -71,6 +91,11 @@
     _updateView.firmwareUpdateTask = task;
     [_updateView setNeedsDisplay];
     [fireflyIce.executor execute:task];
+    /*
+    uint32_t length = task.firmware.length;
+    NSLog(@"%u expect hash %@", length, [FDCrypto sha1:[task.firmware subdataWithRange:NSMakeRange(0, length)]]);
+    [fireflyIce.coder sendUpdateGetExternalHash:channel address:0 length:length]; // task.firmware.length];
+     */
 }
 
 @end

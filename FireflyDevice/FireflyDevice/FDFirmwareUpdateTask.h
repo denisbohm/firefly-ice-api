@@ -36,4 +36,6 @@
 @property(readonly) NSMutableArray *updateSectors;
 @property(readonly) NSMutableArray *updatePages;
 
+@property(readonly) FDFireflyIceUpdateCommit *updateCommit;
+
 @end

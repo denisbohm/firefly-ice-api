@@ -234,6 +234,23 @@
     [channel fireflyIceChannelSend:binary.dataValue];
 }
 
+- (void)sendUpdateGetExternalHash:(id<FDFireflyIceChannel>)channel address:(uint32_t)address length:(uint32_t)length
+{
+    FDBinary *binary = [[FDBinary alloc] init];
+    [binary putUInt8:FD_CONTROL_UPDATE_GET_EXTERNAL_HASH];
+    [binary putUInt32:address];
+    [binary putUInt32:length];
+    [channel fireflyIceChannelSend:binary.dataValue];
+}
+
+- (void)sendUpdateReadPage:(id<FDFireflyIceChannel>)channel page:(uint32_t)page
+{
+    FDBinary *binary = [[FDBinary alloc] init];
+    [binary putUInt8:FD_CONTROL_UPDATE_READ_PAGE];
+    [binary putUInt32:page];
+    [channel fireflyIceChannelSend:binary.dataValue];
+}
+
 - (void)sendUpdateGetSectorHashes:(id<FDFireflyIceChannel>)channel sectors:(NSArray *)sectors
 {
     FDBinary *binary = [[FDBinary alloc] init];
@@ -382,6 +399,22 @@
     [_observable fireflyIce:fireflyIce channel:channel sectorHashes:sectorHashes];
 }
 
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel updateGetExternalHash:(NSData *)data
+{
+    FDBinary *binary = [[FDBinary alloc] initWithData:data];
+    NSData *externalHash = [binary getData:HASH_SIZE];
+    
+    [_observable fireflyIce:fireflyIce channel:channel externalHash:externalHash];
+}
+
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel updateReadPage:(NSData *)data
+{
+    FDBinary *binary = [[FDBinary alloc] initWithData:data];
+    NSData *pageData = [binary getData:256];
+    
+    [_observable fireflyIce:fireflyIce channel:channel pageData:pageData];
+}
+
 static
 void putColor(FDBinary *binary, uint32_t color) {
     [binary putUInt8:color >> 16];
@@ -458,6 +491,13 @@ void putColor(FDBinary *binary, uint32_t color) {
             [self fireflyIce:fireflyIce channel:channel radioDirectTestModeReport:remaining];
             break;
 
+        case FD_CONTROL_UPDATE_GET_EXTERNAL_HASH:
+            [self fireflyIce:fireflyIce channel:channel updateGetExternalHash:remaining];
+            break;
+        case FD_CONTROL_UPDATE_READ_PAGE:
+            [self fireflyIce:fireflyIce channel:channel updateReadPage:remaining];
+            break;
+            
         case FD_CONTROL_UPDATE_GET_SECTOR_HASHES:
             [self fireflyIce:fireflyIce channel:channel updateGetSectorHashes:remaining];
             break;

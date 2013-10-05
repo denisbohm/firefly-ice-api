@@ -14,9 +14,8 @@
 #import <FireflyDeviceFramework/FDFireflyIceChannelUSB.h>
 #import <FireflyDeviceFramework/FDFireflyIceCoder.h>
 #import <FireflyDeviceFramework/FDFirmwareUpdateTask.h>
+#import <FireflyDeviceFramework/FDIntelHex.h>
 #import <FireflyDeviceFramework/FDUSBHIDMonitor.h>
-
-#import <FireflyProduction/FDExecutable.h>
 
 #if TARGET_OS_IPHONE
 #import <CoreBluetooth/CoreBluetooth.h>
@@ -383,30 +382,22 @@
     [_centralManager cancelPeripheralConnection:channel.peripheral];
 }
 
-- (FDExecutable *)load:(NSString *)name type:(NSString *)type
-{
-    NSString *path = [NSString stringWithFormat:@"/Users/denis/sandbox/denisbohm/firefly-ice-firmware/%@/%@/%@.elf", type, name, name];
-    FDExecutable *executable = [[FDExecutable alloc] init];
-    [executable load:path];
-    NSArray *sections = [executable combineSectionsType:FDExecutableSectionTypeProgram
-                                                address:0
-                                                 length:0x40000
-                                               pageSize:2048];
-    executable.sections = sections;
-    return executable;
-}
-
 - (IBAction)update:(id)sender
 {
     FDFireflyIceChannelBLE *channel = [self getSelectedFireflyDevice];
-    FDFireflyIce *firefly = _devices[0];
+    FDFireflyIce *fireflyIce = _devices[0];
     FDFirmwareUpdateTask *update = [[FDFirmwareUpdateTask alloc] init];
-    update.firefly = firefly;
+    update.fireflyIce = fireflyIce;
     update.channel = channel;
-    FDExecutable *executable = [self load:@"FireflyIce" type:@"THUMB Flash Release"];
-    FDExecutableSection *section = executable.sections[0];
-    update.firmware = section.data;
-    [firefly.executor execute:update];
+    NSString *path = @"/Users/denis/sandbox/denisbohm/firefly-ice-firmware/THUMB Flash Release/FireflyIce/FireflyIce.hex";
+    NSMutableData *data = [NSMutableData dataWithData:[FDIntelHex read:path address:0x08000 length:0x40000 - 0x08000]];
+    // pad to sector multiple (firmware update expects full sectors)
+    NSUInteger sectorSize = 4096;
+    NSUInteger length = data.length;
+    length = ((length + sectorSize - 1) / sectorSize) * sectorSize;
+    data.length = length;
+    update.firmware = data;
+    [fireflyIce.executor execute:update];
 }
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
