@@ -32,41 +32,13 @@
     [self.buttons addObject:_modeButton];
 }
 
-- (NSString *)causeDescription:(uint32_t)cause
-{
-    NSLog(@"reset cause %08x", cause);
-    if (cause & 1) {
-        return @"Power On Reset";
-    }
-    if (cause & 2) {
-        return @"Brown Out Detector Unregulated Domain Reset";
-    }
-    if (cause & 4) {
-        return @"Brown Out Detector Regulated Domain Reset";
-    }
-    if (cause & 8) {
-        return @"External Pin Reset";
-    }
-    if (cause & 16) {
-        return @"Watchdog Reset";
-    }
-    if (cause & 32) {
-        return @"LOCKUP Reset";
-    }
-    if (cause & 64) {
-        return @"System Request Reset";
-    }
-    if (cause == 0) {
-        return @"";
-    }
-    return [NSString stringWithFormat:@"0x%08x Reset", cause];
-}
-
 - (void)configureView
 {
-    FDFireflyIceReset *reset = [self.device.collector objectForKey:@"reset"];
+    FDFireflyIceCollector *collector = self.device[@"collector"];
+    FDFireflyIceReset *reset = [collector objectForKey:@"reset"];
 
-    _causeLabel.text = [self causeDescription:reset.cause];
+    NSLog(@"reset cause %08x", reset.cause);
+    _causeLabel.text = [reset description];
 
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
@@ -83,7 +55,7 @@
 {
     uint8_t type = _typeSegmentedControl.selectedSegmentIndex + 1;
     
-    FDFireflyIce *fireflyIce = self.device.fireflyIce;
+    FDFireflyIce *fireflyIce = self.device[@"fireflyIce"];
     id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
     
     [fireflyIce.coder sendReset:channel type:type];
@@ -91,7 +63,7 @@
 
 - (IBAction)enterStorageMode:(id)sender
 {
-    FDFireflyIce *fireflyIce = self.device.fireflyIce;
+    FDFireflyIce *fireflyIce = self.device[@"fireflyIce"];
     id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
     
     [fireflyIce.coder sendSetPropertyMode:channel mode:FD_CONTROL_MODE_STORAGE];

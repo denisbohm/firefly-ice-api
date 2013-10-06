@@ -27,11 +27,10 @@
     return value;
 }
 
-+ (NSData *)read:(NSString *)filename address:(uint32_t)address length:(uint32_t)length
++ (NSData *)parse:(NSString *)content address:(uint32_t)address length:(uint32_t)length
 {
     NSMutableData *firmware = [NSMutableData data];
     uint32_t extendedAddress = 0;
-    NSString *content = [NSString stringWithContentsOfFile:filename encoding:NSUTF8StringEncoding error:nil];
     NSArray *lines = [content componentsSeparatedByString:@"\n"];
     for (NSString *line in lines) {
         if (![line hasPrefix:@":"]) {

@@ -8,20 +8,21 @@
 
 #import <Foundation/Foundation.h>
 
+@class FDExecutor;
+
 @protocol FDExecutorTask <NSObject>
 
 @property NSTimeInterval timeout;
 @property NSInteger priority;
 @property BOOL isSuspended;
+@property NSDate *appointment;
 
-- (void)taskStarted;
-- (void)taskSuspended;
-- (void)taskResumed;
-- (void)taskCompleted;
+- (void)executorTaskStarted:(FDExecutor *)executor;
+- (void)executorTaskSuspended:(FDExecutor *)executor;
+- (void)executorTaskResumed:(FDExecutor *)executor;
+- (void)executorTaskCompleted:(FDExecutor *)executor;
 
 @end
-
-@class FDExecutor;
 
 @interface FDExecutor : NSObject
 

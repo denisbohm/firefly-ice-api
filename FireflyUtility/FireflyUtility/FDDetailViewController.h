@@ -6,7 +6,9 @@
 //  Copyright (c) 2013 Firefly Design. All rights reserved.
 //
 
-#import "FDDevice.h"
+#import <FireflyDevice/FDFireflyIce.h>
+
+#import "FDFireflyIceCollector.h"
 
 #import <UIKit/UIKit.h>
 
@@ -14,7 +16,7 @@
 
 @property NSMutableArray *buttons;
 
-@property(nonatomic) FDDevice *device;
+@property(nonatomic) NSMutableDictionary *device;
 
 - (void)configureView;
 

@@ -43,4 +43,6 @@
 - (void)connectBLE:(FDFireflyIce *)fireflyIce;
 - (void)disconnectBLE:(FDFireflyIce *)fireflyIce;
 
+- (NSMutableDictionary *)dictionaryFor:(id)object key:(NSString *)key;
+
 @end

@@ -1,5 +1,5 @@
 //
-//  FDFireflyIceSync.m
+//  FDSyncTask.m
 //  FireflyDevice
 //
 //  Created by Denis Bohm on 9/25/13.
@@ -9,15 +9,23 @@
 #import "FDFireflyIce.h"
 #import "FDFireflyIceChannel.h"
 #import "FDFireflyIceCoder.h"
-#import "FDFireflyIceSync.h"
+#import "FDSyncTask.h"
 
-@interface FDFireflyIceSync ()
+@interface FDSyncTask ()
 
 @property NSString *site;
 
 @end
 
-@implementation FDFireflyIceSync
+@implementation FDSyncTask
+
++ (FDSyncTask *)syncTask:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel
+{
+    FDSyncTask *syncTask = [[FDSyncTask alloc] init];
+    syncTask.fireflyIce = fireflyIce;
+    syncTask.channel = channel;
+    return syncTask;
+}
 
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel status:(FDFireflyIceChannelStatus)status;
 {

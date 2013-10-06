@@ -12,9 +12,12 @@
 
 @property NSTimer *watchdogTimer;
 @property NSMutableArray *tasks;
+@property NSMutableArray *appointmentTasks;
 @property NSMutableArray *suspendedTasks;
 @property id<FDExecutorTask> currentTask;
 @property NSDate *currentFeedTime;
+
+@property NSTimer *timer;
 
 @end
 
@@ -24,21 +27,65 @@
 {
     if (self = [super init]) {
         _tasks = [NSMutableArray array];
+        _appointmentTasks = [NSMutableArray array];
         _suspendedTasks = [NSMutableArray array];
     }
     return self;
 }
 
-- (void)setRun:(BOOL)run
+- (void)start
 {
-    _run = run;
-    
+    _timer = [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(checkAppointments:) userInfo:nil repeats:YES];
     [self schedule];
 }
 
-- (void)addTask:(id<FDExecutorTask>)task
+- (void)abortTask:(id<FDExecutorTask>)task
 {
-    [_tasks addObject:task];
+    @try {
+        [task executorTaskCompleted:self];
+    } @catch (NSException *e) {
+        [self taskException:e];
+    }
+}
+
+- (void)abortTasks:(NSMutableArray *)tasks
+{
+    for (id<FDExecutorTask> task in tasks) {
+        [self abortTask:task];
+    }
+    [tasks removeAllObjects];
+}
+
+- (void)stop
+{
+    [_timer invalidate];
+    _timer = nil;
+    
+    if (_currentTask != nil) {
+        [self abortTask:_currentTask];
+        _currentTask = nil;
+    }
+    [self abortTasks:_appointmentTasks];
+    [self abortTasks:_suspendedTasks];
+    [self abortTasks:_tasks];
+}
+
+- (void)setRun:(BOOL)run
+{
+    if (_run == run) {
+        return;
+    }
+    
+    _run = run;
+    if (_run) {
+        [self start];
+    } else {
+        [self stop];
+    }
+}
+
+- (void)sortTasksByPriority
+{
     [_tasks sortUsingComparator:^NSComparisonResult(id aObject, id bObject) {
         id<FDExecutorTask> a = aObject;
         id<FDExecutorTask> b = bObject;
@@ -51,6 +98,32 @@
         }
         return NSOrderedSame;
     }];
+}
+
+- (void)checkAppointments:(NSTimer *)timer
+{
+    NSArray *tasks = [NSArray arrayWithArray:_appointmentTasks];
+    NSDate *now = [NSDate date];
+    for (id<FDExecutorTask> task in tasks) {
+        if ([now timeIntervalSinceDate:task.appointment] >= 0) {
+            task.appointment = nil;
+            [_appointmentTasks removeObject:task];
+            [_tasks addObject:task];
+        }
+    }
+    [self sortTasksByPriority];
+    [self schedule];
+}
+
+- (void)addTask:(id<FDExecutorTask>)task
+{
+    if (task.appointment != nil) {
+        [_appointmentTasks addObject:task];
+        return;
+    }
+    
+    [_tasks addObject:task];
+    [self sortTasksByPriority];
 }
 
 - (void)checkTimeout:(NSTimer *)timer
@@ -90,7 +163,7 @@
         [self addTask:task];
         currentTask.isSuspended = YES;
         @try {
-            [currentTask taskSuspended];
+            [currentTask executorTaskSuspended:self];
         } @catch (NSException *e) {
             [self taskException:e];
         }
@@ -109,13 +182,13 @@
     if (_currentTask.isSuspended) {
         _currentTask.isSuspended = NO;
         @try {
-            [_currentTask taskResumed];
+            [_currentTask executorTaskResumed:self];
         } @catch (NSException *e) {
             [self taskException:e];
         }
     } else {
         @try {
-            [_currentTask taskStarted];
+            [_currentTask executorTaskStarted:self];
         } @catch (NSException *e) {
             [self taskException:e];
         }
@@ -143,7 +216,7 @@
     if (_currentTask == task) {
         _currentTask = nil;
         @try {
-            [task taskCompleted];
+            [task executorTaskCompleted:self];
         } @catch (NSException *e) {
             [self taskException:e];
         }

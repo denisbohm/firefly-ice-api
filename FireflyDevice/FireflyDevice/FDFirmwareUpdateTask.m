@@ -12,6 +12,7 @@
 #import "FDFireflyIceCoder.h"
 #import "FDFireflyIceChannel.h"
 #import "FDFirmwareUpdateTask.h"
+#import "FDIntelHex.h"
 
 #import <CommonCrypto/CommonDigest.h>
 
@@ -38,9 +39,22 @@
 
 @implementation FDFirmwareUpdateTask
 
++ (FDFirmwareUpdateTask *)firmwareUpdateTask:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel
+{
+    FDFirmwareUpdateTask *firmwareUpdateTask = [[FDFirmwareUpdateTask alloc] init];
+    firmwareUpdateTask.fireflyIce = fireflyIce;
+    firmwareUpdateTask.channel = channel;
+    NSBundle *bundle = [NSBundle mainBundle];
+    NSString *path = [bundle pathForResource:@"FireflyIce" ofType:@"hex"];
+    NSString *firmware = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+    [firmwareUpdateTask parseFirmware:firmware];
+    return firmwareUpdateTask;
+}
+
 - (id)init
 {
     if (self = [super init]) {
+        self.priority = -100;
         _pageSize = 256;
         _sectorSize = 4096;
         _pagesPerSector = _sectorSize / _pageSize;
@@ -48,16 +62,26 @@
     return self;
 }
 
-- (void)taskStarted
+- (void)parseFirmware:(NSString *)intelHex
 {
-    [super taskStarted];
+    NSMutableData *data = [NSMutableData dataWithData:[FDIntelHex parse:intelHex address:0x08000 length:0x40000 - 0x08000]];
+    // pad to sector multiple of sector size
+    NSUInteger length = data.length;
+    length = ((length + _sectorSize - 1) / _sectorSize) * _sectorSize;
+    data.length = length;
+    _firmware = data;
+}
+
+- (void)executorTaskStarted:(FDExecutor *)executor
+{
+    [super executorTaskStarted:executor];
     
     [self begin];
 }
 
-- (void)taskResumed
+- (void)executorTaskResumed:(FDExecutor *)executor
 {
-    [super taskResumed];
+    [super executorTaskResumed:executor];
     
     [self begin];
 }

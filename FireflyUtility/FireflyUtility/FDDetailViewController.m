@@ -22,7 +22,8 @@
 
 - (void)configureButtons
 {
-    id<FDFireflyIceChannel> channel = _device.fireflyIce.channels[@"BLE"];
+    FDFireflyIce *fireflyIce = _device[@"fireflyIce"];
+    id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
     BOOL enabled = channel.status == FDFireflyIceChannelStatusOpen;
     for (UIButton *button in _buttons) {
         [button setEnabled:enabled];
@@ -38,16 +39,20 @@
     [self configureButtons];
 }
 
-- (void)setDevice:(FDDevice *)device
+- (void)setDevice:(NSMutableDictionary *)device
 {
     if (_device != device) {
-        [_device.fireflyIce.observable removeObserver:self];
-        _device.collector.delegate = nil;
+        FDFireflyIce *fireflyIce = _device[@"fireflyIce"];
+        [fireflyIce.observable removeObserver:self];
+        FDFireflyIceCollector *collector = _device[@"collector"];
+        collector.delegate = nil;
         
         _device = device;
         
-        [_device.fireflyIce.observable addObserver:self];
-        _device.collector.delegate = self;
+        fireflyIce = _device[@"fireflyIce"];
+        [fireflyIce.observable addObserver:self];
+        collector = _device[@"collector"];
+        collector.delegate = self;
 
         [self configureButtons];
         [self configureView];

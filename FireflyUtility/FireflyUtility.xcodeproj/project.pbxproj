@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9275F2061800CF6600A24DA2 /* ZZUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = 9275F2051800CF6600A24DA2 /* ZZUpload.m */; };
 		927F3DBA17FA3D8900C933DD /* ZZHardwareId.m in Sources */ = {isa = PBXBuildFile; fileRef = 927F3DB917FA3D8900C933DD /* ZZHardwareId.m */; };
 		92841A8817EDF63D005C0E18 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92841A8717EDF63D005C0E18 /* Foundation.framework */; };
 		92841A8A17EDF63D005C0E18 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92841A8917EDF63D005C0E18 /* CoreGraphics.framework */; };
@@ -33,16 +34,12 @@
 		929CA42B17F0F01A00A4A992 /* FDUpdateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 929CA42A17F0F01A00A4A992 /* FDUpdateView.m */; };
 		929CA42E17F0F30600A4A992 /* FDDetailUpdateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 929CA42D17F0F30600A4A992 /* FDDetailUpdateViewController.m */; };
 		929CA43617F1242F00A4A992 /* FDDetailResetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 929CA43517F1242F00A4A992 /* FDDetailResetViewController.m */; };
-		929CD2C917F7B8B5004CE8ED /* ZZSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 929CD2C817F7B8B5004CE8ED /* ZZSync.m */; };
-		929CD2D517F7BB81004CE8ED /* ZZActivityUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 929CD2CE17F7BB81004CE8ED /* ZZActivityUploader.m */; };
-		929CD2D617F7BB81004CE8ED /* ZZBinaryData.m in Sources */ = {isa = PBXBuildFile; fileRef = 929CD2D017F7BB81004CE8ED /* ZZBinaryData.m */; };
+		929CD2C917F7B8B5004CE8ED /* ZZSyncTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 929CD2C817F7B8B5004CE8ED /* ZZSyncTask.m */; };
 		929CD2D717F7BB81004CE8ED /* ZZGZIP.m in Sources */ = {isa = PBXBuildFile; fileRef = 929CD2D217F7BB81004CE8ED /* ZZGZIP.m */; };
-		929CD2D817F7BB81004CE8ED /* ZZIEEE754Binary16Converter.m in Sources */ = {isa = PBXBuildFile; fileRef = 929CD2D417F7BB81004CE8ED /* ZZIEEE754Binary16Converter.m */; };
 		929CD2DA17F7BC14004CE8ED /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 929CD2D917F7BC14004CE8ED /* libsqlite3.dylib */; };
 		929CD2DC17F7BC54004CE8ED /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 929CD2DB17F7BC54004CE8ED /* libz.dylib */; };
+		92EAA71E1801EAF1004DADFC /* FireflyIce.hex in Resources */ = {isa = PBXBuildFile; fileRef = 92EAA71D1801EAF1004DADFC /* FireflyIce.hex */; };
 		92F863F817F3C38D000E23AF /* FDFireflyIceCollector.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F863F717F3C38D000E23AF /* FDFireflyIceCollector.m */; };
-		92F863FC17F3D0E6000E23AF /* FDDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F863FB17F3D0E6000E23AF /* FDDevice.m */; };
-		92FE8F2817FF774300502781 /* FireflyIce.hex in Resources */ = {isa = PBXBuildFile; fileRef = 92FE8F2717FF774300502781 /* FireflyIce.hex */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +74,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9275F2041800CF6600A24DA2 /* ZZUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZZUpload.h; sourceTree = "<group>"; };
+		9275F2051800CF6600A24DA2 /* ZZUpload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZZUpload.m; sourceTree = "<group>"; };
 		927F3DB817FA3D8900C933DD /* ZZHardwareId.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZZHardwareId.h; sourceTree = "<group>"; };
 		927F3DB917FA3D8900C933DD /* ZZHardwareId.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZZHardwareId.m; sourceTree = "<group>"; };
 		92841A8417EDF63D005C0E18 /* FireflyUtility.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FireflyUtility.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -117,24 +116,15 @@
 		929CA42D17F0F30600A4A992 /* FDDetailUpdateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDetailUpdateViewController.m; sourceTree = "<group>"; };
 		929CA43417F1242F00A4A992 /* FDDetailResetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDDetailResetViewController.h; sourceTree = "<group>"; };
 		929CA43517F1242F00A4A992 /* FDDetailResetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDetailResetViewController.m; sourceTree = "<group>"; };
-		929CD2C717F7B8B5004CE8ED /* ZZSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZZSync.h; sourceTree = "<group>"; };
-		929CD2C817F7B8B5004CE8ED /* ZZSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZZSync.m; sourceTree = "<group>"; };
-		929CD2CC17F7BB81004CE8ED /* ZZActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZZActivity.h; sourceTree = "<group>"; };
-		929CD2CD17F7BB81004CE8ED /* ZZActivityUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZZActivityUploader.h; sourceTree = "<group>"; };
-		929CD2CE17F7BB81004CE8ED /* ZZActivityUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZZActivityUploader.m; sourceTree = "<group>"; };
-		929CD2CF17F7BB81004CE8ED /* ZZBinaryData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZZBinaryData.h; sourceTree = "<group>"; };
-		929CD2D017F7BB81004CE8ED /* ZZBinaryData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZZBinaryData.m; sourceTree = "<group>"; };
+		929CD2C717F7B8B5004CE8ED /* ZZSyncTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZZSyncTask.h; sourceTree = "<group>"; };
+		929CD2C817F7B8B5004CE8ED /* ZZSyncTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZZSyncTask.m; sourceTree = "<group>"; };
 		929CD2D117F7BB81004CE8ED /* ZZGZIP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZZGZIP.h; sourceTree = "<group>"; };
 		929CD2D217F7BB81004CE8ED /* ZZGZIP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZZGZIP.m; sourceTree = "<group>"; };
-		929CD2D317F7BB81004CE8ED /* ZZIEEE754Binary16Converter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZZIEEE754Binary16Converter.h; sourceTree = "<group>"; };
-		929CD2D417F7BB81004CE8ED /* ZZIEEE754Binary16Converter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZZIEEE754Binary16Converter.m; sourceTree = "<group>"; };
 		929CD2D917F7BC14004CE8ED /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		929CD2DB17F7BC54004CE8ED /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		92EAA71D1801EAF1004DADFC /* FireflyIce.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FireflyIce.hex; sourceTree = "<group>"; };
 		92F863F617F3C38D000E23AF /* FDFireflyIceCollector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFireflyIceCollector.h; sourceTree = "<group>"; };
 		92F863F717F3C38D000E23AF /* FDFireflyIceCollector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFireflyIceCollector.m; sourceTree = "<group>"; };
-		92F863FA17F3D0E6000E23AF /* FDDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDDevice.h; sourceTree = "<group>"; };
-		92F863FB17F3D0E6000E23AF /* FDDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDevice.m; sourceTree = "<group>"; };
-		92FE8F2717FF774300502781 /* FireflyIce.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FireflyIce.hex; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -209,8 +199,6 @@
 				92841AA517EDF63D005C0E18 /* Images.xcassets */,
 				92841A9617EDF63D005C0E18 /* FDAppDelegate.h */,
 				92841A9717EDF63D005C0E18 /* FDAppDelegate.m */,
-				92F863FA17F3D0E6000E23AF /* FDDevice.h */,
-				92F863FB17F3D0E6000E23AF /* FDDevice.m */,
 				92F863F617F3C38D000E23AF /* FDFireflyIceCollector.h */,
 				92F863F717F3C38D000E23AF /* FDFireflyIceCollector.m */,
 				92841A9F17EDF63D005C0E18 /* FDMasterViewController.h */,
@@ -238,7 +226,7 @@
 		92841A8E17EDF63D005C0E18 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				92FE8F2717FF774300502781 /* FireflyIce.hex */,
+				92EAA71D1801EAF1004DADFC /* FireflyIce.hex */,
 				92841A8F17EDF63D005C0E18 /* FireflyUtility-Info.plist */,
 				92841A9017EDF63D005C0E18 /* InfoPlist.strings */,
 				92841A9317EDF63D005C0E18 /* main.m */,
@@ -277,19 +265,14 @@
 		929CD2CB17F7BB65004CE8ED /* Zamzee */ = {
 			isa = PBXGroup;
 			children = (
-				929CD2CC17F7BB81004CE8ED /* ZZActivity.h */,
-				929CD2CD17F7BB81004CE8ED /* ZZActivityUploader.h */,
-				929CD2CE17F7BB81004CE8ED /* ZZActivityUploader.m */,
-				929CD2CF17F7BB81004CE8ED /* ZZBinaryData.h */,
-				929CD2D017F7BB81004CE8ED /* ZZBinaryData.m */,
 				929CD2D117F7BB81004CE8ED /* ZZGZIP.h */,
 				929CD2D217F7BB81004CE8ED /* ZZGZIP.m */,
-				929CD2D317F7BB81004CE8ED /* ZZIEEE754Binary16Converter.h */,
-				929CD2D417F7BB81004CE8ED /* ZZIEEE754Binary16Converter.m */,
-				929CD2C717F7B8B5004CE8ED /* ZZSync.h */,
-				929CD2C817F7B8B5004CE8ED /* ZZSync.m */,
 				927F3DB817FA3D8900C933DD /* ZZHardwareId.h */,
 				927F3DB917FA3D8900C933DD /* ZZHardwareId.m */,
+				929CD2C717F7B8B5004CE8ED /* ZZSyncTask.h */,
+				929CD2C817F7B8B5004CE8ED /* ZZSyncTask.m */,
+				9275F2041800CF6600A24DA2 /* ZZUpload.h */,
+				9275F2051800CF6600A24DA2 /* ZZUpload.m */,
 			);
 			name = Zamzee;
 			sourceTree = "<group>";
@@ -395,7 +378,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				92FE8F2817FF774300502781 /* FireflyIce.hex in Resources */,
+				92EAA71E1801EAF1004DADFC /* FireflyIce.hex in Resources */,
 				92841A9E17EDF63D005C0E18 /* Main_iPad.storyboard in Resources */,
 				92841AA617EDF63D005C0E18 /* Images.xcassets in Resources */,
 				92841A9B17EDF63D005C0E18 /* Main_iPhone.storyboard in Resources */,
@@ -420,20 +403,17 @@
 			files = (
 				929CD2D717F7BB81004CE8ED /* ZZGZIP.m in Sources */,
 				929CA42E17F0F30600A4A992 /* FDDetailUpdateViewController.m in Sources */,
+				9275F2061800CF6600A24DA2 /* ZZUpload.m in Sources */,
 				929CA42B17F0F01A00A4A992 /* FDUpdateView.m in Sources */,
 				92841AA117EDF63D005C0E18 /* FDMasterViewController.m in Sources */,
 				92841A9817EDF63D005C0E18 /* FDAppDelegate.m in Sources */,
 				927F3DBA17FA3D8900C933DD /* ZZHardwareId.m in Sources */,
 				92841A9417EDF63D005C0E18 /* main.m in Sources */,
 				929CA40B17F0992E00A4A992 /* FDDetailRadioViewController.m in Sources */,
-				929CD2D817F7BB81004CE8ED /* ZZIEEE754Binary16Converter.m in Sources */,
 				929CA42817F0D73100A4A992 /* FDDetailIndicatorsViewController.m in Sources */,
-				92F863FC17F3D0E6000E23AF /* FDDevice.m in Sources */,
-				929CD2C917F7B8B5004CE8ED /* ZZSync.m in Sources */,
-				929CD2D517F7BB81004CE8ED /* ZZActivityUploader.m in Sources */,
+				929CD2C917F7B8B5004CE8ED /* ZZSyncTask.m in Sources */,
 				928BF64817F2818000370B91 /* FDDetailTabBarController.m in Sources */,
 				929CA43617F1242F00A4A992 /* FDDetailResetViewController.m in Sources */,
-				929CD2D617F7BB81004CE8ED /* ZZBinaryData.m in Sources */,
 				92F863F817F3C38D000E23AF /* FDFireflyIceCollector.m in Sources */,
 				929CA40F17F0AD3400A4A992 /* FDDetailOverviewViewController.m in Sources */,
 				92841AA417EDF63D005C0E18 /* FDDetailViewController.m in Sources */,

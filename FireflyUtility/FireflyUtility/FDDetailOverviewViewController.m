@@ -7,6 +7,7 @@
 //
 
 #import "FDDetailOverviewViewController.h"
+#import "ZZSyncTask.h"
 
 #import <FireflyDevice/FDFireflyIce.h>
 #import <FireflyDevice/FDFireflyIceCoder.h>
@@ -25,6 +26,7 @@
 @property IBOutlet UILabel *dataLabel;
 
 @property IBOutlet UIButton *setTimeButton;
+@property IBOutlet UIButton *syncButton;
 @property IBOutlet UIButton *updateButton;
 
 @end
@@ -35,6 +37,7 @@
 {
     [super viewDidLoad];
     [self.buttons addObject:_setTimeButton];
+    [self.buttons addObject:_syncButton];
     [self.buttons addObject:_updateButton];
 }
 
@@ -51,7 +54,7 @@
 
 - (void)configureView
 {
-    FDFireflyIceCollector *collector = self.device.collector;
+    FDFireflyIceCollector *collector = self.device[@"collector"];
     
     FDFireflyIceVersion *version = [collector objectForKey:@"version"];
     FDFireflyIceHardwareId *hardwareId = [collector objectForKey:@"hardwareId"];
@@ -104,14 +107,27 @@
 
 - (IBAction)setTime:(id)sender
 {
-    FDFireflyIce *fireflyIce = self.device.fireflyIce;
+    FDFireflyIce *fireflyIce = self.device[@"fireflyIce"];
     id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
     [fireflyIce.coder sendSetPropertyTime:channel time:[NSDate date]];
 }
 
+- (IBAction)sync:(id)sender
+{
+    FDFireflyIce *fireflyIce = self.device[@"fireflyIce"];
+    id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
+    
+    ZZSyncTask *task = [[ZZSyncTask alloc] init];
+    task.fireflyIce = fireflyIce;
+    task.channel = channel;
+    [fireflyIce.executor execute:task];
+}
+
 - (IBAction)updateOverview:(id)sender
 {
-    [self.device.fireflyIce.executor execute:self.device.collector];
+    FDFireflyIce *fireflyIce = self.device[@"fireflyIce"];
+    FDFireflyIceCollector *collector = self.device[@"collector"];
+    [fireflyIce.executor execute:collector];
 }
 
 @end

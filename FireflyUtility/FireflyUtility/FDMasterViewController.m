@@ -8,12 +8,14 @@
 
 #import "FDDetailTabBarController.h"
 #import "FDDetailViewController.h"
-#import "FDDevice.h"
 #import "FDFireflyIceCollector.h"
 #import "FDMasterViewController.h"
 
+#import "ZZSyncTask.h"
+
 #import <FireflyDevice/FDFireflyIce.h>
 #import <FireflyDevice/FDFireflyIceChannelBLE.h>
+#import <FireflyDevice/FDFireflyIceManager.h>
 
 #if TARGET_OS_IPHONE
 #import <CoreBluetooth/CoreBluetooth.h>
@@ -21,14 +23,14 @@
 #import <IOBluetooth/IOBluetooth.h>
 #endif
 
-@interface FDMasterViewController () <CBCentralManagerDelegate, FDFireflyIceObserver, UITabBarControllerDelegate, FDDetailTabBarControllerDelegate>
+@interface FDMasterViewController () <FDFireflyIceManagerDelegate, FDFireflyIceObserver, UITabBarControllerDelegate, FDDetailTabBarControllerDelegate>
 
 @property UITabBarController *tabBarController;
 
-@property CBCentralManager *centralManager;
-@property NSMutableArray *devices;
+@property FDFireflyIceManager *fireflyIceManager;
 
-@property(nonatomic) FDDevice *device;
+@property NSMutableArray *devices;
+@property(nonatomic) NSMutableDictionary *device;
 
 @end
 
@@ -47,118 +49,44 @@
 {
     [super viewDidLoad];
 	
-    _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
+    _fireflyIceManager = [FDFireflyIceManager managerWithDelegate:self];
     _devices = [NSMutableArray array];
-}
-
-- (void)centralManagerPoweredOn
-{
-    [_centralManager scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:@"310a0001-1b95-5091-b0bd-b7a681846399"]] options:nil];
-}
-
-- (void)centralManagerDidUpdateState:(CBCentralManager *)central
-{
-    switch (central.state) {
-        case CBCentralManagerStateUnknown:
-        case CBCentralManagerStateResetting:
-        case CBCentralManagerStateUnsupported:
-        case CBCentralManagerStateUnauthorized:
-            break;
-        case CBCentralManagerStatePoweredOff:
-            break;
-        case CBCentralManagerStatePoweredOn:
-            [self centralManagerPoweredOn];
-            break;
-    }
 }
 
 - (FDFireflyIce *)getFireflyIceByPeripheral:(CBPeripheral *)peripheral
 {
-    for (FDDevice *device in _devices) {
-        FDFireflyIce *fireflyIce = device.fireflyIce;
-        FDFireflyIceChannelBLE *channel = fireflyIce.channels[@"BLE"];
-        if (channel.peripheral == peripheral) {
-            return fireflyIce;
-        }
-    }
-    return nil;
+    NSDictionary *dictionary = [_fireflyIceManager dictionaryFor:peripheral key:@"peripheral"];
+    return dictionary[@"fireflyIce"];
 }
 
-- (FDDevice *)getDeviceByFireflyIce:(FDFireflyIce *)fireflyIce
+- (FDFireflyIceCollector *)getCollectorByFireflyIce:(FDFireflyIce *)fireflyIce
 {
-    for (FDDevice *device in _devices) {
-        if (device.fireflyIce == fireflyIce) {
-            return device;
-        }
-    }
-    return nil;
+    NSDictionary *dictionary = [_fireflyIceManager dictionaryFor:fireflyIce key:@"fireflyIce"];
+    return dictionary[@"collector"];
 }
 
-- (void)centralManager:(CBCentralManager *)central
- didDiscoverPeripheral:(CBPeripheral *)peripheral
-     advertisementData:(NSDictionary *)advertisementData
-                  RSSI:(NSNumber *)RSSI
+- (void)fireflyIceManager:(FDFireflyIceManager *)manager discovered:(FDFireflyIce *)fireflyIce
 {
-    FDFireflyIce *fireflyIce = [self getFireflyIceByPeripheral:peripheral];
-    if (fireflyIce != nil) {
-        return;
-    }
-    
-    NSString *name = [NSString stringWithFormat:@"%@ %@", advertisementData[CBAdvertisementDataLocalNameKey], [peripheral.identifier UUIDString]];
-    
-    fireflyIce = [[FDFireflyIce alloc] init];
-    fireflyIce.name = name;
-    
-    FDFireflyIceChannelBLE *channel = [[FDFireflyIceChannelBLE alloc] initWithPeripheral:peripheral];
-    [fireflyIce addChannel:channel type:@"BLE"];
+    NSMutableDictionary *dictionary = [manager dictionaryFor:fireflyIce key:@"fireflyIce"];
     
     FDFireflyIceCollector *collector = [[FDFireflyIceCollector alloc] init];
     collector.fireflyIce = fireflyIce;
-    collector.channel = channel;
+    collector.channel = fireflyIce.channels[@"BLE"];
+    dictionary[@"collector"] = collector;
     
-    FDDevice *device = [[FDDevice alloc] init];
-    device.fireflyIce = fireflyIce;
-    device.collector = collector;
-    
-    [_devices insertObject:device atIndex:0];
+    [_devices insertObject:dictionary atIndex:0];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
-- (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral
-{
-    FDFireflyIce *fireflyIce = [self getFireflyIceByPeripheral:peripheral];
-    FDFireflyIceChannelBLE *channel = fireflyIce.channels[@"BLE"];
-    [channel didConnectPeripheral];
-}
-
-- (void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error
-{
-    FDFireflyIce *fireflyIce = [self getFireflyIceByPeripheral:peripheral];
-    FDFireflyIceChannelBLE *channel = fireflyIce.channels[@"BLE"];
-    [channel didDisconnectPeripheralError:error];
-}
-
-- (void)connectBLE:(FDFireflyIce *)fireflyIce
-{
-    FDFireflyIceChannelBLE *channel = fireflyIce.channels[@"BLE"];
-    [_centralManager connectPeripheral:channel.peripheral options:nil];
-}
-
-- (void)disconnectBLE:(FDFireflyIce *)fireflyIce
-{
-    FDFireflyIceChannelBLE *channel = fireflyIce.channels[@"BLE"];
-    [_centralManager cancelPeripheralConnection:channel.peripheral];
-}
-
 - (IBAction)connect:(id)sender
 {
-    FDFireflyIce *fireflyIce = _device.fireflyIce;
-    FDFireflyIceChannelBLE *channel = fireflyIce.channels[@"BLE"];
+    FDFireflyIce *fireflyIce = _device[@"fireflyIce"];
+    id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
     if (channel.status == FDFireflyIceChannelStatusClosed) {
-        [self connectBLE:fireflyIce];
+        [_fireflyIceManager connectBLE:fireflyIce];
     } else {
-        [self disconnectBLE:fireflyIce];
+        [_fireflyIceManager disconnectBLE:fireflyIce];
     }
 }
 
@@ -176,8 +104,9 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
 
-    FDDevice *device = _devices[indexPath.row];
-    cell.textLabel.text = [device.fireflyIce description];
+    NSMutableDictionary *device = _devices[indexPath.row];
+    FDFireflyIce *fireflyIce = device[@"fireflyIce"];
+    cell.textLabel.text = [fireflyIce description];
     return cell;
 }
 
@@ -189,7 +118,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        FDDevice *device = _devices[indexPath.row];
+        NSMutableDictionary *device = _devices[indexPath.row];
         self.device = device;
     }
 }
@@ -197,7 +126,8 @@
 - (void)configureConnectButton
 {
     NSString *title = @"Connect";
-    id<FDFireflyIceChannel> channel = _device.fireflyIce.channels[@"BLE"];
+    FDFireflyIce *fireflyIce = _device[@"fireflyIce"];
+    id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
     switch (channel.status) {
         case FDFireflyIceChannelStatusClosed:
             title = @"Connect";
@@ -218,20 +148,28 @@
 {
     [self configureConnectButton];
     if (status == FDFireflyIceChannelStatusOpen) {
-        FDDevice *device = [self getDeviceByFireflyIce:fireflyIce];
+        NSMutableDictionary *device = [_fireflyIceManager dictionaryFor:fireflyIce key:@"fireflyIce"];
         if (device != nil) {
-            [fireflyIce.executor execute:device.collector];
+            FDFireflyIceCollector *collector = device[@"collector"];
+            [fireflyIce.executor execute:collector];
         }
     }
 }
 
-- (void)setDevice:(FDDevice *)device
+- (void)fireflyIceManager:(FDFireflyIceManager *)manager identified:(FDFireflyIce *)fireflyIce
+{
+    [fireflyIce.executor execute:[ZZSyncTask syncTask:fireflyIce channel:fireflyIce.channels[@"BLE"]]];
+}
+
+- (void)setDevice:(NSMutableDictionary *)device
 {
     if (_device != device) {
-        [_device.fireflyIce.observable removeObserver:self];
+        FDFireflyIce *fireflyIce = _device[@"fireflyIce"];
+        [fireflyIce.observable removeObserver:self];
         
         _device = device;
-        [_device.fireflyIce.observable addObserver:self];
+        fireflyIce = _device[@"fireflyIce"];
+        [fireflyIce.observable addObserver:self];
         
         [self configureConnectButton];
     }

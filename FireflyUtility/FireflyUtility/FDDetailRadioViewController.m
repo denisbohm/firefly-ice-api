@@ -46,7 +46,8 @@
     _frequencyLabel.text = [NSString stringWithFormat:@"%d MHz", [self packetFrequency]];
     _durationLabel.text = [NSString stringWithFormat:@"%d minutes", [self testDuration]];
 
-    FDFireflyIceDirectTestModeReport *report = [self.device.collector objectForKey:@"directTestModeReport"];
+    FDFireflyIceCollector *collector = self.device[@"collector"];
+    FDFireflyIceDirectTestModeReport *report = [collector objectForKey:@"directTestModeReport"];
     if (report.packetCount & 0x8000) {
         _reportLabel.text = [NSString stringWithFormat:@"%u packets received", report.packetCount & 0x7fff];
     } else {
@@ -78,7 +79,7 @@
 
 - (IBAction)startDirectTestMode:(id)sender
 {
-    FDFireflyIce *fireflyIce = self.device.fireflyIce;
+    FDFireflyIce *fireflyIce = self.device[@"fireflyIce"];
     
     id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
     

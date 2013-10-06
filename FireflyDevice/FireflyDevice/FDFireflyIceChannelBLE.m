@@ -58,14 +58,14 @@
 
 - (void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 {
-    NSLog(@"didWriteValueForCharacteristic %@", error);
+//    NSLog(@"didWriteValueForCharacteristic %@", error);
     _writePending = NO;
     [self checkWrite];
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 {
-    NSLog(@"didUpdateValueForCharacteristic %@ %@", characteristic.value, error);
+//    NSLog(@"didUpdateValueForCharacteristic %@ %@", characteristic.value, error);
     [_detour detourEvent:characteristic.value];
     if (_detour.state == FDDetourStateSuccess) {
         [_delegate fireflyIceChannelPacket:self data:_detour.data];
@@ -99,9 +99,9 @@
 
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(NSError *)error
 {
-    NSLog(@"didDiscoverServices %@", peripheral.name);
+//    NSLog(@"didDiscoverServices %@", peripheral.name);
     for (CBService *service in peripheral.services) {
-        NSLog(@"didDiscoverService %@", service.UUID);
+//        NSLog(@"didDiscoverService %@", service.UUID);
         [peripheral discoverCharacteristics:nil forService:service];
     }
 }
@@ -109,18 +109,17 @@
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error
 {
     CBUUID *characteristicUUID = [CBUUID UUIDWithString:@"310a0002-1b95-5091-b0bd-b7a681846399"];
-    NSLog(@"didDiscoverCharacteristicsForService %@", service.UUID);
+//    NSLog(@"didDiscoverCharacteristicsForService %@", service.UUID);
     for (CBCharacteristic *characteristic in service.characteristics) {
-        NSLog(@"didDiscoverServiceCharacteristic %@", characteristic.UUID);
+//        NSLog(@"didDiscoverServiceCharacteristic %@", characteristic.UUID);
         if ([characteristicUUID isEqual:characteristic.UUID]) {
-            NSLog(@"found characteristic value");
+//            NSLog(@"found characteristic value");
             _characteristic = characteristic;
             
             [_peripheral setNotifyValue:YES forCharacteristic:_characteristic];
             
             self.status = FDFireflyIceChannelStatusOpen;
             [_delegate fireflyIceChannel:self status:self.status];
-            [_delegate fireflyIceChannelOpen:self];
         }
     }
 }

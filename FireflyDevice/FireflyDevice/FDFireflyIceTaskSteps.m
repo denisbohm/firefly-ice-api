@@ -22,6 +22,7 @@
 @synthesize timeout = _timeout;
 @synthesize priority = _priority;
 @synthesize isSuspended = _isSuspended;
+@synthesize appointment = _appointment;
 
 - (id)init
 {
@@ -31,33 +32,33 @@
     return self;
 }
 
-- (void)taskStarted
+- (void)executorTaskStarted:(FDExecutor *)executor
 {
-    NSLog(@"task started");
+//    NSLog(@"task started");
     [_fireflyIce.observable addObserver:self];
 }
 
-- (void)taskSuspended
+- (void)executorTaskSuspended:(FDExecutor *)executor
 {
-    NSLog(@"task suspended");
+//    NSLog(@"task suspended");
     [_fireflyIce.observable removeObserver:self];
 }
 
-- (void)taskResumed
+- (void)executorTaskResumed:(FDExecutor *)executor
 {
-    NSLog(@"task resumed");
+//    NSLog(@"task resumed");
     [_fireflyIce.observable addObserver:self];
 }
 
-- (void)taskCompleted
+- (void)executorTaskCompleted:(FDExecutor *)executor
 {
-    NSLog(@"task completed");
+//    NSLog(@"task completed");
     [_fireflyIce.observable removeObserver:self];
 }
 
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel ping:(NSData *)data
 {
-    NSLog(@"ping received");
+//    NSLog(@"ping received");
     FDBinary *binary = [[FDBinary alloc] initWithData:data];
     uint32_t invocationId = [binary getUInt32];
     if (invocationId != _invocationId) {
@@ -66,12 +67,12 @@
     }
     
     if (_invocation != nil) {
-        NSLog(@"invoking step %@", NSStringFromSelector(_invocation.selector));
+//        NSLog(@"invoking step %@", NSStringFromSelector(_invocation.selector));
         NSInvocation *invocation = _invocation;
         _invocation = nil;
         [invocation invoke];
     } else {
-        NSLog(@"all steps completed");
+//        NSLog(@"all steps completed");
         [_fireflyIce.executor complete:self];
     }
 }
@@ -87,7 +88,7 @@
 
 - (void)next:(SEL)selector
 {
-    NSLog(@"queing next step %@", NSStringFromSelector(selector));
+//    NSLog(@"queing next step %@", NSStringFromSelector(selector));
     
     [_fireflyIce.executor feedWatchdog:self];
     
@@ -102,7 +103,7 @@
 
 - (void)done
 {
-    NSLog(@"task done");
+//    NSLog(@"task done");
     [_fireflyIce.executor complete:self];
 }
 

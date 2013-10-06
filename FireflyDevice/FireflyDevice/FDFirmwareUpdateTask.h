@@ -20,6 +20,10 @@
 
 @interface FDFirmwareUpdateTask : FDFireflyIceTaskSteps
 
++ (FDFirmwareUpdateTask *)firmwareUpdateTask:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel;
+
+- (void)parseFirmware:(NSString *)intelHex;
+
 // firmware must start at firmware address and be a multiple of the page size (2048)
 @property NSData *firmware;
 

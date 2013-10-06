@@ -64,9 +64,45 @@
 @end
 
 @implementation FDFireflyIceReset
+
+- (NSString *)description
+{
+    if (_cause & 1) {
+        return @"Power On Reset";
+    }
+    if (_cause & 2) {
+        return @"Brown Out Detector Unregulated Domain Reset";
+    }
+    if (_cause & 4) {
+        return @"Brown Out Detector Regulated Domain Reset";
+    }
+    if (_cause & 8) {
+        return @"External Pin Reset";
+    }
+    if (_cause & 16) {
+        return @"Watchdog Reset";
+    }
+    if (_cause & 32) {
+        return @"LOCKUP Reset";
+    }
+    if (_cause & 64) {
+        return @"System Request Reset";
+    }
+    if (_cause == 0) {
+        return @"No Reset";
+    }
+    return [NSString stringWithFormat:@"0x%08x Reset", _cause];
+}
+
 @end
 
 @implementation FDFireflyIceStorage
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"page count %u", _pageCount];
+}
+
 @end
 
 @implementation FDFireflyIceDirectTestModeReport
@@ -137,11 +173,6 @@
     _executor.run = (status == FDFireflyIceChannelStatusOpen);
 }
 
-- (void)fireflyIceChannelOpen:(id<FDFireflyIceChannel>)channel;
-{
-    [_coder sendGetProperties:channel properties:FD_CONTROL_PROPERTY_VERSION | FD_CONTROL_PROPERTY_HARDWARE_ID];
-}
-
 - (void)fireflyIceChannelPacket:(id<FDFireflyIceChannel>)channel data:(NSData *)data
 {
     @try {
@@ -149,18 +180,6 @@
     } @catch (NSException *e) {
         NSLog(@"unexpected exception %@\n%@", e, [e callStackSymbols]);
     }
-}
-
-- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel version:(FDFireflyIceVersion *)version
-{
-    _version = version;
-    NSLog(@"device version %@", _version);
-}
-
-- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel hardwareId:(FDFireflyIceHardwareId *)hardwareId
-{
-    _hardwareId = hardwareId;
-    NSLog(@"device hardware id %@", _hardwareId);
 }
 
 @end

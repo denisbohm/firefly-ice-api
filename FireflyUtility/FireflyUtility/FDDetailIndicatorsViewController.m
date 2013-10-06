@@ -78,7 +78,7 @@
 
 - (IBAction)startIndicatorsOverride:(id)sender
 {
-    FDFireflyIce *fireflyIce = self.device.fireflyIce;
+    FDFireflyIce *fireflyIce = self.device[@"fireflyIce"];
     id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
     
     uint8_t usbOrange = 0;

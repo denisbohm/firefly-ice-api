@@ -6,13 +6,16 @@
 //  Copyright (c) 2013 Firefly Design. All rights reserved.
 //
 
+#import "FDExecutor.h"
+#import "FDHelloTask.h"
 #import "FDFireflyIce.h"
 #import "FDFireflyIceChannelBLE.h"
 #import "FDFireflyIceManager.h"
+#import "FDFirmwareUpdateTask.h"
 
-@interface FDFireflyIceManager () <FDFireflyIceObserver>
+@interface FDFireflyIceManager () <FDFireflyIceObserver, FDHelloTaskDelegate>
 
-@property NSMutableArray *devices;
+@property NSMutableArray *dictionaries;
 
 @end
 
@@ -29,7 +32,7 @@
 - (id)init
 {
     if (self = [super init]) {
-        _devices = [NSMutableArray array];
+        _dictionaries = [NSMutableArray array];
     }
     return self;
 }
@@ -55,14 +58,19 @@
     }
 }
 
-- (NSMutableDictionary *)deviceForPeripheral:(CBPeripheral *)peripheral
+- (NSMutableDictionary *)dictionaryFor:(id)object key:(NSString *)key
 {
-    for (NSMutableDictionary *device in _devices) {
-        if (device[@"peripheral"] == peripheral) {
-            return device;
+    for (NSMutableDictionary *dictionary in _dictionaries) {
+        if (dictionary[key] == object) {
+            return dictionary;
         }
     }
     return nil;
+}
+
+- (NSMutableDictionary *)dictionaryForPeripheral:(CBPeripheral *)peripheral
+{
+    return [self dictionaryFor:peripheral key:@"peripheral"];
 }
 
 - (void)centralManager:(CBCentralManager *)central
@@ -70,41 +78,38 @@
      advertisementData:(NSDictionary *)advertisementData
                   RSSI:(NSNumber *)RSSI
 {
-    NSMutableDictionary *device = [self deviceForPeripheral:peripheral];
-    if (device != nil) {
+    NSMutableDictionary *dictionary = [self dictionaryForPeripheral:peripheral];
+    if (dictionary != nil) {
         return;
     }
     
     FDFireflyIce *fireflyIce = [[FDFireflyIce alloc] init];
     
-    [fireflyIce addObserver:self
-              forKeyPath:@"hardwareId"
-                 options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)
-                 context:NULL];
-    
+    fireflyIce.name = [NSString stringWithFormat:@"%@ %@", advertisementData[CBAdvertisementDataLocalNameKey], [peripheral.identifier UUIDString]];
+
     [fireflyIce.observable addObserver:self];
     FDFireflyIceChannelBLE *channel = [[FDFireflyIceChannelBLE alloc] initWithPeripheral:peripheral];
     [fireflyIce addChannel:channel type:@"BLE"];
-    device = [NSMutableDictionary dictionary];
-    [device setObject:peripheral forKey:@"peripheral"];
-    [device setObject:fireflyIce forKey:@"fireflyIce"];
-    [_devices insertObject:device atIndex:0];
+    dictionary = [NSMutableDictionary dictionary];
+    [dictionary setObject:peripheral forKey:@"peripheral"];
+    [dictionary setObject:fireflyIce forKey:@"fireflyIce"];
+    [_dictionaries insertObject:dictionary atIndex:0];
     
     [_delegate fireflyIceManager:self discovered:fireflyIce];
 }
 
 - (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral
 {
-    NSMutableDictionary *device = [self deviceForPeripheral:peripheral];
-    FDFireflyIce *fireflyIce = device[@"fireflyIce"];
+    NSMutableDictionary *dictionary = [self dictionaryForPeripheral:peripheral];
+    FDFireflyIce *fireflyIce = dictionary[@"fireflyIce"];
     FDFireflyIceChannelBLE *channel = fireflyIce.channels[@"BLE"];
     [channel didConnectPeripheral];
 }
 
 - (void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error
 {
-    NSMutableDictionary *device = [self deviceForPeripheral:peripheral];
-    FDFireflyIce *fireflyIce = device[@"fireflyIce"];
+    NSMutableDictionary *dictionary = [self dictionaryForPeripheral:peripheral];
+    FDFireflyIce *fireflyIce = dictionary[@"fireflyIce"];
     FDFireflyIceChannelBLE *channel = fireflyIce.channels[@"BLE"];
     [channel didDisconnectPeripheralError:error];
 }
@@ -127,26 +132,28 @@
         case FDFireflyIceChannelStatusOpening:
             break;
         case FDFireflyIceChannelStatusOpen:
-            [_delegate fireflyIceManager:self openedBLE:fireflyIce];
+            [fireflyIce.executor execute:[FDHelloTask helloTask:fireflyIce channel:channel delegate:self]];
+            if ([_delegate respondsToSelector:@selector(fireflyIceManager:openedBLE:)]) {
+                [_delegate fireflyIceManager:self openedBLE:fireflyIce];
+            }
             break;
         case FDFireflyIceChannelStatusClosed:
-            [_delegate fireflyIceManager:self closedBLE:fireflyIce];
+            if ([_delegate respondsToSelector:@selector(fireflyIceManager:closedBLE:)]) {
+                [_delegate fireflyIceManager:self closedBLE:fireflyIce];
+            }
             break;
     }
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+- (void)helloTaskComplete:(FDHelloTask *)helloTask
 {
+    FDFireflyIce *fireflyIce = helloTask.fireflyIce;
+    id<FDFireflyIceChannel> channel = helloTask.channel;
+    [fireflyIce.executor execute:[FDFirmwareUpdateTask firmwareUpdateTask:fireflyIce channel:channel]];
     
-    if ([keyPath isEqual:@"hardwareId"]) {
-        id old = [change objectForKey:NSKeyValueChangeOldKey];
-        id hardwareId = [change objectForKey:NSKeyValueChangeNewKey];
-        if ((old == nil) && (hardwareId != nil)) {
-            [_delegate fireflyIceManager:self identified:object];
-        }
+    if ([_delegate respondsToSelector:@selector(fireflyIceManager:identified:)]) {
+        [_delegate fireflyIceManager:self identified:fireflyIce];
     }
-
-    [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 }
 
 @end

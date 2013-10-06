@@ -50,17 +50,10 @@
     _progressView.hidden = YES;
 }
 
-- (NSData *)loadFirmware:(NSString *)name type:(NSString *)type
+- (NSString *)loadFirmware:(NSString *)name type:(NSString *)type
 {
-    NSString *path = [[NSBundle bundleForClass: [self class]] pathForResource:name ofType:@"hex"];
-    NSMutableData *data = [NSMutableData dataWithData:[FDIntelHex read:path address:0x08000 length:0x40000 - 0x08000]];
-    // pad to sector multiple (firmware update expects full sectors)
-    NSUInteger sectorSize = 4096;
-    NSUInteger length = data.length;
-    length = ((length + sectorSize - 1) / sectorSize) * sectorSize;
-    NSLog(@"firmware has %u sectors", length / sectorSize);
-    data.length = length;
-    return data;
+    NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:name ofType:@"hex"];
+    return [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
 }
 
 /*
@@ -80,14 +73,14 @@
     _progressView.progress = 0;
     _progressView.hidden = NO;
 
-    FDFireflyIce *fireflyIce = self.device.fireflyIce;
+    FDFireflyIce *fireflyIce = self.device[@"fireflyIce"];
     id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
     
     FDFirmwareUpdateTask *task = [[FDFirmwareUpdateTask alloc] init];
     task.fireflyIce = fireflyIce;
     task.channel = channel;
     task.delegate = self;
-    task.firmware = [self loadFirmware:@"FireflyIce" type:@"THUMB Flash Release"];
+    [task parseFirmware:[self loadFirmware:@"FireflyIce" type:@"THUMB Flash Release"]];
     _updateView.firmwareUpdateTask = task;
     [_updateView setNeedsDisplay];
     [fireflyIce.executor execute:task];

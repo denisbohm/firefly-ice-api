@@ -53,7 +53,7 @@
     [_buffer appendData:data];
     if (_buffer.length >= _length) {
         _state = FDDetourStateSuccess;
-        NSLog(@"detour success: %d %ld %@", _length, (unsigned long)_buffer.length, _buffer);
+//        NSLog(@"detour success: %d %ld %@", _length, (unsigned long)_buffer.length, _buffer);
     } else {
         ++_sequence_number;
     }

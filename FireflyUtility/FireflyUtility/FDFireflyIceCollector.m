@@ -47,9 +47,9 @@
     [self done];
 }
 
-- (void)taskStarted
+- (void)executorTaskStarted:(FDExecutor *)executor
 {
-    [super taskStarted];
+    [super executorTaskStarted:executor];
     
     [self.fireflyIce.coder sendGetProperties:self.channel properties:
      FD_CONTROL_PROPERTY_VERSION |
