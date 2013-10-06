@@ -13,7 +13,6 @@
 @property NSTimer *watchdogTimer;
 @property NSMutableArray *tasks;
 @property NSMutableArray *appointmentTasks;
-@property NSMutableArray *suspendedTasks;
 @property id<FDExecutorTask> currentTask;
 @property NSDate *currentFeedTime;
 
@@ -28,7 +27,6 @@
     if (self = [super init]) {
         _tasks = [NSMutableArray array];
         _appointmentTasks = [NSMutableArray array];
-        _suspendedTasks = [NSMutableArray array];
     }
     return self;
 }
@@ -66,7 +64,6 @@
         _currentTask = nil;
     }
     [self abortTasks:_appointmentTasks];
-    [self abortTasks:_suspendedTasks];
     [self abortTasks:_tasks];
 }
 
@@ -160,8 +157,8 @@
         }
         id<FDExecutorTask> currentTask = _currentTask;
         _currentTask = nil;
-        [self addTask:task];
         currentTask.isSuspended = YES;
+        [self addTask:currentTask];
         @try {
             [currentTask executorTaskSuspended:self];
         } @catch (NSException *e) {

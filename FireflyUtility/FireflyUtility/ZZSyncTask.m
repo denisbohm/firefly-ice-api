@@ -60,7 +60,6 @@
 
 - (void)activate:(FDExecutor *)executor
 {
-    NSLog(@"sync task activated");
     _isActive = YES;
     [_fireflyIce.observable addObserver:self];
     
@@ -73,28 +72,31 @@
 
 - (void)deactivate:(FDExecutor *)executor
 {
-    NSLog(@"sync task deactivated");
     _isActive = NO;
     [_fireflyIce.observable removeObserver:self];
 }
 
 - (void)executorTaskStarted:(FDExecutor *)executor
 {
+    NSLog(@"%@ task started", NSStringFromClass([self class]));
     [self activate:executor];
 }
 
 - (void)executorTaskSuspended:(FDExecutor *)executor
 {
+    NSLog(@"%@ task suspended", NSStringFromClass([self class]));
     [self deactivate:executor];
 }
 
 - (void)executorTaskResumed:(FDExecutor *)executor
 {
+    NSLog(@"%@ task resumed", NSStringFromClass([self class]));
     [self activate:executor];
 }
 
 - (void)executorTaskCompleted:(FDExecutor *)executor
 {
+    NSLog(@"%@ task completed", NSStringFromClass([self class]));
     [self deactivate:executor];
     
     if (executor.run) {

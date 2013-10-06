@@ -32,6 +32,7 @@
 - (id)init
 {
     if (self = [super init]) {
+        self.priority = 100;
         _maxOffset = 120;
     }
     return self;
@@ -74,15 +75,15 @@
 - (void)checkTime
 {
     if (_time == nil) {
-        NSLog(@"time not set for hwid %@ version %@ (last reset %@)", self.fireflyIce.hardwareId, self.fireflyIce.version, _reset);
+        NSLog(@"time not set for hw %@ fw %@ (last reset %@)", self.fireflyIce.hardwareId, self.fireflyIce.version, _reset);
         [self setTime];
     } else {
         NSTimeInterval offset = [_time timeIntervalSinceDate:[NSDate date]];
         if (fabs(offset) > _maxOffset) {
-            NSLog(@"time is off by %0.3f seconds for hwid %@ version %@ (last reset %@)", offset, self.fireflyIce.hardwareId, self.fireflyIce.version, _reset);
+            NSLog(@"time is off by %0.3f seconds for hw %@ fw %@ (last reset %@)", offset, self.fireflyIce.hardwareId, self.fireflyIce.version, _reset);
             [self setTime];
         } else {
-            NSLog(@"time is off by %0.3f seconds for hwid %@", offset, self.fireflyIce.hardwareId);
+            NSLog(@"time is off by %0.3f seconds for hw %@ fw %@", offset, self.fireflyIce.hardwareId, self.fireflyIce.version);
         }
     }
     [self done];

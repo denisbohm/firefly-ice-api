@@ -34,25 +34,25 @@
 
 - (void)executorTaskStarted:(FDExecutor *)executor
 {
-//    NSLog(@"task started");
+    NSLog(@"%@ task started", NSStringFromClass([self class]));
     [_fireflyIce.observable addObserver:self];
 }
 
 - (void)executorTaskSuspended:(FDExecutor *)executor
 {
-//    NSLog(@"task suspended");
+    NSLog(@"%@ task suspended", NSStringFromClass([self class]));
     [_fireflyIce.observable removeObserver:self];
 }
 
 - (void)executorTaskResumed:(FDExecutor *)executor
 {
-//    NSLog(@"task resumed");
+    NSLog(@"%@ task resumed", NSStringFromClass([self class]));
     [_fireflyIce.observable addObserver:self];
 }
 
 - (void)executorTaskCompleted:(FDExecutor *)executor
 {
-//    NSLog(@"task completed");
+    NSLog(@"%@ task completed", NSStringFromClass([self class]));
     [_fireflyIce.observable removeObserver:self];
 }
 

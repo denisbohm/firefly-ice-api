@@ -45,4 +45,6 @@
 
 - (NSMutableDictionary *)dictionaryFor:(id)object key:(NSString *)key;
 
+- (NSString *)nameForPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData;
+
 @end

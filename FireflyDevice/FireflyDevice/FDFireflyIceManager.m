@@ -15,6 +15,8 @@
 
 @interface FDFireflyIceManager () <FDFireflyIceObserver, FDHelloTaskDelegate>
 
+@property CBUUID *serviceUUID;
+
 @property NSMutableArray *dictionaries;
 
 @end
@@ -32,6 +34,7 @@
 - (id)init
 {
     if (self = [super init]) {
+        _serviceUUID = [CBUUID UUIDWithString:@"310a0001-1b95-5091-b0bd-b7a681846399"];
         _dictionaries = [NSMutableArray array];
     }
     return self;
@@ -39,7 +42,8 @@
 
 - (void)centralManagerPoweredOn
 {
-    [_centralManager scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:@"310a0001-1b95-5091-b0bd-b7a681846399"]] options:nil];
+    [_centralManager retrieveConnectedPeripherals];
+    [_centralManager scanForPeripheralsWithServices:@[_serviceUUID] options:nil];
 }
 
 - (void)centralManagerDidUpdateState:(CBCentralManager *)central
@@ -73,11 +77,30 @@
     return [self dictionaryFor:peripheral key:@"peripheral"];
 }
 
+- (NSString *)nameForPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData
+{
+    return [NSString stringWithFormat:@"%@ %@", advertisementData[CBAdvertisementDataLocalNameKey], [peripheral.identifier UUIDString]];
+}
+
+- (BOOL)isFireflyIce:(NSArray *)serviceUUIDs
+{
+    for (CBUUID *serviceUUID in serviceUUIDs) {
+        if ([_serviceUUID isEqual:serviceUUID]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 - (void)centralManager:(CBCentralManager *)central
  didDiscoverPeripheral:(CBPeripheral *)peripheral
      advertisementData:(NSDictionary *)advertisementData
                   RSSI:(NSNumber *)RSSI
 {
+    if (![self isFireflyIce:advertisementData[CBAdvertisementDataServiceUUIDsKey]]) {
+        return;
+    }
+    
     NSMutableDictionary *dictionary = [self dictionaryForPeripheral:peripheral];
     if (dictionary != nil) {
         return;
@@ -85,7 +108,7 @@
     
     FDFireflyIce *fireflyIce = [[FDFireflyIce alloc] init];
     
-    fireflyIce.name = [NSString stringWithFormat:@"%@ %@", advertisementData[CBAdvertisementDataLocalNameKey], [peripheral.identifier UUIDString]];
+    fireflyIce.name = [self nameForPeripheral:peripheral advertisementData:advertisementData];
 
     [fireflyIce.observable addObserver:self];
     FDFireflyIceChannelBLE *channel = [[FDFireflyIceChannelBLE alloc] initWithPeripheral:peripheral];
