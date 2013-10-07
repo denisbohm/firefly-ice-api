@@ -160,7 +160,7 @@
 
 - (void)syncVMA:(NSString *)hardwareId binary:(FDBinary *)binary
 {
-    NSTimeInterval time = [binary getTime64];
+    NSTimeInterval time = [binary getUInt32]; // 4-byte time
     uint16_t interval = [binary getUInt16];
     NSUInteger n = [binary getRemainingLength] / 4; //  4 == sizeof(float32)
     NSMutableArray *vmas = [NSMutableArray array];

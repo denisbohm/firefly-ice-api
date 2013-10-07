@@ -35,6 +35,8 @@
 
 @property FDFireflyIceUpdateCommit *updateCommit;
 
+@property NSUInteger lastProgressPercent;
+
 @end
 
 @implementation FDFirmwareUpdateTask
@@ -186,6 +188,11 @@
 {
     float progress = (_invalidPages.count - _updatePages.count) / (float)_invalidPages.count;
     [_delegate firmwareUpdateTask:self progress:progress];
+    NSUInteger progressPercent = (NSUInteger)(progress * 100);
+    if (_lastProgressPercent != progressPercent) {
+        _lastProgressPercent = progressPercent;
+        NSLog(@"firmware update progress %lu%%", (unsigned long) (unsigned long)progressPercent);
+    }
     
     if (_updatePages.count == 0) {
         // noting left to write, check the hashes to confirm
