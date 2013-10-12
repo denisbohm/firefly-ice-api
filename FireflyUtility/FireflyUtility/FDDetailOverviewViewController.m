@@ -7,7 +7,8 @@
 //
 
 #import "FDDetailOverviewViewController.h"
-#import "ZZSyncTask.h"
+
+#import <ZamzeeDevice/ZZSyncTask.h>
 
 #import <FireflyDevice/FDFireflyIce.h>
 #import <FireflyDevice/FDFireflyIceCoder.h>

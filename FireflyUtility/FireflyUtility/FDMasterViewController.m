@@ -11,7 +11,7 @@
 #import "FDFireflyIceCollector.h"
 #import "FDMasterViewController.h"
 
-#import "ZZSyncTask.h"
+#import <ZamzeeDevice/ZZSyncTask.h>
 
 #import <FireflyDevice/FDFireflyIce.h>
 #import <FireflyDevice/FDFireflyIceChannelBLE.h>
