@@ -483,7 +483,7 @@
         return;
     }
 
-    NSLog(@"didDiscoverPeripheral %@ ad=%@", peripheral, advertisementData);
+//    NSLog(@"didDiscoverPeripheral %@ ad=%@", peripheral, advertisementData);
     FDFireflyIce *fireflyIce = [[FDFireflyIce alloc] init];
     [fireflyIce.observable addObserver:self];
     FDFireflyIceChannelBLE *channelBLE = [[FDFireflyIceChannelBLE alloc] initWithPeripheral:peripheral];

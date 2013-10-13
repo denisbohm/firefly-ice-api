@@ -129,7 +129,7 @@
         return;
     }
     
-    NSTimeInterval duration = [_currentFeedTime timeIntervalSinceNow];
+    NSTimeInterval duration = -[_currentFeedTime timeIntervalSinceNow];
     if (duration > _currentTask.timeout) {
         NSLog(@"executor task timeout");
         [self complete:_currentTask];

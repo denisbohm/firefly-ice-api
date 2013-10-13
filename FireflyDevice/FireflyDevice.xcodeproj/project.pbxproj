@@ -145,7 +145,7 @@
 		929EF4BD17EA06580044F6F9 /* FireflyDevice-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FireflyDevice-Prefix.pch"; sourceTree = "<group>"; };
 		929EF4BE17EA06580044F6F9 /* FireflyDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FireflyDevice.h; sourceTree = "<group>"; };
 		929EF4C017EA06580044F6F9 /* FireflyDevice.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FireflyDevice.m; sourceTree = "<group>"; };
-		929EF4C717EA06580044F6F9 /* FireflyDeviceTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = FireflyDeviceTests.octest; path = FireflyDeviceTests.library.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		929EF4C717EA06580044F6F9 /* FireflyDeviceTests.library.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FireflyDeviceTests.library.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		929EF4C817EA06580044F6F9 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		929EF4CA17EA06580044F6F9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		929EF4D217EA06580044F6F9 /* FireflyDeviceTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FireflyDeviceTests-Info.plist"; sourceTree = "<group>"; };
@@ -183,7 +183,7 @@
 		92DF1397180B01AE00A1B849 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		92DF1398180B01AE00A1B849 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		92DF1399180B01AE00A1B849 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		92DF13A8180B01AE00A1B849 /* FireflyDeviceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = FireflyDeviceTests.xctest; path = FireflyDeviceTests.framework.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		92DF13A8180B01AE00A1B849 /* FireflyDeviceTests.framework.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FireflyDeviceTests.framework.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		92DF13A9180B01AE00A1B849 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		92DF13DD180B031700A1B849 /* IOBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOBluetooth.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/IOBluetooth.framework; sourceTree = DEVELOPER_DIR; };
 		92DF13F6180B042600A1B849 /* FDFireflyIceChannelUSB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFireflyIceChannelUSB.h; sourceTree = "<group>"; };
@@ -255,9 +255,9 @@
 			isa = PBXGroup;
 			children = (
 				929EF4B617EA06580044F6F9 /* libFireflyDevice.a */,
-				929EF4C717EA06580044F6F9 /* FireflyDeviceTests.octest */,
+				929EF4C717EA06580044F6F9 /* FireflyDeviceTests.library.octest */,
 				92DF1393180B01AE00A1B849 /* FireflyDevice.framework */,
-				92DF13A8180B01AE00A1B849 /* FireflyDeviceTests.xctest */,
+				92DF13A8180B01AE00A1B849 /* FireflyDeviceTests.framework.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -282,8 +282,6 @@
 			children = (
 				92DF13FA180B047400A1B849 /* FDUSBHIDMonitor.h */,
 				92DF13FB180B047400A1B849 /* FDUSBHIDMonitor.m */,
-				92DF13F6180B042600A1B849 /* FDFireflyIceChannelUSB.h */,
-				92DF13F7180B042600A1B849 /* FDFireflyIceChannelUSB.m */,
 				929EF4BE17EA06580044F6F9 /* FireflyDevice.h */,
 				929EF4C017EA06580044F6F9 /* FireflyDevice.m */,
 				929EF4FF17EA07D60044F6F9 /* FDBinary.h */,
@@ -306,6 +304,8 @@
 				929EF4EA17EA06C10044F6F9 /* FDFireflyIceChannel.m */,
 				929EF4EB17EA06C10044F6F9 /* FDFireflyIceChannelBLE.h */,
 				929EF4EC17EA06C10044F6F9 /* FDFireflyIceChannelBLE.m */,
+				92DF13F6180B042600A1B849 /* FDFireflyIceChannelUSB.h */,
+				92DF13F7180B042600A1B849 /* FDFireflyIceChannelUSB.m */,
 				929EF4ED17EA06C10044F6F9 /* FDFireflyIceCoder.h */,
 				929EF4EE17EA06C10044F6F9 /* FDFireflyIceCoder.m */,
 				929EF4EF17EA06C10044F6F9 /* FDFireflyIceTaskSteps.h */,
@@ -425,7 +425,7 @@
 			);
 			name = FireflyDeviceTests.library;
 			productName = FireflyDeviceTests;
-			productReference = 929EF4C717EA06580044F6F9 /* FireflyDeviceTests.octest */;
+			productReference = 929EF4C717EA06580044F6F9 /* FireflyDeviceTests.library.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
 		92DF1392180B01AE00A1B849 /* FireflyDevice.framework */ = {
@@ -461,7 +461,7 @@
 			);
 			name = FireflyDeviceTests.framework;
 			productName = FireflyDeviceTests;
-			productReference = 92DF13A8180B01AE00A1B849 /* FireflyDeviceTests.xctest */;
+			productReference = 92DF13A8180B01AE00A1B849 /* FireflyDeviceTests.framework.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
