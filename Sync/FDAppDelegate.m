@@ -165,10 +165,12 @@
 
 - (void)helloTaskComplete:(FDHelloTask *)helloTask
 {
+    /*
     FDFireflyIce *fireflyIce = helloTask.fireflyIce;
     id<FDFireflyIceChannel> channel = helloTask.channel;
     [fireflyIce.executor execute:[ZZSyncTask syncTask:fireflyIce channel:channel]];
     [fireflyIce.executor execute:[FDFirmwareUpdateTask firmwareUpdateTask:fireflyIce channel:channel]];
+     */
 }
 
 - (void)fireflyIceSensing:(id<FDFireflyIceChannel>)channel ax:(float)ax ay:(float)ay az:(float)az mx:(float)mx my:(float)my mz:(float)mz
