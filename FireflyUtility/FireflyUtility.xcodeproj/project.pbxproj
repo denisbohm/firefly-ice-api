@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9212D25A180B3F2D00576B41 /* FireflyIce.hex in Resources */ = {isa = PBXBuildFile; fileRef = 9212D259180B3F2D00576B41 /* FireflyIce.hex */; };
 		92841A8817EDF63D005C0E18 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92841A8717EDF63D005C0E18 /* Foundation.framework */; };
 		92841A8A17EDF63D005C0E18 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92841A8917EDF63D005C0E18 /* CoreGraphics.framework */; };
 		92841A8C17EDF63D005C0E18 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92841A8B17EDF63D005C0E18 /* UIKit.framework */; };
@@ -34,12 +35,39 @@
 		929CA43617F1242F00A4A992 /* FDDetailResetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 929CA43517F1242F00A4A992 /* FDDetailResetViewController.m */; };
 		929CD2DA17F7BC14004CE8ED /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 929CD2D917F7BC14004CE8ED /* libsqlite3.dylib */; };
 		929CD2DC17F7BC54004CE8ED /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 929CD2DB17F7BC54004CE8ED /* libz.dylib */; };
-		92EAA71E1801EAF1004DADFC /* FireflyIce.hex in Resources */ = {isa = PBXBuildFile; fileRef = 92EAA71D1801EAF1004DADFC /* FireflyIce.hex */; };
 		92F863F817F3C38D000E23AF /* FDFireflyIceCollector.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F863F717F3C38D000E23AF /* FDFireflyIceCollector.m */; };
 		92FB3E721808E540008BACC9 /* libZamzeeDevice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92FB3E6D1808E4BB008BACC9 /* libZamzeeDevice.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		9211D77C180B32BC00D418B1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92841AC617EDF7BB005C0E18 /* FireflyDevice.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 92DF1393180B01AE00A1B849;
+			remoteInfo = FireflyDevice.framework;
+		};
+		9211D77E180B32BC00D418B1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92841AC617EDF7BB005C0E18 /* FireflyDevice.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 92DF13A8180B01AE00A1B849;
+			remoteInfo = FireflyDeviceTests.framework;
+		};
+		9211D783180B32BC00D418B1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92FB3E661808E4BB008BACC9 /* ZamzeeDevice.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 92DF140B180B07DE00A1B849;
+			remoteInfo = ZamzeeDevice.framework;
+		};
+		9211D785180B32BC00D418B1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92FB3E661808E4BB008BACC9 /* ZamzeeDevice.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 92DF1420180B07DE00A1B849;
+			remoteInfo = ZamzeeDeviceTests.framework;
+		};
 		92841AB017EDF63D005C0E18 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 92841A7C17EDF63D005C0E18 /* Project object */;
@@ -92,6 +120,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9212D259180B3F2D00576B41 /* FireflyIce.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = FireflyIce.hex; path = ../../FireflyDevice/FireflyDevice/FireflyIce.hex; sourceTree = "<group>"; };
 		92841A8417EDF63D005C0E18 /* FireflyUtility.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FireflyUtility.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		92841A8717EDF63D005C0E18 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		92841A8917EDF63D005C0E18 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -132,7 +161,6 @@
 		929CA43517F1242F00A4A992 /* FDDetailResetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDetailResetViewController.m; sourceTree = "<group>"; };
 		929CD2D917F7BC14004CE8ED /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		929CD2DB17F7BC54004CE8ED /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		92EAA71D1801EAF1004DADFC /* FireflyIce.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FireflyIce.hex; sourceTree = "<group>"; };
 		92F863F617F3C38D000E23AF /* FDFireflyIceCollector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFireflyIceCollector.h; sourceTree = "<group>"; };
 		92F863F717F3C38D000E23AF /* FDFireflyIceCollector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFireflyIceCollector.m; sourceTree = "<group>"; };
 		92FB3E661808E4BB008BACC9 /* ZamzeeDevice.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ZamzeeDevice.xcodeproj; path = "../../zamzee-device/ZamzeeDevice/ZamzeeDevice.xcodeproj"; sourceTree = "<group>"; };
@@ -238,7 +266,7 @@
 		92841A8E17EDF63D005C0E18 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				92EAA71D1801EAF1004DADFC /* FireflyIce.hex */,
+				9212D259180B3F2D00576B41 /* FireflyIce.hex */,
 				92841A8F17EDF63D005C0E18 /* FireflyUtility-Info.plist */,
 				92841A9017EDF63D005C0E18 /* InfoPlist.strings */,
 				92841A9317EDF63D005C0E18 /* main.m */,
@@ -269,7 +297,9 @@
 			isa = PBXGroup;
 			children = (
 				92841ACC17EDF7BB005C0E18 /* libFireflyDevice.a */,
-				92841ACE17EDF7BB005C0E18 /* FireflyDeviceTests.octest */,
+				92841ACE17EDF7BB005C0E18 /* FireflyDeviceTests.library.octest */,
+				9211D77D180B32BC00D418B1 /* FireflyDevice.framework */,
+				9211D77F180B32BC00D418B1 /* FireflyDeviceTests.framework.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -278,7 +308,9 @@
 			isa = PBXGroup;
 			children = (
 				92FB3E6D1808E4BB008BACC9 /* libZamzeeDevice.a */,
-				92FB3E6F1808E4BB008BACC9 /* ZamzeeDeviceTests.xctest */,
+				92FB3E6F1808E4BB008BACC9 /* ZamzeeDeviceTests.library.xctest */,
+				9211D784180B32BC00D418B1 /* ZamzeeDevice.framework */,
+				9211D786180B32BC00D418B1 /* ZamzeeDeviceTests.framework.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -368,6 +400,34 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		9211D77D180B32BC00D418B1 /* FireflyDevice.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = FireflyDevice.framework;
+			remoteRef = 9211D77C180B32BC00D418B1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9211D77F180B32BC00D418B1 /* FireflyDeviceTests.framework.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = FireflyDeviceTests.framework.xctest;
+			remoteRef = 9211D77E180B32BC00D418B1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9211D784180B32BC00D418B1 /* ZamzeeDevice.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ZamzeeDevice.framework;
+			remoteRef = 9211D783180B32BC00D418B1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9211D786180B32BC00D418B1 /* ZamzeeDeviceTests.framework.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ZamzeeDeviceTests.framework.xctest;
+			remoteRef = 9211D785180B32BC00D418B1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		92841ACC17EDF7BB005C0E18 /* libFireflyDevice.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -375,10 +435,10 @@
 			remoteRef = 92841ACB17EDF7BB005C0E18 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		92841ACE17EDF7BB005C0E18 /* FireflyDeviceTests.octest */ = {
+		92841ACE17EDF7BB005C0E18 /* FireflyDeviceTests.library.octest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = FireflyDeviceTests.octest;
+			path = FireflyDeviceTests.library.octest;
 			remoteRef = 92841ACD17EDF7BB005C0E18 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -389,10 +449,10 @@
 			remoteRef = 92FB3E6C1808E4BB008BACC9 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		92FB3E6F1808E4BB008BACC9 /* ZamzeeDeviceTests.xctest */ = {
+		92FB3E6F1808E4BB008BACC9 /* ZamzeeDeviceTests.library.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = ZamzeeDeviceTests.xctest;
+			path = ZamzeeDeviceTests.library.xctest;
 			remoteRef = 92FB3E6E1808E4BB008BACC9 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -403,7 +463,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				92EAA71E1801EAF1004DADFC /* FireflyIce.hex in Resources */,
+				9212D25A180B3F2D00576B41 /* FireflyIce.hex in Resources */,
 				92841A9E17EDF63D005C0E18 /* Main_iPad.storyboard in Resources */,
 				92841AA617EDF63D005C0E18 /* Images.xcassets in Resources */,
 				92841A9B17EDF63D005C0E18 /* Main_iPhone.storyboard in Resources */,
