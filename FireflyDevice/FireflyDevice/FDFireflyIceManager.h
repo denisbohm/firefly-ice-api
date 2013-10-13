@@ -40,6 +40,8 @@
 
 @property CBCentralManager *centralManager;
 
+- (void)scan:(BOOL)allowDuplicates;
+
 - (void)connectBLE:(FDFireflyIce *)fireflyIce;
 - (void)disconnectBLE:(FDFireflyIce *)fireflyIce;
 

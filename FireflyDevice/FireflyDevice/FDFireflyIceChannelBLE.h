@@ -10,10 +10,20 @@
 
 @class CBPeripheral;
 
+@interface FDFireflyIceChannelBLERSSI : NSObject
+
+@property float value;
+@property NSDate *date;
+
++ (FDFireflyIceChannelBLERSSI *)RSSI:(float)value;
+
+@end
+
 @interface FDFireflyIceChannelBLE : NSObject <FDFireflyIceChannel>
 
 @property (readonly) CBPeripheral *peripheral;
 @property id<FDFireflyIceChannelDelegate> delegate;
+@property FDFireflyIceChannelBLERSSI *RSSI;
 
 - (id)initWithPeripheral:(CBPeripheral *)peripheral;
 

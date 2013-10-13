@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9205978A17FCA8330027FAAD /* FireflyDeviceFramework.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 929EF5EB17EA35A60044F6F9 /* FireflyDeviceFramework.framework */; };
 		926D3561170D0FA0001E1966 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 926D3560170D0FA0001E1966 /* Cocoa.framework */; };
 		926D356B170D0FA0001E1966 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 926D3569170D0FA0001E1966 /* InfoPlist.strings */; };
 		926D356D170D0FA0001E1966 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 926D356C170D0FA0001E1966 /* main.m */; };
@@ -22,17 +21,12 @@
 		9277AF3B171723D0004DE3FB /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9277AF3A171723D0004DE3FB /* IOKit.framework */; };
 		928E670017340F7B002D08E8 /* CorePlot.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 928E66FA17340F38002D08E8 /* CorePlot.framework */; };
 		928E670117340FBD002D08E8 /* CorePlot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 928E66FA17340F38002D08E8 /* CorePlot.framework */; };
-		929EF5EE17EA35B30044F6F9 /* FireflyDeviceFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 929EF5EB17EA35A60044F6F9 /* FireflyDeviceFramework.framework */; };
+		92DF13F2180B038400A1B849 /* FireflyDevice.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92DF13EF180B035100A1B849 /* FireflyDevice.framework */; };
+		92DF13F5180B039800A1B849 /* FireflyDevice.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 92DF13EF180B035100A1B849 /* FireflyDevice.framework */; };
+		92DF1462180B0BA100A1B849 /* ZamzeeDevice.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92DF145D180B0B6100A1B849 /* ZamzeeDevice.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		9205978417FCA82C0027FAAD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 929EF5E517EA35A60044F6F9 /* FireflyDeviceFramework.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 929EF51117EA2DEE0044F6F9;
-			remoteInfo = FireflyDeviceFramework;
-		};
 		926D3581170D0FA0001E1966 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 926D3555170D0F9F001E1966 /* Project object */;
@@ -61,19 +55,75 @@
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = CorePlot;
 		};
-		929EF5EA17EA35A60044F6F9 /* PBXContainerItemProxy */ = {
+		92DF13EA180B035100A1B849 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 929EF5E517EA35A60044F6F9 /* FireflyDeviceFramework.xcodeproj */;
+			containerPortal = 92DF13E3180B035100A1B849 /* FireflyDevice.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 929EF51217EA2DEE0044F6F9;
-			remoteInfo = FireflyDeviceFramework;
+			remoteGlobalIDString = 929EF4B617EA06580044F6F9;
+			remoteInfo = FireflyDevice.library;
 		};
-		929EF5EC17EA35A60044F6F9 /* PBXContainerItemProxy */ = {
+		92DF13EC180B035100A1B849 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 929EF5E517EA35A60044F6F9 /* FireflyDeviceFramework.xcodeproj */;
+			containerPortal = 92DF13E3180B035100A1B849 /* FireflyDevice.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 929EF52A17EA2DEE0044F6F9;
-			remoteInfo = FireflyDeviceFrameworkTests;
+			remoteGlobalIDString = 929EF4C717EA06580044F6F9;
+			remoteInfo = FireflyDeviceTests;
+		};
+		92DF13EE180B035100A1B849 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92DF13E3180B035100A1B849 /* FireflyDevice.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 92DF1393180B01AE00A1B849;
+			remoteInfo = FireflyDevice.framework;
+		};
+		92DF13F0180B035100A1B849 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92DF13E3180B035100A1B849 /* FireflyDevice.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 92DF13A8180B01AE00A1B849;
+			remoteInfo = FireflyDeviceTests;
+		};
+		92DF13F3180B038D00A1B849 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92DF13E3180B035100A1B849 /* FireflyDevice.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 92DF1392180B01AE00A1B849;
+			remoteInfo = FireflyDevice.framework;
+		};
+		92DF1458180B0B6100A1B849 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92DF144B180B0B6100A1B849 /* ZamzeeDevice.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9206278C1808E2A000DA4A5F;
+			remoteInfo = ZamzeeDevice.library;
+		};
+		92DF145A180B0B6100A1B849 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92DF144B180B0B6100A1B849 /* ZamzeeDevice.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9206279C1808E2A000DA4A5F;
+			remoteInfo = ZamzeeDeviceTests.library;
+		};
+		92DF145C180B0B6100A1B849 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92DF144B180B0B6100A1B849 /* ZamzeeDevice.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 92DF140B180B07DE00A1B849;
+			remoteInfo = ZamzeeDevice.framework;
+		};
+		92DF145E180B0B6100A1B849 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92DF144B180B0B6100A1B849 /* ZamzeeDevice.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 92DF1420180B07DE00A1B849;
+			remoteInfo = ZamzeeDeviceTests.framework;
+		};
+		92DF1460180B0B9A00A1B849 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92DF144B180B0B6100A1B849 /* ZamzeeDevice.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 92DF140A180B07DE00A1B849;
+			remoteInfo = ZamzeeDevice.framework;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -84,7 +134,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				9205978A17FCA8330027FAAD /* FireflyDeviceFramework.framework in CopyFiles */,
+				92DF13F5180B039800A1B849 /* FireflyDevice.framework in CopyFiles */,
 				928E670017340F7B002D08E8 /* CorePlot.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -114,7 +164,8 @@
 		926D3597170D1029001E1966 /* IOBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOBluetooth.framework; path = System/Library/Frameworks/IOBluetooth.framework; sourceTree = SDKROOT; };
 		9277AF3A171723D0004DE3FB /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		928E66F317340F38002D08E8 /* CorePlot.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CorePlot.xcodeproj; path = ../CorePlot_1.2/Source/framework/CorePlot.xcodeproj; sourceTree = "<group>"; };
-		929EF5E517EA35A60044F6F9 /* FireflyDeviceFramework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FireflyDeviceFramework.xcodeproj; path = FireflyDeviceFramework/FireflyDeviceFramework.xcodeproj; sourceTree = "<group>"; };
+		92DF13E3180B035100A1B849 /* FireflyDevice.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FireflyDevice.xcodeproj; path = FireflyDevice/FireflyDevice.xcodeproj; sourceTree = "<group>"; };
+		92DF144B180B0B6100A1B849 /* ZamzeeDevice.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ZamzeeDevice.xcodeproj; path = "../zamzee-device/ZamzeeDevice/ZamzeeDevice.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,7 +173,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				929EF5EE17EA35B30044F6F9 /* FireflyDeviceFramework.framework in Frameworks */,
+				92DF1462180B0BA100A1B849 /* ZamzeeDevice.framework in Frameworks */,
+				92DF13F2180B038400A1B849 /* FireflyDevice.framework in Frameworks */,
 				926D3561170D0FA0001E1966 /* Cocoa.framework in Frameworks */,
 				926D3598170D1029001E1966 /* IOBluetooth.framework in Frameworks */,
 				9277AF3B171723D0004DE3FB /* IOKit.framework in Frameworks */,
@@ -145,7 +197,8 @@
 		926D3554170D0F9F001E1966 = {
 			isa = PBXGroup;
 			children = (
-				929EF5E517EA35A60044F6F9 /* FireflyDeviceFramework.xcodeproj */,
+				92DF144B180B0B6100A1B849 /* ZamzeeDevice.xcodeproj */,
+				92DF13E3180B035100A1B849 /* FireflyDevice.xcodeproj */,
 				928E66F317340F38002D08E8 /* CorePlot.xcodeproj */,
 				926D3566170D0FA0001E1966 /* Sync */,
 				926D3583170D0FA0001E1966 /* SyncTests */,
@@ -236,11 +289,24 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		929EF5E617EA35A60044F6F9 /* Products */ = {
+		92DF13E4180B035100A1B849 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				929EF5EB17EA35A60044F6F9 /* FireflyDeviceFramework.framework */,
-				929EF5ED17EA35A60044F6F9 /* FireflyDeviceFrameworkTests.octest */,
+				92DF13EB180B035100A1B849 /* libFireflyDevice.a */,
+				92DF13ED180B035100A1B849 /* FireflyDeviceTests.octest */,
+				92DF13EF180B035100A1B849 /* FireflyDevice.framework */,
+				92DF13F1180B035100A1B849 /* FireflyDeviceTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		92DF144C180B0B6100A1B849 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				92DF1459180B0B6100A1B849 /* libZamzeeDevice.a */,
+				92DF145B180B0B6100A1B849 /* ZamzeeDeviceTests.library.xctest */,
+				92DF145D180B0B6100A1B849 /* ZamzeeDevice.framework */,
+				92DF145F180B0B6100A1B849 /* ZamzeeDeviceTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -260,7 +326,8 @@
 			buildRules = (
 			);
 			dependencies = (
-				9205978517FCA82C0027FAAD /* PBXTargetDependency */,
+				92DF1461180B0B9A00A1B849 /* PBXTargetDependency */,
+				92DF13F4180B038D00A1B849 /* PBXTargetDependency */,
 				928E66FE17340F5A002D08E8 /* PBXTargetDependency */,
 			);
 			name = Sync;
@@ -313,8 +380,12 @@
 					ProjectRef = 928E66F317340F38002D08E8 /* CorePlot.xcodeproj */;
 				},
 				{
-					ProductGroup = 929EF5E617EA35A60044F6F9 /* Products */;
-					ProjectRef = 929EF5E517EA35A60044F6F9 /* FireflyDeviceFramework.xcodeproj */;
+					ProductGroup = 92DF13E4180B035100A1B849 /* Products */;
+					ProjectRef = 92DF13E3180B035100A1B849 /* FireflyDevice.xcodeproj */;
+				},
+				{
+					ProductGroup = 92DF144C180B0B6100A1B849 /* Products */;
+					ProjectRef = 92DF144B180B0B6100A1B849 /* ZamzeeDevice.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -340,18 +411,63 @@
 			remoteRef = 928E66FB17340F38002D08E8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		929EF5EB17EA35A60044F6F9 /* FireflyDeviceFramework.framework */ = {
+		92DF13EB180B035100A1B849 /* libFireflyDevice.a */ = {
 			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = FireflyDeviceFramework.framework;
-			remoteRef = 929EF5EA17EA35A60044F6F9 /* PBXContainerItemProxy */;
+			fileType = archive.ar;
+			path = libFireflyDevice.a;
+			remoteRef = 92DF13EA180B035100A1B849 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		929EF5ED17EA35A60044F6F9 /* FireflyDeviceFrameworkTests.octest */ = {
+		92DF13ED180B035100A1B849 /* FireflyDeviceTests.octest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = FireflyDeviceFrameworkTests.octest;
-			remoteRef = 929EF5EC17EA35A60044F6F9 /* PBXContainerItemProxy */;
+			name = FireflyDeviceTests.octest;
+			path = FireflyDeviceTests.library.octest;
+			remoteRef = 92DF13EC180B035100A1B849 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		92DF13EF180B035100A1B849 /* FireflyDevice.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = FireflyDevice.framework;
+			remoteRef = 92DF13EE180B035100A1B849 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		92DF13F1180B035100A1B849 /* FireflyDeviceTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			name = FireflyDeviceTests.xctest;
+			path = FireflyDeviceTests.framework.xctest;
+			remoteRef = 92DF13F0180B035100A1B849 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		92DF1459180B0B6100A1B849 /* libZamzeeDevice.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libZamzeeDevice.a;
+			remoteRef = 92DF1458180B0B6100A1B849 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		92DF145B180B0B6100A1B849 /* ZamzeeDeviceTests.library.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ZamzeeDeviceTests.library.xctest;
+			remoteRef = 92DF145A180B0B6100A1B849 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		92DF145D180B0B6100A1B849 /* ZamzeeDevice.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ZamzeeDevice.framework;
+			remoteRef = 92DF145C180B0B6100A1B849 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		92DF145F180B0B6100A1B849 /* ZamzeeDeviceTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			name = ZamzeeDeviceTests.xctest;
+			path = ZamzeeDeviceTests.framework.xctest;
+			remoteRef = 92DF145E180B0B6100A1B849 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -414,11 +530,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		9205978517FCA82C0027FAAD /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = FireflyDeviceFramework;
-			targetProxy = 9205978417FCA82C0027FAAD /* PBXContainerItemProxy */;
-		};
 		926D3582170D0FA0001E1966 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 926D355C170D0FA0001E1966 /* Sync */;
@@ -428,6 +539,16 @@
 			isa = PBXTargetDependency;
 			name = CorePlot;
 			targetProxy = 928E66FD17340F5A002D08E8 /* PBXContainerItemProxy */;
+		};
+		92DF13F4180B038D00A1B849 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FireflyDevice.framework;
+			targetProxy = 92DF13F3180B038D00A1B849 /* PBXContainerItemProxy */;
+		};
+		92DF1461180B0B9A00A1B849 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ZamzeeDevice.framework;
+			targetProxy = 92DF1460180B0B9A00A1B849 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

@@ -34,13 +34,19 @@
 {
     _device.delegate = self;
     [_device open];
-    [_delegate fireflyIceChannelOpen:self];
+    self.status = FDFireflyIceChannelStatusOpening;
+    [_delegate fireflyIceChannel:self status:self.status];
+    self.status = FDFireflyIceChannelStatusOpen;
+    [_delegate fireflyIceChannel:self status:self.status];
 }
 
 - (void)close
 {
     _device.delegate = nil;
     [_device close];
+    [_detour clear];
+    self.status = FDFireflyIceChannelStatusClosed;
+    [_delegate fireflyIceChannel:self status:self.status];
 }
 
 - (void)usbHidDevice:(FDUSBHIDDevice *)device inputReport:(NSData *)data

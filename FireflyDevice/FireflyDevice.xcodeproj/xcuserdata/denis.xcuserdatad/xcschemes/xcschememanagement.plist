@@ -4,7 +4,12 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>FireflyDevice.xcscheme</key>
+		<key>FireflyDevice.framework.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+		<key>FireflyDevice.library.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
@@ -18,6 +23,16 @@
 			<true/>
 		</dict>
 		<key>929EF4C617EA06580044F6F9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>92DF1392180B01AE00A1B849</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>92DF13A7180B01AE00A1B849</key>
 		<dict>
 			<key>primary</key>
 			<true/>

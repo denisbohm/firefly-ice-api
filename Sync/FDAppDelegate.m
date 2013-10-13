@@ -8,14 +8,17 @@
 
 #import "FDAppDelegate.h"
 
-#import <FireflyDeviceFramework/FDBinary.h>
-#import <FireflyDeviceFramework/FDFireflyIce.h>
-#import <FireflyDeviceFramework/FDFireflyIceChannelBLE.h>
-#import <FireflyDeviceFramework/FDFireflyIceChannelUSB.h>
-#import <FireflyDeviceFramework/FDFireflyIceCoder.h>
-#import <FireflyDeviceFramework/FDFirmwareUpdateTask.h>
-#import <FireflyDeviceFramework/FDIntelHex.h>
-#import <FireflyDeviceFramework/FDUSBHIDMonitor.h>
+#import <ZamzeeDevice/ZZSyncTask.h>
+
+#import <FireflyDevice/FDBinary.h>
+#import <FireflyDevice/FDFireflyIce.h>
+#import <FireflyDevice/FDFireflyIceChannelBLE.h>
+#import <FireflyDevice/FDFireflyIceChannelUSB.h>
+#import <FireflyDevice/FDFireflyIceCoder.h>
+#import <FireflyDevice/FDFirmwareUpdateTask.h>
+#import <FireflyDevice/FDHelloTask.h>
+#import <FireflyDevice/FDIntelHex.h>
+#import <FireflyDevice/FDUSBHIDMonitor.h>
 
 #if TARGET_OS_IPHONE
 #import <CoreBluetooth/CoreBluetooth.h>
@@ -98,7 +101,7 @@
 
 @end
 
-@interface FDAppDelegate () <CBCentralManagerDelegate, FDUSBHIDMonitorDelegate, NSTableViewDataSource, FDFireflyIceObserver>
+@interface FDAppDelegate () <CBCentralManagerDelegate, FDUSBHIDMonitorDelegate, NSTableViewDataSource, FDFireflyIceObserver, FDHelloTaskDelegate>
 
 @property NSMutableArray *devices;
 
@@ -136,8 +139,8 @@
     _bluetoothTableView.dataSource = self;
     
     _usbMonitor = [[FDUSBHIDMonitor alloc] init];
-    _usbMonitor.vendor = 0x2544;
-    _usbMonitor.product = 0x0001;
+    _usbMonitor.vendor = 0x2333;
+    _usbMonitor.product = 0x0002;
     _usbMonitor.delegate = self;
     _usbTableViewDataSource = [[FDUSBTableViewDataSource alloc] init];
     _usbTableView.dataSource = _usbTableViewDataSource;
@@ -145,6 +148,27 @@
     [self setupGraph];
     
     [_usbMonitor start];
+}
+
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel status:(FDFireflyIceChannelStatus)status
+{
+    switch (status) {
+        case FDFireflyIceChannelStatusOpening:
+            break;
+        case FDFireflyIceChannelStatusOpen:
+            [fireflyIce.executor execute:[FDHelloTask helloTask:fireflyIce channel:channel delegate:self]];
+            break;
+        case FDFireflyIceChannelStatusClosed:
+            break;
+    }
+}
+
+- (void)helloTaskComplete:(FDHelloTask *)helloTask
+{
+    FDFireflyIce *fireflyIce = helloTask.fireflyIce;
+    id<FDFireflyIceChannel> channel = helloTask.channel;
+    [fireflyIce.executor execute:[ZZSyncTask syncTask:fireflyIce channel:channel]];
+    [fireflyIce.executor execute:[FDFirmwareUpdateTask firmwareUpdateTask:fireflyIce channel:channel]];
 }
 
 - (void)fireflyIceSensing:(id<FDFireflyIceChannel>)channel ax:(float)ax ay:(float)ay az:(float)az mx:(float)mx my:(float)my mz:(float)mz
@@ -333,6 +357,13 @@
     [coder sendSyncStart:channel];
 }
 
+- (IBAction)usbReset:(id)sender
+{
+    FDFireflyIceChannelUSB *channel = [self getSelectedUsbDevice];
+    FDFireflyIceCoder *coder = [[FDFireflyIceCoder alloc] init];
+    [coder sendReset:channel type:FD_CONTROL_RESET_WATCHDOG];
+}
+
 - (FDFireflyIceChannelBLE *)getSelectedFireflyDevice
 {
     NSInteger row = _bluetoothTableView.selectedRow;
@@ -390,7 +421,8 @@
     update.fireflyIce = fireflyIce;
     update.channel = channel;
     NSString *path = @"/Users/denis/sandbox/denisbohm/firefly-ice-firmware/THUMB Flash Release/FireflyIce/FireflyIce.hex";
-    NSMutableData *data = [NSMutableData dataWithData:[FDIntelHex read:path address:0x08000 length:0x40000 - 0x08000]];
+    NSString *content = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+    NSMutableData *data = [NSMutableData dataWithData:[FDIntelHex parse:content address:0x08000 length:0x40000 - 0x08000]];
     // pad to sector multiple (firmware update expects full sectors)
     NSUInteger sectorSize = 4096;
     NSUInteger length = data.length;

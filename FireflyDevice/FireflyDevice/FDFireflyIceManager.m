@@ -40,10 +40,66 @@
     return self;
 }
 
-- (void)centralManagerPoweredOn
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel status:(FDFireflyIceChannelStatus)status
+{
+    switch (status) {
+        case FDFireflyIceChannelStatusOpening:
+            break;
+        case FDFireflyIceChannelStatusOpen:
+            [fireflyIce.executor execute:[FDHelloTask helloTask:fireflyIce channel:channel delegate:self]];
+            if ([_delegate respondsToSelector:@selector(fireflyIceManager:openedBLE:)]) { // !!! should not be BLE specific
+                [_delegate fireflyIceManager:self openedBLE:fireflyIce];
+            }
+            break;
+        case FDFireflyIceChannelStatusClosed:
+            if ([_delegate respondsToSelector:@selector(fireflyIceManager:closedBLE:)]) { // !!! should not be BLE specific
+                [_delegate fireflyIceManager:self closedBLE:fireflyIce];
+            }
+            break;
+    }
+}
+
+- (void)helloTaskComplete:(FDHelloTask *)helloTask
+{
+    FDFireflyIce *fireflyIce = helloTask.fireflyIce;
+    id<FDFireflyIceChannel> channel = helloTask.channel;
+    [fireflyIce.executor execute:[FDFirmwareUpdateTask firmwareUpdateTask:fireflyIce channel:channel]];
+    
+    if ([_delegate respondsToSelector:@selector(fireflyIceManager:identified:)]) {
+        [_delegate fireflyIceManager:self identified:fireflyIce];
+    }
+}
+
+- (NSMutableDictionary *)dictionaryFor:(id)object key:(NSString *)key
+{
+    for (NSMutableDictionary *dictionary in _dictionaries) {
+        if (dictionary[key] == object) {
+            return dictionary;
+        }
+    }
+    return nil;
+}
+
+// BLE Specific Methods
+
+- (NSMutableDictionary *)dictionaryForPeripheral:(CBPeripheral *)peripheral
+{
+    return [self dictionaryFor:peripheral key:@"peripheral"];
+}
+
+- (void)scan:(BOOL)allowDuplicates
 {
     [_centralManager retrieveConnectedPeripherals];
-    [_centralManager scanForPeripheralsWithServices:@[_serviceUUID] options:nil];
+    NSDictionary *options = nil;
+    if (allowDuplicates) {
+        options = @{CBCentralManagerScanOptionAllowDuplicatesKey: @YES};
+    }
+    [_centralManager scanForPeripheralsWithServices:@[_serviceUUID] options:options];
+}
+
+- (void)centralManagerPoweredOn
+{
+    [self scan:NO];
 }
 
 - (void)centralManagerDidUpdateState:(CBCentralManager *)central
@@ -62,24 +118,14 @@
     }
 }
 
-- (NSMutableDictionary *)dictionaryFor:(id)object key:(NSString *)key
-{
-    for (NSMutableDictionary *dictionary in _dictionaries) {
-        if (dictionary[key] == object) {
-            return dictionary;
-        }
-    }
-    return nil;
-}
-
-- (NSMutableDictionary *)dictionaryForPeripheral:(CBPeripheral *)peripheral
-{
-    return [self dictionaryFor:peripheral key:@"peripheral"];
-}
-
 - (NSString *)nameForPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData
 {
-    return [NSString stringWithFormat:@"%@ %@", advertisementData[CBAdvertisementDataLocalNameKey], [peripheral.identifier UUIDString]];
+#if TARGET_OS_IPHONE
+    NSString *UUIDString = [peripheral.identifier UUIDString];
+#else
+    NSString *UUIDString = (NSString *)CFBridgingRelease(CFUUIDCreateString(kCFAllocatorDefault, peripheral.UUID));
+#endif
+    return [NSString stringWithFormat:@"%@ %@", advertisementData[CBAdvertisementDataLocalNameKey], UUIDString];
 }
 
 - (BOOL)isFireflyIce:(NSArray *)serviceUUIDs
@@ -112,6 +158,7 @@
 
     [fireflyIce.observable addObserver:self];
     FDFireflyIceChannelBLE *channel = [[FDFireflyIceChannelBLE alloc] initWithPeripheral:peripheral];
+    channel.RSSI = [FDFireflyIceChannelBLERSSI RSSI:[RSSI floatValue]];
     [fireflyIce addChannel:channel type:@"BLE"];
     dictionary = [NSMutableDictionary dictionary];
     [dictionary setObject:peripheral forKey:@"peripheral"];
@@ -147,36 +194,6 @@
 {
     FDFireflyIceChannelBLE *channel = fireflyIce.channels[@"BLE"];
     [_centralManager cancelPeripheralConnection:channel.peripheral];
-}
-
-- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel status:(FDFireflyIceChannelStatus)status
-{
-    switch (status) {
-        case FDFireflyIceChannelStatusOpening:
-            break;
-        case FDFireflyIceChannelStatusOpen:
-            [fireflyIce.executor execute:[FDHelloTask helloTask:fireflyIce channel:channel delegate:self]];
-            if ([_delegate respondsToSelector:@selector(fireflyIceManager:openedBLE:)]) {
-                [_delegate fireflyIceManager:self openedBLE:fireflyIce];
-            }
-            break;
-        case FDFireflyIceChannelStatusClosed:
-            if ([_delegate respondsToSelector:@selector(fireflyIceManager:closedBLE:)]) {
-                [_delegate fireflyIceManager:self closedBLE:fireflyIce];
-            }
-            break;
-    }
-}
-
-- (void)helloTaskComplete:(FDHelloTask *)helloTask
-{
-    FDFireflyIce *fireflyIce = helloTask.fireflyIce;
-    id<FDFireflyIceChannel> channel = helloTask.channel;
-    [fireflyIce.executor execute:[FDFirmwareUpdateTask firmwareUpdateTask:fireflyIce channel:channel]];
-    
-    if ([_delegate respondsToSelector:@selector(fireflyIceManager:identified:)]) {
-        [_delegate fireflyIceManager:self identified:fireflyIce];
-    }
 }
 
 @end

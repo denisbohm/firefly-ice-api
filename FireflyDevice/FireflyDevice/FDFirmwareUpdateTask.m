@@ -46,8 +46,15 @@
     FDFirmwareUpdateTask *firmwareUpdateTask = [[FDFirmwareUpdateTask alloc] init];
     firmwareUpdateTask.fireflyIce = fireflyIce;
     firmwareUpdateTask.channel = channel;
-    NSBundle *bundle = [NSBundle mainBundle];
-    NSString *path = [bundle pathForResource:@"FireflyIce" ofType:@"hex"];
+    NSBundle *mainBundle = [NSBundle mainBundle];
+    NSString *path = [mainBundle pathForResource:@"FireflyIce" ofType:@"hex"];
+    if (path == nil) {
+        NSBundle *classBundle = [NSBundle bundleForClass:[self class]];
+        path = [classBundle pathForResource:@"FireflyIce" ofType:@"hex"];
+    }
+    if (path == nil) {
+        @throw [NSException exceptionWithName:@"FirmwareUpdateFileNotFound" reason:@"firmware update file not found" userInfo:nil];
+    }
     NSString *firmware = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
     [firmwareUpdateTask parseFirmware:firmware];
     return firmwareUpdateTask;

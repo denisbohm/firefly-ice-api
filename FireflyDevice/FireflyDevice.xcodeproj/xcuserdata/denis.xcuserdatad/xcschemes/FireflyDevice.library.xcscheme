@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "929EF4B517EA06580044F6F9"
                BuildableName = "libFireflyDevice.a"
-               BlueprintName = "FireflyDevice"
+               BlueprintName = "FireflyDevice.library"
                ReferencedContainer = "container:FireflyDevice.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -33,8 +33,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "929EF4C617EA06580044F6F9"
-               BuildableName = "FireflyDeviceTests.octest"
-               BlueprintName = "FireflyDeviceTests"
+               BuildableName = "FireflyDeviceTests.library.octest"
+               BlueprintName = "FireflyDeviceTests.library"
                ReferencedContainer = "container:FireflyDevice.xcodeproj">
             </BuildableReference>
          </TestableReference>

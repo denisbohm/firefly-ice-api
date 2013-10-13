@@ -1,7 +1,0 @@
-//
-// Prefix header for all source files of the 'FireflyDeviceFramework' target in the 'FireflyDeviceFramework' project
-//
-
-#ifdef __OBJC__
-    #import <Cocoa/Cocoa.h>
-#endif

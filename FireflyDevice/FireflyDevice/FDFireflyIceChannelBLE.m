@@ -17,6 +17,18 @@
 #import <IOBluetooth/IOBluetooth.h>
 #endif
 
+@implementation FDFireflyIceChannelBLERSSI
+
++ (FDFireflyIceChannelBLERSSI *)RSSI:(float)value
+{
+    FDFireflyIceChannelBLERSSI *RSSI = [[FDFireflyIceChannelBLERSSI alloc] init];
+    RSSI.value = value;
+    RSSI.date = [NSDate date];
+    return RSSI;
+}
+
+@end
+
 @interface FDFireflyIceChannelBLE () <CBPeripheralDelegate>
 
 @property FDFireflyIceChannelStatus status;
@@ -122,6 +134,11 @@
             [_delegate fireflyIceChannel:self status:self.status];
         }
     }
+}
+
+- (void)peripheralDidUpdateRSSI:(CBPeripheral *)peripheral error:(NSError *)error
+{
+    self.RSSI = [FDFireflyIceChannelBLERSSI RSSI:[peripheral.RSSI floatValue]];
 }
 
 @end

@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "929EF51117EA2DEE0044F6F9"
-               BuildableName = "FireflyDeviceFramework.framework"
-               BlueprintName = "FireflyDeviceFramework"
-               ReferencedContainer = "container:FireflyDeviceFramework.xcodeproj">
+               BlueprintIdentifier = "92DF1392180B01AE00A1B849"
+               BuildableName = "FireflyDevice.framework"
+               BlueprintName = "FireflyDevice.framework"
+               ReferencedContainer = "container:FireflyDevice.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,10 +32,10 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "929EF52917EA2DEE0044F6F9"
-               BuildableName = "FireflyDeviceFrameworkTests.octest"
-               BlueprintName = "FireflyDeviceFrameworkTests"
-               ReferencedContainer = "container:FireflyDeviceFramework.xcodeproj">
+               BlueprintIdentifier = "92DF13A7180B01AE00A1B849"
+               BuildableName = "FireflyDeviceTests.framework.xctest"
+               BlueprintName = "FireflyDeviceTests.framework"
+               ReferencedContainer = "container:FireflyDevice.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
