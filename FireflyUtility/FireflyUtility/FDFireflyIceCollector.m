@@ -36,6 +36,7 @@
                                                @"fireflyIce:channel:storage:",
                                                @"fireflyIce:channel:directTestModeReport:",
                                                @"fireflyIce:channel:sensing:",
+                                               @"fireflyIce:channel:txPower:",
                           ]];
         _dictionary = [NSMutableDictionary dictionary];
     }
@@ -59,7 +60,8 @@
      FD_CONTROL_PROPERTY_POWER |
      FD_CONTROL_PROPERTY_SITE |
      FD_CONTROL_PROPERTY_RESET |
-     FD_CONTROL_PROPERTY_STORAGE];
+     FD_CONTROL_PROPERTY_STORAGE |
+     FD_CONTROL_PROPERTY_TX_POWER];
     [self.fireflyIce.coder sendDirectTestModeReport:self.channel];
     
     [self next:@selector(complete)];

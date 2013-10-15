@@ -30,6 +30,10 @@
 
 @property IBOutlet UIButton *testButton;
 
+@property IBOutlet UISegmentedControl *txPowerLevel;
+
+@property IBOutlet UIButton *setTxPowerButton;
+
 @end
 
 @implementation FDDetailRadioViewController
@@ -38,6 +42,7 @@
 {
     [super viewDidLoad];
     [self.buttons addObject:_testButton];
+    [self.buttons addObject:_setTxPowerButton];
 }
 
 - (void)configureView
@@ -52,6 +57,12 @@
         _reportLabel.text = [NSString stringWithFormat:@"%u packets received", report.packetCount & 0x7fff];
     } else {
         _reportLabel.text = @"";
+    }
+    
+    NSNumber *txPower = [collector objectForKey:@"txPower"];
+    if (txPower != nil) {
+        uint8_t level = [txPower unsignedCharValue];
+        [_txPowerLevel setSelectedSegmentIndex:level];
     }
 }
 
@@ -92,6 +103,15 @@
     NSTimeInterval duration = [self testDuration] * 60;
 
     [fireflyIce.coder sendDirectTestModeEnter:channel packet:packet duration:duration];
+}
+
+- (IBAction)setTxPower:(id)sender
+{
+    FDFireflyIce *fireflyIce = self.device[@"fireflyIce"];
+    id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
+    
+    uint8_t level = _txPowerLevel.selectedSegmentIndex;
+    [fireflyIce.coder sendSetPropertyTxPower:channel level:level];
 }
 
 - (IBAction)valueChanged:(id)sender

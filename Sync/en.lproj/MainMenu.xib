@@ -835,12 +835,12 @@
                                 <slider horizontalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="699">
                                     <rect key="frame" x="87" y="160" width="21" height="96"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <sliderCell key="cell" enabled="NO" alignment="left" minValue="-1" maxValue="1" tickMarkPosition="right" sliderType="linear" id="700"/>
+                                    <sliderCell key="cell" enabled="NO" alignment="left" minValue="-1" maxValue="1" tickMarkPosition="left" sliderType="linear" id="700"/>
                                 </slider>
                                 <slider horizontalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="704">
                                     <rect key="frame" x="62" y="160" width="21" height="96"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <sliderCell key="cell" enabled="NO" alignment="left" minValue="-1" maxValue="1" tickMarkPosition="right" sliderType="linear" id="706"/>
+                                    <sliderCell key="cell" enabled="NO" alignment="left" minValue="-1" maxValue="1" tickMarkPosition="left" sliderType="linear" id="706"/>
                                 </slider>
                                 <slider horizontalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="713">
                                     <rect key="frame" x="37" y="160" width="21" height="96"/>
@@ -848,7 +848,7 @@
                                     <constraints>
                                         <constraint firstAttribute="height" constant="91" id="715"/>
                                     </constraints>
-                                    <sliderCell key="cell" enabled="NO" alignment="left" minValue="-1" maxValue="1" tickMarkPosition="right" sliderType="linear" id="714"/>
+                                    <sliderCell key="cell" enabled="NO" alignment="left" minValue="-1" maxValue="1" tickMarkPosition="left" sliderType="linear" id="714"/>
                                 </slider>
                                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="722">
                                     <rect key="frame" x="24" y="262" width="96" height="17"/>
@@ -898,12 +898,12 @@
                                 <slider horizontalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="848">
                                     <rect key="frame" x="87" y="36" width="21" height="96"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <sliderCell key="cell" enabled="NO" alignment="left" minValue="-0.0001" maxValue="0.0001" tickMarkPosition="right" sliderType="linear" id="863"/>
+                                    <sliderCell key="cell" enabled="NO" alignment="left" minValue="-0.0001" maxValue="0.0001" tickMarkPosition="left" sliderType="linear" id="863"/>
                                 </slider>
                                 <slider horizontalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="849">
                                     <rect key="frame" x="62" y="36" width="21" height="96"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <sliderCell key="cell" enabled="NO" alignment="left" minValue="-0.0001" maxValue="0.0001" tickMarkPosition="right" sliderType="linear" id="862"/>
+                                    <sliderCell key="cell" enabled="NO" alignment="left" minValue="-0.0001" maxValue="0.0001" tickMarkPosition="left" sliderType="linear" id="862"/>
                                 </slider>
                                 <slider horizontalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="850">
                                     <rect key="frame" x="37" y="36" width="21" height="96"/>
@@ -911,7 +911,7 @@
                                     <constraints>
                                         <constraint firstAttribute="height" constant="91" id="971"/>
                                     </constraints>
-                                    <sliderCell key="cell" enabled="NO" alignment="left" minValue="-0.0001" maxValue="0.0001" tickMarkPosition="right" sliderType="linear" id="861"/>
+                                    <sliderCell key="cell" enabled="NO" alignment="left" minValue="-0.0001" maxValue="0.0001" tickMarkPosition="left" sliderType="linear" id="861"/>
                                 </slider>
                             </subviews>
                         </view>
@@ -1076,14 +1076,25 @@
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cNN-Ki-2se">
-                        <rect key="frame" x="309" y="273" width="101" height="32"/>
+                        <rect key="frame" x="309" y="273" width="103" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="push" title="Reset" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="MNH-nk-DC8">
+                        <buttonCell key="cell" type="push" title="Watchdog" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="MNH-nk-DC8">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <connections>
                             <action selector="usbReset:" target="494" id="h4w-CW-5QR"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gvm-yq-a6m">
+                        <rect key="frame" x="309" y="426" width="101" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Reset" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="1Gf-bO-hRR">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="bluetoothReset:" target="494" id="hYO-Db-Nue"/>
                         </connections>
                     </button>
                 </subviews>

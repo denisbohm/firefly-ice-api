@@ -404,21 +404,21 @@
                                 </connections>
                             </button>
                             <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="dfn-Sn-8eC">
-                                <rect key="frame" x="18" y="243" width="284" height="34"/>
+                                <rect key="frame" x="18" y="220" width="284" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
                                     <action selector="valueChanged:" destination="dxJ-83-JeV" eventType="valueChanged" id="PiD-uW-B3c"/>
                                 </connections>
                             </slider>
                             <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="KDa-c6-Ao0">
-                                <rect key="frame" x="18" y="173" width="284" height="34"/>
+                                <rect key="frame" x="18" y="162" width="284" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
                                     <action selector="valueChanged:" destination="dxJ-83-JeV" eventType="valueChanged" id="GmY-Qk-WTM"/>
                                 </connections>
                             </slider>
                             <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.01" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Unh-sI-ggA">
-                                <rect key="frame" x="18" y="313" width="284" height="34"/>
+                                <rect key="frame" x="18" y="279" width="284" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
                                     <action selector="valueChanged:" destination="dxJ-83-JeV" eventType="valueChanged" id="s31-o8-Ttw"/>
@@ -438,7 +438,7 @@
                                 </connections>
                             </segmentedControl>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="5 minutes" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rwv-p1-LTA">
-                                <rect key="frame" x="20" y="284" width="280" height="21"/>
+                                <rect key="frame" x="20" y="259" width="280" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <nil key="highlightedColor"/>
@@ -450,7 +450,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="2135 MHz" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OE8-a9-Dq7">
-                                <rect key="frame" x="20" y="214" width="280" height="21"/>
+                                <rect key="frame" x="20" y="201" width="280" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <nil key="highlightedColor"/>
@@ -472,6 +472,26 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="qmV-8V-LRb">
+                                <rect key="frame" x="20" y="320" width="280" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <segments>
+                                    <segment title="-18 dBm"/>
+                                    <segment title="-12 dBm"/>
+                                    <segment title="-6 dBm"/>
+                                    <segment title="0 dBm"/>
+                                </segments>
+                            </segmentedControl>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vND-b6-DBj">
+                                <rect key="frame" x="20" y="354" width="92" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Set Tx Power">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="setTxPower:" destination="dxJ-83-JeV" eventType="touchUpInside" id="uxi-9E-u2f"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -485,7 +505,9 @@
                         <outlet property="lengthLabel" destination="IDC-6l-DoG" id="6HW-UM-QrH"/>
                         <outlet property="mode" destination="G1Z-6m-19a" id="NYq-AI-Nc2"/>
                         <outlet property="reportLabel" destination="G6j-2j-7wk" id="pPV-1q-UDZ"/>
+                        <outlet property="setTxPowerButton" destination="vND-b6-DBj" id="zS9-jX-zMe"/>
                         <outlet property="testButton" destination="aPt-eX-xBg" id="hha-EE-DSj"/>
+                        <outlet property="txPowerLevel" destination="qmV-8V-LRb" id="qmu-Ay-yj5"/>
                         <outlet property="type" destination="X7m-cO-eD6" id="X3L-Xw-rw8"/>
                     </connections>
                 </viewController>

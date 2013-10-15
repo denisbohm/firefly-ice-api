@@ -194,6 +194,7 @@
 
 - (void)execute:(id<FDExecutorTask>)task
 {
+    [self cancel:task];
     [self addTask:task];
     
     [self schedule];
@@ -221,6 +222,26 @@
     } else {
         NSLog(@"expected current task to be complete...");
     }
+}
+
+- (void)cancel:(id<FDExecutorTask>)task
+{
+    if (_currentTask == task) {
+        [self complete:task];
+    }
+    [_tasks removeObject:task];
+    [_appointmentTasks removeObject:task];
+}
+
+- (NSArray *)allTasks
+{
+    NSMutableArray *tasks = [NSMutableArray array];
+    if (_currentTask != nil) {
+        [tasks addObject:_currentTask];
+    }
+    [tasks addObjectsFromArray:_tasks];
+    [tasks addObjectsFromArray:_appointmentTasks];
+    return tasks;
 }
 
 @end

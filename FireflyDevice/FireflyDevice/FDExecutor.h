@@ -29,6 +29,8 @@
 @property(nonatomic) BOOL run;
 
 - (void)execute:(id<FDExecutorTask>)task;
+- (void)cancel:(id<FDExecutorTask>)task;
+- (NSArray *)allTasks;
 
 - (void)feedWatchdog:(id<FDExecutorTask>)task;
 - (void)complete:(id<FDExecutorTask>)task;

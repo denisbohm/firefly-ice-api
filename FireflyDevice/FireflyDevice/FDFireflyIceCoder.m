@@ -183,6 +183,13 @@
     [_observable fireflyIce:fireflyIce channel:channel mode:mode];
 }
 
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel getPropertyTxPower:(FDBinary *)binary
+{
+    NSNumber *level = [NSNumber numberWithUnsignedChar:[binary getUInt8]];
+    
+    [_observable fireflyIce:fireflyIce channel:channel txPower:level];
+}
+
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel getProperties:(NSData *)data
 {
     FDBinary *binary = [[FDBinary alloc] initWithData:data];
@@ -214,6 +221,9 @@
     if (properties & FD_CONTROL_PROPERTY_MODE) {
         [self fireflyIce:fireflyIce channel:channel getPropertyMode:binary];
     }
+    if (properties & FD_CONTROL_PROPERTY_TX_POWER) {
+        [self fireflyIce:fireflyIce channel:channel getPropertyTxPower:binary];
+    }
 }
 
 - (void)sendSetPropertyTime:(id<FDFireflyIceChannel>)channel time:(NSDate *)time
@@ -231,6 +241,15 @@
     [binary putUInt8:FD_CONTROL_SET_PROPERTIES];
     [binary putUInt32:FD_CONTROL_PROPERTY_MODE];
     [binary putUInt8:mode];
+    [channel fireflyIceChannelSend:binary.dataValue];
+}
+
+- (void)sendSetPropertyTxPower:(id<FDFireflyIceChannel>)channel level:(uint8_t)level
+{
+    FDBinary *binary = [[FDBinary alloc] init];
+    [binary putUInt8:FD_CONTROL_SET_PROPERTIES];
+    [binary putUInt32:FD_CONTROL_PROPERTY_TX_POWER];
+    [binary putUInt8:level];
     [channel fireflyIceChannelSend:binary.dataValue];
 }
 

@@ -101,7 +101,7 @@
 
 @end
 
-@interface FDAppDelegate () <CBCentralManagerDelegate, FDUSBHIDMonitorDelegate, NSTableViewDataSource, FDFireflyIceObserver, FDHelloTaskDelegate>
+@interface FDAppDelegate () <CBCentralManagerDelegate, FDUSBHIDMonitorDelegate, NSTableViewDataSource, FDFireflyIceObserver, FDHelloTaskDelegate, ZZSyncTaskDelegate>
 
 @property NSMutableArray *devices;
 
@@ -126,6 +126,8 @@
 @property CPTScatterPlot *activityPlot;
 @property FDActivityPlotDataSource *activityPlotDataSource;
 
+@property ZZSyncTask *syncTask;
+
 @end
 
 @implementation FDAppDelegate
@@ -139,6 +141,8 @@
     _bluetoothTableView.dataSource = self;
     
     _usbMonitor = [[FDUSBHIDMonitor alloc] init];
+//    _usbMonitor.vendor = 0x2544;
+//    _usbMonitor.product = 0x0001;
     _usbMonitor.vendor = 0x2333;
     _usbMonitor.product = 0x0002;
     _usbMonitor.delegate = self;
@@ -163,14 +167,39 @@
     }
 }
 
+- (void)syncTaskActive:(ZZSyncTask *)syncTask
+{
+    NSLog(@"delegate syncTask active");    
+}
+
+- (void)syncTask:(ZZSyncTask *)syncTask error:(NSError *)error
+{
+    NSLog(@"delegate syncTask error %@", error);
+}
+
+- (void)syncTask:(ZZSyncTask *)syncTask progress:(float)progress
+{
+    NSLog(@"delegate syncTask progress %f", progress);
+}
+
+- (void)syncTaskComplete:(ZZSyncTask *)syncTask
+{
+    NSLog(@"delegate syncTask complete");
+}
+
+- (void)syncTaskInactive:(ZZSyncTask *)syncTask
+{
+    NSLog(@"delegate syncTask inactive");
+}
+
 - (void)helloTaskComplete:(FDHelloTask *)helloTask
 {
-    /*
     FDFireflyIce *fireflyIce = helloTask.fireflyIce;
     id<FDFireflyIceChannel> channel = helloTask.channel;
-    [fireflyIce.executor execute:[ZZSyncTask syncTask:fireflyIce channel:channel]];
+    _syncTask = [ZZSyncTask syncTask:fireflyIce channel:channel];
+    _syncTask.delegate = self;
+    [fireflyIce.executor execute:_syncTask];
     [fireflyIce.executor execute:[FDFirmwareUpdateTask firmwareUpdateTask:fireflyIce channel:channel]];
-     */
 }
 
 - (void)fireflyIceSensing:(id<FDFireflyIceChannel>)channel ax:(float)ax ay:(float)ay az:(float)az mx:(float)mx my:(float)my mz:(float)mz
@@ -413,6 +442,13 @@
 {
     FDFireflyIceChannelBLE *channel = [self getSelectedFireflyDevice];
     [_centralManager cancelPeripheralConnection:channel.peripheral];
+}
+
+- (IBAction)bluetoothReset:(id)sender
+{
+    FDFireflyIceChannelBLE *channel = [self getSelectedFireflyDevice];
+    FDFireflyIceCoder *coder = [[FDFireflyIceCoder alloc] init];
+    [coder sendReset:channel type:FD_CONTROL_RESET_SYSTEM_REQUEST];
 }
 
 - (IBAction)update:(id)sender
