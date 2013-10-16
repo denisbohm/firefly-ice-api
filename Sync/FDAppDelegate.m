@@ -198,7 +198,7 @@
     id<FDFireflyIceChannel> channel = helloTask.channel;
     _syncTask = [ZZSyncTask syncTask:fireflyIce channel:channel];
     _syncTask.delegate = self;
-    [fireflyIce.executor execute:_syncTask];
+//    [fireflyIce.executor execute:_syncTask];
     [fireflyIce.executor execute:[FDFirmwareUpdateTask firmwareUpdateTask:fireflyIce channel:channel]];
 }
 
@@ -436,6 +436,13 @@
     FDFireflyIceChannelBLE *channel = [self getSelectedFireflyDevice];
     FDFireflyIceCoder *coder = [[FDFireflyIceCoder alloc] init];
     [coder sendSyncStart:channel];
+}
+
+- (IBAction)bluetoothStorage:(id)sender
+{
+    FDFireflyIceChannelBLE *channel = [self getSelectedFireflyDevice];
+    FDFireflyIceCoder *coder = [[FDFireflyIceCoder alloc] init];
+    [coder sendSetPropertyMode:channel mode:FD_CONTROL_MODE_STORAGE];
 }
 
 - (IBAction)bluetoothDisconnect:(id)sender
