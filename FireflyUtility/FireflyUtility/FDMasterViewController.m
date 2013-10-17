@@ -158,7 +158,7 @@
 
 - (void)fireflyIceManager:(FDFireflyIceManager *)manager identified:(FDFireflyIce *)fireflyIce
 {
-//    [fireflyIce.executor execute:[ZZSyncTask syncTask:fireflyIce channel:fireflyIce.channels[@"BLE"]]];
+    [fireflyIce.executor execute:[ZZSyncTask syncTask:fireflyIce channel:fireflyIce.channels[@"BLE"]]];
 }
 
 - (void)setDevice:(NSMutableDictionary *)device

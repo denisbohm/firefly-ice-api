@@ -44,6 +44,9 @@
 
 - (void)setReport:(NSData *)data
 {
+    if (!_isOpen) {
+        @throw [NSException exceptionWithName:@"USBDeviceNotOpen" reason:@"USB device not open" userInfo:nil];
+    }
     [_outputData resetBytesInRange:NSMakeRange(0, _outputData.length)];
     [data getBytes:(void *)_outputData.bytes length:_outputData.length];
     IOReturn ioReturn = IOHIDDeviceSetReport(_hidDeviceRef, kIOHIDReportTypeOutput, 0x81, _outputData.bytes, _outputData.length);

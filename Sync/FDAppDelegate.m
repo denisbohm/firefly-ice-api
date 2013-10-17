@@ -198,8 +198,8 @@
     id<FDFireflyIceChannel> channel = helloTask.channel;
     _syncTask = [ZZSyncTask syncTask:fireflyIce channel:channel];
     _syncTask.delegate = self;
-//    [fireflyIce.executor execute:_syncTask];
-    [fireflyIce.executor execute:[FDFirmwareUpdateTask firmwareUpdateTask:fireflyIce channel:channel]];
+    [fireflyIce.executor execute:_syncTask];
+//    [fireflyIce.executor execute:[FDFirmwareUpdateTask firmwareUpdateTask:fireflyIce channel:channel]];
 }
 
 - (void)fireflyIceSensing:(id<FDFireflyIceChannel>)channel ax:(float)ax ay:(float)ay az:(float)az mx:(float)mx my:(float)my mz:(float)mz

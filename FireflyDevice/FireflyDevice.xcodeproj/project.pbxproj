@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		924D016118104C7200EB500A /* FDFireflyIceSimpleTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 924D016018104C7200EB500A /* FDFireflyIceSimpleTask.m */; };
+		924D016218104F5700EB500A /* FDFireflyIceSimpleTask.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 924D015F18104C7200EB500A /* FDFireflyIceSimpleTask.h */; };
 		927F3DB717FA20A200C933DD /* FDFireflyIceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 927F3DB617FA20A200C933DD /* FDFireflyIceManager.m */; };
 		927F3DBC17FA4F0B00C933DD /* FDSyncTask.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 92F863F317F3B4E0000E23AF /* FDSyncTask.h */; };
 		927F3DBD17FA4F0B00C933DD /* FDFireflyIceManager.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 927F3DB517FA20A200C933DD /* FDFireflyIceManager.h */; };
@@ -116,6 +118,7 @@
 			dstPath = "include/${PRODUCT_NAME}";
 			dstSubfolderSpec = 16;
 			files = (
+				924D016218104F5700EB500A /* FDFireflyIceSimpleTask.h in CopyFiles */,
 				927F3DBC17FA4F0B00C933DD /* FDSyncTask.h in CopyFiles */,
 				927F3DBD17FA4F0B00C933DD /* FDFireflyIceManager.h in CopyFiles */,
 				92D7338517EAB5DA007A1254 /* FDBinary.h in CopyFiles */,
@@ -138,6 +141,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		924D015F18104C7200EB500A /* FDFireflyIceSimpleTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFireflyIceSimpleTask.h; sourceTree = "<group>"; };
+		924D016018104C7200EB500A /* FDFireflyIceSimpleTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFireflyIceSimpleTask.m; sourceTree = "<group>"; };
 		927F3DB517FA20A200C933DD /* FDFireflyIceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFireflyIceManager.h; sourceTree = "<group>"; };
 		927F3DB617FA20A200C933DD /* FDFireflyIceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFireflyIceManager.m; sourceTree = "<group>"; };
 		929EF4B617EA06580044F6F9 /* libFireflyDevice.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFireflyDevice.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -280,6 +285,7 @@
 		929EF4BB17EA06580044F6F9 /* FireflyDevice */ = {
 			isa = PBXGroup;
 			children = (
+				929EF4BC17EA06580044F6F9 /* Supporting Files */,
 				92DF13FA180B047400A1B849 /* FDUSBHIDMonitor.h */,
 				92DF13FB180B047400A1B849 /* FDUSBHIDMonitor.m */,
 				929EF4BE17EA06580044F6F9 /* FireflyDevice.h */,
@@ -318,7 +324,8 @@
 				929EF4F217EA06C10044F6F9 /* FDFirmwareUpdateTask.m */,
 				927F3DB517FA20A200C933DD /* FDFireflyIceManager.h */,
 				927F3DB617FA20A200C933DD /* FDFireflyIceManager.m */,
-				929EF4BC17EA06580044F6F9 /* Supporting Files */,
+				924D015F18104C7200EB500A /* FDFireflyIceSimpleTask.h */,
+				924D016018104C7200EB500A /* FDFireflyIceSimpleTask.m */,
 			);
 			path = FireflyDevice;
 			sourceTree = "<group>";
@@ -553,6 +560,7 @@
 				929EF4F817EA06C10044F6F9 /* FDFireflyIce.m in Sources */,
 				929EF4F917EA06C10044F6F9 /* FDFireflyIceChannel.m in Sources */,
 				929EF4FA17EA06C10044F6F9 /* FDFireflyIceChannelBLE.m in Sources */,
+				924D016118104C7200EB500A /* FDFireflyIceSimpleTask.m in Sources */,
 				929EF4FB17EA06C10044F6F9 /* FDFireflyIceCoder.m in Sources */,
 				929EF4FC17EA06C10044F6F9 /* FDFireflyIceTaskSteps.m in Sources */,
 				929EF4FD17EA06C10044F6F9 /* FDFirmwareUpdateTask.m in Sources */,

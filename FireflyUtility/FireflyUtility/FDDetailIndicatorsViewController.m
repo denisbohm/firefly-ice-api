@@ -10,6 +10,7 @@
 
 #import <FireflyDevice/FDFireflyIce.h>
 #import <FireflyDevice/FDFireflyIceCoder.h>
+#import <FireflyDevice/FDFireflyIceSimpleTask.h>
 
 @interface FDDetailIndicatorsViewController ()
 
@@ -55,7 +56,7 @@
 
 - (void)configureView
 {
-    _durationLabel.text = [NSString stringWithFormat:@"%d minutes", [self testDuration]];
+    _durationLabel.text = [NSString stringWithFormat:@"%d seconds", [self testDuration]];
 }
 
 - (IBAction)valueChanged:(id)sender
@@ -98,7 +99,9 @@
     
     NSTimeInterval duration = [self testDuration];
 
-    [fireflyIce.coder sendIndicatorOverride:channel usbOrange:usbOrange usbGreen:usbGreen d0:d0 d1:d1 d2:d2 d3:d3 d4:d4 duration:duration];
+    [fireflyIce.executor execute:[FDFireflyIceSimpleTask simpleTask:fireflyIce channel:channel block:^(void) {
+        [fireflyIce.coder sendIndicatorOverride:channel usbOrange:usbOrange usbGreen:usbGreen d0:d0 d1:d1 d2:d2 d3:d3 d4:d4 duration:duration];
+    }]];
 }
 
 @end
