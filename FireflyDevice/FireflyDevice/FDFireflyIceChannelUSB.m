@@ -51,7 +51,7 @@
 
 - (void)usbHidDevice:(FDUSBHIDDevice *)device inputReport:(NSData *)data
 {
-    NSLog(@"usbHidDevice:inputReport: %@", data);
+//    NSLog(@"usbHidDevice:inputReport: %@", data);
     [_detour detourEvent:data];
     if (_detour.state == FDDetourStateSuccess) {
         [_delegate fireflyIceChannelPacket:self data:_detour.data];
