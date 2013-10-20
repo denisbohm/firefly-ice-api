@@ -293,9 +293,9 @@
 			isa = PBXGroup;
 			children = (
 				92DF13EB180B035100A1B849 /* libFireflyDevice.a */,
-				92DF13ED180B035100A1B849 /* FireflyDeviceTests.octest */,
+				92DF13ED180B035100A1B849 /* FireflyDeviceTests.library.octest */,
 				92DF13EF180B035100A1B849 /* FireflyDevice.framework */,
-				92DF13F1180B035100A1B849 /* FireflyDeviceTests.xctest */,
+				92DF13F1180B035100A1B849 /* FireflyDeviceTests.framework.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -306,7 +306,7 @@
 				92DF1459180B0B6100A1B849 /* libZamzeeDevice.a */,
 				92DF145B180B0B6100A1B849 /* ZamzeeDeviceTests.library.xctest */,
 				92DF145D180B0B6100A1B849 /* ZamzeeDevice.framework */,
-				92DF145F180B0B6100A1B849 /* ZamzeeDeviceTests.xctest */,
+				92DF145F180B0B6100A1B849 /* ZamzeeDeviceTests.framework.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -418,10 +418,9 @@
 			remoteRef = 92DF13EA180B035100A1B849 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		92DF13ED180B035100A1B849 /* FireflyDeviceTests.octest */ = {
+		92DF13ED180B035100A1B849 /* FireflyDeviceTests.library.octest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			name = FireflyDeviceTests.octest;
 			path = FireflyDeviceTests.library.octest;
 			remoteRef = 92DF13EC180B035100A1B849 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
@@ -433,10 +432,9 @@
 			remoteRef = 92DF13EE180B035100A1B849 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		92DF13F1180B035100A1B849 /* FireflyDeviceTests.xctest */ = {
+		92DF13F1180B035100A1B849 /* FireflyDeviceTests.framework.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			name = FireflyDeviceTests.xctest;
 			path = FireflyDeviceTests.framework.xctest;
 			remoteRef = 92DF13F0180B035100A1B849 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
@@ -462,10 +460,9 @@
 			remoteRef = 92DF145C180B0B6100A1B849 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		92DF145F180B0B6100A1B849 /* ZamzeeDeviceTests.xctest */ = {
+		92DF145F180B0B6100A1B849 /* ZamzeeDeviceTests.framework.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			name = ZamzeeDeviceTests.xctest;
 			path = ZamzeeDeviceTests.framework.xctest;
 			remoteRef = 92DF145E180B0B6100A1B849 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;

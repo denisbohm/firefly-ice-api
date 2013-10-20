@@ -41,23 +41,36 @@
 
 @implementation FDFirmwareUpdateTask
 
-+ (FDFirmwareUpdateTask *)firmwareUpdateTask:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel
+@synthesize firmware = _firmware;
+
++ (FDFirmwareUpdateTask *)firmwareUpdateTask:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel firmware:(NSData *)firmware
 {
     FDFirmwareUpdateTask *firmwareUpdateTask = [[FDFirmwareUpdateTask alloc] init];
     firmwareUpdateTask.fireflyIce = fireflyIce;
     firmwareUpdateTask.channel = channel;
+    firmwareUpdateTask.firmware = firmware;
+    return firmwareUpdateTask;
+}
+
++ (FDFirmwareUpdateTask *)firmwareUpdateTask:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel resource:(NSString *)resource
+{
     NSBundle *mainBundle = [NSBundle mainBundle];
-    NSString *path = [mainBundle pathForResource:@"FireflyIce" ofType:@"hex"];
+    NSString *path = [mainBundle pathForResource:resource ofType:@"hex"];
     if (path == nil) {
         NSBundle *classBundle = [NSBundle bundleForClass:[self class]];
-        path = [classBundle pathForResource:@"FireflyIce" ofType:@"hex"];
+        path = [classBundle pathForResource:resource ofType:@"hex"];
     }
     if (path == nil) {
         @throw [NSException exceptionWithName:@"FirmwareUpdateFileNotFound" reason:@"firmware update file not found" userInfo:nil];
     }
-    NSString *firmware = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
-    [firmwareUpdateTask parseFirmware:firmware];
-    return firmwareUpdateTask;
+    NSString *content = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+    NSData *firmware = [FDIntelHex parse:content address:0x08000 length:0x40000 - 0x08000];
+    return [FDFirmwareUpdateTask firmwareUpdateTask:fireflyIce channel:channel firmware:firmware];
+}
+
++ (FDFirmwareUpdateTask *)firmwareUpdateTask:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel
+{
+    return [FDFirmwareUpdateTask firmwareUpdateTask:fireflyIce channel:channel resource:@"FireflyIce"];
 }
 
 - (id)init
@@ -71,14 +84,18 @@
     return self;
 }
 
-- (void)parseFirmware:(NSString *)intelHex
+- (NSData *)firmware {
+    return _firmware;
+}
+
+- (void)setFirmware:(NSData *)unpaddedFirmware
 {
-    NSMutableData *data = [NSMutableData dataWithData:[FDIntelHex parse:intelHex address:0x08000 length:0x40000 - 0x08000]];
     // pad to sector multiple of sector size
-    NSUInteger length = data.length;
+    NSMutableData *firmware = [NSMutableData dataWithData:unpaddedFirmware];
+    NSUInteger length = firmware.length;
     length = ((length + _sectorSize - 1) / _sectorSize) * _sectorSize;
-    data.length = length;
-    _firmware = data;
+    firmware.length = length;
+    _firmware = firmware;
 }
 
 - (void)executorTaskStarted:(FDExecutor *)executor
