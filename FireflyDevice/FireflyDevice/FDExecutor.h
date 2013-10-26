@@ -21,8 +21,15 @@
 - (void)executorTaskSuspended:(FDExecutor *)executor;
 - (void)executorTaskResumed:(FDExecutor *)executor;
 - (void)executorTaskCompleted:(FDExecutor *)executor;
+- (void)executorTaskFailed:(FDExecutor *)executor error:(NSError *)error;
 
 @end
+
+enum {
+    FDExecutorErrorCodeAbort,
+    FDExecutorErrorCodeCancel,
+    FDExecutorErrorCodeTimeout,
+};
 
 @interface FDExecutor : NSObject
 
@@ -31,8 +38,10 @@
 - (void)execute:(id<FDExecutorTask>)task;
 - (void)cancel:(id<FDExecutorTask>)task;
 - (NSArray *)allTasks;
+@property(readonly) BOOL hasTasks;
 
 - (void)feedWatchdog:(id<FDExecutorTask>)task;
 - (void)complete:(id<FDExecutorTask>)task;
+- (void)fail:(id<FDExecutorTask>)task error:(NSError *)error;
 
 @end

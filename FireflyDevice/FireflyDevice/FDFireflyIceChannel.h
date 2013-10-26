@@ -18,7 +18,6 @@ typedef enum {FDFireflyIceChannelStatusClosed, FDFireflyIceChannelStatusOpening,
 
 - (void)fireflyIceChannel:(id<FDFireflyIceChannel>)channel status:(FDFireflyIceChannelStatus)status;
 
-- (void)fireflyIceChannelOpen:(id<FDFireflyIceChannel>)channel;
 - (void)fireflyIceChannelPacket:(id<FDFireflyIceChannel>)channel data:(NSData *)data;
 
 @end

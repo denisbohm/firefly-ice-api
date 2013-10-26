@@ -18,6 +18,8 @@
 
 @interface FDFirmwareUpdateTask () <FDFireflyIceObserver>
 
+@property FDFireflyIceVersion *version;
+
 // sector and page size for external flash memory
 @property uint32_t sectorSize;
 @property uint32_t pageSize;
@@ -64,8 +66,17 @@
         @throw [NSException exceptionWithName:@"FirmwareUpdateFileNotFound" reason:@"firmware update file not found" userInfo:nil];
     }
     NSString *content = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
-    NSData *firmware = [FDIntelHex parse:content address:0x08000 length:0x40000 - 0x08000];
-    return [FDFirmwareUpdateTask firmwareUpdateTask:fireflyIce channel:channel firmware:firmware];
+    FDIntelHex *intelHex = [FDIntelHex intelHex:content address:0x08000 length:0x40000 - 0x08000];
+    
+    FDFirmwareUpdateTask *firmwareUpdateTask = [[FDFirmwareUpdateTask alloc] init];
+    firmwareUpdateTask.fireflyIce = fireflyIce;
+    firmwareUpdateTask.channel = channel;
+    firmwareUpdateTask.firmware = intelHex.data;
+    firmwareUpdateTask.major = [intelHex.properties[@"major"] unsignedShortValue];
+    firmwareUpdateTask.minor = [intelHex.properties[@"minor"] unsignedShortValue];
+    firmwareUpdateTask.patch = [intelHex.properties[@"patch"] unsignedShortValue];
+    
+    return firmwareUpdateTask;
 }
 
 + (FDFirmwareUpdateTask *)firmwareUpdateTask:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel
@@ -112,12 +123,50 @@
     [self begin];
 }
 
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel version:(FDFireflyIceVersion *)version
+{
+    _version = version;
+}
+
 - (void)begin
 {
     _updateSectors = nil;
     _updatePages = nil;
     
-    [self getSectorHashes];
+    [self.fireflyIce.coder sendGetProperties:self.channel properties:FD_CONTROL_PROPERTY_VERSION];
+    [self next:@selector(checkVersion)];
+}
+
+- (BOOL)isOutOfDate
+{
+    if (_version.major < _major) {
+        return YES;
+    }
+    if (_version.major > _major) {
+        return NO;
+    }
+    if (_version.minor < _minor) {
+        return YES;
+    }
+    if (_version.minor > _minor) {
+        return NO;
+    }
+    if (_version.patch < _patch) {
+        return YES;
+    }
+    if (_version.patch > _patch) {
+        return NO;
+    }
+    return NO;
+}
+
+- (void)checkVersion
+{
+    if ([self isOutOfDate]) {
+        [self next:@selector(getSectorHashes)];
+    } else {
+        [self complete];
+    }
 }
 
 - (void)firstSectorHashesCheck

@@ -20,6 +20,8 @@
 #import <FireflyDevice/FDIntelHex.h>
 #import <FireflyDevice/FDUSBHIDMonitor.h>
 
+//#import <CorePlot/CorePlot.h>
+
 #if TARGET_OS_IPHONE
 #import <CoreBluetooth/CoreBluetooth.h>
 #else
@@ -54,6 +56,7 @@
 
 @end
 
+#ifdef PLOT
 @interface FDActivityPlotDataSource : NSObject <CPTPlotDataSource>
 
 @property NSMutableArray *data;
@@ -101,6 +104,8 @@
 
 @end
 
+#endif
+
 @interface FDAppDelegate () <CBCentralManagerDelegate, FDUSBHIDMonitorDelegate, NSTableViewDataSource, FDFireflyIceObserver, FDHelloTaskDelegate, ZZSyncTaskDelegate>
 
 @property NSMutableArray *devices;
@@ -121,10 +126,12 @@
 @property (assign) IBOutlet NSSlider *mySlider;
 @property (assign) IBOutlet NSSlider *mzSlider;
 
+#ifdef PLOT
 @property (assign) IBOutlet CPTGraphHostingView *graphHostingView;
 @property CPTXYGraph *activityGraph;
 @property CPTScatterPlot *activityPlot;
 @property FDActivityPlotDataSource *activityPlotDataSource;
+#endif
 
 @property ZZSyncTask *syncTask;
 
@@ -196,10 +203,9 @@
 {
     FDFireflyIce *fireflyIce = helloTask.fireflyIce;
     id<FDFireflyIceChannel> channel = helloTask.channel;
-    _syncTask = [ZZSyncTask syncTask:fireflyIce channel:channel];
-    _syncTask.delegate = self;
-    [fireflyIce.executor execute:_syncTask];
-//    [fireflyIce.executor execute:[FDFirmwareUpdateTask firmwareUpdateTask:fireflyIce channel:channel]];
+    _syncTask = [ZZSyncTask syncTask:fireflyIce channel:channel delegate:self];
+//    [fireflyIce.executor execute:_syncTask];
+    [fireflyIce.executor execute:[FDFirmwareUpdateTask firmwareUpdateTask:fireflyIce channel:channel]];
 }
 
 - (void)fireflyIceSensing:(id<FDFireflyIceChannel>)channel ax:(float)ax ay:(float)ay az:(float)az mx:(float)mx my:(float)my mz:(float)mz
@@ -217,6 +223,7 @@
 
 - (void)setupGraph
 {
+#ifdef PLOT
     // Create graph and apply a dark theme
     _activityGraph = [(CPTXYGraph *)[CPTXYGraph alloc] initWithFrame:NSRectToCGRect(_graphHostingView.bounds)];
     _graphHostingView.hostedGraph = _activityGraph;
@@ -251,10 +258,12 @@
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)_activityGraph.defaultPlotSpace;
     plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromInteger(0) length:CPTDecimalFromInteger(10)];
     plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromInteger(0) length:CPTDecimalFromInteger(10)];
+#endif
 }
 
 - (IBAction)refreshPlot:(id)sender
 {
+#ifdef PLOT
     NSDictionary *query = @{@"query": @{@"type": @"vmas", @"end": @"$max", @"duration": @"1d"}};
     NSError *error = nil;
     NSData* data = [NSJSONSerialization dataWithJSONObject:query options:0 error:&error];
@@ -296,6 +305,7 @@
     plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromInteger(0) length:CPTDecimalFromInteger(200)];
     plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromInteger(0) length:CPTDecimalFromInteger(10)];
     [_activityGraph reloadData];
+#endif
 }
 
 - (void)usbHidMonitor:(FDUSBHIDMonitor *)monitor deviceAdded:(FDUSBHIDDevice *)usbHidDevice
@@ -392,7 +402,7 @@
 {
     FDFireflyIceChannelUSB *channel = [self getSelectedUsbDevice];
     FDFireflyIceCoder *coder = [[FDFireflyIceCoder alloc] init];
-    [coder sendReset:channel type:FD_CONTROL_RESET_WATCHDOG];
+    [coder sendReset:channel type:FD_CONTROL_RESET_SYSTEM_REQUEST];
 }
 
 - (FDFireflyIceChannelBLE *)getSelectedFireflyDevice
@@ -428,7 +438,7 @@
 {
     FDFireflyIceChannelBLE *channel = [self getSelectedFireflyDevice];
     FDFireflyIceCoder *coder = [[FDFireflyIceCoder alloc] init];
-    [coder sendIndicatorOverride:channel usbOrange:0 usbGreen:0 d0:0 d1:0xffffff d2:0xffffff d3:0xffffff d4:0 duration:5.0];
+    [coder sendIndicatorOverride:channel usbOrange:0 usbGreen:0 d0:0 d1:0 d2:0xffffff d3:0 d4:0 duration:30.0];
 }
 
 - (IBAction)bluetoothSync:(id)sender

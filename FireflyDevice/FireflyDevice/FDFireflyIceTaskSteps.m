@@ -27,32 +27,38 @@
 - (id)init
 {
     if (self = [super init]) {
-        _timeout = 600; // !!! just for testing -denis
+        _timeout = 15;
     }
     return self;
 }
 
 - (void)executorTaskStarted:(FDExecutor *)executor
 {
-    NSLog(@"%@ task started", NSStringFromClass([self class]));
+//    NSLog(@"%@ task started", NSStringFromClass([self class]));
     [_fireflyIce.observable addObserver:self];
 }
 
 - (void)executorTaskSuspended:(FDExecutor *)executor
 {
-    NSLog(@"%@ task suspended", NSStringFromClass([self class]));
+//    NSLog(@"%@ task suspended", NSStringFromClass([self class]));
     [_fireflyIce.observable removeObserver:self];
 }
 
 - (void)executorTaskResumed:(FDExecutor *)executor
 {
-    NSLog(@"%@ task resumed", NSStringFromClass([self class]));
+//    NSLog(@"%@ task resumed", NSStringFromClass([self class]));
     [_fireflyIce.observable addObserver:self];
 }
 
 - (void)executorTaskCompleted:(FDExecutor *)executor
 {
-    NSLog(@"%@ task completed", NSStringFromClass([self class]));
+//    NSLog(@"%@ task completed", NSStringFromClass([self class]));
+    [_fireflyIce.observable removeObserver:self];
+}
+
+- (void)executorTaskFailed:(FDExecutor *)executor error:(NSError *)error
+{
+//    NSLog(@"%@ task failed with error %@", NSStringFromClass([self class]), error);
     [_fireflyIce.observable removeObserver:self];
 }
 

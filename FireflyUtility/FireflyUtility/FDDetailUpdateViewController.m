@@ -76,11 +76,8 @@
     FDFireflyIce *fireflyIce = self.device[@"fireflyIce"];
     id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
     
-    FDFirmwareUpdateTask *task = [[FDFirmwareUpdateTask alloc] init];
-    task.fireflyIce = fireflyIce;
-    task.channel = channel;
+    FDFirmwareUpdateTask *task = [FDFirmwareUpdateTask firmwareUpdateTask:fireflyIce channel:channel resource:@"FireflyIce"];
     task.delegate = self;
-    [task parseFirmware:[self loadFirmware:@"FireflyIce" type:@"THUMB Flash Release"]];
     _updateView.firmwareUpdateTask = task;
     [_updateView setNeedsDisplay];
     [fireflyIce.executor execute:task];

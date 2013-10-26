@@ -15,6 +15,7 @@
 @property float value;
 @property NSDate *date;
 
++ (FDFireflyIceChannelBLERSSI *)RSSI:(float)value date:(NSDate *)date;
 + (FDFireflyIceChannelBLERSSI *)RSSI:(float)value;
 
 @end

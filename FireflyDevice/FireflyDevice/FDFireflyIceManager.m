@@ -89,7 +89,7 @@
 
 - (void)scan:(BOOL)allowDuplicates
 {
-    [_centralManager retrieveConnectedPeripherals];
+    [_centralManager retrieveConnectedPeripheralsWithServices:@[_serviceUUID]];
     NSDictionary *options = nil;
     if (allowDuplicates) {
         options = @{CBCentralManagerScanOptionAllowDuplicatesKey: @YES};

@@ -10,6 +10,18 @@
 
 @implementation FDIntelHex
 
++ (FDIntelHex *)intelHex:(NSString *)hex address:(uint32_t)address length:(uint32_t)length
+{
+    FDIntelHex *intelHex = [[FDIntelHex alloc] init];
+    [intelHex read:hex address:address length:length];
+    return intelHex;
+}
+
++ (NSData *)parse:(NSString *)content address:(uint32_t)address length:(uint32_t)length
+{
+    return [FDIntelHex intelHex:content address:address length:length].data;
+}
+
 + (uint32_t)hex:(NSString *)line index:(int *)index length:(int)length crc:(uint8_t *)crc
 {
     NSString *string = [line substringWithRange:NSMakeRange(*index, length)];
@@ -27,13 +39,22 @@
     return value;
 }
 
-+ (NSData *)parse:(NSString *)content address:(uint32_t)address length:(uint32_t)length
+- (void)read:(NSString *)content address:(uint32_t)address length:(uint32_t)length
 {
+    _properties = [NSMutableDictionary dictionary];
     NSMutableData *firmware = [NSMutableData data];
     uint32_t extendedAddress = 0;
+    bool done = false;
     NSArray *lines = [content componentsSeparatedByString:@"\n"];
     for (NSString *line in lines) {
         if (![line hasPrefix:@":"]) {
+            if ([line hasPrefix:@"#! "]) {
+                NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData: [[line substringFromIndex:2] dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
+                [_properties addEntriesFromDictionary:dictionary];
+            }
+            continue;
+        }
+        if (done) {
             continue;
         }
         int index = 1;
@@ -52,7 +73,6 @@
         if (checksum != crc) {
             @throw [NSException exceptionWithName:@"checksum mismatch" reason:@"checksum mismatch" userInfo:nil];
         }
-        bool done = false;
         switch (recordType) {
             case 0: { // Data Record
                 uint32_t dataAddress = extendedAddress + recordAddress;
@@ -80,11 +100,8 @@
                 // ignore
             } break;
         }
-        if (done) {
-            break;
-        }
     }
-    return [firmware subdataWithRange:NSMakeRange(address, firmware.length - address)];
+    _data = [firmware subdataWithRange:NSMakeRange(address, firmware.length - address)];
 }
 
 @end

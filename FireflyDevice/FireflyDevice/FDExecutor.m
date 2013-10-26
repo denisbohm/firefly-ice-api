@@ -10,7 +10,6 @@
 
 @interface FDExecutor ()
 
-@property NSTimer *watchdogTimer;
 @property NSMutableArray *tasks;
 @property NSMutableArray *appointmentTasks;
 @property id<FDExecutorTask> currentTask;
@@ -33,14 +32,14 @@
 
 - (void)start
 {
-    _timer = [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(checkAppointments:) userInfo:nil repeats:YES];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(check:) userInfo:nil repeats:YES];
     [self schedule];
 }
 
 - (void)abortTask:(id<FDExecutorTask>)task
 {
     @try {
-        [task executorTaskCompleted:self];
+        [task executorTaskFailed:self error:[NSError errorWithDomain:@"FDExecutor" code:FDExecutorErrorCodeAbort userInfo:nil]];
     } @catch (NSException *e) {
         [self taskException:e];
     }
@@ -132,8 +131,14 @@
     NSTimeInterval duration = -[_currentFeedTime timeIntervalSinceNow];
     if (duration > _currentTask.timeout) {
         NSLog(@"executor task timeout");
-        [self complete:_currentTask];
+        [self fail:_currentTask error:[NSError errorWithDomain:@"FDExecutor" code:FDExecutorErrorCodeTimeout userInfo:nil]];
     }
+}
+
+- (void)check:(NSTimer *)timer
+{
+    [self checkTimeout:timer];
+    [self checkAppointments:timer];
 }
 
 - (void)taskException:(NSException *)exception
@@ -167,10 +172,6 @@
     }
     if (_tasks.count == 0) {
         return;
-    }
-    
-    if (_watchdogTimer == nil) {
-        _watchdogTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(checkTimeout:) userInfo:nil repeats:YES];
     }
     
     _currentTask = _tasks[0];
@@ -209,12 +210,16 @@
     }
 }
 
-- (void)complete:(id<FDExecutorTask>)task
+- (void)over:(id<FDExecutorTask>)task error:(NSError *)error
 {
     if (_currentTask == task) {
         _currentTask = nil;
         @try {
-            [task executorTaskCompleted:self];
+            if (error == nil) {
+                [task executorTaskCompleted:self];
+            } else {
+                [task executorTaskFailed:self error:error];
+            }
         } @catch (NSException *e) {
             [self taskException:e];
         }
@@ -224,10 +229,20 @@
     }
 }
 
+- (void)fail:(id<FDExecutorTask>)task error:(NSError *)error
+{
+    [self over:task error:error];
+}
+
+- (void)complete:(id<FDExecutorTask>)task
+{
+    [self over:task error:nil];
+}
+
 - (void)cancel:(id<FDExecutorTask>)task
 {
     if (_currentTask == task) {
-        [self complete:task];
+        [self fail:task error:[NSError errorWithDomain:@"FDExecutor" code:FDExecutorErrorCodeCancel userInfo:nil]];
     }
     [_tasks removeObject:task];
     [_appointmentTasks removeObject:task];
@@ -242,6 +257,11 @@
     [tasks addObjectsFromArray:_tasks];
     [tasks addObjectsFromArray:_appointmentTasks];
     return tasks;
+}
+
+- (BOOL)hasTasks
+{
+    return (_currentTask != nil) || (_tasks.count > 0) || (_appointmentTasks.count > 0);
 }
 
 @end
