@@ -203,7 +203,7 @@
 {
     FDFireflyIce *fireflyIce = helloTask.fireflyIce;
     id<FDFireflyIceChannel> channel = helloTask.channel;
-    _syncTask = [ZZSyncTask syncTask:fireflyIce channel:channel delegate:self];
+//    _syncTask = [ZZSyncTask syncTask:fireflyIce channel:channel delegate:self];
 //    [fireflyIce.executor execute:_syncTask];
     [fireflyIce.executor execute:[FDFirmwareUpdateTask firmwareUpdateTask:fireflyIce channel:channel]];
 }

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+@class FDDetour;
 @protocol FDFireflyIceChannel;
 
 @protocol FDFireflyIceChannelDelegate <NSObject>
@@ -19,6 +20,8 @@ typedef enum {FDFireflyIceChannelStatusClosed, FDFireflyIceChannelStatusOpening,
 - (void)fireflyIceChannel:(id<FDFireflyIceChannel>)channel status:(FDFireflyIceChannelStatus)status;
 
 - (void)fireflyIceChannelPacket:(id<FDFireflyIceChannel>)channel data:(NSData *)data;
+
+- (void)fireflyIceChannel:(id<FDFireflyIceChannel>)channel detour:(FDDetour *)detour error:(NSError *)error;
 
 @end
 

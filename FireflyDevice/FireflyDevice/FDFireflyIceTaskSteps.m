@@ -62,6 +62,11 @@
     [_fireflyIce.observable removeObserver:self];
 }
 
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel detour:(FDDetour *)detour error:(NSError *)error
+{
+    [_fireflyIce.executor fail:self error:error];
+}
+
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel ping:(NSData *)data
 {
 //    NSLog(@"ping received");

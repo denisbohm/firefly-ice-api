@@ -182,4 +182,9 @@
     }
 }
 
+- (void)fireflyIceChannel:(id<FDFireflyIceChannel>)channel detour:(FDDetour *)detour error:(NSError *)error
+{
+    [self.observable fireflyIce:self channel:channel detour:detour error:error];
+}
+
 @end

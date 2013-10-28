@@ -14,8 +14,7 @@
 @property NSMutableData *buffer;
 @property FDDetourState state;
 @property uint32_t length;
-@property uint32_t sequence_number;
-@property uint32_t offset;
+@property uint32_t sequenceNumber;
 
 @end
 
@@ -36,11 +35,13 @@
 - (void)clear {
     _state = FDDetourStateClear;
     _length = 0;
-    _sequence_number = 0;
+    _sequenceNumber = 0;
     _buffer.length = 0;
+    _error = nil;
 }
 
-- (void)detourError {
+- (void)detourError:(NSString *)reason {
+    _error = [NSError errorWithDomain:@"FDDetour" code:0 userInfo:@{ @"detail":[NSString stringWithFormat:@"detour error %@: state %u, length %u, sequence %u, data %@", reason, _state, _length, _sequenceNumber, _buffer]}];
     _state = FDDetourStateError;
 }
 
@@ -55,39 +56,39 @@
         _state = FDDetourStateSuccess;
 //        NSLog(@"detour success: %d %ld %@", _length, (unsigned long)_buffer.length, _buffer);
     } else {
-        ++_sequence_number;
+        ++_sequenceNumber;
     }
 }
 
 - (void)detourStart:(NSData *)data {
     if (data.length < 2) {
-        [self detourError];
+        [self detourError:@"data.length < 2"];
         return;
     }
     FDBinary *binary = [[FDBinary alloc] initWithData:data];
     _state = FDDetourStateIntermediate;
     _length = [binary getUInt16];
-    _sequence_number = 0;
+    _sequenceNumber = 0;
     _buffer.length = 0;
     [self detourContinue:[binary getRemainingData]];
 }
 
 - (void)detourEvent:(NSData *)data {
     if (data.length < 1) {
-        [self detourError];
+        [self detourError:@"data.length < 1"];
         return;
     }
     FDBinary *binary = [[FDBinary alloc] initWithData:data];
-    uint8_t sequence_number = [binary getUInt8];
-    if (sequence_number == 0) {
-        if (_sequence_number != 0) {
-            [self detourError];
+    uint8_t sequenceNumber = [binary getUInt8];
+    if (sequenceNumber == 0) {
+        if (_sequenceNumber != 0) {
+            [self detourError:@"unexpected start"];
         } else {
             [self detourStart:[binary getRemainingData]];
         }
     } else
-    if (sequence_number != _sequence_number) {
-        [self detourError];
+    if (sequenceNumber != _sequenceNumber) {
+        [self detourError:[NSString stringWithFormat:@"out of sequence %u != %u", sequenceNumber, _sequenceNumber]];
     } else {
         [self detourContinue:[binary getRemainingData]];
     }

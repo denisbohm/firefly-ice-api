@@ -57,10 +57,10 @@
         [_delegate fireflyIceChannelPacket:self data:_detour.data];
         [_detour clear];
     } else
-        if (_detour.state == FDDetourStateError) {
-            NSLog(@"detour error");
-            [_detour clear];
-        }
+    if (_detour.state == FDDetourStateError) {
+        [_delegate fireflyIceChannel:self detour:_detour error:_detour.error];
+        [_detour clear];
+    }
 }
 
 - (void)fireflyIceChannelSend:(NSData *)data

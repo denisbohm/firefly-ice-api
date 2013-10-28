@@ -65,6 +65,7 @@
 @property float mz;
 @end
 
+@class FDDetour;
 @class FDFireflyIce;
 
 @protocol FDFireflyIceObserver <NSObject>
@@ -72,6 +73,8 @@
 @optional
 
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel status:(FDFireflyIceChannelStatus)status;
+
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel detour:(FDDetour *)detour error:(NSError *)error;
 
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel ping:(NSData *)data;
 

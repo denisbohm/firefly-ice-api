@@ -19,6 +19,7 @@ typedef enum {
 
 @property(readonly) FDDetourState state;
 @property(readonly) NSData *data;
+@property(readonly) NSError *error;
 
 - (id)init;
 - (void)clear;
