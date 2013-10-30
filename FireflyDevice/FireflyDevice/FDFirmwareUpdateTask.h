@@ -29,6 +29,8 @@
 // firmware must start at firmware address and be a multiple of the page size (2048)
 @property NSData *firmware;
 @property BOOL downgrade;
+@property BOOL commit;
+@property BOOL reset;
 @property uint16_t major;
 @property uint16_t minor;
 @property uint16_t patch;

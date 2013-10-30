@@ -51,6 +51,7 @@
     firmwareUpdateTask.fireflyIce = fireflyIce;
     firmwareUpdateTask.channel = channel;
     firmwareUpdateTask.firmware = firmware;
+    firmwareUpdateTask.commit = YES;
     return firmwareUpdateTask;
 }
 
@@ -139,6 +140,10 @@
 
 - (BOOL)isOutOfDate
 {
+    if (_downgrade) {
+        return (_version.major != _major) || (_version.minor != _minor) || (_version.patch != _patch);
+    }
+    
     if (_version.major < _major) {
         return YES;
     }
@@ -176,7 +181,7 @@
     _invalidPages = [NSArray arrayWithArray:_updatePages];
     
     if (_updateSectors.count == 0) {
-        [self commit];
+        [self commitUpdate];
     } else {
         [self.fireflyIce.coder sendUpdateEraseSectors:self.channel sectors:_updateSectors];
         [self next:@selector(writeNextPage)];
@@ -284,14 +289,19 @@
 {
     [self checkSectorHashes];
     if (_updateSectors.count == 0) {
-        [self commit];
+        [self commitUpdate];
     } else {
         [self complete];
     }
 }
 
-- (void)commit
+- (void)commitUpdate
 {
+    if (!_commit) {
+        [self complete];
+        return;
+    }
+    
     uint32_t flags = 0;
     uint32_t length = (uint32_t)_firmware.length;
     NSData *hash = [FDCrypto sha1:_firmware];
@@ -312,6 +322,9 @@
     BOOL isFirmwareUpToDate = (_updatePages.count == 0);
     NSLog(@"isFirmwareUpToDate = %@, commit result = %u", isFirmwareUpToDate ? @"YES" : @"NO", _updateCommit.result);
     [_delegate firmwareUpdateTask:self complete:isFirmwareUpToDate];
+    if (_reset && [self isOutOfDate] && isFirmwareUpToDate && (_updateCommit.result == FD_UPDATE_COMMIT_SUCCESS)) {
+        [self.fireflyIce.coder sendReset:self.channel type:FD_CONTROL_RESET_SYSTEM_REQUEST];
+    }
     [self done];
 }
 
