@@ -12,6 +12,7 @@
 		924A9FFC1816E119002017EC /* FDHelloTask.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 92EAA71A1801CD24004DADFC /* FDHelloTask.h */; };
 		924D016118104C7200EB500A /* FDFireflyIceSimpleTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 924D016018104C7200EB500A /* FDFireflyIceSimpleTask.m */; };
 		924D016218104F5700EB500A /* FDFireflyIceSimpleTask.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 924D015F18104C7200EB500A /* FDFireflyIceSimpleTask.h */; };
+		925D78D2182163F800318FDC /* FireflyDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 929EF4C017EA06580044F6F9 /* FireflyDevice.m */; };
 		927F3DB717FA20A200C933DD /* FDFireflyIceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 927F3DB617FA20A200C933DD /* FDFireflyIceManager.m */; };
 		927F3DBC17FA4F0B00C933DD /* FDSyncTask.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 92F863F317F3B4E0000E23AF /* FDSyncTask.h */; };
 		927F3DBD17FA4F0B00C933DD /* FDFireflyIceManager.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 927F3DB517FA20A200C933DD /* FDFireflyIceManager.h */; };
@@ -605,6 +606,7 @@
 				92DF13FD180B047400A1B849 /* FDUSBHIDMonitor.m in Sources */,
 				92DF13D0180B02C800A1B849 /* FDFireflyIceChannelBLE.m in Sources */,
 				92DF13C2180B02C800A1B849 /* FDDetour.m in Sources */,
+				925D78D2182163F800318FDC /* FireflyDevice.m in Sources */,
 				92DF13C4180B02C800A1B849 /* FDDetourSource.m in Sources */,
 				92DF13C0180B02C800A1B849 /* FDCrypto.m in Sources */,
 				92DF13DA180B02C800A1B849 /* FDFirmwareUpdateTask.m in Sources */,
