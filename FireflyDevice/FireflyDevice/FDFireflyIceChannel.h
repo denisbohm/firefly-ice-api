@@ -27,6 +27,8 @@ typedef enum {FDFireflyIceChannelStatusClosed, FDFireflyIceChannelStatusOpening,
 
 @protocol FDFireflyIceChannel <NSObject>
 
+@property(readonly) NSString *name;
+
 @property id<FDFireflyIceChannelDelegate> delegate;
 
 @property(readonly) FDFireflyIceChannelStatus status;

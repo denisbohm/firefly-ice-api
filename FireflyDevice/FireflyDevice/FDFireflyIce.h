@@ -65,6 +65,41 @@
 @property float mz;
 @end
 
+#define FD_LOCK_OWNER_ENCODE(a, b, c, d) ((a << 24) | (b << 16) | (c << 8) | d)
+
+void fd_lock_initialize(void);
+
+enum {
+    fd_lock_owner_none = 0,
+    fd_lock_owner_ble = FD_LOCK_OWNER_ENCODE('B', 'L', 'E', ' '),
+    fd_lock_owner_usb = FD_LOCK_OWNER_ENCODE('U', 'S', 'B', ' '),
+};
+typedef uint32_t fd_lock_owner_t;
+
+enum {
+    fd_lock_operation_none,
+    fd_lock_operation_acquire,
+    fd_lock_operation_release,
+};
+typedef uint8_t fd_lock_operation_t;
+
+enum {
+    fd_lock_identifier_sync,
+};
+typedef uint8_t fd_lock_identifier_t;
+
+@interface FDFireflyIceLock : NSObject
+
+@property fd_lock_identifier_t identifier;
+@property fd_lock_operation_t operation;
+@property fd_lock_owner_t owner;
+
+@property(readonly) NSString *identifierName;
+@property(readonly) NSString *operationName;
+@property(readonly) NSString *ownerName;
+
+@end
+
 @class FDDetour;
 @class FDFireflyIce;
 
@@ -88,6 +123,7 @@
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel storage:(FDFireflyIceStorage *)storage;
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel mode:(NSNumber *)mode;
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel txPower:(NSNumber *)level;
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel lock:(FDFireflyIceLock *)lock;
 
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel directTestModeReport:(FDFireflyIceDirectTestModeReport *)directTestModeReport;
 

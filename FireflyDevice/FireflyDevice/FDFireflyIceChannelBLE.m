@@ -59,6 +59,11 @@
     return self;
 }
 
+- (NSString *)name
+{
+    return @"BLE";
+}
+
 - (void)didConnectPeripheral
 {
     [_peripheral discoverServices:nil];

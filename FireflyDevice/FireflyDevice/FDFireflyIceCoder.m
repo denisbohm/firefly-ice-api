@@ -466,10 +466,32 @@ void putColor(FDBinary *binary, uint32_t color) {
     [channel fireflyIceChannelSend:binary.dataValue];
 }
 
+- (void)sendLock:(id<FDFireflyIceChannel>)channel identifier:(fd_lock_identifier_t)identifier operation:(fd_lock_operation_t)operation
+{
+    FDBinary *binary = [[FDBinary alloc] init];
+    [binary putUInt8:FD_CONTROL_LOCK];
+    
+    [binary putUInt8:identifier];
+    [binary putUInt8:operation];
+    
+    [channel fireflyIceChannelSend:binary.dataValue];
+}
+
 - (void)sendSyncStart:(id<FDFireflyIceChannel>)channel
 {
     uint8_t bytes[] = {FD_CONTROL_SYNC_START};
     [channel fireflyIceChannelSend:[NSData dataWithBytes:&bytes length:sizeof(bytes)]];
+}
+
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel lock:(NSData *)data
+{
+    FDBinary *binary = [[FDBinary alloc] initWithData:data];
+    FDFireflyIceLock *lock = [[FDFireflyIceLock alloc] init];
+    lock.identifier = [binary getUInt8];
+    lock.operation = [binary getUInt8];
+    lock.owner = [binary getUInt32];
+    
+    [_observable fireflyIce:fireflyIce channel:channel lock:lock];
 }
 
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel syncData:(NSData *)data
@@ -519,6 +541,10 @@ void putColor(FDBinary *binary, uint32_t color) {
             
         case FD_CONTROL_UPDATE_GET_SECTOR_HASHES:
             [self fireflyIce:fireflyIce channel:channel updateGetSectorHashes:remaining];
+            break;
+            
+        case FD_CONTROL_LOCK:
+            [self fireflyIce:fireflyIce channel:channel lock:remaining];
             break;
             
         case FD_CONTROL_SYNC_DATA:

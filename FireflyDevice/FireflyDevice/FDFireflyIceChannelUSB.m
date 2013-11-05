@@ -30,6 +30,11 @@
     return self;
 }
 
+- (NSString *)name
+{
+    return @"USB";
+}
+
 - (void)open
 {
     _device.delegate = self;

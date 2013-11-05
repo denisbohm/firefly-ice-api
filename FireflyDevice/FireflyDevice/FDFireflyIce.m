@@ -12,6 +12,8 @@
 #import "FDFireflyIceChannel.h"
 #import "FDFireflyIceCoder.h"
 
+#include <ctype.h>
+
 @implementation FDFireflyIceVersion
 
 - (NSString *)description
@@ -112,6 +114,64 @@
 @end
 
 @implementation FDFireflyIceSensing
+@end
+
+@implementation FDFireflyIceLock
+
+- (NSString *)identifierName
+{
+    switch (_identifier) {
+        case fd_lock_identifier_sync:
+            return @"sync";
+        default:
+            break;
+    }
+    return @"invalid";
+}
+
+- (NSString *)operationName
+{
+    switch (_operation) {
+        case fd_lock_operation_none:
+            return @"none";
+        case fd_lock_operation_acquire:
+            return @"acquire";
+        case fd_lock_operation_release:
+            return @"release";
+        default:
+            break;
+    }
+    return @"invalid";
+}
+
+- (NSString *)ownerName
+{
+    if (_owner == 0) {
+        return @"none";
+    }
+    
+    NSMutableString *name = [NSMutableString string];
+    uint8_t bytes[] = {(_owner >> 24) & 0xff, (_owner >> 16) & 0xff, (_owner >> 8) & 0xff, _owner & 0xff};
+    for (NSUInteger i = 0; i < sizeof(bytes); ++i) {
+        uint8_t byte = bytes[i];
+        if (isalnum(byte)) {
+            [name appendFormat:@"%c", byte];
+        } else
+        if (!isspace(byte)) {
+            name = nil;
+        }
+    }
+    if (name.length == 0) {
+        return [NSString stringWithFormat:@"anon-0x%08x", _owner];
+    }
+    return name;
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"lock identifier %@ operation %@ owner %@", [self identifierName], [self operationName], [self ownerName]];
+}
+
 @end
 
 @implementation FDFireflyIceObservable

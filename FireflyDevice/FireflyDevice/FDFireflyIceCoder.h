@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Firefly Design. All rights reserved.
 //
 
+#import "FDFireflyIce.h"
 #import "FDFireflyIceChannel.h"
 
 #define FD_CONTROL_PING 1
@@ -35,6 +36,10 @@
 
 #define FD_CONTROL_UPDATE_GET_EXTERNAL_HASH 18
 #define FD_CONTROL_UPDATE_READ_PAGE 19
+
+#define FD_CONTROL_LOCK 20
+
+#define FD_CONTROL_CAPABILITY_LOCK 0x00000001
 
 // property bits for get/set property commands
 #define FD_CONTROL_PROPERTY_VERSION     0x00000001
@@ -139,6 +144,8 @@ typedef enum {
                            d3:(uint32_t)d3
                            d4:(uint8_t)d4
                      duration:(NSTimeInterval)duration;
+
+- (void)sendLock:(id<FDFireflyIceChannel>)channel identifier:(fd_lock_identifier_t)identifier operation:(fd_lock_operation_t)operation;
 
 - (void)sendSyncStart:(id<FDFireflyIceChannel>)channel;
 
