@@ -74,6 +74,8 @@
 
 - (void)checkTime
 {
+    NSLog(@"hello (hardware %@) (firmware %@)", self.fireflyIce.hardwareId, self.fireflyIce.version);
+    
     if (_time == nil) {
         NSLog(@"time not set for hw %@ fw %@ (last reset %@)", self.fireflyIce.hardwareId, self.fireflyIce.version, _reset);
         [self setTime];

@@ -169,8 +169,10 @@
 - (void)checkOutOfDate
 {
     if ([self isOutOfDate]) {
+        NSLog(@"firmware %@ is out of date with latest %u.%u.%u", _version, _major, _minor, _patch);
         [self next:@selector(getSectorHashes)];
     } else {
+        NSLog(@"firmware %@ is up to date with latest %u.%u.%u", _version, _major, _minor, _patch);
         [self complete];
     }
 }
@@ -248,7 +250,6 @@
 
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel sectorHashes:(NSArray *)sectorHashes
 {
-    NSLog(@"fireflyIceSectorHashes %@", sectorHashes);
     [_sectorHashes addObjectsFromArray:sectorHashes];
     
     [self getSomeSectors];
@@ -282,7 +283,6 @@
     _updatePages = updatePages;
 
     if (updateSectors.count == 0) {
-        NSLog(@"nothing to update");
         return;
     }
     
@@ -355,6 +355,7 @@
     NSLog(@"isFirmwareUpToDate = %@, commit result = %u", isFirmwareUpToDate ? @"YES" : @"NO", _updateCommit.result);
     [_delegate firmwareUpdateTask:self complete:isFirmwareUpToDate];
     if (_reset && [self isOutOfDate] && isFirmwareUpToDate && (_updateCommit.result == FD_UPDATE_COMMIT_SUCCESS)) {
+        NSLog(@"new firmware has been transferred and comitted - restarting device");
         [self.fireflyIce.coder sendReset:self.channel type:FD_CONTROL_RESET_SYSTEM_REQUEST];
     }
     [self done];

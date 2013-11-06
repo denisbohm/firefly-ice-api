@@ -25,6 +25,7 @@
 @property IOHIDManagerRef hidManagerRef;
 @property NSThread *hidRunLoopThread;
 @property CFRunLoopRef runLoopRef;
+@property BOOL run;
 @property NSMutableArray *devices;
 
 @end
@@ -145,9 +146,30 @@ void FDUSBHIDMonitorDeviceMatchingCallback(void *context, IOReturn result, void 
 
 - (void)start
 {
+    _run = YES;
     _hidManagerRef = IOHIDManagerCreate(kCFAllocatorDefault, kIOHIDOptionsTypeNone);
     _hidRunLoopThread = [[NSThread alloc] initWithTarget:self selector:@selector(hidRunLoop) object:nil];
     [_hidRunLoopThread start];
+}
+
+- (void)stop
+{
+    _run = NO;
+    BOOL done = NO;
+    for (NSUInteger i = 0; i < 100; ++i) {
+        if (!_hidRunLoopThread.isExecuting) {
+            done = YES;
+            break;
+        }
+    }
+    if (!done) {
+        NSLog(@"usb test thread failed to stop");
+    }
+    _hidRunLoopThread = nil;
+    IOHIDManagerClose(_hidManagerRef, 0);
+    _hidManagerRef = nil;
+    _runLoopRef = nil;
+    _devices = [NSMutableArray array];
 }
 
 - (void)hidRunLoop
@@ -166,7 +188,7 @@ void FDUSBHIDMonitorDeviceMatchingCallback(void *context, IOReturn result, void 
     IOHIDManagerRegisterDeviceMatchingCallback(_hidManagerRef, FDUSBHIDMonitorDeviceMatchingCallback, (__bridge void *)self);
     
     NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
-    while (1) {
+    while (_run) {
         [runLoop runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
     }
 }

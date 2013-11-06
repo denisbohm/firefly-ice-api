@@ -43,5 +43,6 @@
 @property id<FDUSBHIDMonitorDelegate> delegate;
 
 - (void)start;
+- (void)stop;
 
 @end
