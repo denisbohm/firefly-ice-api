@@ -123,6 +123,8 @@
     switch (_identifier) {
         case fd_lock_identifier_sync:
             return @"sync";
+        case fd_lock_identifier_update:
+            return @"update";
         default:
             break;
     }

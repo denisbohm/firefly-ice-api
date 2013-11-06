@@ -19,6 +19,7 @@
 @interface FDFirmwareUpdateTask () <FDFireflyIceObserver>
 
 @property FDFireflyIceVersion *version;
+@property FDFireflyIceLock *lock;
 
 // sector and page size for external flash memory
 @property uint32_t sectorSize;
@@ -165,12 +166,38 @@
     return NO;
 }
 
-- (void)checkVersion
+- (void)checkOutOfDate
 {
     if ([self isOutOfDate]) {
         [self next:@selector(getSectorHashes)];
     } else {
         [self complete];
+    }
+}
+
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel lock:(FDFireflyIceLock *)lock
+{
+    _lock = lock;
+}
+
+- (void)checkLock
+{
+    if ((_lock.identifier == fd_lock_identifier_update) && [self.channel.name isEqualToString:_lock.ownerName]) {
+        NSLog(@"acquired update lock");
+        [self checkOutOfDate];
+    } else {
+        NSLog(@"update could not acquire lock");
+        [self complete];
+    }
+}
+
+- (void)checkVersion
+{
+    if (_version.capabilities & FD_CONTROL_CAPABILITY_LOCK) {
+        [self.fireflyIce.coder sendLock:self.channel identifier:fd_lock_identifier_update operation:fd_lock_operation_acquire];
+        [self next:@selector(checkLock)];
+    } else {
+        [self checkOutOfDate];
     }
 }
 
@@ -319,6 +346,11 @@
 
 - (void)complete
 {
+    if (_version.capabilities & FD_CONTROL_CAPABILITY_LOCK) {
+        NSLog(@"released update lock");
+        [self.fireflyIce.coder sendLock:self.channel identifier:fd_lock_identifier_update operation:fd_lock_operation_release];
+    }
+    
     BOOL isFirmwareUpToDate = (_updatePages.count == 0);
     NSLog(@"isFirmwareUpToDate = %@, commit result = %u", isFirmwareUpToDate ? @"YES" : @"NO", _updateCommit.result);
     [_delegate firmwareUpdateTask:self complete:isFirmwareUpToDate];

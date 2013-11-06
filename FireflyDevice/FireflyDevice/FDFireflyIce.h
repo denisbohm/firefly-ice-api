@@ -85,6 +85,7 @@ typedef uint8_t fd_lock_operation_t;
 
 enum {
     fd_lock_identifier_sync,
+    fd_lock_identifier_update,
 };
 typedef uint8_t fd_lock_identifier_t;
 
