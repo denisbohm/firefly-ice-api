@@ -83,7 +83,7 @@
     }
 
     FDFireflyIcePower *power = [collector objectForKey:@"power"];
-    NSMutableString *text = [NSMutableString stringWithFormat:@"battery %0.1f%% %0.1fV", power.batteryLevel, power.batteryVoltage];
+    NSMutableString *text = [NSMutableString stringWithFormat:@"battery %0.1f%% %0.1fV", power.batteryLevel * 100, power.batteryVoltage];
     if (power.isUSBPowered) {
         [text appendString:@" USB"];
         if (power.isCharging) {
