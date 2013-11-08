@@ -33,6 +33,8 @@ enum {
 
 @interface FDExecutor : NSObject
 
+@property NSTimeInterval timeoutCheckInterval;
+
 @property(nonatomic) BOOL run;
 
 - (void)execute:(id<FDExecutorTask>)task;

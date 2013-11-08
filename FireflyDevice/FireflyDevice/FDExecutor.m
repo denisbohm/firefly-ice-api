@@ -24,6 +24,7 @@
 - (id)init
 {
     if (self = [super init]) {
+        _timeoutCheckInterval = 5;
         _tasks = [NSMutableArray array];
         _appointmentTasks = [NSMutableArray array];
     }
@@ -32,7 +33,7 @@
 
 - (void)start
 {
-    _timer = [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(check:) userInfo:nil repeats:YES];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:_timeoutCheckInterval target:self selector:@selector(check:) userInfo:nil repeats:YES];
     [self schedule];
 }
 

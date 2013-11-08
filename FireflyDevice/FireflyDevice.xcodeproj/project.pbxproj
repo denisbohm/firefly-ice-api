@@ -12,6 +12,7 @@
 		921383E2182C6C3400D89159 /* OCMock.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 921383A1182C43AE00D89159 /* OCMock.framework */; };
 		922F1E32182C956F00F06BF6 /* FDFireflyIceChannelBLETests.m in Sources */ = {isa = PBXBuildFile; fileRef = 922F1E30182C90FA00F06BF6 /* FDFireflyIceChannelBLETests.m */; };
 		922F1E34182C97C800F06BF6 /* IOBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 922F1E33182C97C800F06BF6 /* IOBluetooth.framework */; };
+		922F8E61182D5D3100DC853F /* FireflyDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 929EF4BE17EA06580044F6F9 /* FireflyDevice.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		924948F318207FEB00FA97D5 /* FDFireflyIceSimpleTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 924D016018104C7200EB500A /* FDFireflyIceSimpleTask.m */; };
 		924948F41820809000FA97D5 /* FDFireflyIceSimpleTask.h in Headers */ = {isa = PBXBuildFile; fileRef = 924D015F18104C7200EB500A /* FDFireflyIceSimpleTask.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		924A9FFC1816E119002017EC /* FDHelloTask.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 92EAA71A1801CD24004DADFC /* FDHelloTask.h */; };
@@ -419,6 +420,7 @@
 				924948F41820809000FA97D5 /* FDFireflyIceSimpleTask.h in Headers */,
 				92DF13BF180B02C800A1B849 /* FDCrypto.h in Headers */,
 				92DF13C7180B02C800A1B849 /* FDObservable.h in Headers */,
+				922F8E61182D5D3100DC853F /* FireflyDevice.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
