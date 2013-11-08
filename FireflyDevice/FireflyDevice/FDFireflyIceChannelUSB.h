@@ -17,7 +17,4 @@
 
 - (id)initWithDevice:(FDUSBHIDDevice *)device;
 
-- (void)open;
-- (void)close;
-
 @end

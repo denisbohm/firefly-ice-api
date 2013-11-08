@@ -11,9 +11,9 @@
 @class FDDetour;
 @protocol FDFireflyIceChannel;
 
-@protocol FDFireflyIceChannelDelegate <NSObject>
-
 typedef enum {FDFireflyIceChannelStatusClosed, FDFireflyIceChannelStatusOpening, FDFireflyIceChannelStatusOpen} FDFireflyIceChannelStatus;
+
+@protocol FDFireflyIceChannelDelegate <NSObject>
 
 @optional
 
@@ -34,5 +34,8 @@ typedef enum {FDFireflyIceChannelStatusClosed, FDFireflyIceChannelStatusOpening,
 @property(readonly) FDFireflyIceChannelStatus status;
 
 - (void)fireflyIceChannelSend:(NSData *)data;
+
+- (void)open;
+- (void)close;
 
 @end

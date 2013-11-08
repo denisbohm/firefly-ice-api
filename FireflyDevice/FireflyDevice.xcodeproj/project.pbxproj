@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		921383A5182C5B3B00D89159 /* FDHelloTaskTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 929EF4D717EA06580044F6F9 /* FDHelloTaskTests.m */; };
+		921383E0182C6C1200D89159 /* OCMock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 921383A1182C43AE00D89159 /* OCMock.framework */; };
+		921383E2182C6C3400D89159 /* OCMock.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 921383A1182C43AE00D89159 /* OCMock.framework */; };
+		922F1E32182C956F00F06BF6 /* FDFireflyIceChannelBLETests.m in Sources */ = {isa = PBXBuildFile; fileRef = 922F1E30182C90FA00F06BF6 /* FDFireflyIceChannelBLETests.m */; };
+		922F1E34182C97C800F06BF6 /* IOBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 922F1E33182C97C800F06BF6 /* IOBluetooth.framework */; };
 		924948F318207FEB00FA97D5 /* FDFireflyIceSimpleTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 924D016018104C7200EB500A /* FDFireflyIceSimpleTask.m */; };
 		924948F41820809000FA97D5 /* FDFireflyIceSimpleTask.h in Headers */ = {isa = PBXBuildFile; fileRef = 924D015F18104C7200EB500A /* FDFireflyIceSimpleTask.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		924A9FFC1816E119002017EC /* FDHelloTask.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 92EAA71A1801CD24004DADFC /* FDHelloTask.h */; };
@@ -24,7 +29,6 @@
 		929EF4CC17EA06580044F6F9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 929EF4B917EA06580044F6F9 /* Foundation.framework */; };
 		929EF4CF17EA06580044F6F9 /* libFireflyDevice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 929EF4B617EA06580044F6F9 /* libFireflyDevice.a */; };
 		929EF4D517EA06580044F6F9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 929EF4D317EA06580044F6F9 /* InfoPlist.strings */; };
-		929EF4D817EA06580044F6F9 /* FireflyDeviceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 929EF4D717EA06580044F6F9 /* FireflyDeviceTests.m */; };
 		929EF4F517EA06C10044F6F9 /* FDDetour.m in Sources */ = {isa = PBXBuildFile; fileRef = 929EF4E217EA06C10044F6F9 /* FDDetour.m */; };
 		929EF4F617EA06C10044F6F9 /* FDDetourSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 929EF4E417EA06C10044F6F9 /* FDDetourSource.m */; };
 		929EF4F717EA06C10044F6F9 /* FDExecutor.m in Sources */ = {isa = PBXBuildFile; fileRef = 929EF4E617EA06C10044F6F9 /* FDExecutor.m */; };
@@ -116,6 +120,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		921383E1182C6C2200D89159 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				921383E2182C6C3400D89159 /* OCMock.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		929EF4B417EA06580044F6F9 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -146,6 +160,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		921383A1182C43AE00D89159 /* OCMock.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OCMock.framework; path = ../../ocmock/OSX/OCMock.framework; sourceTree = "<group>"; };
+		922F1E30182C90FA00F06BF6 /* FDFireflyIceChannelBLETests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFireflyIceChannelBLETests.m; sourceTree = "<group>"; };
+		922F1E33182C97C800F06BF6 /* IOBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOBluetooth.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks/IOBluetooth.framework; sourceTree = DEVELOPER_DIR; };
 		924D015F18104C7200EB500A /* FDFireflyIceSimpleTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFireflyIceSimpleTask.h; sourceTree = "<group>"; };
 		924D016018104C7200EB500A /* FDFireflyIceSimpleTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFireflyIceSimpleTask.m; sourceTree = "<group>"; };
 		927F3DB517FA20A200C933DD /* FDFireflyIceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFireflyIceManager.h; sourceTree = "<group>"; };
@@ -160,8 +177,7 @@
 		929EF4CA17EA06580044F6F9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		929EF4D217EA06580044F6F9 /* FireflyDeviceTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FireflyDeviceTests-Info.plist"; sourceTree = "<group>"; };
 		929EF4D417EA06580044F6F9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		929EF4D617EA06580044F6F9 /* FireflyDeviceTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FireflyDeviceTests.h; sourceTree = "<group>"; };
-		929EF4D717EA06580044F6F9 /* FireflyDeviceTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FireflyDeviceTests.m; sourceTree = "<group>"; };
+		929EF4D717EA06580044F6F9 /* FDHelloTaskTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FDHelloTaskTests.m; sourceTree = "<group>"; };
 		929EF4E117EA06C10044F6F9 /* FDDetour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDDetour.h; sourceTree = "<group>"; };
 		929EF4E217EA06C10044F6F9 /* FDDetour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDetour.m; sourceTree = "<group>"; };
 		929EF4E317EA06C10044F6F9 /* FDDetourSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDDetourSource.h; sourceTree = "<group>"; };
@@ -242,6 +258,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				922F1E34182C97C800F06BF6 /* IOBluetooth.framework in Frameworks */,
+				921383E0182C6C1200D89159 /* OCMock.framework in Frameworks */,
 				92DF13AE180B01AE00A1B849 /* FireflyDevice.framework in Frameworks */,
 				92DF13AB180B01AE00A1B849 /* Cocoa.framework in Frameworks */,
 				92DF13AA180B01AE00A1B849 /* XCTest.framework in Frameworks */,
@@ -275,6 +293,8 @@
 		929EF4B817EA06580044F6F9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				922F1E33182C97C800F06BF6 /* IOBluetooth.framework */,
+				921383A1182C43AE00D89159 /* OCMock.framework */,
 				92DF1444180B092900A1B849 /* IOKit.framework */,
 				92DF13DD180B031700A1B849 /* IOBluetooth.framework */,
 				929EF4B917EA06580044F6F9 /* Foundation.framework */,
@@ -347,9 +367,9 @@
 		929EF4D017EA06580044F6F9 /* FireflyDeviceTests */ = {
 			isa = PBXGroup;
 			children = (
-				929EF4D617EA06580044F6F9 /* FireflyDeviceTests.h */,
-				929EF4D717EA06580044F6F9 /* FireflyDeviceTests.m */,
 				929EF4D117EA06580044F6F9 /* Supporting Files */,
+				929EF4D717EA06580044F6F9 /* FDHelloTaskTests.m */,
+				922F1E30182C90FA00F06BF6 /* FDFireflyIceChannelBLETests.m */,
 			);
 			path = FireflyDeviceTests;
 			sourceTree = "<group>";
@@ -466,6 +486,7 @@
 				92DF13A4180B01AE00A1B849 /* Sources */,
 				92DF13A5180B01AE00A1B849 /* Frameworks */,
 				92DF13A6180B01AE00A1B849 /* Resources */,
+				921383E1182C6C2200D89159 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -583,7 +604,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				929EF4D817EA06580044F6F9 /* FireflyDeviceTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -618,6 +638,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				921383A5182C5B3B00D89159 /* FDHelloTaskTests.m in Sources */,
+				922F1E32182C956F00F06BF6 /* FDFireflyIceChannelBLETests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -774,6 +796,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					/Users/denis/sandbox/denisbohm/ocmock/OSX,
 				);
 				FRAMEWORK_VERSION = A;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -812,6 +835,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					/Users/denis/sandbox/denisbohm/ocmock/OSX,
 				);
 				FRAMEWORK_VERSION = A;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -842,8 +866,11 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
+					/Users/denis/sandbox/denisbohm/ocmock/OSX,
 				);
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FireflyDevice/FireflyDevice-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -876,8 +903,11 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
+					/Users/denis/sandbox/denisbohm/ocmock/OSX,
 				);
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FireflyDevice/FireflyDevice-Prefix.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

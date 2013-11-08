@@ -1,18 +1,18 @@
 //
-//  FireflyDeviceTests.m
-//  FireflyDeviceTests
+//  FireflyUtilitiesTests.m
+//  FireflyUtilitiesTests
 //
-//  Created by Denis Bohm on 10/13/13.
+//  Created by Denis Bohm on 11/7/13.
 //  Copyright (c) 2013 Firefly Design. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>
 
-@interface FireflyDeviceTests : XCTestCase
+@interface FireflyUtilitiesTests : XCTestCase
 
 @end
 
-@implementation FireflyDeviceTests
+@implementation FireflyUtilitiesTests
 
 - (void)setUp
 {

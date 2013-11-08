@@ -40,9 +40,13 @@
     _device.delegate = self;
     [_device open];
     self.status = FDFireflyIceChannelStatusOpening;
-    [_delegate fireflyIceChannel:self status:self.status];
+    if ([_delegate respondsToSelector:@selector(fireflyIceChannel:status:)]) {
+        [_delegate fireflyIceChannel:self status:self.status];
+    }
     self.status = FDFireflyIceChannelStatusOpen;
-    [_delegate fireflyIceChannel:self status:self.status];
+    if ([_delegate respondsToSelector:@selector(fireflyIceChannel:status:)]) {
+        [_delegate fireflyIceChannel:self status:self.status];
+    }
 }
 
 - (void)close
@@ -51,7 +55,9 @@
     [_device close];
     [_detour clear];
     self.status = FDFireflyIceChannelStatusClosed;
-    [_delegate fireflyIceChannel:self status:self.status];
+    if ([_delegate respondsToSelector:@selector(fireflyIceChannel:status:)]) {
+        [_delegate fireflyIceChannel:self status:self.status];
+    }
 }
 
 - (void)usbHidDevice:(FDUSBHIDDevice *)device inputReport:(NSData *)data
@@ -59,11 +65,15 @@
 //    NSLog(@"usbHidDevice:inputReport: %@", data);
     [_detour detourEvent:data];
     if (_detour.state == FDDetourStateSuccess) {
-        [_delegate fireflyIceChannelPacket:self data:_detour.data];
+        if ([_delegate respondsToSelector:@selector(fireflyIceChannelPacket:data:)]) {
+            [_delegate fireflyIceChannelPacket:self data:_detour.data];
+        }
         [_detour clear];
     } else
     if (_detour.state == FDDetourStateError) {
-        [_delegate fireflyIceChannel:self detour:_detour error:_detour.error];
+        if ([_delegate respondsToSelector:@selector(fireflyIceChannel:detour:error:)]) {
+            [_delegate fireflyIceChannel:self detour:_detour error:_detour.error];
+        }
         [_detour clear];
     }
 }

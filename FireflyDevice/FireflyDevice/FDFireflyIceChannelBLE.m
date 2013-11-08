@@ -38,6 +38,7 @@
 
 @property FDFireflyIceChannelStatus status;
 
+@property CBCentralManager *centralManager;
 @property CBPeripheral *peripheral;
 @property CBCharacteristic *characteristic;
 @property FDDetour *detour;
@@ -48,9 +49,10 @@
 
 @implementation FDFireflyIceChannelBLE
 
-- (id)initWithPeripheral:(CBPeripheral *)peripheral
+- (id)initWithCentralManager:(CBCentralManager *)centralManager withPeripheral:(CBPeripheral *)peripheral
 {
     if (self = [super init]) {
+        _centralManager = centralManager;
         _peripheral = peripheral;
         _peripheral.delegate = self;
         _detour = [[FDDetour alloc] init];
@@ -64,18 +66,33 @@
     return @"BLE";
 }
 
+
+- (void)open
+{
+    [_centralManager connectPeripheral:_peripheral options:nil];
+}
+
+- (void)close
+{
+    [_centralManager cancelPeripheralConnection:_peripheral];
+}
+
 - (void)didConnectPeripheral
 {
     [_peripheral discoverServices:nil];
     self.status = FDFireflyIceChannelStatusOpening;
-    [_delegate fireflyIceChannel:self status:self.status];
+    if ([_delegate respondsToSelector:@selector(fireflyIceChannel:status:)]) {
+        [_delegate fireflyIceChannel:self status:self.status];
+    }
 }
 
 - (void)didDisconnectPeripheralError:(NSError *)error
 {
     [_detour clear];
     self.status = FDFireflyIceChannelStatusClosed;
-    [_delegate fireflyIceChannel:self status:self.status];
+    if ([_delegate respondsToSelector:@selector(fireflyIceChannel:status:)]) {
+        [_delegate fireflyIceChannel:self status:self.status];
+    }
 }
 
 - (void)didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
@@ -98,11 +115,15 @@
 //    NSLog(@"didUpdateValueForCharacteristic %@ %@", characteristic.value, error);
     [_detour detourEvent:characteristic.value];
     if (_detour.state == FDDetourStateSuccess) {
-        [_delegate fireflyIceChannelPacket:self data:_detour.data];
+        if ([_delegate respondsToSelector:@selector(fireflyIceChannelPacket:data:)]) {
+            [_delegate fireflyIceChannelPacket:self data:_detour.data];
+        }
         [_detour clear];
     } else
     if (_detour.state == FDDetourStateError) {
-        [_delegate fireflyIceChannel:self detour:_detour error:_detour.error];
+        if ([_delegate respondsToSelector:@selector(fireflyIceChannel:detour:error:)]) {
+            [_delegate fireflyIceChannel:self detour:_detour error:_detour.error];
+        }
         [_detour clear];
     }
 }
@@ -165,7 +186,9 @@
             [_peripheral setNotifyValue:YES forCharacteristic:_characteristic];
             
             self.status = FDFireflyIceChannelStatusOpen;
-            [_delegate fireflyIceChannel:self status:self.status];
+            if ([_delegate respondsToSelector:@selector(fireflyIceChannel:status:)]) {
+                [_delegate fireflyIceChannel:self status:self.status];
+            }
         }
     }
 }

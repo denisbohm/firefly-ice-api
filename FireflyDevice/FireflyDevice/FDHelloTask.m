@@ -74,6 +74,13 @@
 
 - (void)checkTime
 {
+    if ((self.fireflyIce.version == nil) || (self.fireflyIce.hardwareId == nil)) {
+        NSLog(@"version or hardware id not received - closing connection");
+        [self.channel close];
+        [self done];
+        return;
+    }
+    
     NSLog(@"hello (hardware %@) (firmware %@)", self.fireflyIce.hardwareId, self.fireflyIce.version);
     
     if (_time == nil) {

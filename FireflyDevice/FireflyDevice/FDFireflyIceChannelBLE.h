@@ -8,6 +8,7 @@
 
 #import "FDFireflyIceChannel.h"
 
+@class CBCentralManager;
 @class CBPeripheral;
 
 @interface FDFireflyIceChannelBLERSSI : NSObject
@@ -26,7 +27,7 @@
 @property id<FDFireflyIceChannelDelegate> delegate;
 @property FDFireflyIceChannelBLERSSI *RSSI;
 
-- (id)initWithPeripheral:(CBPeripheral *)peripheral;
+- (id)initWithCentralManager:(CBCentralManager *)centralManager withPeripheral:(CBPeripheral *)peripheral;
 
 - (void)didConnectPeripheral;
 - (void)didDisconnectPeripheralError:(NSError *)error;

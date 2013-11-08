@@ -157,7 +157,7 @@
     fireflyIce.name = [self nameForPeripheral:peripheral advertisementData:advertisementData];
 
     [fireflyIce.observable addObserver:self];
-    FDFireflyIceChannelBLE *channel = [[FDFireflyIceChannelBLE alloc] initWithPeripheral:peripheral];
+    FDFireflyIceChannelBLE *channel = [[FDFireflyIceChannelBLE alloc] initWithCentralManager:central withPeripheral:peripheral];
     channel.RSSI = [FDFireflyIceChannelBLERSSI RSSI:[RSSI floatValue]];
     [fireflyIce addChannel:channel type:@"BLE"];
     dictionary = [NSMutableDictionary dictionary];
