@@ -42,13 +42,18 @@
 {
     [super executorTaskStarted:executor];
     
-    [self.fireflyIce.coder sendGetProperties:self.channel properties:FD_CONTROL_PROPERTY_VERSION | FD_CONTROL_PROPERTY_HARDWARE_ID | FD_CONTROL_PROPERTY_RTC | FD_CONTROL_PROPERTY_RESET];
+    [self.fireflyIce.coder sendGetProperties:self.channel properties:FD_CONTROL_PROPERTY_VERSION | FD_CONTROL_PROPERTY_HARDWARE_ID | FD_CONTROL_PROPERTY_RTC | FD_CONTROL_PROPERTY_RESET | FD_CONTROL_PROPERTY_BOOT_VERSION];
     [self next:@selector(checkTime)];
 }
 
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel version:(FDFireflyIceVersion *)version
 {
     fireflyIce.version = version;
+}
+
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel bootVersion:(FDFireflyIceVersion *)bootVersion
+{
+    fireflyIce.bootVersion = bootVersion;
 }
 
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel hardwareId:(FDFireflyIceHardwareId *)hardwareId

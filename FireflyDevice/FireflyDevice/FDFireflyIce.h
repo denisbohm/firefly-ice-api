@@ -116,6 +116,7 @@ typedef uint8_t fd_lock_identifier_t;
 
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel version:(FDFireflyIceVersion *)version;
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel hardwareId:(FDFireflyIceHardwareId *)hardwareId;
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel bootVersion:(FDFireflyIceVersion *)version;
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel debugLock:(NSNumber *)debugLock;
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel time:(NSDate *)time;
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel power:(FDFireflyIcePower *)power;
@@ -157,6 +158,7 @@ typedef uint8_t fd_lock_identifier_t;
 @property NSString *name;
 @property FDFireflyIceVersion *version;
 @property FDFireflyIceHardwareId *hardwareId;
+@property FDFireflyIceVersion *bootVersion;
 
 @property FDExecutor *executor;
 

@@ -19,6 +19,7 @@
 @interface FDFirmwareUpdateTask () <FDFireflyIceObserver>
 
 @property FDFireflyIceVersion *version;
+@property FDFireflyIceVersion *bootVersion;
 @property FDFireflyIceLock *lock;
 
 // sector and page size for external flash memory
@@ -130,12 +131,17 @@
     _version = version;
 }
 
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel bootVersion:(FDFireflyIceVersion *)bootVersion
+{
+    _bootVersion = bootVersion;
+}
+
 - (void)begin
 {
     _updateSectors = nil;
     _updatePages = nil;
     
-    [self.fireflyIce.coder sendGetProperties:self.channel properties:FD_CONTROL_PROPERTY_VERSION];
+    [self.fireflyIce.coder sendGetProperties:self.channel properties:FD_CONTROL_PROPERTY_VERSION | FD_CONTROL_PROPERTY_BOOT_VERSION];
     [self next:@selector(checkVersion)];
 }
 
@@ -169,10 +175,10 @@
 - (void)checkOutOfDate
 {
     if ([self isOutOfDate]) {
-        NSLog(@"firmware %@ is out of date with latest %u.%u.%u", _version, _major, _minor, _patch);
+        NSLog(@"firmware %@ is out of date with latest %u.%u.%u (boot loader is version %@)", _version, _major, _minor, _patch, _bootVersion);
         [self next:@selector(getSectorHashes)];
     } else {
-        NSLog(@"firmware %@ is up to date with latest %u.%u.%u", _version, _major, _minor, _patch);
+        NSLog(@"firmware %@ is up to date with latest %u.%u.%u (boot loader is version %@)", _version, _major, _minor, _patch, _bootVersion);
         [self complete];
     }
 }
@@ -329,6 +335,7 @@
         return;
     }
     
+    NSLog(@"sending update commit");
     uint32_t flags = 0;
     uint32_t length = (uint32_t)_firmware.length;
     NSData *hash = [FDCrypto sha1:_firmware];
@@ -352,9 +359,9 @@
     }
     
     BOOL isFirmwareUpToDate = (_updatePages.count == 0);
-    NSLog(@"isFirmwareUpToDate = %@, commit result = %u", isFirmwareUpToDate ? @"YES" : @"NO", _updateCommit.result);
+    NSLog(@"isFirmwareUpToDate = %@, commit %@ result = %u", isFirmwareUpToDate ? @"YES" : @"NO", _updateCommit != nil ? @"YES" : @"NO", _updateCommit.result);
     [_delegate firmwareUpdateTask:self complete:isFirmwareUpToDate];
-    if (_reset && [self isOutOfDate] && isFirmwareUpToDate && (_updateCommit.result == FD_UPDATE_COMMIT_SUCCESS)) {
+    if (_reset && [self isOutOfDate] && isFirmwareUpToDate && (_updateCommit != nil) && (_updateCommit.result == FD_UPDATE_COMMIT_SUCCESS)) {
         NSLog(@"new firmware has been transferred and comitted - restarting device");
         [self.fireflyIce.coder sendReset:self.channel type:FD_CONTROL_RESET_SYSTEM_REQUEST];
     }

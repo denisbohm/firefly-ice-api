@@ -111,6 +111,18 @@
     [_observable fireflyIce:fireflyIce channel:channel version:version];
 }
 
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel getPropertyBootVersion:(FDBinary *)binary
+{
+    FDFireflyIceVersion *version = [[FDFireflyIceVersion alloc] init];
+    version.major = [binary getUInt16];
+    version.minor = [binary getUInt16];
+    version.patch = [binary getUInt16];
+    version.capabilities = [binary getUInt32];
+    version.gitCommit = [binary getData:20];
+    
+    [_observable fireflyIce:fireflyIce channel:channel bootVersion:version];
+}
+
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel getPropertyHardwareId:(FDBinary *)binary
 {
     FDFireflyIceHardwareId *hardwareId = [[FDFireflyIceHardwareId alloc] init];
@@ -223,6 +235,9 @@
     }
     if (properties & FD_CONTROL_PROPERTY_TX_POWER) {
         [self fireflyIce:fireflyIce channel:channel getPropertyTxPower:binary];
+    }
+    if (properties & FD_CONTROL_PROPERTY_BOOT_VERSION) {
+        [self fireflyIce:fireflyIce channel:channel getPropertyBootVersion:binary];
     }
 }
 
