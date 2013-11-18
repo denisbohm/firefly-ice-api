@@ -42,8 +42,8 @@
 {
     [super executorTaskStarted:executor];
     
-    [self.fireflyIce.coder sendGetProperties:self.channel properties:FD_CONTROL_PROPERTY_VERSION | FD_CONTROL_PROPERTY_HARDWARE_ID | FD_CONTROL_PROPERTY_RTC | FD_CONTROL_PROPERTY_RESET | FD_CONTROL_PROPERTY_BOOT_VERSION];
-    [self next:@selector(checkTime)];
+    [self.fireflyIce.coder sendGetProperties:self.channel properties:FD_CONTROL_PROPERTY_VERSION | FD_CONTROL_PROPERTY_HARDWARE_ID | FD_CONTROL_PROPERTY_RTC | FD_CONTROL_PROPERTY_RESET];
+    [self next:@selector(checkVersion)];
 }
 
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel version:(FDFireflyIceVersion *)version
@@ -71,13 +71,7 @@
     _reset = reset;
 }
 
-- (void)setTime
-{
-    NSLog(@"setting the time");
-    [self.fireflyIce.coder sendSetPropertyTime:self.channel time:[NSDate date]];
-}
-
-- (void)checkTime
+- (void)checkVersion
 {
     if ((self.fireflyIce.version == nil) || (self.fireflyIce.hardwareId == nil)) {
         NSLog(@"version or hardware id not received - closing connection");
@@ -86,6 +80,22 @@
         return;
     }
     
+    if (self.fireflyIce.version.capabilities & FD_CONTROL_CAPABILITY_BOOT_VERSION) {
+        [self.fireflyIce.coder sendGetProperties:self.channel properties:FD_CONTROL_PROPERTY_BOOT_VERSION];
+        [self next:@selector(checkTime)];
+    } else {
+        [self checkTime];
+    }
+}
+
+- (void)setTime
+{
+    NSLog(@"setting the time");
+    [self.fireflyIce.coder sendSetPropertyTime:self.channel time:[NSDate date]];
+}
+
+- (void)checkTime
+{
     NSLog(@"hello (hardware %@) (firmware %@)", self.fireflyIce.hardwareId, self.fireflyIce.version);
     
     if (_time == nil) {

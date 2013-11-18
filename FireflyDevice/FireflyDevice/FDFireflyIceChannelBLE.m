@@ -161,6 +161,7 @@
 //    NSLog(@"didDiscoverServices %@", peripheral.name);
     for (CBService *service in _peripheral.services) {
 //        NSLog(@"didDiscoverService %@", service.UUID);
+        NSLog(@"didDiscoverService %@", [FDFireflyIceChannelBLE CBUUIDString:service.UUID]);
         [_peripheral discoverCharacteristics:nil forService:service];
     }
 }
@@ -173,12 +174,36 @@
     });
 }
 
++ (NSString *)CBUUIDString:(CBUUID *)uuid;
+{
+    NSData *data = uuid.data;
+    
+    NSUInteger bytesToConvert = [data length];
+    const unsigned char *uuidBytes = [data bytes];
+    NSMutableString *outputString = [NSMutableString stringWithCapacity:16];
+    
+    for (NSUInteger currentByteIndex = 0; currentByteIndex < bytesToConvert; currentByteIndex++)
+    {
+        switch (currentByteIndex)
+        {
+            case 3:
+            case 5:
+            case 7:
+            case 9:[outputString appendFormat:@"%02x-", uuidBytes[currentByteIndex]]; break;
+            default:[outputString appendFormat:@"%02x", uuidBytes[currentByteIndex]];
+        }
+        
+    }
+    
+    return outputString;
+}
+
 - (void)didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error
 {
     CBUUID *characteristicUUID = [CBUUID UUIDWithString:@"310a0002-1b95-5091-b0bd-b7a681846399"];
 //    NSLog(@"didDiscoverCharacteristicsForService %@", service.UUID);
     for (CBCharacteristic *characteristic in service.characteristics) {
-//        NSLog(@"didDiscoverServiceCharacteristic %@", characteristic.UUID);
+        NSLog(@"didDiscoverServiceCharacteristic %@", [FDFireflyIceChannelBLE CBUUIDString:characteristic.UUID]);
         if ([characteristicUUID isEqual:characteristic.UUID]) {
 //            NSLog(@"found characteristic value");
             _characteristic = characteristic;

@@ -53,7 +53,6 @@
     firmwareUpdateTask.fireflyIce = fireflyIce;
     firmwareUpdateTask.channel = channel;
     firmwareUpdateTask.firmware = firmware;
-    firmwareUpdateTask.commit = YES;
     return firmwareUpdateTask;
 }
 
@@ -94,6 +93,7 @@
         _pageSize = 256;
         _sectorSize = 4096;
         _pagesPerSector = _sectorSize / _pageSize;
+        _commit = YES;
     }
     return self;
 }
@@ -141,7 +141,7 @@
     _updateSectors = nil;
     _updatePages = nil;
     
-    [self.fireflyIce.coder sendGetProperties:self.channel properties:FD_CONTROL_PROPERTY_VERSION | FD_CONTROL_PROPERTY_BOOT_VERSION];
+    [self.fireflyIce.coder sendGetProperties:self.channel properties:FD_CONTROL_PROPERTY_VERSION];
     [self next:@selector(checkVersion)];
 }
 
@@ -200,6 +200,16 @@
 }
 
 - (void)checkVersion
+{
+    if (_version.capabilities & FD_CONTROL_CAPABILITY_BOOT_VERSION) {
+        [self.fireflyIce.coder sendGetProperties:self.channel properties:FD_CONTROL_PROPERTY_BOOT_VERSION];
+        [self next:@selector(checkVersions)];
+    } else {
+        [self checkVersions];
+    }
+}
+
+- (void)checkVersions
 {
     if (_version.capabilities & FD_CONTROL_CAPABILITY_LOCK) {
         [self.fireflyIce.coder sendLock:self.channel identifier:fd_lock_identifier_update operation:fd_lock_operation_acquire];
