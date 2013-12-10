@@ -10,7 +10,6 @@
 		921383A5182C5B3B00D89159 /* FDHelloTaskTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 929EF4D717EA06580044F6F9 /* FDHelloTaskTests.m */; };
 		921383E0182C6C1200D89159 /* OCMock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 921383A1182C43AE00D89159 /* OCMock.framework */; };
 		921383E2182C6C3400D89159 /* OCMock.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 921383A1182C43AE00D89159 /* OCMock.framework */; };
-		922F06881857BB1A002948C1 /* FDIEEE754Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 922F06871857BB1A002948C1 /* FDIEEE754Tests.m */; };
 		922F06891857BDE2002948C1 /* FDIEEE754Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 922F06871857BB1A002948C1 /* FDIEEE754Tests.m */; };
 		922F1E32182C956F00F06BF6 /* FDFireflyIceChannelBLETests.m in Sources */ = {isa = PBXBuildFile; fileRef = 922F1E30182C90FA00F06BF6 /* FDFireflyIceChannelBLETests.m */; };
 		922F1E34182C97C800F06BF6 /* IOBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 922F1E33182C97C800F06BF6 /* IOBluetooth.framework */; };
@@ -611,7 +610,6 @@
 				929EF4FE17EA06C10044F6F9 /* FDObservable.m in Sources */,
 				929EF50317EA07D60044F6F9 /* FDBinary.m in Sources */,
 				927F3DB717FA20A200C933DD /* FDFireflyIceManager.m in Sources */,
-				922F06881857BB1A002948C1 /* FDIEEE754Tests.m in Sources */,
 				923493491854D19000FEFBDF /* FDIEEE754.m in Sources */,
 				929EF50417EA07D60044F6F9 /* FDCrypto.m in Sources */,
 				929EF50717EA0F420044F6F9 /* FDIntelHex.m in Sources */,
