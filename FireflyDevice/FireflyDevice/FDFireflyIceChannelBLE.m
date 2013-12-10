@@ -38,6 +38,9 @@
 
 @property FDFireflyIceChannelStatus status;
 
+@property CBUUID *serviceUUID;
+@property CBUUID *characteristicUUID;
+
 @property CBCentralManager *centralManager;
 @property CBPeripheral *peripheral;
 @property CBCharacteristic *characteristic;
@@ -52,6 +55,9 @@
 - (id)initWithCentralManager:(CBCentralManager *)centralManager withPeripheral:(CBPeripheral *)peripheral
 {
     if (self = [super init]) {
+        _serviceUUID = [CBUUID UUIDWithString:@"310a0001-1b95-5091-b0bd-b7a681846399"];
+        _characteristicUUID = [CBUUID UUIDWithString:@"310a0002-1b95-5091-b0bd-b7a681846399"];
+
         _centralManager = centralManager;
         _peripheral = peripheral;
         _peripheral.delegate = self;
@@ -66,20 +72,32 @@
     return @"BLE";
 }
 
-
 - (void)open
 {
     [_centralManager connectPeripheral:_peripheral options:nil];
 }
 
+- (void)shutdown
+{
+    if ((_peripheral.state == CBPeripheralStateConnected) && (_characteristic != nil)) {
+        [_peripheral setNotifyValue:NO forCharacteristic:_characteristic];
+    }
+    _characteristic = nil;
+    [_detour clear];
+    [_detourSources removeAllObjects];
+    _writePending = NO;
+}
+
 - (void)close
 {
+    [self shutdown];
+    
     [_centralManager cancelPeripheralConnection:_peripheral];
 }
 
 - (void)didConnectPeripheral
 {
-    [_peripheral discoverServices:nil];
+    [_peripheral discoverServices:@[_serviceUUID]];
     self.status = FDFireflyIceChannelStatusOpening;
     if ([_delegate respondsToSelector:@selector(fireflyIceChannel:status:)]) {
         [_delegate fireflyIceChannel:self status:self.status];
@@ -88,7 +106,8 @@
 
 - (void)didDisconnectPeripheralError:(NSError *)error
 {
-    [_detour clear];
+    [self shutdown];
+    
     self.status = FDFireflyIceChannelStatusClosed;
     if ([_delegate respondsToSelector:@selector(fireflyIceChannel:status:)]) {
         [_delegate fireflyIceChannel:self status:self.status];
@@ -162,7 +181,9 @@
     for (CBService *service in _peripheral.services) {
 //        NSLog(@"didDiscoverService %@", service.UUID);
         NSLog(@"didDiscoverService %@", [FDFireflyIceChannelBLE CBUUIDString:service.UUID]);
-        [_peripheral discoverCharacteristics:nil forService:service];
+        if ([service.UUID isEqual:_serviceUUID]) {
+            [_peripheral discoverCharacteristics:@[_characteristicUUID] forService:service];
+        }
     }
 }
 
@@ -200,11 +221,10 @@
 
 - (void)didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error
 {
-    CBUUID *characteristicUUID = [CBUUID UUIDWithString:@"310a0002-1b95-5091-b0bd-b7a681846399"];
 //    NSLog(@"didDiscoverCharacteristicsForService %@", service.UUID);
     for (CBCharacteristic *characteristic in service.characteristics) {
         NSLog(@"didDiscoverServiceCharacteristic %@", [FDFireflyIceChannelBLE CBUUIDString:characteristic.UUID]);
-        if ([characteristicUUID isEqual:characteristic.UUID]) {
+        if ([_characteristicUUID isEqual:characteristic.UUID]) {
 //            NSLog(@"found characteristic value");
             _characteristic = characteristic;
             

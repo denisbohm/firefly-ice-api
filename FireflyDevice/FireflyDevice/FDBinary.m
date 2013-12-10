@@ -7,6 +7,7 @@
 //
 
 #import "FDBinary.h"
+#import "FDIEEE754.h"
 
 #include <stdint.h>
 #include <string.h>
@@ -36,6 +37,11 @@
     uint64_t lo = [FDBinary unpackUInt32:buffer];
     uint64_t hi = [FDBinary unpackUInt32:&buffer[8]];
     return (hi << 32) | lo;
+}
+
++ (float)unpackFloat16:(uint8_t *)buffer {
+    uint16_t bits = [FDBinary unpackUInt16:buffer];
+    return [FDIEEE754 uint16ToFloat:bits];
 }
 
 typedef union {
@@ -74,6 +80,11 @@ typedef union {
 + (void)packUInt64:(uint8_t *)buffer value:(uint64_t)value {
     [FDBinary packUInt32:buffer value:(uint32_t)value];
     [FDBinary packUInt32:&buffer[4] value:(uint32_t)(value >> 32)];
+}
+
++ (void)packFloat16:(uint8_t *)buffer value:(float)value {
+    uint16_t bits = [FDIEEE754 floatToUint16:value];
+    [FDBinary packUInt16:buffer value:bits];
 }
 
 + (void)packFloat32:(uint8_t *)buffer value:(float)value {
@@ -163,6 +174,13 @@ typedef union {
     return [FDBinary unpackUInt64:buffer];
 }
 
+- (float)getFloat16 {
+    [self checkGet:2];
+    uint8_t *buffer = &((uint8_t *)_buffer.bytes)[_getIndex];
+    _getIndex += 2;
+    return [FDBinary unpackFloat16:buffer];
+}
+
 - (float)getFloat32 {
     [self checkGet:4];
     uint8_t *buffer = &((uint8_t *)_buffer.bytes)[_getIndex];
@@ -198,6 +216,11 @@ typedef union {
 - (void)putUInt64:(uint64_t)value {
     uint8_t bytes[] = {value, value >> 8, value >> 16, value >> 24, value >> 32, value >> 40, value >> 48, value >> 56};
     [_buffer appendBytes:bytes length:sizeof(bytes)];
+}
+
+- (void)putFloat16:(float)value {
+    uint32_t bits = [FDIEEE754 floatToUint16:value];
+    [self putUInt16:bits];
 }
 
 - (void)putFloat32:(float)value {

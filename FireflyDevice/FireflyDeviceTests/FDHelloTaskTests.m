@@ -14,7 +14,7 @@
 
 @interface FDHelloTask (ExposePrivateMethodsUsedForTesting)
 
-- (void)checkTime;
+- (void)checkVersion;
 
 @end
 
@@ -43,7 +43,7 @@
     [[channel expect] close];
     helloTask.channel = channel;
     
-    [helloTask checkTime];
+    [helloTask checkVersion];
     
     [channel verify];
 }

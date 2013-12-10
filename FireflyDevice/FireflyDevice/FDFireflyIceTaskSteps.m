@@ -73,7 +73,7 @@
     FDBinary *binary = [[FDBinary alloc] initWithData:data];
     uint32_t invocationId = [binary getUInt32];
     if (invocationId != _invocationId) {
-        NSLog(@"unexpected ping");
+        NSLog(@"unexpected ping 0x%08x (expected 0x%08x %@ %@)", invocationId, _invocationId, NSStringFromClass([self class]), NSStringFromSelector(_invocation.selector));
         return;
     }
     
@@ -106,6 +106,8 @@
     _invocation = [self invocation:selector];
     _invocationId = arc4random_uniform(0xffffffff);
     
+//    NSLog(@"setup ping 0x%08x %@ %@", _invocationId, NSStringFromClass([self class]), NSStringFromSelector(_invocation.selector));
+
     FDBinary *binary = [[FDBinary alloc] init];
     [binary putUInt32:_invocationId];
     NSData *data = [binary dataValue];

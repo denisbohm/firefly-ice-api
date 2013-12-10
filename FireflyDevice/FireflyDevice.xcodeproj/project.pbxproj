@@ -10,9 +10,15 @@
 		921383A5182C5B3B00D89159 /* FDHelloTaskTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 929EF4D717EA06580044F6F9 /* FDHelloTaskTests.m */; };
 		921383E0182C6C1200D89159 /* OCMock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 921383A1182C43AE00D89159 /* OCMock.framework */; };
 		921383E2182C6C3400D89159 /* OCMock.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 921383A1182C43AE00D89159 /* OCMock.framework */; };
+		922F06881857BB1A002948C1 /* FDIEEE754Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 922F06871857BB1A002948C1 /* FDIEEE754Tests.m */; };
+		922F06891857BDE2002948C1 /* FDIEEE754Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 922F06871857BB1A002948C1 /* FDIEEE754Tests.m */; };
 		922F1E32182C956F00F06BF6 /* FDFireflyIceChannelBLETests.m in Sources */ = {isa = PBXBuildFile; fileRef = 922F1E30182C90FA00F06BF6 /* FDFireflyIceChannelBLETests.m */; };
 		922F1E34182C97C800F06BF6 /* IOBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 922F1E33182C97C800F06BF6 /* IOBluetooth.framework */; };
 		922F8E61182D5D3100DC853F /* FireflyDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 929EF4BE17EA06580044F6F9 /* FireflyDevice.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		923493491854D19000FEFBDF /* FDIEEE754.m in Sources */ = {isa = PBXBuildFile; fileRef = 923493481854D19000FEFBDF /* FDIEEE754.m */; };
+		9234934A1854D33B00FEFBDF /* FDIEEE754.m in Sources */ = {isa = PBXBuildFile; fileRef = 923493481854D19000FEFBDF /* FDIEEE754.m */; };
+		9234934B1854D34C00FEFBDF /* FDIEEE754.h in Headers */ = {isa = PBXBuildFile; fileRef = 923493471854D19000FEFBDF /* FDIEEE754.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9234934C1854D35D00FEFBDF /* FDIEEE754.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 923493471854D19000FEFBDF /* FDIEEE754.h */; };
 		924948F318207FEB00FA97D5 /* FDFireflyIceSimpleTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 924D016018104C7200EB500A /* FDFireflyIceSimpleTask.m */; };
 		924948F41820809000FA97D5 /* FDFireflyIceSimpleTask.h in Headers */ = {isa = PBXBuildFile; fileRef = 924D015F18104C7200EB500A /* FDFireflyIceSimpleTask.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		924A9FFC1816E119002017EC /* FDHelloTask.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 92EAA71A1801CD24004DADFC /* FDHelloTask.h */; };
@@ -137,6 +143,7 @@
 			dstPath = "include/${PRODUCT_NAME}";
 			dstSubfolderSpec = 16;
 			files = (
+				9234934C1854D35D00FEFBDF /* FDIEEE754.h in CopyFiles */,
 				924A9FFC1816E119002017EC /* FDHelloTask.h in CopyFiles */,
 				924D016218104F5700EB500A /* FDFireflyIceSimpleTask.h in CopyFiles */,
 				927F3DBC17FA4F0B00C933DD /* FDSyncTask.h in CopyFiles */,
@@ -162,8 +169,11 @@
 
 /* Begin PBXFileReference section */
 		921383A1182C43AE00D89159 /* OCMock.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OCMock.framework; path = ../../ocmock/OSX/OCMock.framework; sourceTree = "<group>"; };
+		922F06871857BB1A002948C1 /* FDIEEE754Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDIEEE754Tests.m; sourceTree = "<group>"; };
 		922F1E30182C90FA00F06BF6 /* FDFireflyIceChannelBLETests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFireflyIceChannelBLETests.m; sourceTree = "<group>"; };
 		922F1E33182C97C800F06BF6 /* IOBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOBluetooth.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks/IOBluetooth.framework; sourceTree = DEVELOPER_DIR; };
+		923493471854D19000FEFBDF /* FDIEEE754.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDIEEE754.h; sourceTree = "<group>"; };
+		923493481854D19000FEFBDF /* FDIEEE754.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDIEEE754.m; sourceTree = "<group>"; };
 		924D015F18104C7200EB500A /* FDFireflyIceSimpleTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFireflyIceSimpleTask.h; sourceTree = "<group>"; };
 		924D016018104C7200EB500A /* FDFireflyIceSimpleTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFireflyIceSimpleTask.m; sourceTree = "<group>"; };
 		927F3DB517FA20A200C933DD /* FDFireflyIceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFireflyIceManager.h; sourceTree = "<group>"; };
@@ -324,6 +334,8 @@
 				929EF4E217EA06C10044F6F9 /* FDDetour.m */,
 				929EF4E317EA06C10044F6F9 /* FDDetourSource.h */,
 				929EF4E417EA06C10044F6F9 /* FDDetourSource.m */,
+				923493471854D19000FEFBDF /* FDIEEE754.h */,
+				923493481854D19000FEFBDF /* FDIEEE754.m */,
 				929EF50517EA0F420044F6F9 /* FDIntelHex.h */,
 				929EF50617EA0F420044F6F9 /* FDIntelHex.m */,
 				929EF4F317EA06C10044F6F9 /* FDObservable.h */,
@@ -371,6 +383,7 @@
 				929EF4D117EA06580044F6F9 /* Supporting Files */,
 				929EF4D717EA06580044F6F9 /* FDHelloTaskTests.m */,
 				922F1E30182C90FA00F06BF6 /* FDFireflyIceChannelBLETests.m */,
+				922F06871857BB1A002948C1 /* FDIEEE754Tests.m */,
 			);
 			path = FireflyDeviceTests;
 			sourceTree = "<group>";
@@ -413,6 +426,7 @@
 				92DF13C3180B02C800A1B849 /* FDDetourSource.h in Headers */,
 				92DF13C9180B02C800A1B849 /* FDExecutor.h in Headers */,
 				92DF13BD180B02BF00A1B849 /* FDBinary.h in Headers */,
+				9234934B1854D34C00FEFBDF /* FDIEEE754.h in Headers */,
 				92DF13FC180B047400A1B849 /* FDUSBHIDMonitor.h in Headers */,
 				92DF13D7180B02C800A1B849 /* FDSyncTask.h in Headers */,
 				92DF13F8180B042600A1B849 /* FDFireflyIceChannelUSB.h in Headers */,
@@ -597,6 +611,8 @@
 				929EF4FE17EA06C10044F6F9 /* FDObservable.m in Sources */,
 				929EF50317EA07D60044F6F9 /* FDBinary.m in Sources */,
 				927F3DB717FA20A200C933DD /* FDFireflyIceManager.m in Sources */,
+				922F06881857BB1A002948C1 /* FDIEEE754Tests.m in Sources */,
+				923493491854D19000FEFBDF /* FDIEEE754.m in Sources */,
 				929EF50417EA07D60044F6F9 /* FDCrypto.m in Sources */,
 				929EF50717EA0F420044F6F9 /* FDIntelHex.m in Sources */,
 			);
@@ -613,6 +629,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9234934A1854D33B00FEFBDF /* FDIEEE754.m in Sources */,
 				92DF13D8180B02C800A1B849 /* FDSyncTask.m in Sources */,
 				92DF13D4180B02C800A1B849 /* FDFireflyIceTaskSteps.m in Sources */,
 				92DF13CA180B02C800A1B849 /* FDExecutor.m in Sources */,
@@ -640,6 +657,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				922F06891857BDE2002948C1 /* FDIEEE754Tests.m in Sources */,
 				921383A5182C5B3B00D89159 /* FDHelloTaskTests.m in Sources */,
 				922F1E32182C956F00F06BF6 /* FDFireflyIceChannelBLETests.m in Sources */,
 			);

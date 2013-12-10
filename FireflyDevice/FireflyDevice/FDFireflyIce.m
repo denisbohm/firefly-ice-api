@@ -46,7 +46,7 @@
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"battery level %0.2f, battery voltage %0.2f V, USB power %@, charging %@, charge current %0.1f mA, temperature %0.1f C", _batteryLevel, _batteryVoltage, _isUSBPowered ? @"YES" : @"NO", _isCharging ? @"YES" : @"NO", _chargeCurrent, _temperature];
+    return [NSString stringWithFormat:@"battery level %0.2f, battery voltage %0.2f V, USB power %@, charging %@, charge current %0.1f mA, temperature %0.1f C", _batteryLevel, _batteryVoltage, _isUSBPowered ? @"YES" : @"NO", _isCharging ? @"YES" : @"NO", _chargeCurrent * 1000.0, _temperature];
 }
 
 @end
