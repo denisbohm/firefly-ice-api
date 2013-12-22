@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol FDFireflyDeviceLog;
 @class FDExecutor;
 
 @protocol FDExecutorTask <NSObject>
@@ -33,6 +34,7 @@ enum {
 
 @interface FDExecutor : NSObject
 
+@property id<FDFireflyDeviceLog> log;
 @property NSTimeInterval timeoutCheckInterval;
 
 @property(nonatomic) BOOL run;

@@ -11,6 +11,7 @@
 #import "FDFireflyIce.h"
 #import "FDFireflyIceChannel.h"
 #import "FDFireflyIceCoder.h"
+#import "FDFireflyDeviceLogger.h"
 
 #include <ctype.h>
 
@@ -240,7 +241,7 @@
     @try {
         [_coder fireflyIce:self channel:channel packet:data];
     } @catch (NSException *e) {
-        NSLog(@"unexpected exception %@\n%@", e, [e callStackSymbols]);
+        FDFireflyDeviceLogWarn(@"unexpected exception %@\n%@", e, [e callStackSymbols]);
     }
 }
 

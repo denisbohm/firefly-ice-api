@@ -103,6 +103,7 @@ typedef uint8_t fd_lock_identifier_t;
 
 @class FDDetour;
 @class FDFireflyIce;
+@protocol FDFireflyDeviceLog;
 
 @protocol FDFireflyIceObserver <NSObject>
 
@@ -148,6 +149,8 @@ typedef uint8_t fd_lock_identifier_t;
 @class FDFireflyIceCoder;
 
 @interface FDFireflyIce : NSObject
+
+@property id<FDFireflyDeviceLog> log;
 
 @property FDFireflyIceCoder *coder;
 

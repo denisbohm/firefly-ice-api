@@ -8,6 +8,7 @@
 
 #import "FDBinary.h"
 #import "FDDetour.h"
+#import "FDFireflyDeviceLogger.h"
 
 @interface FDDetour ()
 
@@ -54,7 +55,7 @@
     [_buffer appendData:data];
     if (_buffer.length >= _length) {
         _state = FDDetourStateSuccess;
-//        NSLog(@"detour success: %d %ld %@", _length, (unsigned long)_buffer.length, _buffer);
+//        FDFireflyDeviceLogInfo(@"detour success: %d %ld %@", _length, (unsigned long)_buffer.length, _buffer);
     } else {
         ++_sequenceNumber;
     }

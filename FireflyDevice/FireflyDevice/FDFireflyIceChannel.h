@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class FDDetour;
+@protocol FDFireflyDeviceLog;
 @protocol FDFireflyIceChannel;
 
 typedef enum {FDFireflyIceChannelStatusClosed, FDFireflyIceChannelStatusOpening, FDFireflyIceChannelStatusOpen} FDFireflyIceChannelStatus;
@@ -28,6 +29,8 @@ typedef enum {FDFireflyIceChannelStatusClosed, FDFireflyIceChannelStatusOpening,
 @protocol FDFireflyIceChannel <NSObject>
 
 @property(readonly) NSString *name;
+
+@property id<FDFireflyDeviceLog> log;
 
 @property id<FDFireflyIceChannelDelegate> delegate;
 

@@ -13,8 +13,11 @@
 #import "FDFireflyIceChannel.h"
 #import "FDFirmwareUpdateTask.h"
 #import "FDIntelHex.h"
+#import "FDFireflyDeviceLogger.h"
 
 #import <CommonCrypto/CommonDigest.h>
+
+#define _log self.fireflyIce.log
 
 @interface FDFirmwareUpdateTask () <FDFireflyIceObserver>
 
@@ -175,10 +178,10 @@
 - (void)checkOutOfDate
 {
     if ([self isOutOfDate]) {
-        NSLog(@"firmware %@ is out of date with latest %u.%u.%u (boot loader is version %@)", _version, _major, _minor, _patch, _bootVersion);
+        FDFireflyDeviceLogInfo(@"firmware %@ is out of date with latest %u.%u.%u (boot loader is version %@)", _version, _major, _minor, _patch, _bootVersion);
         [self next:@selector(getSectorHashes)];
     } else {
-        NSLog(@"firmware %@ is up to date with latest %u.%u.%u (boot loader is version %@)", _version, _major, _minor, _patch, _bootVersion);
+        FDFireflyDeviceLogInfo(@"firmware %@ is up to date with latest %u.%u.%u (boot loader is version %@)", _version, _major, _minor, _patch, _bootVersion);
         [self complete];
     }
 }
@@ -191,10 +194,10 @@
 - (void)checkLock
 {
     if ((_lock.identifier == fd_lock_identifier_update) && [self.channel.name isEqualToString:_lock.ownerName]) {
-        NSLog(@"acquired update lock");
+        FDFireflyDeviceLogDebug(@"acquired update lock");
         [self checkOutOfDate];
     } else {
-        NSLog(@"update could not acquire lock");
+        FDFireflyDeviceLogDebug(@"update could not acquire lock");
         [self complete];
     }
 }
@@ -302,7 +305,7 @@
         return;
     }
     
-    NSLog(@"updating pages %@", _updatePages);
+    FDFireflyDeviceLogInfo(@"updating pages %@", _updatePages);
 }
 
 - (void)writeNextPage
@@ -312,7 +315,7 @@
     NSUInteger progressPercent = (NSUInteger)(progress * 100);
     if (_lastProgressPercent != progressPercent) {
         _lastProgressPercent = progressPercent;
-        NSLog(@"firmware update progress %lu%%", (unsigned long) (unsigned long)progressPercent);
+        FDFireflyDeviceLogInfo(@"firmware update progress %lu%%", (unsigned long) (unsigned long)progressPercent);
     }
     
     if (_updatePages.count == 0) {
@@ -345,7 +348,7 @@
         return;
     }
     
-    NSLog(@"sending update commit");
+    FDFireflyDeviceLogInfo(@"sending update commit");
     uint32_t flags = 0;
     uint32_t length = (uint32_t)_firmware.length;
     NSData *hash = [FDCrypto sha1:_firmware];
@@ -364,15 +367,15 @@
 - (void)complete
 {
     if (_version.capabilities & FD_CONTROL_CAPABILITY_LOCK) {
-        NSLog(@"released update lock");
+        FDFireflyDeviceLogDebug(@"released update lock");
         [self.fireflyIce.coder sendLock:self.channel identifier:fd_lock_identifier_update operation:fd_lock_operation_release];
     }
     
     BOOL isFirmwareUpToDate = (_updatePages.count == 0);
-    NSLog(@"isFirmwareUpToDate = %@, commit %@ result = %u", isFirmwareUpToDate ? @"YES" : @"NO", _updateCommit != nil ? @"YES" : @"NO", _updateCommit.result);
+    FDFireflyDeviceLogInfo(@"isFirmwareUpToDate = %@, commit %@ result = %u", isFirmwareUpToDate ? @"YES" : @"NO", _updateCommit != nil ? @"YES" : @"NO", _updateCommit.result);
     [_delegate firmwareUpdateTask:self complete:isFirmwareUpToDate];
     if (_reset && [self isOutOfDate] && isFirmwareUpToDate && (_updateCommit != nil) && (_updateCommit.result == FD_UPDATE_COMMIT_SUCCESS)) {
-        NSLog(@"new firmware has been transferred and comitted - restarting device");
+        FDFireflyDeviceLogInfo(@"new firmware has been transferred and comitted - restarting device");
         [self.fireflyIce.coder sendReset:self.channel type:FD_CONTROL_RESET_SYSTEM_REQUEST];
     }
     [self done];

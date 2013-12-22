@@ -9,6 +9,9 @@
 #import "FDBinary.h"
 #import "FDFireflyIceCoder.h"
 #import "FDFireflyIceTaskSteps.h"
+#import "FDFireflyDeviceLogger.h"
+
+#define _log _fireflyIce.log
 
 @interface FDFireflyIceTaskSteps ()
 
@@ -34,31 +37,31 @@
 
 - (void)executorTaskStarted:(FDExecutor *)executor
 {
-//    NSLog(@"%@ task started", NSStringFromClass([self class]));
+//    FDFireflyDeviceLogDebug(@"%@ task started", NSStringFromClass([self class]));
     [_fireflyIce.observable addObserver:self];
 }
 
 - (void)executorTaskSuspended:(FDExecutor *)executor
 {
-//    NSLog(@"%@ task suspended", NSStringFromClass([self class]));
+//    FDFireflyDeviceLogDebug(@"%@ task suspended", NSStringFromClass([self class]));
     [_fireflyIce.observable removeObserver:self];
 }
 
 - (void)executorTaskResumed:(FDExecutor *)executor
 {
-//    NSLog(@"%@ task resumed", NSStringFromClass([self class]));
+//    FDFireflyDeviceLogDebug(@"%@ task resumed", NSStringFromClass([self class]));
     [_fireflyIce.observable addObserver:self];
 }
 
 - (void)executorTaskCompleted:(FDExecutor *)executor
 {
-//    NSLog(@"%@ task completed", NSStringFromClass([self class]));
+//    FDFireflyDeviceLogDebug(@"%@ task completed", NSStringFromClass([self class]));
     [_fireflyIce.observable removeObserver:self];
 }
 
 - (void)executorTaskFailed:(FDExecutor *)executor error:(NSError *)error
 {
-//    NSLog(@"%@ task failed with error %@", NSStringFromClass([self class]), error);
+//    FDFireflyDeviceLogDebug(@"%@ task failed with error %@", NSStringFromClass([self class]), error);
     [_fireflyIce.observable removeObserver:self];
 }
 
@@ -69,21 +72,21 @@
 
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel ping:(NSData *)data
 {
-//    NSLog(@"ping received");
+//    FDFireflyDeviceLogDebug(@"ping received");
     FDBinary *binary = [[FDBinary alloc] initWithData:data];
     uint32_t invocationId = [binary getUInt32];
     if (invocationId != _invocationId) {
-        NSLog(@"unexpected ping 0x%08x (expected 0x%08x %@ %@)", invocationId, _invocationId, NSStringFromClass([self class]), NSStringFromSelector(_invocation.selector));
+        FDFireflyDeviceLogWarn(@"unexpected ping 0x%08x (expected 0x%08x %@ %@)", invocationId, _invocationId, NSStringFromClass([self class]), NSStringFromSelector(_invocation.selector));
         return;
     }
     
     if (_invocation != nil) {
-//        NSLog(@"invoking step %@", NSStringFromSelector(_invocation.selector));
+//        FDFireflyDeviceLogDebug(@"invoking step %@", NSStringFromSelector(_invocation.selector));
         NSInvocation *invocation = _invocation;
         _invocation = nil;
         [invocation invoke];
     } else {
-//        NSLog(@"all steps completed");
+//        FDFireflyDeviceLogDebug(@"all steps completed");
         [_fireflyIce.executor complete:self];
     }
 }
@@ -99,14 +102,14 @@
 
 - (void)next:(SEL)selector
 {
-//    NSLog(@"queing next step %@", NSStringFromSelector(selector));
+//    FDFireflyDeviceLogDebug(@"queing next step %@", NSStringFromSelector(selector));
     
     [_fireflyIce.executor feedWatchdog:self];
     
     _invocation = [self invocation:selector];
     _invocationId = arc4random_uniform(0xffffffff);
     
-//    NSLog(@"setup ping 0x%08x %@ %@", _invocationId, NSStringFromClass([self class]), NSStringFromSelector(_invocation.selector));
+//    FDFireflyDeviceLogDebug(@"setup ping 0x%08x %@ %@", _invocationId, NSStringFromClass([self class]), NSStringFromSelector(_invocation.selector));
 
     FDBinary *binary = [[FDBinary alloc] init];
     [binary putUInt32:_invocationId];
@@ -116,7 +119,7 @@
 
 - (void)done
 {
-//    NSLog(@"task done");
+//    FDFireflyDeviceLogDebug(@"task done");
     [_fireflyIce.executor complete:self];
 }
 

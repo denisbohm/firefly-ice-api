@@ -10,6 +10,7 @@
 #import "FDDetourSource.h"
 #import "FDFireflyIceChannelUSB.h"
 #import "FDUSBHIDMonitor.h"
+#import "FDFireflyDeviceLogger.h"
 
 @interface FDFireflyIceChannelUSB () <FDUSBHIDDeviceDelegate>
 
@@ -20,6 +21,8 @@
 @end
 
 @implementation FDFireflyIceChannelUSB
+
+@synthesize log;
 
 - (id)initWithDevice:(FDUSBHIDDevice *)device
 {
@@ -62,7 +65,7 @@
 
 - (void)usbHidDevice:(FDUSBHIDDevice *)device inputReport:(NSData *)data
 {
-//    NSLog(@"usbHidDevice:inputReport: %@", data);
+//    FDFireflyDeviceLogDebug(@"usbHidDevice:inputReport: %@", data);
     [_detour detourEvent:data];
     if (_detour.state == FDDetourStateSuccess) {
         if ([_delegate respondsToSelector:@selector(fireflyIceChannelPacket:data:)]) {

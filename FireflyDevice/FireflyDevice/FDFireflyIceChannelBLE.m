@@ -10,12 +10,15 @@
 #import "FDDetour.h"
 #import "FDDetourSource.h"
 #import "FDFireflyIceChannelBLE.h"
+#import "FDFireflyDeviceLogger.h"
 
 #if TARGET_OS_IPHONE
 #import <CoreBluetooth/CoreBluetooth.h>
 #else
 #import <IOBluetooth/IOBluetooth.h>
 #endif
+
+#define _log self.log
 
 @implementation FDFireflyIceChannelBLERSSI
 
@@ -51,6 +54,8 @@
 @end
 
 @implementation FDFireflyIceChannelBLE
+
+@synthesize log;
 
 - (id)initWithCentralManager:(CBCentralManager *)centralManager withPeripheral:(CBPeripheral *)peripheral
 {
@@ -116,7 +121,7 @@
 
 - (void)didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 {
-    //    NSLog(@"didWriteValueForCharacteristic %@", error);
+    //    FDFireflyDeviceLogDebug(@"didWriteValueForCharacteristic %@", error);
     _writePending = NO;
     [self checkWrite];
 }
@@ -131,7 +136,7 @@
 
 - (void)didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 {
-//    NSLog(@"didUpdateValueForCharacteristic %@ %@", characteristic.value, error);
+//    FDFireflyDeviceLogDebug(@"didUpdateValueForCharacteristic %@ %@", characteristic.value, error);
     [_detour detourEvent:characteristic.value];
     if (_detour.state == FDDetourStateSuccess) {
         if ([_delegate respondsToSelector:@selector(fireflyIceChannelPacket:data:)]) {
@@ -177,10 +182,10 @@
 
 - (void)didDiscoverServices:(NSError *)error
 {
-//    NSLog(@"didDiscoverServices %@", peripheral.name);
+//    FDFireflyDeviceLogDebug(@"didDiscoverServices %@", peripheral.name);
     for (CBService *service in _peripheral.services) {
-//        NSLog(@"didDiscoverService %@", service.UUID);
-        NSLog(@"didDiscoverService %@", [FDFireflyIceChannelBLE CBUUIDString:service.UUID]);
+//        FDFireflyDeviceLogDebug(@"didDiscoverService %@", service.UUID);
+        FDFireflyDeviceLogDebug(@"didDiscoverService %@", [FDFireflyIceChannelBLE CBUUIDString:service.UUID]);
         if ([service.UUID isEqual:_serviceUUID]) {
             [_peripheral discoverCharacteristics:@[_characteristicUUID] forService:service];
         }
@@ -221,11 +226,11 @@
 
 - (void)didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error
 {
-//    NSLog(@"didDiscoverCharacteristicsForService %@", service.UUID);
+//    FDFireflyDeviceLogDebug(@"didDiscoverCharacteristicsForService %@", service.UUID);
     for (CBCharacteristic *characteristic in service.characteristics) {
-        NSLog(@"didDiscoverServiceCharacteristic %@", [FDFireflyIceChannelBLE CBUUIDString:characteristic.UUID]);
+        FDFireflyDeviceLogDebug(@"didDiscoverServiceCharacteristic %@", [FDFireflyIceChannelBLE CBUUIDString:characteristic.UUID]);
         if ([_characteristicUUID isEqual:characteristic.UUID]) {
-//            NSLog(@"found characteristic value");
+//            FDFireflyDeviceLogDebug(@"found characteristic value");
             _characteristic = characteristic;
             
             [_peripheral setNotifyValue:YES forCharacteristic:_characteristic];

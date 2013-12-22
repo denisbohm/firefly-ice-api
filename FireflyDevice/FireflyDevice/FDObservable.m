@@ -7,6 +7,7 @@
 //
 
 #import "FDObservable.h"
+#import "FDFireflyDeviceLogger.h"
 
 #import <objc/runtime.h>
 
@@ -72,7 +73,7 @@
             @try {
                 [invocation invokeWithTarget:observer];
             } @catch (NSException *e) {
-                NSLog(@"unexpected exception during observer invocation: %@", e);
+                FDFireflyDeviceLogWarn(@"unexpected exception during observer invocation: %@", e);
             }
         }
     }

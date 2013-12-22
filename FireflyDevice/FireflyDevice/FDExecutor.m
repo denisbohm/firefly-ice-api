@@ -7,6 +7,7 @@
 //
 
 #import "FDExecutor.h"
+#import "FDFireflyDeviceLogger.h"
 
 @interface FDExecutor ()
 
@@ -131,7 +132,7 @@
     
     NSTimeInterval duration = -[_currentFeedTime timeIntervalSinceNow];
     if (duration > _currentTask.timeout) {
-        NSLog(@"executor task timeout");
+        FDFireflyDeviceLogInfo(@"executor task timeout");
         [self fail:_currentTask error:[NSError errorWithDomain:@"FDExecutor" code:FDExecutorErrorCodeTimeout userInfo:nil]];
     }
 }
@@ -144,7 +145,7 @@
 
 - (void)taskException:(NSException *)exception
 {
-    NSLog(@"task exception %@", exception);
+    FDFireflyDeviceLogWarn(@"task exception %@", exception);
 }
 
 - (void)schedule
@@ -207,7 +208,7 @@
     if (_currentTask == task) {
         _currentFeedTime = [NSDate date];
     } else {
-        NSLog(@"expected current task to feed watchdog...");
+        FDFireflyDeviceLogWarn(@"expected current task to feed watchdog...");
     }
 }
 
@@ -226,7 +227,7 @@
         }
         [self schedule];
     } else {
-        NSLog(@"expected current task to be complete...");
+        FDFireflyDeviceLogWarn(@"expected current task to be complete...");
     }
 }
 

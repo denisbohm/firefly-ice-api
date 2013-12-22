@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol FDFireflyDeviceLog;
 @class FDUSBHIDDevice;
 @class FDUSBHIDMonitor;
 
@@ -36,6 +37,8 @@
 @end
 
 @interface FDUSBHIDMonitor : NSObject
+
+@property id<FDFireflyDeviceLog> log;
 
 @property UInt16 vendor;
 @property UInt16 product;

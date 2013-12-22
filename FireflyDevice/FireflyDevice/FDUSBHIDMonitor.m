@@ -7,6 +7,7 @@
 //
 
 #import "FDUSBHIDMonitor.h"
+#import "FDFireflyDeviceLogger.h"
 
 #import <IOKit/hid/IOHIDManager.h>
 
@@ -163,7 +164,7 @@ void FDUSBHIDMonitorDeviceMatchingCallback(void *context, IOReturn result, void 
         }
     }
     if (!done) {
-        NSLog(@"usb test thread failed to stop");
+        FDFireflyDeviceLogWarn(@"usb test thread failed to stop");
     }
     _hidRunLoopThread = nil;
     IOHIDManagerClose(_hidManagerRef, 0);

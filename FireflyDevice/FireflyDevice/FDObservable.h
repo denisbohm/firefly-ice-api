@@ -8,11 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol FDFireflyDeviceLog;
+
 @interface FDObservable : NSObject
 
 - (id)init:(Protocol *)protocol;
 
 - (void)addObserver:(id)observer;
 - (void)removeObserver:(id)observer;
+
+@property id<FDFireflyDeviceLog> log;
 
 @end

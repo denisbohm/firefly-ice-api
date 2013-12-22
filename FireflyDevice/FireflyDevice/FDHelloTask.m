@@ -8,6 +8,9 @@
 
 #import "FDFireflyIceCoder.h"
 #import "FDHelloTask.h"
+#import "FDFireflyDeviceLogger.h"
+
+#define _log self.fireflyIce.log
 
 @interface FDHelloTask ()
 
@@ -74,7 +77,7 @@
 - (void)checkVersion
 {
     if ((self.fireflyIce.version == nil) || (self.fireflyIce.hardwareId == nil)) {
-        NSLog(@"version or hardware id not received - closing connection");
+        FDFireflyDeviceLogInfo(@"version or hardware id not received - closing connection");
         [self.channel close];
         [self done];
         return;
@@ -90,24 +93,24 @@
 
 - (void)setTime
 {
-    NSLog(@"setting the time");
+    FDFireflyDeviceLogInfo(@"setting the time");
     [self.fireflyIce.coder sendSetPropertyTime:self.channel time:[NSDate date]];
 }
 
 - (void)checkTime
 {
-    NSLog(@"hello (hardware %@) (firmware %@)", self.fireflyIce.hardwareId, self.fireflyIce.version);
+    FDFireflyDeviceLogInfo(@"hello (hardware %@) (firmware %@)", self.fireflyIce.hardwareId, self.fireflyIce.version);
     
     if (_time == nil) {
-        NSLog(@"time not set for hw %@ fw %@ (last reset %@)", self.fireflyIce.hardwareId, self.fireflyIce.version, _reset);
+        FDFireflyDeviceLogInfo(@"time not set for hw %@ fw %@ (last reset %@)", self.fireflyIce.hardwareId, self.fireflyIce.version, _reset);
         [self setTime];
     } else {
         NSTimeInterval offset = [_time timeIntervalSinceDate:[NSDate date]];
         if (fabs(offset) > _maxOffset) {
-            NSLog(@"time is off by %0.3f seconds for hw %@ fw %@ (last reset %@)", offset, self.fireflyIce.hardwareId, self.fireflyIce.version, _reset);
+            FDFireflyDeviceLogInfo(@"time is off by %0.3f seconds for hw %@ fw %@ (last reset %@)", offset, self.fireflyIce.hardwareId, self.fireflyIce.version, _reset);
             [self setTime];
         } else {
-//            NSLog(@"time is off by %0.3f seconds for hw %@ fw %@", offset, self.fireflyIce.hardwareId, self.fireflyIce.version);
+//            FDFireflyDeviceLogDebug(@"time is off by %0.3f seconds for hw %@ fw %@", offset, self.fireflyIce.hardwareId, self.fireflyIce.version);
         }
     }
     [self done];
