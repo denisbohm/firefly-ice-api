@@ -14,7 +14,8 @@
 
 @protocol FDHelloTaskDelegate <NSObject>
 
-- (void)helloTaskComplete:(FDHelloTask *)helloTask;
+- (void)helloTaskSuccess:(FDHelloTask *)helloTask;
+- (void)helloTask:(FDHelloTask *)helloTask error:(NSError *)error;
 
 @end
 

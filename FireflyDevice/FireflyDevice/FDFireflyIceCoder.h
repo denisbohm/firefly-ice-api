@@ -39,8 +39,11 @@
 
 #define FD_CONTROL_LOCK 20
 
+#define FD_CONTROL_SYNC_AHEAD 0x00000001
+
 #define FD_CONTROL_CAPABILITY_LOCK         0x00000001
 #define FD_CONTROL_CAPABILITY_BOOT_VERSION 0x00000002
+#define FD_CONTROL_CAPABILITY_SYNC_AHEAD   0x00000004
 
 // property bits for get/set property commands
 #define FD_CONTROL_PROPERTY_VERSION      0x00000001
@@ -150,6 +153,7 @@ typedef enum {
 - (void)sendLock:(id<FDFireflyIceChannel>)channel identifier:(fd_lock_identifier_t)identifier operation:(fd_lock_operation_t)operation;
 
 - (void)sendSyncStart:(id<FDFireflyIceChannel>)channel;
+- (void)sendSyncStart:(id<FDFireflyIceChannel>)channel offset:(uint32_t)offset;
 
 @end
 

@@ -59,7 +59,7 @@
     }
 }
 
-- (void)helloTaskComplete:(FDHelloTask *)helloTask
+- (void)helloTaskSuccess:(FDHelloTask *)helloTask
 {
     FDFireflyIce *fireflyIce = helloTask.fireflyIce;
     id<FDFireflyIceChannel> channel = helloTask.channel;
@@ -68,6 +68,14 @@
     if ([_delegate respondsToSelector:@selector(fireflyIceManager:identified:)]) {
         [_delegate fireflyIceManager:self identified:fireflyIce];
     }
+}
+
+- (void)helloTask:(FDHelloTask *)helloTask error:(NSError *)error
+{
+    // !!! should have retry limit and decide what to do on failure (close device?)
+    FDFireflyIce *fireflyIce = helloTask.fireflyIce;
+    id<FDFireflyIceChannel> channel = helloTask.channel;
+    [fireflyIce.executor execute:[FDHelloTask helloTask:fireflyIce channel:channel delegate:self]];
 }
 
 - (NSMutableDictionary *)dictionaryFor:(id)object key:(NSString *)key

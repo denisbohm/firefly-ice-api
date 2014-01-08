@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "FDFireflyDeviceLogger.h"
+#import "FDFileLog.h"
 #import "FDUSBHIDMonitor.h"
 #import "FDBinary.h"
 #import "FDCrypto.h"

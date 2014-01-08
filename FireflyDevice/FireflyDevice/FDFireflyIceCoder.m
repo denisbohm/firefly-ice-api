@@ -498,6 +498,15 @@ void putColor(FDBinary *binary, uint32_t color) {
     [channel fireflyIceChannelSend:[NSData dataWithBytes:&bytes length:sizeof(bytes)]];
 }
 
+- (void)sendSyncStart:(id<FDFireflyIceChannel>)channel offset:(uint32_t)offset
+{
+    FDBinary *binary = [[FDBinary alloc] init];
+    [binary putUInt8:FD_CONTROL_SYNC_START];
+    [binary putUInt32:FD_CONTROL_SYNC_AHEAD];
+    [binary putUInt32:offset];
+    [channel fireflyIceChannelSend:binary.dataValue];
+}
+
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel lock:(NSData *)data
 {
     FDBinary *binary = [[FDBinary alloc] initWithData:data];

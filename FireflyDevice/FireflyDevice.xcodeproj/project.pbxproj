@@ -107,6 +107,10 @@
 		92DF13FD180B047400A1B849 /* FDUSBHIDMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 92DF13FB180B047400A1B849 /* FDUSBHIDMonitor.m */; };
 		92DF1445180B092900A1B849 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92DF1444180B092900A1B849 /* IOKit.framework */; };
 		92DF1464180B0C9A00A1B849 /* FireflyIce.hex in Resources */ = {isa = PBXBuildFile; fileRef = 92DF1463180B0C9400A1B849 /* FireflyIce.hex */; };
+		92E81156187E06E6002449B2 /* FDFileLog.h in Headers */ = {isa = PBXBuildFile; fileRef = 92E81154187E06E6002449B2 /* FDFileLog.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		92E81157187E06E6002449B2 /* FDFileLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 92E81155187E06E6002449B2 /* FDFileLog.m */; };
+		92E81158187E06E6002449B2 /* FDFileLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 92E81155187E06E6002449B2 /* FDFileLog.m */; };
+		92E81159187E072C002449B2 /* FDFileLog.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 92E81154187E06E6002449B2 /* FDFileLog.h */; };
 		92EAA71C1801CD24004DADFC /* FDHelloTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 92EAA71B1801CD24004DADFC /* FDHelloTask.m */; };
 		92F7AFA018664D2E00CDC99B /* FDFireflyDeviceLogger.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9259AFFA18663CB30086F634 /* FDFireflyDeviceLogger.h */; };
 		92F863F517F3B4E0000E23AF /* FDSyncTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F863F417F3B4E0000E23AF /* FDSyncTask.m */; };
@@ -146,6 +150,7 @@
 			dstPath = "include/${PRODUCT_NAME}";
 			dstSubfolderSpec = 16;
 			files = (
+				92E81159187E072C002449B2 /* FDFileLog.h in CopyFiles */,
 				9234934C1854D35D00FEFBDF /* FDIEEE754.h in CopyFiles */,
 				924A9FFC1816E119002017EC /* FDHelloTask.h in CopyFiles */,
 				924D016218104F5700EB500A /* FDFireflyIceSimpleTask.h in CopyFiles */,
@@ -235,6 +240,8 @@
 		92DF13FB180B047400A1B849 /* FDUSBHIDMonitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDUSBHIDMonitor.m; sourceTree = "<group>"; };
 		92DF1444180B092900A1B849 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/IOKit.framework; sourceTree = DEVELOPER_DIR; };
 		92DF1463180B0C9400A1B849 /* FireflyIce.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FireflyIce.hex; sourceTree = "<group>"; };
+		92E81154187E06E6002449B2 /* FDFileLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFileLog.h; sourceTree = "<group>"; };
+		92E81155187E06E6002449B2 /* FDFileLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFileLog.m; sourceTree = "<group>"; };
 		92EAA71A1801CD24004DADFC /* FDHelloTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDHelloTask.h; sourceTree = "<group>"; };
 		92EAA71B1801CD24004DADFC /* FDHelloTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDHelloTask.m; sourceTree = "<group>"; };
 		92F863F317F3B4E0000E23AF /* FDSyncTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDSyncTask.h; sourceTree = "<group>"; };
@@ -330,6 +337,8 @@
 				929EF4BC17EA06580044F6F9 /* Supporting Files */,
 				9259AFFA18663CB30086F634 /* FDFireflyDeviceLogger.h */,
 				9259AFFB18663CB30086F634 /* FDFireflyDeviceLogger.m */,
+				92E81154187E06E6002449B2 /* FDFileLog.h */,
+				92E81155187E06E6002449B2 /* FDFileLog.m */,
 				92DF13FA180B047400A1B849 /* FDUSBHIDMonitor.h */,
 				92DF13FB180B047400A1B849 /* FDUSBHIDMonitor.m */,
 				929EF4BE17EA06580044F6F9 /* FireflyDevice.h */,
@@ -443,6 +452,7 @@
 				92DF13BF180B02C800A1B849 /* FDCrypto.h in Headers */,
 				92DF13C7180B02C800A1B849 /* FDObservable.h in Headers */,
 				9259B0001866414D0086F634 /* FDFireflyDeviceLogger.h in Headers */,
+				92E81156187E06E6002449B2 /* FDFileLog.h in Headers */,
 				922F8E61182D5D3100DC853F /* FireflyDevice.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -619,6 +629,7 @@
 				92EAA71C1801CD24004DADFC /* FDHelloTask.m in Sources */,
 				929EF4FE17EA06C10044F6F9 /* FDObservable.m in Sources */,
 				929EF50317EA07D60044F6F9 /* FDBinary.m in Sources */,
+				92E81157187E06E6002449B2 /* FDFileLog.m in Sources */,
 				927F3DB717FA20A200C933DD /* FDFireflyIceManager.m in Sources */,
 				923493491854D19000FEFBDF /* FDIEEE754.m in Sources */,
 				929EF50417EA07D60044F6F9 /* FDCrypto.m in Sources */,
@@ -651,6 +662,7 @@
 				92DF13CC180B02C800A1B849 /* FDFireflyIce.m in Sources */,
 				92DF13F9180B042600A1B849 /* FDFireflyIceChannelUSB.m in Sources */,
 				92DF13DC180B02C800A1B849 /* FDFireflyIceManager.m in Sources */,
+				92E81158187E06E6002449B2 /* FDFileLog.m in Sources */,
 				92DF13FD180B047400A1B849 /* FDUSBHIDMonitor.m in Sources */,
 				92DF13D0180B02C800A1B849 /* FDFireflyIceChannelBLE.m in Sources */,
 				92DF13C2180B02C800A1B849 /* FDDetour.m in Sources */,

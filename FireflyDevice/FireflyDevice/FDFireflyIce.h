@@ -159,6 +159,7 @@ typedef uint8_t fd_lock_identifier_t;
 @property NSMutableDictionary *channels;
 
 @property NSString *name;
+
 @property FDFireflyIceVersion *version;
 @property FDFireflyIceHardwareId *hardwareId;
 @property FDFireflyIceVersion *bootVersion;

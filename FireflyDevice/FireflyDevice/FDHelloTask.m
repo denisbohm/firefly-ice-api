@@ -77,9 +77,11 @@
 - (void)checkVersion
 {
     if ((self.fireflyIce.version == nil) || (self.fireflyIce.hardwareId == nil)) {
-        FDFireflyDeviceLogInfo(@"version or hardware id not received - closing connection");
+        NSString *description = @"version or hardware id not received - closing connection";
+        FDFireflyDeviceLogInfo(description);
         [self.channel close];
-        [self done];
+        NSError *error = [NSError errorWithDomain:@"FDHelloTask" code:0 userInfo:@{NSLocalizedDescriptionKey:description}];
+        [self.fireflyIce.executor fail:self error:error];
         return;
     }
     
@@ -114,7 +116,18 @@
         }
     }
     [self done];
-    [_delegate helloTaskComplete:self];
+}
+
+- (void)executorTaskCompleted:(FDExecutor *)executor
+{
+    [super executorTaskCompleted:executor];
+    [_delegate helloTaskSuccess:self];
+}
+
+- (void)executorTaskFailed:(FDExecutor *)executor error:(NSError *)error
+{
+    [super executorTaskFailed:executor error:error];
+    [_delegate helloTask:self error:error];
 }
 
 @end
