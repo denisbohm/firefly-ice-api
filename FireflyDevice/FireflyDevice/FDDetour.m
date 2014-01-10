@@ -89,7 +89,7 @@
         }
     } else
     if (sequenceNumber != _sequenceNumber) {
-        [self detourError:[NSString stringWithFormat:@"out of sequence %u != %u", sequenceNumber, _sequenceNumber]];
+        [self detourError:[NSString stringWithFormat:@"out of sequence found %u but expected %u", sequenceNumber, _sequenceNumber]];
     } else {
         [self detourContinue:[binary getRemainingData]];
     }

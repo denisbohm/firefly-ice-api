@@ -134,10 +134,10 @@
     });
 }
 
-- (void)didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
+- (void)didUpdateValueForCharacteristic:(NSData *)value error:(NSError *)error
 {
-//    FDFireflyDeviceLogDebug(@"didUpdateValueForCharacteristic %@ %@", characteristic.value, error);
-    [_detour detourEvent:characteristic.value];
+//    FDFireflyDeviceLogDebug(@"didUpdateValueForCharacteristic %@ %@", value, error);
+    [_detour detourEvent:value];
     if (_detour.state == FDDetourStateSuccess) {
         if ([_delegate respondsToSelector:@selector(fireflyIceChannelPacket:data:)]) {
             [_delegate fireflyIceChannelPacket:self data:_detour.data];
@@ -154,9 +154,10 @@
 
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 {
+    NSData *data = characteristic.value;
     __weak FDFireflyIceChannelBLE *weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
-        [weakSelf didUpdateValueForCharacteristic:characteristic error:error];
+        [weakSelf didUpdateValueForCharacteristic:data error:error];
     });
 }
 
