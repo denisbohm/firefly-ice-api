@@ -45,13 +45,21 @@
     return string;
 }
 
+- (void)appendFile:(NSMutableString *)string fileName:(NSString *)fileName
+{
+    NSString *content = [NSString stringWithContentsOfFile:fileName encoding:NSUTF8StringEncoding error:nil];
+    if (content != nil) {
+        [string appendString:content];
+    }
+}
+
 - (void)getContent:(NSMutableString *)string
 {
     @synchronized(_logMutex) {
         [self close];
         
-        [string appendString:[NSString stringWithContentsOfFile:_logFileName encoding:NSUTF8StringEncoding error:nil]];
-        [string appendString:[NSString stringWithContentsOfFile:_logFileNameOld encoding:NSUTF8StringEncoding error:nil]];
+        [self appendFile:string fileName:_logFileName];
+        [self appendFile:string fileName:_logFileNameOld];
     }
 }
 
