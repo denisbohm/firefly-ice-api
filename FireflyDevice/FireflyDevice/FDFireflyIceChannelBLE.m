@@ -11,6 +11,7 @@
 #import "FDDetourSource.h"
 #import "FDFireflyIceChannelBLE.h"
 #import "FDFireflyDeviceLogger.h"
+#import "FDWeak.h"
 
 #if TARGET_OS_IPHONE
 #import <CoreBluetooth/CoreBluetooth.h>
@@ -128,7 +129,7 @@
 
 - (void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 {
-    __weak FDFireflyIceChannelBLE *weakSelf = self;
+    __FDWeak FDFireflyIceChannelBLE *weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         [weakSelf didWriteValueForCharacteristic:characteristic error:error];
     });
@@ -155,7 +156,7 @@
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 {
     NSData *data = characteristic.value;
-    __weak FDFireflyIceChannelBLE *weakSelf = self;
+    __FDWeak FDFireflyIceChannelBLE *weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         [weakSelf didUpdateValueForCharacteristic:data error:error];
     });
@@ -195,7 +196,7 @@
 
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(NSError *)error
 {
-    __weak FDFireflyIceChannelBLE *weakSelf = self;
+    __FDWeak FDFireflyIceChannelBLE *weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         [weakSelf didDiscoverServices:error];
     });
@@ -246,7 +247,7 @@
 
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error
 {
-    __weak FDFireflyIceChannelBLE *weakSelf = self;
+    __FDWeak FDFireflyIceChannelBLE *weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         [weakSelf didDiscoverCharacteristicsForService:service error:error];
     });
@@ -259,7 +260,7 @@
 
 - (void)peripheralDidUpdateRSSI:(CBPeripheral *)peripheral error:(NSError *)error
 {
-    __weak FDFireflyIceChannelBLE *weakSelf = self;
+    __FDWeak FDFireflyIceChannelBLE *weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         [weakSelf didUpdateRSSI:error];
     });

@@ -7,6 +7,7 @@
 //
 
 #import "FDIntelHex.h"
+#import "FDJSON.h"
 
 @implementation FDIntelHex
 
@@ -49,7 +50,7 @@
     for (NSString *line in lines) {
         if (![line hasPrefix:@":"]) {
             if ([line hasPrefix:@"#! "]) {
-                NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData: [[line substringFromIndex:2] dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
+                NSDictionary *dictionary = [FDJSON JSONObjectWithData:[[line substringFromIndex:2] dataUsingEncoding:NSUTF8StringEncoding]];
                 [_properties addEntriesFromDictionary:dictionary];
             }
             continue;

@@ -29,6 +29,8 @@
 #import "FDFirmwareUpdateTask.h"
 #import "FDFireflyIceManager.h"
 #import "FDFireflyIceSimpleTask.h"
+#import "FDJSON.h"
+#import "FDWeak.h"
 
 @interface FireflyDevice : NSObject
 

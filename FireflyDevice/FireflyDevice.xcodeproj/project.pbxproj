@@ -14,6 +14,9 @@
 		922F1E32182C956F00F06BF6 /* FDFireflyIceChannelBLETests.m in Sources */ = {isa = PBXBuildFile; fileRef = 922F1E30182C90FA00F06BF6 /* FDFireflyIceChannelBLETests.m */; };
 		922F1E34182C97C800F06BF6 /* IOBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 922F1E33182C97C800F06BF6 /* IOBluetooth.framework */; };
 		922F8E61182D5D3100DC853F /* FireflyDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 929EF4BE17EA06580044F6F9 /* FireflyDevice.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9231EBB218871342003C78AC /* FDJSON.h in Headers */ = {isa = PBXBuildFile; fileRef = 9231EBB018871342003C78AC /* FDJSON.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9231EBB318871342003C78AC /* FDJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 9231EBB118871342003C78AC /* FDJSON.m */; };
+		9231EBB418871342003C78AC /* FDJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 9231EBB118871342003C78AC /* FDJSON.m */; };
 		923493491854D19000FEFBDF /* FDIEEE754.m in Sources */ = {isa = PBXBuildFile; fileRef = 923493481854D19000FEFBDF /* FDIEEE754.m */; };
 		9234934A1854D33B00FEFBDF /* FDIEEE754.m in Sources */ = {isa = PBXBuildFile; fileRef = 923493481854D19000FEFBDF /* FDIEEE754.m */; };
 		9234934B1854D34C00FEFBDF /* FDIEEE754.h in Headers */ = {isa = PBXBuildFile; fileRef = 923493471854D19000FEFBDF /* FDIEEE754.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -30,6 +33,8 @@
 		927F3DB717FA20A200C933DD /* FDFireflyIceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 927F3DB617FA20A200C933DD /* FDFireflyIceManager.m */; };
 		927F3DBC17FA4F0B00C933DD /* FDSyncTask.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 92F863F317F3B4E0000E23AF /* FDSyncTask.h */; };
 		927F3DBD17FA4F0B00C933DD /* FDFireflyIceManager.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 927F3DB517FA20A200C933DD /* FDFireflyIceManager.h */; };
+		9283B5201889BADA00F3A3BE /* FDWeak.h in Headers */ = {isa = PBXBuildFile; fileRef = 9283B51F1889B85B00F3A3BE /* FDWeak.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9283B5211889BB0D00F3A3BE /* FDWeak.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9283B51F1889B85B00F3A3BE /* FDWeak.h */; };
 		929EF4BA17EA06580044F6F9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 929EF4B917EA06580044F6F9 /* Foundation.framework */; };
 		929EF4BF17EA06580044F6F9 /* FireflyDevice.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 929EF4BE17EA06580044F6F9 /* FireflyDevice.h */; };
 		929EF4C117EA06580044F6F9 /* FireflyDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 929EF4C017EA06580044F6F9 /* FireflyDevice.m */; };
@@ -100,7 +105,6 @@
 		92DF13DA180B02C800A1B849 /* FDFirmwareUpdateTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 929EF4F217EA06C10044F6F9 /* FDFirmwareUpdateTask.m */; };
 		92DF13DB180B02C800A1B849 /* FDFireflyIceManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 927F3DB517FA20A200C933DD /* FDFireflyIceManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		92DF13DC180B02C800A1B849 /* FDFireflyIceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 927F3DB617FA20A200C933DD /* FDFireflyIceManager.m */; };
-		92DF13DE180B031700A1B849 /* IOBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92DF13DD180B031700A1B849 /* IOBluetooth.framework */; };
 		92DF13F8180B042600A1B849 /* FDFireflyIceChannelUSB.h in Headers */ = {isa = PBXBuildFile; fileRef = 92DF13F6180B042600A1B849 /* FDFireflyIceChannelUSB.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		92DF13F9180B042600A1B849 /* FDFireflyIceChannelUSB.m in Sources */ = {isa = PBXBuildFile; fileRef = 92DF13F7180B042600A1B849 /* FDFireflyIceChannelUSB.m */; };
 		92DF13FC180B047400A1B849 /* FDUSBHIDMonitor.h in Headers */ = {isa = PBXBuildFile; fileRef = 92DF13FA180B047400A1B849 /* FDUSBHIDMonitor.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -114,6 +118,7 @@
 		92EAA71C1801CD24004DADFC /* FDHelloTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 92EAA71B1801CD24004DADFC /* FDHelloTask.m */; };
 		92F7AFA018664D2E00CDC99B /* FDFireflyDeviceLogger.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9259AFFA18663CB30086F634 /* FDFireflyDeviceLogger.h */; };
 		92F863F517F3B4E0000E23AF /* FDSyncTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F863F417F3B4E0000E23AF /* FDSyncTask.m */; };
+		92FE5FD31887151700EDD781 /* FDJSON.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9231EBB018871342003C78AC /* FDJSON.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -150,6 +155,8 @@
 			dstPath = "include/${PRODUCT_NAME}";
 			dstSubfolderSpec = 16;
 			files = (
+				9283B5211889BB0D00F3A3BE /* FDWeak.h in CopyFiles */,
+				92FE5FD31887151700EDD781 /* FDJSON.h in CopyFiles */,
 				92E81159187E072C002449B2 /* FDFileLog.h in CopyFiles */,
 				9234934C1854D35D00FEFBDF /* FDIEEE754.h in CopyFiles */,
 				924A9FFC1816E119002017EC /* FDHelloTask.h in CopyFiles */,
@@ -181,6 +188,8 @@
 		922F06871857BB1A002948C1 /* FDIEEE754Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDIEEE754Tests.m; sourceTree = "<group>"; };
 		922F1E30182C90FA00F06BF6 /* FDFireflyIceChannelBLETests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFireflyIceChannelBLETests.m; sourceTree = "<group>"; };
 		922F1E33182C97C800F06BF6 /* IOBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOBluetooth.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks/IOBluetooth.framework; sourceTree = DEVELOPER_DIR; };
+		9231EBB018871342003C78AC /* FDJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDJSON.h; sourceTree = "<group>"; };
+		9231EBB118871342003C78AC /* FDJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDJSON.m; sourceTree = "<group>"; };
 		923493471854D19000FEFBDF /* FDIEEE754.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDIEEE754.h; sourceTree = "<group>"; };
 		923493481854D19000FEFBDF /* FDIEEE754.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDIEEE754.m; sourceTree = "<group>"; };
 		924D015F18104C7200EB500A /* FDFireflyIceSimpleTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFireflyIceSimpleTask.h; sourceTree = "<group>"; };
@@ -189,6 +198,7 @@
 		9259AFFB18663CB30086F634 /* FDFireflyDeviceLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFireflyDeviceLogger.m; sourceTree = "<group>"; };
 		927F3DB517FA20A200C933DD /* FDFireflyIceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFireflyIceManager.h; sourceTree = "<group>"; };
 		927F3DB617FA20A200C933DD /* FDFireflyIceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFireflyIceManager.m; sourceTree = "<group>"; };
+		9283B51F1889B85B00F3A3BE /* FDWeak.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDWeak.h; sourceTree = "<group>"; };
 		929EF4B617EA06580044F6F9 /* libFireflyDevice.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFireflyDevice.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		929EF4B917EA06580044F6F9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		929EF4BD17EA06580044F6F9 /* FireflyDevice-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FireflyDevice-Prefix.pch"; sourceTree = "<group>"; };
@@ -273,7 +283,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				92DF1445180B092900A1B849 /* IOKit.framework in Frameworks */,
-				92DF13DE180B031700A1B849 /* IOBluetooth.framework in Frameworks */,
 				92DF1395180B01AE00A1B849 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -381,6 +390,9 @@
 				927F3DB617FA20A200C933DD /* FDFireflyIceManager.m */,
 				924D015F18104C7200EB500A /* FDFireflyIceSimpleTask.h */,
 				924D016018104C7200EB500A /* FDFireflyIceSimpleTask.m */,
+				9231EBB018871342003C78AC /* FDJSON.h */,
+				9231EBB118871342003C78AC /* FDJSON.m */,
+				9283B51F1889B85B00F3A3BE /* FDWeak.h */,
 			);
 			path = FireflyDevice;
 			sourceTree = "<group>";
@@ -453,6 +465,8 @@
 				92DF13C7180B02C800A1B849 /* FDObservable.h in Headers */,
 				9259B0001866414D0086F634 /* FDFireflyDeviceLogger.h in Headers */,
 				92E81156187E06E6002449B2 /* FDFileLog.h in Headers */,
+				9231EBB218871342003C78AC /* FDJSON.h in Headers */,
+				9283B5201889BADA00F3A3BE /* FDWeak.h in Headers */,
 				922F8E61182D5D3100DC853F /* FireflyDevice.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -623,6 +637,7 @@
 				929EF4F917EA06C10044F6F9 /* FDFireflyIceChannel.m in Sources */,
 				929EF4FA17EA06C10044F6F9 /* FDFireflyIceChannelBLE.m in Sources */,
 				924D016118104C7200EB500A /* FDFireflyIceSimpleTask.m in Sources */,
+				9231EBB318871342003C78AC /* FDJSON.m in Sources */,
 				929EF4FB17EA06C10044F6F9 /* FDFireflyIceCoder.m in Sources */,
 				929EF4FC17EA06C10044F6F9 /* FDFireflyIceTaskSteps.m in Sources */,
 				929EF4FD17EA06C10044F6F9 /* FDFirmwareUpdateTask.m in Sources */,
@@ -664,6 +679,7 @@
 				92DF13DC180B02C800A1B849 /* FDFireflyIceManager.m in Sources */,
 				92E81158187E06E6002449B2 /* FDFileLog.m in Sources */,
 				92DF13FD180B047400A1B849 /* FDUSBHIDMonitor.m in Sources */,
+				9231EBB418871342003C78AC /* FDJSON.m in Sources */,
 				92DF13D0180B02C800A1B849 /* FDFireflyIceChannelBLE.m in Sources */,
 				92DF13C2180B02C800A1B849 /* FDDetour.m in Sources */,
 				925D78D2182163F800318FDC /* FireflyDevice.m in Sources */,
@@ -854,7 +870,13 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = "FireflyDevice/FireflyDevice-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_LDFLAGS = (
+					"-weak_framework",
+					IOBluetooth,
+					"-weak_framework",
+					Foundation,
+				);
 				PRODUCT_NAME = FireflyDevice;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -889,7 +911,13 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = "FireflyDevice/FireflyDevice-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_LDFLAGS = (
+					"-weak_framework",
+					IOBluetooth,
+					"-weak_framework",
+					Foundation,
+				);
 				PRODUCT_NAME = FireflyDevice;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;

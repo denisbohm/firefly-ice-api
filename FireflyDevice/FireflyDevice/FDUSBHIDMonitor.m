@@ -8,12 +8,13 @@
 
 #import "FDUSBHIDMonitor.h"
 #import "FDFireflyDeviceLogger.h"
+#import "FDWeak.h"
 
 #import <IOKit/hid/IOHIDManager.h>
 
 @interface FDUSBHIDDevice ()
 
-@property (weak) FDUSBHIDMonitor *monitor;
+@property (FDWeak) FDUSBHIDMonitor *monitor;
 @property IOHIDDeviceRef hidDeviceRef;
 @property NSMutableData *inputData;
 @property NSMutableData *outputData;
