@@ -176,22 +176,26 @@ void FDUSBHIDMonitorDeviceMatchingCallback(void *context, IOReturn result, void 
 
 - (void)hidRunLoop
 {
-    _runLoopRef = CFRunLoopGetCurrent();
-    IOHIDManagerScheduleWithRunLoop(_hidManagerRef, _runLoopRef, kCFRunLoopDefaultMode);
-    IOReturn ioReturn = IOHIDManagerOpen(_hidManagerRef, 0);
-    if (ioReturn != kIOReturnSuccess) {
-        
+    @autoreleasepool {
+        _runLoopRef = CFRunLoopGetCurrent();
+        IOHIDManagerScheduleWithRunLoop(_hidManagerRef, _runLoopRef, kCFRunLoopDefaultMode);
+        IOReturn ioReturn = IOHIDManagerOpen(_hidManagerRef, 0);
+        if (ioReturn != kIOReturnSuccess) {
+            
+        }
+        NSString *vendorKey = [NSString stringWithCString:kIOHIDVendorIDKey encoding:NSUTF8StringEncoding];
+        NSString *productKey = [NSString stringWithCString:kIOHIDProductIDKey encoding:NSUTF8StringEncoding];
+        NSNumber *vendor = [NSNumber numberWithInt:_vendor];
+        NSNumber *product = [NSNumber numberWithInt:_product];
+        IOHIDManagerSetDeviceMatchingMultiple(_hidManagerRef, (__bridge CFArrayRef)@[@{vendorKey: vendor, productKey: product}]);
+        IOHIDManagerRegisterDeviceMatchingCallback(_hidManagerRef, FDUSBHIDMonitorDeviceMatchingCallback, (__bridge void *)self);
     }
-    NSString *vendorKey = [NSString stringWithCString:kIOHIDVendorIDKey encoding:NSUTF8StringEncoding];
-    NSString *productKey = [NSString stringWithCString:kIOHIDProductIDKey encoding:NSUTF8StringEncoding];
-    NSNumber *vendor = [NSNumber numberWithInt:_vendor];
-    NSNumber *product = [NSNumber numberWithInt:_product];
-    IOHIDManagerSetDeviceMatchingMultiple(_hidManagerRef, (__bridge CFArrayRef)@[@{vendorKey: vendor, productKey: product}]);
-    IOHIDManagerRegisterDeviceMatchingCallback(_hidManagerRef, FDUSBHIDMonitorDeviceMatchingCallback, (__bridge void *)self);
     
     NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
     while (_run) {
-        [runLoop runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+        @autoreleasepool {
+            [runLoop runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+        }
     }
 }
 
