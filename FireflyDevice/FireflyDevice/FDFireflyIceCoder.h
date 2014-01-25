@@ -28,7 +28,7 @@
 
 #define FD_CONTROL_DISCONNECT 13
 
-#define FD_CONTROL_INDICATOR_OVERRIDE 14
+#define FD_CONTROL_LED_OVERRIDE 14
 
 #define FD_CONTROL_SYNC_START 15
 #define FD_CONTROL_SYNC_DATA 16
@@ -39,11 +39,17 @@
 
 #define FD_CONTROL_LOCK 20
 
-#define FD_CONTROL_SYNC_AHEAD 0x00000001
+#define FD_CONTROL_IDENTIFY 21
 
-#define FD_CONTROL_CAPABILITY_LOCK         0x00000001
-#define FD_CONTROL_CAPABILITY_BOOT_VERSION 0x00000002
-#define FD_CONTROL_CAPABILITY_SYNC_AHEAD   0x00000004
+#define FD_CONTROL_SYNC_AHEAD        0x00000001
+#define FD_CONTROL_SYNC_INDICATE_END 0x00000002
+
+#define FD_CONTROL_CAPABILITY_LOCK              0x00000001
+#define FD_CONTROL_CAPABILITY_BOOT_VERSION      0x00000002
+#define FD_CONTROL_CAPABILITY_SYNC_FLAGS        0x00000004
+#define FD_CONTROL_CAPABILITY_SYNC_AHEAD        0x00000004
+#define FD_CONTROL_CAPABILITY_IDENTIFY          0x00000008
+#define FD_CONTROL_CAPABILITY_SYNC_INDICATE_END 0x00000008
 
 // property bits for get/set property commands
 #define FD_CONTROL_PROPERTY_VERSION      0x00000001
@@ -140,15 +146,17 @@ typedef enum {
                                  duration:(NSTimeInterval)duration;
 - (void)sendDirectTestModeEnd:(id<FDFireflyIceChannel>)channel;
 
-- (void)sendIndicatorOverride:(id<FDFireflyIceChannel>)channel
-                    usbOrange:(uint8_t)usbOrange
-                     usbGreen:(uint8_t)usbGreen
-                           d0:(uint8_t)d0
-                           d1:(uint32_t)d1
-                           d2:(uint32_t)d2
-                           d3:(uint32_t)d3
-                           d4:(uint8_t)d4
-                     duration:(NSTimeInterval)duration;
+- (void)sendLEDOverride:(id<FDFireflyIceChannel>)channel
+              usbOrange:(uint8_t)usbOrange
+               usbGreen:(uint8_t)usbGreen
+                     d0:(uint8_t)d0
+                     d1:(uint32_t)d1
+                     d2:(uint32_t)d2
+                     d3:(uint32_t)d3
+                     d4:(uint8_t)d4
+               duration:(NSTimeInterval)duration;
+
+- (void)sendIdentify:(id<FDFireflyIceChannel>)channel duration:(NSTimeInterval)duration;
 
 - (void)sendLock:(id<FDFireflyIceChannel>)channel identifier:(fd_lock_identifier_t)identifier operation:(fd_lock_operation_t)operation;
 

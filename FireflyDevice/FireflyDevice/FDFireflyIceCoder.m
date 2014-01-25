@@ -456,7 +456,7 @@ void putColor(FDBinary *binary, uint32_t color) {
     [binary putUInt8:color];
 }
 
-- (void)sendIndicatorOverride:(id<FDFireflyIceChannel>)channel
+- (void)sendLEDOverride:(id<FDFireflyIceChannel>)channel
                     usbOrange:(uint8_t)usbOrange
                      usbGreen:(uint8_t)usbGreen
                            d0:(uint8_t)d0
@@ -467,7 +467,7 @@ void putColor(FDBinary *binary, uint32_t color) {
                      duration:(NSTimeInterval)duration
 {
     FDBinary *binary = [[FDBinary alloc] init];
-    [binary putUInt8:FD_CONTROL_INDICATOR_OVERRIDE];
+    [binary putUInt8:FD_CONTROL_LED_OVERRIDE];
 
     [binary putUInt8:usbOrange];
     [binary putUInt8:usbGreen];
@@ -478,6 +478,17 @@ void putColor(FDBinary *binary, uint32_t color) {
     [binary putUInt8:d4];
     [binary putTime64:duration];
 
+    [channel fireflyIceChannelSend:binary.dataValue];
+}
+
+- (void)sendIdentify:(id<FDFireflyIceChannel>)channel duration:(NSTimeInterval)duration
+{
+    FDBinary *binary = [[FDBinary alloc] init];
+    [binary putUInt8:FD_CONTROL_IDENTIFY];
+    
+    [binary putUInt8:1];
+    [binary putTime64:duration];
+    
     [channel fireflyIceChannelSend:binary.dataValue];
 }
 

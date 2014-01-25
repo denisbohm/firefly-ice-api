@@ -100,7 +100,7 @@
     NSTimeInterval duration = [self testDuration];
 
     [fireflyIce.executor execute:[FDFireflyIceSimpleTask simpleTask:fireflyIce channel:channel block:^(void) {
-        [fireflyIce.coder sendIndicatorOverride:channel usbOrange:usbOrange usbGreen:usbGreen d0:d0 d1:d1 d2:d2 d3:d3 d4:d4 duration:duration];
+        [fireflyIce.coder sendLEDOverride:channel usbOrange:usbOrange usbGreen:usbGreen d0:d0 d1:d1 d2:d2 d3:d3 d4:d4 duration:duration];
     }]];
 }
 

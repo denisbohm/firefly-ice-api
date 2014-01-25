@@ -394,7 +394,7 @@
 {
     FDFireflyIceChannelUSB *channel = [self getSelectedUsbDevice];
     FDFireflyIceCoder *coder = [[FDFireflyIceCoder alloc] init];
-    [coder sendIndicatorOverride:channel usbOrange:0 usbGreen:0 d0:0 d1:0xffffff d2:0xffffff d3:0xffffff d4:0 duration:5.0];
+    [coder sendLEDOverride:channel usbOrange:0 usbGreen:0 d0:0 d1:0xffffff d2:0xffffff d3:0xffffff d4:0 duration:5.0];
 }
 
 - (IBAction)usbSync:(id)sender
@@ -451,7 +451,7 @@
 {
     FDFireflyIceChannelBLE *channel = [self getSelectedFireflyDevice];
     FDFireflyIceCoder *coder = [[FDFireflyIceCoder alloc] init];
-    [coder sendIndicatorOverride:channel usbOrange:0 usbGreen:0 d0:0 d1:0xffffff d2:0xffffff d3:0xffffff d4:0 duration:30.0];
+    [coder sendLEDOverride:channel usbOrange:0 usbGreen:0 d0:0 d1:0xffffff d2:0xffffff d3:0xffffff d4:0 duration:30.0];
 }
 
 - (IBAction)bluetoothSync:(id)sender
