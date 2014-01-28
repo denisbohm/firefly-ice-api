@@ -15,7 +15,6 @@
 @interface FDBinary ()
 
 @property NSMutableData *buffer;
-@property uint32_t getIndex;
 
 @end
 

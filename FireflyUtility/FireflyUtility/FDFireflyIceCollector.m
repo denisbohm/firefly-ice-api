@@ -27,6 +27,7 @@
     if (self = [super init]) {
         _selectorNames = [NSSet setWithArray:@[
                                                @"fireflyIce:channel:version:",
+                                               @"fireflyIce:channel:bootVersion:",
                                                @"fireflyIce:channel:hardwareId:",
                                                @"fireflyIce:channel:debugLock:",
                                                @"fireflyIce:channel:time:",
@@ -54,6 +55,7 @@
     
     [self.fireflyIce.coder sendGetProperties:self.channel properties:
      FD_CONTROL_PROPERTY_VERSION |
+     FD_CONTROL_PROPERTY_BOOT_VERSION |
      FD_CONTROL_PROPERTY_HARDWARE_ID |
      FD_CONTROL_PROPERTY_DEBUG_LOCK |
      FD_CONTROL_PROPERTY_RTC |

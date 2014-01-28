@@ -101,6 +101,41 @@ typedef uint8_t fd_lock_identifier_t;
 
 @end
 
+@interface FDFireflyIceLogging : NSObject
+
+@property uint32_t flags;
+@property uint32_t count;
+@property uint32_t state;
+
+@end
+
+@interface FDFireflyIceDiagnosticsBLE : NSObject
+
+@property uint32_t version;
+@property uint32_t systemSteps;
+@property uint32_t dataSteps;
+@property uint32_t systemCredits;
+@property uint32_t dataCredits;
+@property uint8_t txPower;
+@property uint8_t operatingMode;
+@property uint8_t idle;
+@property uint8_t dtm;
+@property uint8_t did;
+@property uint8_t disconnectAction;
+@property uint64_t pipesOpen;
+@property uint16_t dtmRequest;
+@property uint16_t dtmData;
+@property uint32_t bufferCount;
+
+@end
+
+@interface FDFireflyIceDiagnostics : NSObject
+
+@property uint32_t flags;
+@property NSArray *values;
+
+@end
+
 @class FDDetour;
 @class FDFireflyIce;
 @protocol FDFireflyDeviceLog;
@@ -127,6 +162,8 @@ typedef uint8_t fd_lock_identifier_t;
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel mode:(NSNumber *)mode;
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel txPower:(NSNumber *)level;
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel lock:(FDFireflyIceLock *)lock;
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel logging:(FDFireflyIceLogging *)logging;
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel diagnostics:(FDFireflyIceDiagnostics *)diagnostics;
 
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel directTestModeReport:(FDFireflyIceDirectTestModeReport *)directTestModeReport;
 

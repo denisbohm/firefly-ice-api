@@ -23,7 +23,7 @@
 #import <IOBluetooth/IOBluetooth.h>
 #endif
 
-@interface FDMasterViewController () <FDFireflyIceManagerDelegate, FDFireflyIceObserver, UITabBarControllerDelegate, FDDetailTabBarControllerDelegate>
+@interface FDMasterViewController () <FDFireflyIceManagerDelegate, FDFireflyIceObserver, UITabBarControllerDelegate, FDDetailTabBarControllerDelegate, UINavigationControllerDelegate>
 
 @property UITabBarController *tabBarController;
 
@@ -209,19 +209,42 @@
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
+    if ([viewController isKindOfClass:[FDDetailViewController class]]) {
+        [self configureDetailView];
+    } else
+    if (viewController == self.tabBarController.moreNavigationController) {
+        self.tabBarController.moreNavigationController.delegate = self;
+    }
+}
+
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
     [self configureDetailView];
+}
+
+- (FDDetailViewController *)selectedDetailViewController
+{
+    id viewController = self.tabBarController.selectedViewController;
+    if (viewController == self.tabBarController.moreNavigationController) {
+        return nil;
+    }
+    if ([viewController isKindOfClass:[FDDetailViewController class]]) {
+        return (FDDetailViewController *)viewController;
+    }
+    return nil;
 }
 
 - (void)configureDetailView
 {
-    FDDetailViewController *detailViewController = (FDDetailViewController *)self.tabBarController.selectedViewController;
+    FDDetailViewController *detailViewController = [self selectedDetailViewController];
     detailViewController.device = _device;
+    NSLog(@"configure %@", NSStringFromClass([detailViewController class]));
 }
 
 - (void)unconfigureDetailView
 {
-    FDDetailViewController *detailViewController = (FDDetailViewController *)self.tabBarController.selectedViewController;
+    FDDetailViewController *detailViewController = [self selectedDetailViewController];
     detailViewController.device = nil;
+    NSLog(@"unconfigure %@", NSStringFromClass([detailViewController class]));
 }
 
 @end

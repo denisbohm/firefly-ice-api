@@ -8,26 +8,21 @@
 
 #import "FDDetailOverviewViewController.h"
 
-#import <ZamzeeDevice/ZZSyncTask.h>
-
 #import <FireflyDevice/FDFireflyIce.h>
 #import <FireflyDevice/FDFireflyIceCoder.h>
 
 @interface FDDetailOverviewViewController ()
 
-@property IBOutlet UILabel *revisionLabel;
-@property IBOutlet UILabel *productLabel;
+@property IBOutlet UILabel *hardwareIdLabel;
+@property IBOutlet UILabel *hardwareRevisionLabel;
+@property IBOutlet UILabel *bootRevisionLabel;
+@property IBOutlet UILabel *firmwareRevisionLabel;
+@property IBOutlet UILabel *vendorAndProductLabel;
 @property IBOutlet UILabel *debugLockLabel;
-@property IBOutlet UILabel *siteLabel;
-@property IBOutlet UILabel *batteryLabel;
+
 @property IBOutlet UILabel *timeLabel;
-@property IBOutlet UILabel *accelerometerLabel;
-@property IBOutlet UILabel *magnetometerLabel;
-@property IBOutlet UILabel *temperatureLabel;
-@property IBOutlet UILabel *dataLabel;
 
 @property IBOutlet UIButton *setTimeButton;
-@property IBOutlet UIButton *syncButton;
 @property IBOutlet UIButton *updateButton;
 
 @end
@@ -38,7 +33,6 @@
 {
     [super viewDidLoad];
     [self.buttons addObject:_setTimeButton];
-    [self.buttons addObject:_syncButton];
     [self.buttons addObject:_updateButton];
 }
 
@@ -53,52 +47,39 @@
     return string;
 }
 
+#define JAN_1_2014 1388534400
+
 - (void)configureView
 {
     FDFireflyIceCollector *collector = self.device[@"collector"];
     
     FDFireflyIceVersion *version = [collector objectForKey:@"version"];
+    FDFireflyIceVersion *bootVersion = [collector objectForKey:@"bootVersion"];
     FDFireflyIceHardwareId *hardwareId = [collector objectForKey:@"hardwareId"];
-    _revisionLabel.text = [NSString stringWithFormat:@"sw %d.%d.%d hw %d.%d %04x/%04x",
-                           version.major, version.minor, version.patch,
-                           hardwareId.major, hardwareId.minor,
-                           hardwareId.vendor, hardwareId.product];
     
-    _productLabel.text = [self toHex:hardwareId.unique];
+    _hardwareRevisionLabel.text = [NSString stringWithFormat:@"Hardware v%d.%d", hardwareId.major, hardwareId.minor];
+    _vendorAndProductLabel.text = [NSString stringWithFormat:@"USB VID %04x / PID %04x", hardwareId.vendor, hardwareId.product];
+    _hardwareIdLabel.text = [NSString stringWithFormat:@"UUID %@", [self toHex:hardwareId.unique]];
     
-    FDFireflyIceStorage *storage = [collector objectForKey:@"storage"];
-    _dataLabel.text = [NSString stringWithFormat:@"%u pages of data", storage.pageCount];
-
-    FDFireflyIceSensing *sensing = [collector objectForKey:@"sensing"];
-    _accelerometerLabel.text = [NSString stringWithFormat:@"%0.2f, %0.2f, %0.2f g", sensing.ax, sensing.ay, sensing.az];
-    _magnetometerLabel.text = [NSString stringWithFormat:@"%0.2f, %0.2f, %0.2f uT", sensing.mx, sensing.my, sensing.mz];
-
+    _bootRevisionLabel.text = [NSString stringWithFormat:@"Boot Loader v%d.%d.%d", bootVersion.major, bootVersion.minor, bootVersion.patch];
+    
+    _firmwareRevisionLabel.text = [NSString stringWithFormat:@"Firmware v%d.%d.%d", version.major, version.minor, version.patch];
+    
     FDFireflyIceCollectorEntry *entry = collector.dictionary[@"time"];
     NSDate *time = entry.object;
-    NSTimeInterval offset = [time timeIntervalSinceDate:entry.date];
-    if (offset < 0) {
-        _timeLabel.text = [NSString stringWithFormat:@"time is behind by %0.2f seconds", offset];
+    if ([time timeIntervalSince1970] < JAN_1_2014) {
+        _timeLabel.text = @"Time is not set.";
     } else {
-        _timeLabel.text = [NSString stringWithFormat:@"time is ahead by %0.2f seconds", -offset];
-    }
-
-    FDFireflyIcePower *power = [collector objectForKey:@"power"];
-    NSMutableString *text = [NSMutableString stringWithFormat:@"battery %0.1f%% %0.1fV", power.batteryLevel * 100, power.batteryVoltage];
-    if (power.isUSBPowered) {
-        [text appendString:@" USB"];
-        if (power.isCharging) {
-            [text appendFormat:@" %0.1fmA", power.chargeCurrent * 1000];
+        NSTimeInterval offset = [time timeIntervalSinceDate:entry.date];
+        if (offset < 0) {
+            _timeLabel.text = [NSString stringWithFormat:@"Time is behind by %0.2f seconds.", offset];
+        } else {
+            _timeLabel.text = [NSString stringWithFormat:@"Time is ahead by %0.2f seconds.", -offset];
         }
     }
-    _batteryLabel.text = text;
     
-    _temperatureLabel.text = [NSString stringWithFormat:@"%0.1f°C / %0.1f°F", power.temperature, power.temperature * 9.0/5.0 + 32.0];
-
-    NSString *site = [collector objectForKey:@"site"];
-    _siteLabel.text = site;
-
     NSNumber *debugLock = [collector objectForKey:@"debugLock"];
-    _debugLockLabel.text = debugLock.boolValue ? @"locked" : @"unlocked";
+    _debugLockLabel.text = debugLock.boolValue ? @"Debug Lock Set" : @"Debug is Unlocked";
 }
 
 - (void)fireflyIceCollectorEntry:(FDFireflyIceCollectorEntry *)entry
@@ -111,17 +92,6 @@
     FDFireflyIce *fireflyIce = self.device[@"fireflyIce"];
     id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
     [fireflyIce.coder sendSetPropertyTime:channel time:[NSDate date]];
-}
-
-- (IBAction)sync:(id)sender
-{
-    FDFireflyIce *fireflyIce = self.device[@"fireflyIce"];
-    id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
-    
-    ZZSyncTask *task = [[ZZSyncTask alloc] init];
-    task.fireflyIce = fireflyIce;
-    task.channel = channel;
-    [fireflyIce.executor execute:task];
 }
 
 - (IBAction)updateOverview:(id)sender

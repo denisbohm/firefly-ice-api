@@ -8,6 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		9212D25A180B3F2D00576B41 /* FireflyIce.hex in Resources */ = {isa = PBXBuildFile; fileRef = 9212D259180B3F2D00576B41 /* FireflyIce.hex */; };
+		923C344518972DB20068863D /* FDBatteryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 923C344318972DB20068863D /* FDBatteryView.m */; };
+		923C3454189733880068863D /* battery.png in Resources */ = {isa = PBXBuildFile; fileRef = 923C344C189733880068863D /* battery.png */; };
+		923C3455189733880068863D /* battery@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 923C344D189733880068863D /* battery@2x.png */; };
+		923C3456189733880068863D /* green_fuel.png in Resources */ = {isa = PBXBuildFile; fileRef = 923C344E189733880068863D /* green_fuel.png */; };
+		923C3457189733880068863D /* green_fuel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 923C344F189733880068863D /* green_fuel@2x.png */; };
+		923C3458189733880068863D /* orange_fuel.png in Resources */ = {isa = PBXBuildFile; fileRef = 923C3450189733880068863D /* orange_fuel.png */; };
+		923C3459189733880068863D /* orange_fuel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 923C3451189733880068863D /* orange_fuel@2x.png */; };
+		923C345A189733880068863D /* red_fuel.png in Resources */ = {isa = PBXBuildFile; fileRef = 923C3452189733880068863D /* red_fuel.png */; };
+		923C345B189733880068863D /* red_fuel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 923C3453189733880068863D /* red_fuel@2x.png */; };
+		923C345E18973CFD0068863D /* FDDetailPowerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 923C345D18973CFD0068863D /* FDDetailPowerViewController.m */; };
 		92841A8817EDF63D005C0E18 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92841A8717EDF63D005C0E18 /* Foundation.framework */; };
 		92841A8A17EDF63D005C0E18 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92841A8917EDF63D005C0E18 /* CoreGraphics.framework */; };
 		92841A8C17EDF63D005C0E18 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92841A8B17EDF63D005C0E18 /* UIKit.framework */; };
@@ -121,6 +131,18 @@
 
 /* Begin PBXFileReference section */
 		9212D259180B3F2D00576B41 /* FireflyIce.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = FireflyIce.hex; path = ../../FireflyDevice/FireflyDevice/FireflyIce.hex; sourceTree = "<group>"; };
+		923C344318972DB20068863D /* FDBatteryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDBatteryView.m; sourceTree = "<group>"; };
+		923C344418972DB20068863D /* FDBatteryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDBatteryView.h; sourceTree = "<group>"; };
+		923C344C189733880068863D /* battery.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = battery.png; sourceTree = "<group>"; };
+		923C344D189733880068863D /* battery@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "battery@2x.png"; sourceTree = "<group>"; };
+		923C344E189733880068863D /* green_fuel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = green_fuel.png; sourceTree = "<group>"; };
+		923C344F189733880068863D /* green_fuel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "green_fuel@2x.png"; sourceTree = "<group>"; };
+		923C3450189733880068863D /* orange_fuel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = orange_fuel.png; sourceTree = "<group>"; };
+		923C3451189733880068863D /* orange_fuel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "orange_fuel@2x.png"; sourceTree = "<group>"; };
+		923C3452189733880068863D /* red_fuel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = red_fuel.png; sourceTree = "<group>"; };
+		923C3453189733880068863D /* red_fuel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red_fuel@2x.png"; sourceTree = "<group>"; };
+		923C345C18973CFD0068863D /* FDDetailPowerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDDetailPowerViewController.h; sourceTree = "<group>"; };
+		923C345D18973CFD0068863D /* FDDetailPowerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDetailPowerViewController.m; sourceTree = "<group>"; };
 		92841A8417EDF63D005C0E18 /* FireflyUtility.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FireflyUtility.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		92841A8717EDF63D005C0E18 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		92841A8917EDF63D005C0E18 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -259,6 +281,10 @@
 				929CA43517F1242F00A4A992 /* FDDetailResetViewController.m */,
 				928BF64617F2818000370B91 /* FDDetailTabBarController.h */,
 				928BF64717F2818000370B91 /* FDDetailTabBarController.m */,
+				923C345C18973CFD0068863D /* FDDetailPowerViewController.h */,
+				923C345D18973CFD0068863D /* FDDetailPowerViewController.m */,
+				923C344318972DB20068863D /* FDBatteryView.m */,
+				923C344418972DB20068863D /* FDBatteryView.h */,
 			);
 			path = FireflyUtility;
 			sourceTree = "<group>";
@@ -266,6 +292,14 @@
 		92841A8E17EDF63D005C0E18 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				923C344C189733880068863D /* battery.png */,
+				923C344D189733880068863D /* battery@2x.png */,
+				923C344E189733880068863D /* green_fuel.png */,
+				923C344F189733880068863D /* green_fuel@2x.png */,
+				923C3450189733880068863D /* orange_fuel.png */,
+				923C3451189733880068863D /* orange_fuel@2x.png */,
+				923C3452189733880068863D /* red_fuel.png */,
+				923C3453189733880068863D /* red_fuel@2x.png */,
 				9212D259180B3F2D00576B41 /* FireflyIce.hex */,
 				92841A8F17EDF63D005C0E18 /* FireflyUtility-Info.plist */,
 				92841A9017EDF63D005C0E18 /* InfoPlist.strings */,
@@ -467,9 +501,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				9212D25A180B3F2D00576B41 /* FireflyIce.hex in Resources */,
+				923C3454189733880068863D /* battery.png in Resources */,
+				923C3455189733880068863D /* battery@2x.png in Resources */,
 				92841A9E17EDF63D005C0E18 /* Main_iPad.storyboard in Resources */,
 				92841AA617EDF63D005C0E18 /* Images.xcassets in Resources */,
+				923C3456189733880068863D /* green_fuel.png in Resources */,
+				923C3459189733880068863D /* orange_fuel@2x.png in Resources */,
+				923C345B189733880068863D /* red_fuel@2x.png in Resources */,
 				92841A9B17EDF63D005C0E18 /* Main_iPhone.storyboard in Resources */,
+				923C3458189733880068863D /* orange_fuel.png in Resources */,
+				923C345A189733880068863D /* red_fuel.png in Resources */,
+				923C3457189733880068863D /* green_fuel@2x.png in Resources */,
 				92841A9217EDF63D005C0E18 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -490,6 +532,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				929CA42E17F0F30600A4A992 /* FDDetailUpdateViewController.m in Sources */,
+				923C344518972DB20068863D /* FDBatteryView.m in Sources */,
 				929CA42B17F0F01A00A4A992 /* FDUpdateView.m in Sources */,
 				92841AA117EDF63D005C0E18 /* FDMasterViewController.m in Sources */,
 				92841A9817EDF63D005C0E18 /* FDAppDelegate.m in Sources */,
@@ -499,6 +542,7 @@
 				928BF64817F2818000370B91 /* FDDetailTabBarController.m in Sources */,
 				929CA43617F1242F00A4A992 /* FDDetailResetViewController.m in Sources */,
 				92F863F817F3C38D000E23AF /* FDFireflyIceCollector.m in Sources */,
+				923C345E18973CFD0068863D /* FDDetailPowerViewController.m in Sources */,
 				929CA40F17F0AD3400A4A992 /* FDDetailOverviewViewController.m in Sources */,
 				92841AA417EDF63D005C0E18 /* FDDetailViewController.m in Sources */,
 			);

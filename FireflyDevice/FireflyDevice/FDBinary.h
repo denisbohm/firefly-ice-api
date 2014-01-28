@@ -16,6 +16,7 @@
 - (NSUInteger)length;
 - (NSData *)dataValue;
 
+@property uint32_t getIndex;
 - (NSUInteger)getRemainingLength;
 - (NSData *)getRemainingData;
 - (NSData *)getData:(NSUInteger)length;

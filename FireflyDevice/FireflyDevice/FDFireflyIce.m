@@ -177,6 +177,67 @@
 
 @end
 
+@implementation FDFireflyIceLogging
+
+- (NSString *)description
+{
+    NSMutableString *string = [NSMutableString stringWithString:@"logging"];
+    if (_flags & FD_CONTROL_LOGGING_STATE) {
+        [string appendFormat:@" storage=%@", _state & FD_CONTROL_LOGGING_STORAGE ? @"YES" : @"NO"];
+    }
+    if (_flags & FD_CONTROL_LOGGING_COUNT) {
+        [string appendFormat:@" count=%u", _count];
+    }
+    return string;
+}
+
+@end
+
+#define FD_BLUETOOTH_DID_SETUP        0x01
+#define FD_BLUETOOTH_DID_ADVERTISE    0x02
+#define FD_BLUETOOTH_DID_CONNECT      0x04
+#define FD_BLUETOOTH_DID_OPEN_PIPES   0x08
+#define FD_BLUETOOTH_DID_RECEIVE_DATA 0x10
+
+@implementation FDFireflyIceDiagnosticsBLE
+
+- (NSString *)description
+{
+    NSMutableString *string = [NSMutableString stringWithString:@"BLE("];
+    [string appendFormat:@" version=%u", _version];
+    [string appendFormat:@" systemSteps=%u", _systemSteps];
+    [string appendFormat:@" dataSteps=%u", _dataSteps];
+    [string appendFormat:@" systemCredits=%u", _systemCredits];
+    [string appendFormat:@" dataCredits=%u", _dataCredits];
+    [string appendFormat:@" txPower=%u", _txPower];
+    [string appendFormat:@" operatingMode=%u", _operatingMode];
+    [string appendFormat:@" idle=%@", _idle ? @"YES" : @"NO"];
+    [string appendFormat:@" dtm=%@", _dtm ? @"YES" : @"NO"];
+    [string appendFormat:@" did=%02x", _did];
+    [string appendFormat:@" disconnectAction=%u", _disconnectAction];
+    [string appendFormat:@" pipesOpen=%016llx", _pipesOpen];
+    [string appendFormat:@" dtmRequest=%u", _dtmRequest];
+    [string appendFormat:@" dtmData=%u", _dtmData];
+    [string appendFormat:@" bufferCount=%u", _bufferCount];
+    [string appendString:@")"];
+    return string;
+}
+
+@end
+
+@implementation FDFireflyIceDiagnostics
+
+- (NSString *)description
+{
+    NSMutableString *string = [NSMutableString stringWithString:@"diagnostics"];
+    for (id value in _values) {
+        [string appendFormat:@" %@", [value description]];
+    }
+    return string;
+}
+
+@end
+
 @implementation FDFireflyIceObservable
 
 - (id)init

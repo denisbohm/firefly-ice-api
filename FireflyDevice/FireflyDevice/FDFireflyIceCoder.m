@@ -202,6 +202,20 @@
     [_observable fireflyIce:fireflyIce channel:channel txPower:level];
 }
 
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel getPropertyLogging:(FDBinary *)binary
+{
+    FDFireflyIceLogging *logging = [[FDFireflyIceLogging alloc] init];
+    logging.flags = [binary getUInt32];
+    if (logging.flags & FD_CONTROL_LOGGING_STATE) {
+        logging.state = [binary getUInt32];
+    }
+    if (logging.flags & FD_CONTROL_LOGGING_COUNT) {
+        logging.count = [binary getUInt32];
+    }
+    
+    [_observable fireflyIce:fireflyIce channel:channel logging:logging];
+}
+
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel getProperties:(NSData *)data
 {
     FDBinary *binary = [[FDBinary alloc] initWithData:data];
@@ -239,6 +253,9 @@
     if (properties & FD_CONTROL_PROPERTY_BOOT_VERSION) {
         [self fireflyIce:fireflyIce channel:channel getPropertyBootVersion:binary];
     }
+    if (properties & FD_CONTROL_PROPERTY_LOGGING) {
+        [self fireflyIce:fireflyIce channel:channel getPropertyLogging:binary];
+    }
 }
 
 - (void)sendSetPropertyTime:(id<FDFireflyIceChannel>)channel time:(NSDate *)time
@@ -265,6 +282,16 @@
     [binary putUInt8:FD_CONTROL_SET_PROPERTIES];
     [binary putUInt32:FD_CONTROL_PROPERTY_TX_POWER];
     [binary putUInt8:level];
+    [channel fireflyIceChannelSend:binary.dataValue];
+}
+
+- (void)sendSetPropertyLogging:(id<FDFireflyIceChannel>)channel storage:(BOOL)storage
+{
+    FDBinary *binary = [[FDBinary alloc] init];
+    [binary putUInt8:FD_CONTROL_SET_PROPERTIES];
+    [binary putUInt32:FD_CONTROL_PROPERTY_LOGGING];
+    [binary putUInt32:FD_CONTROL_LOGGING_STATE];
+    [binary putUInt32:FD_CONTROL_LOGGING_STORAGE];
     [channel fireflyIceChannelSend:binary.dataValue];
 }
 
@@ -518,6 +545,46 @@ void putColor(FDBinary *binary, uint32_t color) {
     [channel fireflyIceChannelSend:binary.dataValue];
 }
 
+- (void)sendDiagnostics:(id<FDFireflyIceChannel>)channel flags:(uint32_t)flags
+{
+    FDBinary *binary = [[FDBinary alloc] init];
+    [binary putUInt8:FD_CONTROL_DIAGNOSTICS];
+    [binary putUInt32:FD_CONTROL_DIAGNOSTICS_BLE];
+    [channel fireflyIceChannelSend:binary.dataValue];
+}
+
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel diagnostics:(NSData *)data
+{
+    FDBinary *binary = [[FDBinary alloc] initWithData:data];
+    FDFireflyIceDiagnostics *diagnostics = [[FDFireflyIceDiagnostics alloc] init];
+    diagnostics.flags = [binary getUInt32];
+    NSMutableArray *values = [NSMutableArray array];
+    if (diagnostics.flags & FD_CONTROL_DIAGNOSTICS_BLE) {
+        FDFireflyIceDiagnosticsBLE *value = [[FDFireflyIceDiagnosticsBLE alloc] init];
+        uint32_t length = [binary getUInt32];
+        NSUInteger position = binary.getIndex;
+        value.version = [binary getUInt32];
+        value.systemSteps = [binary getUInt32];
+        value.dataSteps = [binary getUInt32];
+        value.systemCredits = [binary getUInt32];
+        value.dataCredits = [binary getUInt32];
+        value.txPower = [binary getUInt8];
+        value.operatingMode = [binary getUInt8];
+        value.idle = [binary getUInt8] != 0;
+        value.dtm = [binary getUInt8] != 0;
+        value.did = [binary getUInt8];
+        value.disconnectAction = [binary getUInt8];
+        value.pipesOpen = [binary getUInt64];
+        value.dtmRequest = [binary getUInt16];
+        value.dtmData = [binary getUInt16];
+        value.bufferCount = [binary getUInt32];
+        binary.getIndex = position + length;
+        [values addObject:value];
+    }
+    diagnostics.values = values;
+    [_observable fireflyIce:fireflyIce channel:channel diagnostics:diagnostics];
+}
+
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel lock:(NSData *)data
 {
     FDBinary *binary = [[FDBinary alloc] initWithData:data];
@@ -585,7 +652,11 @@ void putColor(FDBinary *binary, uint32_t color) {
         case FD_CONTROL_SYNC_DATA:
             [self fireflyIce:fireflyIce channel:channel syncData:remaining];
             break;
-
+            
+        case FD_CONTROL_DIAGNOSTICS:
+            [self fireflyIce:fireflyIce channel:channel diagnostics:remaining];
+            break;
+            
         case 0xff:
             [self fireflyIce:fireflyIce channel:channel sensing:remaining];
             break;
