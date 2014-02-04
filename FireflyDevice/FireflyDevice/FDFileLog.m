@@ -58,8 +58,8 @@
     @synchronized(_logMutex) {
         [self close];
         
-        [self appendFile:string fileName:_logFileName];
         [self appendFile:string fileName:_logFileNameOld];
+        [self appendFile:string fileName:_logFileName];
     }
 }
 
