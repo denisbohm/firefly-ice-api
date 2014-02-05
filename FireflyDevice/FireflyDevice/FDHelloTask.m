@@ -77,10 +77,14 @@
 - (void)checkVersion
 {
     if ((self.fireflyIce.version == nil) || (self.fireflyIce.hardwareId == nil)) {
-        NSString *description = @"version or hardware id not received - closing connection";
+        NSString *description = NSLocalizedString(@"Incomplete information received on initial communication with the device", @"");
         FDFireflyDeviceLogInfo(description);
         [self.channel close];
-        NSError *error = [NSError errorWithDomain:@"FDHelloTask" code:0 userInfo:@{NSLocalizedDescriptionKey:description}];
+        NSDictionary *userInfo = @{
+                                   NSLocalizedDescriptionKey: description,
+                                   NSLocalizedRecoveryOptionsErrorKey: NSLocalizedString(@"Make sure the device stays in close range", @"")
+                                   };
+        NSError *error = [NSError errorWithDomain:FDHelloTaskErrorDomain code:FDHelloTaskErrorCodeIncomplete userInfo:userInfo];
         [self.fireflyIce.executor fail:self error:error];
         return;
     }

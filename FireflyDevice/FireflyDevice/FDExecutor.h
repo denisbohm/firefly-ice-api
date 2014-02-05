@@ -26,6 +26,8 @@
 
 @end
 
+#define FDExecutorErrorDomain @"com.fireflydesign.device.FDExecutor"
+
 enum {
     FDExecutorErrorCodeAbort,
     FDExecutorErrorCodeCancel,

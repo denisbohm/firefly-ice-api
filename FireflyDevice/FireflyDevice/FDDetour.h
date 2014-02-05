@@ -15,6 +15,12 @@ typedef enum {
     FDDetourStateError
 } FDDetourState;
 
+#define FDDetourErrorDomain @"com.fireflydesign.device.FDDetour"
+
+enum {
+    FDDetourErrorCodeOutOfSequence
+};
+
 @interface FDDetour : NSObject
 
 @property(readonly) FDDetourState state;

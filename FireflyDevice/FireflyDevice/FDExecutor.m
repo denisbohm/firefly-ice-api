@@ -41,7 +41,8 @@
 - (void)abortTask:(id<FDExecutorTask>)task
 {
     @try {
-        [task executorTaskFailed:self error:[NSError errorWithDomain:@"FDExecutor" code:FDExecutorErrorCodeAbort userInfo:nil]];
+        NSDictionary *userInfo = @{NSLocalizedDescriptionKey: NSLocalizedString(@"executor task was aborted", @"")};
+        [task executorTaskFailed:self error:[NSError errorWithDomain:FDExecutorErrorDomain code:FDExecutorErrorCodeAbort userInfo:userInfo]];
     } @catch (NSException *e) {
         [self taskException:e];
     }
@@ -133,7 +134,8 @@
     NSTimeInterval duration = -[_currentFeedTime timeIntervalSinceNow];
     if (duration > _currentTask.timeout) {
         FDFireflyDeviceLogInfo(@"executor task timeout");
-        [self fail:_currentTask error:[NSError errorWithDomain:@"FDExecutor" code:FDExecutorErrorCodeTimeout userInfo:nil]];
+        NSDictionary *userInfo = @{NSLocalizedDescriptionKey: NSLocalizedString(@"executor task timed out", @"")};
+        [self fail:_currentTask error:[NSError errorWithDomain:FDExecutorErrorDomain code:FDExecutorErrorCodeTimeout userInfo:userInfo]];
     }
 }
 
@@ -244,7 +246,8 @@
 - (void)cancel:(id<FDExecutorTask>)task
 {
     if (_currentTask == task) {
-        [self fail:task error:[NSError errorWithDomain:@"FDExecutor" code:FDExecutorErrorCodeCancel userInfo:nil]];
+        NSDictionary *userInfo = @{NSLocalizedDescriptionKey: NSLocalizedString(@"executor task was canceled", @"")};
+        [self fail:task error:[NSError errorWithDomain:FDExecutorErrorDomain code:FDExecutorErrorCodeCancel userInfo:userInfo]];
     }
     [_tasks removeObject:task];
     [_appointmentTasks removeObject:task];

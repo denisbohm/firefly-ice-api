@@ -42,7 +42,12 @@
 }
 
 - (void)detourError:(NSString *)reason {
-    _error = [NSError errorWithDomain:@"FDDetour" code:0 userInfo:@{ @"detail":[NSString stringWithFormat:@"detour error %@: state %u, length %u, sequence %u, data %@", reason, _state, _length, _sequenceNumber, _buffer]}];
+    NSDictionary *userInfo = @{
+                               NSLocalizedDescriptionKey: NSLocalizedString(@"Out of sequence data when communicating with the device", @""),
+                               NSLocalizedRecoveryOptionsErrorKey: NSLocalizedString(@"Make sure the device stays in close range", @""),
+                               @"com.fireflydesign.device.detail": [NSString stringWithFormat:@"detour error %@: state %u, length %u, sequence %u, data %@", reason, _state, _length, _sequenceNumber, _buffer]
+                               };
+    _error = [NSError errorWithDomain:FDDetourErrorDomain code:FDDetourErrorCodeOutOfSequence userInfo:userInfo];
     _state = FDDetourStateError;
 }
 

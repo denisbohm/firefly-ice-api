@@ -10,6 +10,12 @@
 
 #import <Foundation/Foundation.h>
 
+#define FDHelloTaskErrorDomain @"com.fireflydesign.device.FDHelloTask"
+
+enum {
+    FDHelloTaskErrorCodeIncomplete
+};
+
 @class FDHelloTask;
 
 @protocol FDHelloTaskDelegate <NSObject>
