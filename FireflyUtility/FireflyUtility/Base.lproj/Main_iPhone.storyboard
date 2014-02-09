@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13C44" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="rS3-R9-Ivy">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13C48" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="rS3-R9-Ivy">
     <dependencies>
         <deployment defaultVersion="1552" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
@@ -342,6 +342,7 @@
                         <segue destination="RoO-Sw-bDg" kind="relationship" relationship="viewControllers" id="Jy9-If-POX"/>
                         <segue destination="aeF-lo-CMk" kind="relationship" relationship="viewControllers" id="5ad-B8-oTp"/>
                         <segue destination="dxJ-83-JeV" kind="relationship" relationship="viewControllers" id="6qT-Pg-1bU"/>
+                        <segue destination="biG-54-DJ6" kind="relationship" relationship="viewControllers" id="CFT-jC-Nen"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PCZ-Kr-zpD" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -349,9 +350,54 @@
             <point key="canvasLocation" x="933" y="64"/>
         </scene>
         <!--Detail Radio View Controller - Radio-->
+        <scene sceneID="7Qk-Ab-JqO">
+            <objects>
+                <viewController id="biG-54-DJ6" customClass="FDDetailRadioViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="xZD-4F-ltq"/>
+                        <viewControllerLayoutGuide type="bottom" id="g0K-Nc-FGn"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="s94-wo-c7Z">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="qmV-8V-LRb">
+                                <rect key="frame" x="20" y="226" width="280" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <segments>
+                                    <segment title="-18 dBm"/>
+                                    <segment title="-12 dBm"/>
+                                    <segment title="-6 dBm"/>
+                                    <segment title="0 dBm"/>
+                                </segments>
+                            </segmentedControl>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vND-b6-DBj">
+                                <rect key="frame" x="20" y="390" width="280" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Set Tx Power">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="setTxPower:" destination="biG-54-DJ6" eventType="touchUpInside" id="BMH-I2-SWE"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Radio" id="OIs-l4-1pE"/>
+                    <connections>
+                        <outlet property="setTxPowerButton" destination="vND-b6-DBj" id="dEK-oA-Vhn"/>
+                        <outlet property="txPowerLevel" destination="qmV-8V-LRb" id="nVo-Oc-D6c"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KOC-Du-cnI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1467" y="1000"/>
+        </scene>
+        <!--Detail Radio Direct Test Mode View Controller - DTM-->
         <scene sceneID="vC8-8S-MVy">
             <objects>
-                <viewController id="dxJ-83-JeV" customClass="FDDetailRadioViewController" sceneMemberID="viewController">
+                <viewController id="dxJ-83-JeV" customClass="FDDetailRadioDirectTestModeViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="9KU-TZ-KpY"/>
                         <viewControllerLayoutGuide type="bottom" id="gfF-2j-E40"/>
@@ -439,30 +485,10 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="qmV-8V-LRb">
-                                <rect key="frame" x="20" y="320" width="280" height="29"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <segments>
-                                    <segment title="-18 dBm"/>
-                                    <segment title="-12 dBm"/>
-                                    <segment title="-6 dBm"/>
-                                    <segment title="0 dBm"/>
-                                </segments>
-                            </segmentedControl>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vND-b6-DBj">
-                                <rect key="frame" x="20" y="354" width="92" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Set Tx Power">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="setTxPower:" destination="dxJ-83-JeV" eventType="touchUpInside" id="uxi-9E-u2f"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Radio" id="CIV-ND-4ic"/>
+                    <tabBarItem key="tabBarItem" title="DTM" id="CIV-ND-4ic"/>
                     <connections>
                         <outlet property="duration" destination="Unh-sI-ggA" id="CZh-Vf-oFX"/>
                         <outlet property="durationLabel" destination="rwv-p1-LTA" id="RZ4-AK-B5d"/>
@@ -472,9 +498,7 @@
                         <outlet property="lengthLabel" destination="IDC-6l-DoG" id="6HW-UM-QrH"/>
                         <outlet property="mode" destination="G1Z-6m-19a" id="NYq-AI-Nc2"/>
                         <outlet property="reportLabel" destination="G6j-2j-7wk" id="pPV-1q-UDZ"/>
-                        <outlet property="setTxPowerButton" destination="vND-b6-DBj" id="zS9-jX-zMe"/>
                         <outlet property="testButton" destination="aPt-eX-xBg" id="hha-EE-DSj"/>
-                        <outlet property="txPowerLevel" destination="qmV-8V-LRb" id="qmu-Ay-yj5"/>
                         <outlet property="type" destination="X7m-cO-eD6" id="X3L-Xw-rw8"/>
                     </connections>
                 </viewController>
@@ -482,7 +506,7 @@
             </objects>
             <point key="canvasLocation" x="1467" y="390"/>
         </scene>
-        <!--Detail Indicators View Controller - Indicators-->
+        <!--Detail Indicators View Controller - LEDs-->
         <scene sceneID="klN-wp-7e9">
             <objects>
                 <viewController id="kyd-5z-OCi" customClass="FDDetailIndicatorsViewController" sceneMemberID="viewController">
@@ -500,14 +524,6 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="K6b-gL-TTT">
-                                <rect key="frame" x="96" y="77" width="147" height="29"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <segments>
-                                    <segment title="Green"/>
-                                    <segment title="Amber"/>
-                                </segments>
-                            </segmentedControl>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Red" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G8a-xv-2KY">
                                 <rect key="frame" x="20" y="119" width="32" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -520,48 +536,24 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="deb-G2-gOb">
-                                <rect key="frame" x="251" y="114" width="51" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </switch>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EoN-to-rX6">
-                                <rect key="frame" x="251" y="75" width="51" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </switch>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Red" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lyW-yb-FJC">
                                 <rect key="frame" x="20" y="273" width="32" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qzs-W2-849">
-                                <rect key="frame" x="251" y="270" width="51" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </switch>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vwy-uv-dGP">
-                                <rect key="frame" x="251" y="153" width="51" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </switch>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Color" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sSi-Nz-xc4">
                                 <rect key="frame" x="20" y="197" width="42" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i96-GQ-3Gf">
-                                <rect key="frame" x="251" y="192" width="51" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </switch>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Color" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qzh-MO-MiR">
                                 <rect key="frame" x="20" y="236" width="42" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Er1-7g-HvZ">
-                                <rect key="frame" x="251" y="231" width="51" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </switch>
                             <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="rIC-EI-mEB">
                                 <rect key="frame" x="18" y="338" width="284" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -584,46 +576,87 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tkD-5e-hvh">
                                 <rect key="frame" x="20" y="390" width="280" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Show Indicators">
+                                <state key="normal" title="Illuminate LEDs">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="startIndicatorsOverride:" destination="kyd-5z-OCi" eventType="touchUpInside" id="LAZ-2t-N0s"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kAG-sn-ygo">
-                                <rect key="frame" x="96" y="153" width="147" height="31"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zqR-ev-69L" customClass="FDColorButton">
+                                <rect key="frame" x="96" y="76" width="204" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                            </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="seo-xM-X38">
-                                <rect key="frame" x="96" y="192" width="147" height="31"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="pickColorForUSB:" destination="kyd-5z-OCi" eventType="touchUpInside" id="hC1-SF-Chc"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X4E-qi-yWk" customClass="FDColorButton">
+                                <rect key="frame" x="96" y="115" width="204" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                            </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yXE-CN-wrI">
-                                <rect key="frame" x="96" y="231" width="147" height="31"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="pickColorForD0:" destination="kyd-5z-OCi" eventType="touchUpInside" id="oqB-zO-pl2"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PeE-Lz-PzG" customClass="FDColorButton">
+                                <rect key="frame" x="96" y="154" width="204" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                            </view>
+                                <state key="normal" title="Button">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="pickColorForD1:" destination="kyd-5z-OCi" eventType="touchUpInside" id="ghr-W8-HSO"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QTC-Bk-u3K" customClass="FDColorButton">
+                                <rect key="frame" x="96" y="193" width="204" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="pickColorForD2:" destination="kyd-5z-OCi" eventType="touchUpInside" id="dRV-BF-HtC"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wfc-a7-FfY" customClass="FDColorButton">
+                                <rect key="frame" x="96" y="232" width="204" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="pickColorForD3:" destination="kyd-5z-OCi" eventType="touchUpInside" id="ic4-ZK-FlL"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T1C-ia-qat" customClass="FDColorButton">
+                                <rect key="frame" x="96" y="269" width="204" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="pickColorForD4:" destination="kyd-5z-OCi" eventType="touchUpInside" id="GzO-BI-6O3"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Indicators" id="fET-uv-VbB"/>
+                    <tabBarItem key="tabBarItem" title="LEDs" id="fET-uv-VbB"/>
                     <connections>
-                        <outlet property="d0Switch" destination="Qzs-W2-849" id="NbF-It-xEp"/>
-                        <outlet property="d1ColorView" destination="yXE-CN-wrI" id="Kbs-2v-oTD"/>
-                        <outlet property="d1Switch" destination="Er1-7g-HvZ" id="iJ1-fX-xhl"/>
-                        <outlet property="d2ColorView" destination="seo-xM-X38" id="vjb-vF-Nh0"/>
-                        <outlet property="d2Switch" destination="i96-GQ-3Gf" id="H3Z-av-EpY"/>
-                        <outlet property="d3ColorView" destination="kAG-sn-ygo" id="A1p-Wq-jfX"/>
-                        <outlet property="d3Switch" destination="Vwy-uv-dGP" id="P9k-ah-AaC"/>
-                        <outlet property="d4Switch" destination="deb-G2-gOb" id="72d-HK-D2R"/>
+                        <outlet property="d0Button" destination="X4E-qi-yWk" id="Xgn-2p-hU2"/>
+                        <outlet property="d1Button" destination="PeE-Lz-PzG" id="KD6-gm-op3"/>
+                        <outlet property="d2Button" destination="QTC-Bk-u3K" id="bLY-ha-1Zx"/>
+                        <outlet property="d3Button" destination="wfc-a7-FfY" id="3LR-ye-vpG"/>
+                        <outlet property="d4Button" destination="T1C-ia-qat" id="OZn-UV-4WY"/>
                         <outlet property="durationLabel" destination="slZ-VL-cNf" id="q6e-7O-uxQ"/>
                         <outlet property="durationSlider" destination="rIC-EI-mEB" id="zct-Bg-TXc"/>
                         <outlet property="overrideButton" destination="tkD-5e-hvh" id="qUz-kD-0fx"/>
-                        <outlet property="usbColorSegmentedControl" destination="K6b-gL-TTT" id="WHF-xU-Vgk"/>
-                        <outlet property="usbSwitch" destination="EoN-to-rX6" id="v6c-lU-0dg"/>
+                        <outlet property="usbButton" destination="zqR-ev-69L" id="49k-Oz-zNw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FoJ-Vg-Cm7" userLabel="First Responder" sceneMemberID="firstResponder"/>

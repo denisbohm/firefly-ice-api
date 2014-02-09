@@ -37,7 +37,14 @@
 		92841AD017EDF7CA005C0E18 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92841ACF17EDF7CA005C0E18 /* CoreBluetooth.framework */; };
 		92841AD117EDF7F7005C0E18 /* libFireflyDevice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92841ACC17EDF7BB005C0E18 /* libFireflyDevice.a */; };
 		928BF64817F2818000370B91 /* FDDetailTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 928BF64717F2818000370B91 /* FDDetailTabBarController.m */; };
-		929CA40B17F0992E00A4A992 /* FDDetailRadioViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 929CA40A17F0992E00A4A992 /* FDDetailRadioViewController.m */; };
+		92949D3918A5CAE400FD815F /* FDColorPicker_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92949D3818A5CAE400FD815F /* FDColorPicker_iPhone.xib */; };
+		92949D4218A5CB9C00FD815F /* FDColorPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92949D4118A5CB9C00FD815F /* FDColorPickerViewController.m */; };
+		92949D4518A5D7D100FD815F /* FDColorGamutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92949D4418A5D7D100FD815F /* FDColorGamutView.m */; };
+		92949D4818A5DBA200FD815F /* FDColorSpectrumView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92949D4718A5DBA200FD815F /* FDColorSpectrumView.m */; };
+		92949D4B18A5DFD700FD815F /* FDColorUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 92949D4A18A5DFD700FD815F /* FDColorUtilities.m */; };
+		92949D4E18A5E49000FD815F /* FDColorTouchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92949D4D18A5E49000FD815F /* FDColorTouchView.m */; };
+		92949D5318A5E80600FD815F /* FDColorSpectrumControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 92949D5218A5E80600FD815F /* FDColorSpectrumControl.m */; };
+		929CA40B17F0992E00A4A992 /* FDDetailRadioDirectTestModeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 929CA40A17F0992E00A4A992 /* FDDetailRadioDirectTestModeViewController.m */; };
 		929CA40F17F0AD3400A4A992 /* FDDetailOverviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 929CA40E17F0AD3400A4A992 /* FDDetailOverviewViewController.m */; };
 		929CA42817F0D73100A4A992 /* FDDetailIndicatorsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 929CA42717F0D73100A4A992 /* FDDetailIndicatorsViewController.m */; };
 		929CA42B17F0F01A00A4A992 /* FDUpdateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 929CA42A17F0F01A00A4A992 /* FDUpdateView.m */; };
@@ -45,8 +52,10 @@
 		929CA43617F1242F00A4A992 /* FDDetailResetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 929CA43517F1242F00A4A992 /* FDDetailResetViewController.m */; };
 		929CD2DA17F7BC14004CE8ED /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 929CD2D917F7BC14004CE8ED /* libsqlite3.dylib */; };
 		929CD2DC17F7BC54004CE8ED /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 929CD2DB17F7BC54004CE8ED /* libz.dylib */; };
+		92BE68A018A58D0600364A56 /* FDDetailRadioViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92BE689F18A58D0600364A56 /* FDDetailRadioViewController.m */; };
+		92DF2E4D18A6B6F10084B306 /* FDColorGamutControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 92DF2E4C18A6B6F10084B306 /* FDColorGamutControl.m */; };
+		92EF7AB018A7208D002A21FF /* FDColorButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 92EF7AAF18A7208D002A21FF /* FDColorButton.m */; };
 		92F863F817F3C38D000E23AF /* FDFireflyIceCollector.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F863F717F3C38D000E23AF /* FDFireflyIceCollector.m */; };
-		92FB3E721808E540008BACC9 /* libZamzeeDevice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92FB3E6D1808E4BB008BACC9 /* libZamzeeDevice.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,20 +72,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 92DF13A8180B01AE00A1B849;
 			remoteInfo = FireflyDeviceTests.framework;
-		};
-		9211D783180B32BC00D418B1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92FB3E661808E4BB008BACC9 /* ZamzeeDevice.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 92DF140B180B07DE00A1B849;
-			remoteInfo = ZamzeeDevice.framework;
-		};
-		9211D785180B32BC00D418B1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92FB3E661808E4BB008BACC9 /* ZamzeeDevice.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 92DF1420180B07DE00A1B849;
-			remoteInfo = ZamzeeDeviceTests.framework;
 		};
 		92841AB017EDF63D005C0E18 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -105,27 +100,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 929EF4B517EA06580044F6F9;
 			remoteInfo = FireflyDevice;
-		};
-		92FB3E6C1808E4BB008BACC9 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92FB3E661808E4BB008BACC9 /* ZamzeeDevice.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 9206278C1808E2A000DA4A5F;
-			remoteInfo = ZamzeeDevice;
-		};
-		92FB3E6E1808E4BB008BACC9 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92FB3E661808E4BB008BACC9 /* ZamzeeDevice.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 9206279C1808E2A000DA4A5F;
-			remoteInfo = ZamzeeDeviceTests;
-		};
-		92FB3E701808E538008BACC9 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92FB3E661808E4BB008BACC9 /* ZamzeeDevice.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 9206278B1808E2A000DA4A5F;
-			remoteInfo = ZamzeeDevice;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -169,8 +143,21 @@
 		92841ACF17EDF7CA005C0E18 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		928BF64617F2818000370B91 /* FDDetailTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDDetailTabBarController.h; sourceTree = "<group>"; };
 		928BF64717F2818000370B91 /* FDDetailTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDetailTabBarController.m; sourceTree = "<group>"; };
-		929CA40917F0992E00A4A992 /* FDDetailRadioViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDDetailRadioViewController.h; sourceTree = "<group>"; };
-		929CA40A17F0992E00A4A992 /* FDDetailRadioViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDetailRadioViewController.m; sourceTree = "<group>"; };
+		92949D3818A5CAE400FD815F /* FDColorPicker_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FDColorPicker_iPhone.xib; sourceTree = "<group>"; };
+		92949D4018A5CB9C00FD815F /* FDColorPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDColorPickerViewController.h; sourceTree = "<group>"; };
+		92949D4118A5CB9C00FD815F /* FDColorPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDColorPickerViewController.m; sourceTree = "<group>"; };
+		92949D4318A5D7D100FD815F /* FDColorGamutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDColorGamutView.h; sourceTree = "<group>"; };
+		92949D4418A5D7D100FD815F /* FDColorGamutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDColorGamutView.m; sourceTree = "<group>"; };
+		92949D4618A5DBA200FD815F /* FDColorSpectrumView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDColorSpectrumView.h; sourceTree = "<group>"; };
+		92949D4718A5DBA200FD815F /* FDColorSpectrumView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDColorSpectrumView.m; sourceTree = "<group>"; };
+		92949D4918A5DFD700FD815F /* FDColorUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDColorUtilities.h; sourceTree = "<group>"; };
+		92949D4A18A5DFD700FD815F /* FDColorUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDColorUtilities.m; sourceTree = "<group>"; };
+		92949D4C18A5E49000FD815F /* FDColorTouchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDColorTouchView.h; sourceTree = "<group>"; };
+		92949D4D18A5E49000FD815F /* FDColorTouchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDColorTouchView.m; sourceTree = "<group>"; };
+		92949D5118A5E80600FD815F /* FDColorSpectrumControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDColorSpectrumControl.h; sourceTree = "<group>"; };
+		92949D5218A5E80600FD815F /* FDColorSpectrumControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDColorSpectrumControl.m; sourceTree = "<group>"; };
+		929CA40917F0992E00A4A992 /* FDDetailRadioDirectTestModeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDDetailRadioDirectTestModeViewController.h; sourceTree = "<group>"; };
+		929CA40A17F0992E00A4A992 /* FDDetailRadioDirectTestModeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDetailRadioDirectTestModeViewController.m; sourceTree = "<group>"; };
 		929CA40D17F0AD3400A4A992 /* FDDetailOverviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDDetailOverviewViewController.h; sourceTree = "<group>"; };
 		929CA40E17F0AD3400A4A992 /* FDDetailOverviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDetailOverviewViewController.m; sourceTree = "<group>"; };
 		929CA42617F0D73100A4A992 /* FDDetailIndicatorsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDDetailIndicatorsViewController.h; sourceTree = "<group>"; };
@@ -183,9 +170,14 @@
 		929CA43517F1242F00A4A992 /* FDDetailResetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDetailResetViewController.m; sourceTree = "<group>"; };
 		929CD2D917F7BC14004CE8ED /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		929CD2DB17F7BC54004CE8ED /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		92BE689E18A58D0600364A56 /* FDDetailRadioViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDDetailRadioViewController.h; sourceTree = "<group>"; };
+		92BE689F18A58D0600364A56 /* FDDetailRadioViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDetailRadioViewController.m; sourceTree = "<group>"; };
+		92DF2E4B18A6B6F10084B306 /* FDColorGamutControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDColorGamutControl.h; sourceTree = "<group>"; };
+		92DF2E4C18A6B6F10084B306 /* FDColorGamutControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDColorGamutControl.m; sourceTree = "<group>"; };
+		92EF7AAE18A7208D002A21FF /* FDColorButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDColorButton.h; sourceTree = "<group>"; };
+		92EF7AAF18A7208D002A21FF /* FDColorButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDColorButton.m; sourceTree = "<group>"; };
 		92F863F617F3C38D000E23AF /* FDFireflyIceCollector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFireflyIceCollector.h; sourceTree = "<group>"; };
 		92F863F717F3C38D000E23AF /* FDFireflyIceCollector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFireflyIceCollector.m; sourceTree = "<group>"; };
-		92FB3E661808E4BB008BACC9 /* ZamzeeDevice.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ZamzeeDevice.xcodeproj; path = "../../zamzee-device/ZamzeeDevice/ZamzeeDevice.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -196,7 +188,6 @@
 				929CD2DC17F7BC54004CE8ED /* libz.dylib in Frameworks */,
 				929CD2DA17F7BC14004CE8ED /* libsqlite3.dylib in Frameworks */,
 				92841AD117EDF7F7005C0E18 /* libFireflyDevice.a in Frameworks */,
-				92FB3E721808E540008BACC9 /* libZamzeeDevice.a in Frameworks */,
 				92841AD017EDF7CA005C0E18 /* CoreBluetooth.framework in Frameworks */,
 				92841A8A17EDF63D005C0E18 /* CoreGraphics.framework in Frameworks */,
 				92841A8C17EDF63D005C0E18 /* UIKit.framework in Frameworks */,
@@ -221,7 +212,6 @@
 			isa = PBXGroup;
 			children = (
 				92841AC617EDF7BB005C0E18 /* FireflyDevice.xcodeproj */,
-				92FB3E661808E4BB008BACC9 /* ZamzeeDevice.xcodeproj */,
 				92841A8D17EDF63D005C0E18 /* FireflyUtility */,
 				92841AB217EDF63D005C0E18 /* FireflyUtilityTests */,
 				92841A8617EDF63D005C0E18 /* Frameworks */,
@@ -267,24 +257,9 @@
 				92841AA017EDF63D005C0E18 /* FDMasterViewController.m */,
 				92841AA217EDF63D005C0E18 /* FDDetailViewController.h */,
 				92841AA317EDF63D005C0E18 /* FDDetailViewController.m */,
-				929CA40D17F0AD3400A4A992 /* FDDetailOverviewViewController.h */,
-				929CA40E17F0AD3400A4A992 /* FDDetailOverviewViewController.m */,
-				929CA40917F0992E00A4A992 /* FDDetailRadioViewController.h */,
-				929CA40A17F0992E00A4A992 /* FDDetailRadioViewController.m */,
-				929CA42617F0D73100A4A992 /* FDDetailIndicatorsViewController.h */,
-				929CA42717F0D73100A4A992 /* FDDetailIndicatorsViewController.m */,
-				929CA42917F0F01A00A4A992 /* FDUpdateView.h */,
-				929CA42A17F0F01A00A4A992 /* FDUpdateView.m */,
-				929CA42C17F0F30600A4A992 /* FDDetailUpdateViewController.h */,
-				929CA42D17F0F30600A4A992 /* FDDetailUpdateViewController.m */,
-				929CA43417F1242F00A4A992 /* FDDetailResetViewController.h */,
-				929CA43517F1242F00A4A992 /* FDDetailResetViewController.m */,
-				928BF64617F2818000370B91 /* FDDetailTabBarController.h */,
-				928BF64717F2818000370B91 /* FDDetailTabBarController.m */,
-				923C345C18973CFD0068863D /* FDDetailPowerViewController.h */,
-				923C345D18973CFD0068863D /* FDDetailPowerViewController.m */,
-				923C344318972DB20068863D /* FDBatteryView.m */,
-				923C344418972DB20068863D /* FDBatteryView.h */,
+				92949D5018A5E79600FD815F /* Detail Views */,
+				92949D4F18A5E77500FD815F /* Color Picker */,
+				92EF7AAD18A70C73002A21FF /* Battery View */,
 			);
 			path = FireflyUtility;
 			sourceTree = "<group>";
@@ -292,14 +267,6 @@
 		92841A8E17EDF63D005C0E18 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				923C344C189733880068863D /* battery.png */,
-				923C344D189733880068863D /* battery@2x.png */,
-				923C344E189733880068863D /* green_fuel.png */,
-				923C344F189733880068863D /* green_fuel@2x.png */,
-				923C3450189733880068863D /* orange_fuel.png */,
-				923C3451189733880068863D /* orange_fuel@2x.png */,
-				923C3452189733880068863D /* red_fuel.png */,
-				923C3453189733880068863D /* red_fuel@2x.png */,
 				9212D259180B3F2D00576B41 /* FireflyIce.hex */,
 				92841A8F17EDF63D005C0E18 /* FireflyUtility-Info.plist */,
 				92841A9017EDF63D005C0E18 /* InfoPlist.strings */,
@@ -338,15 +305,70 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		92FB3E671808E4BB008BACC9 /* Products */ = {
+		92949D4F18A5E77500FD815F /* Color Picker */ = {
 			isa = PBXGroup;
 			children = (
-				92FB3E6D1808E4BB008BACC9 /* libZamzeeDevice.a */,
-				92FB3E6F1808E4BB008BACC9 /* ZamzeeDeviceTests.library.xctest */,
-				9211D784180B32BC00D418B1 /* ZamzeeDevice.framework */,
-				9211D786180B32BC00D418B1 /* ZamzeeDeviceTests.framework.xctest */,
+				92EF7AAE18A7208D002A21FF /* FDColorButton.h */,
+				92EF7AAF18A7208D002A21FF /* FDColorButton.m */,
+				92949D4018A5CB9C00FD815F /* FDColorPickerViewController.h */,
+				92949D4118A5CB9C00FD815F /* FDColorPickerViewController.m */,
+				92949D3818A5CAE400FD815F /* FDColorPicker_iPhone.xib */,
+				92DF2E4B18A6B6F10084B306 /* FDColorGamutControl.h */,
+				92DF2E4C18A6B6F10084B306 /* FDColorGamutControl.m */,
+				92949D4318A5D7D100FD815F /* FDColorGamutView.h */,
+				92949D4418A5D7D100FD815F /* FDColorGamutView.m */,
+				92949D5118A5E80600FD815F /* FDColorSpectrumControl.h */,
+				92949D5218A5E80600FD815F /* FDColorSpectrumControl.m */,
+				92949D4618A5DBA200FD815F /* FDColorSpectrumView.h */,
+				92949D4718A5DBA200FD815F /* FDColorSpectrumView.m */,
+				92949D4918A5DFD700FD815F /* FDColorUtilities.h */,
+				92949D4A18A5DFD700FD815F /* FDColorUtilities.m */,
+				92949D4C18A5E49000FD815F /* FDColorTouchView.h */,
+				92949D4D18A5E49000FD815F /* FDColorTouchView.m */,
 			);
-			name = Products;
+			name = "Color Picker";
+			sourceTree = "<group>";
+		};
+		92949D5018A5E79600FD815F /* Detail Views */ = {
+			isa = PBXGroup;
+			children = (
+				929CA40D17F0AD3400A4A992 /* FDDetailOverviewViewController.h */,
+				929CA40E17F0AD3400A4A992 /* FDDetailOverviewViewController.m */,
+				92BE689E18A58D0600364A56 /* FDDetailRadioViewController.h */,
+				92BE689F18A58D0600364A56 /* FDDetailRadioViewController.m */,
+				929CA40917F0992E00A4A992 /* FDDetailRadioDirectTestModeViewController.h */,
+				929CA40A17F0992E00A4A992 /* FDDetailRadioDirectTestModeViewController.m */,
+				929CA42617F0D73100A4A992 /* FDDetailIndicatorsViewController.h */,
+				929CA42717F0D73100A4A992 /* FDDetailIndicatorsViewController.m */,
+				929CA42917F0F01A00A4A992 /* FDUpdateView.h */,
+				929CA42A17F0F01A00A4A992 /* FDUpdateView.m */,
+				929CA42C17F0F30600A4A992 /* FDDetailUpdateViewController.h */,
+				929CA42D17F0F30600A4A992 /* FDDetailUpdateViewController.m */,
+				929CA43417F1242F00A4A992 /* FDDetailResetViewController.h */,
+				929CA43517F1242F00A4A992 /* FDDetailResetViewController.m */,
+				928BF64617F2818000370B91 /* FDDetailTabBarController.h */,
+				928BF64717F2818000370B91 /* FDDetailTabBarController.m */,
+				923C345C18973CFD0068863D /* FDDetailPowerViewController.h */,
+				923C345D18973CFD0068863D /* FDDetailPowerViewController.m */,
+			);
+			name = "Detail Views";
+			sourceTree = "<group>";
+		};
+		92EF7AAD18A70C73002A21FF /* Battery View */ = {
+			isa = PBXGroup;
+			children = (
+				923C344318972DB20068863D /* FDBatteryView.m */,
+				923C344418972DB20068863D /* FDBatteryView.h */,
+				923C344C189733880068863D /* battery.png */,
+				923C344D189733880068863D /* battery@2x.png */,
+				923C344E189733880068863D /* green_fuel.png */,
+				923C344F189733880068863D /* green_fuel@2x.png */,
+				923C3450189733880068863D /* orange_fuel.png */,
+				923C3451189733880068863D /* orange_fuel@2x.png */,
+				923C3452189733880068863D /* red_fuel.png */,
+				923C3453189733880068863D /* red_fuel@2x.png */,
+			);
+			name = "Battery View";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -363,7 +385,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				92FB3E711808E538008BACC9 /* PBXTargetDependency */,
 				92841AD317EDF80B005C0E18 /* PBXTargetDependency */,
 			);
 			name = FireflyUtility;
@@ -423,10 +444,6 @@
 					ProductGroup = 92841AC717EDF7BB005C0E18 /* Products */;
 					ProjectRef = 92841AC617EDF7BB005C0E18 /* FireflyDevice.xcodeproj */;
 				},
-				{
-					ProductGroup = 92FB3E671808E4BB008BACC9 /* Products */;
-					ProjectRef = 92FB3E661808E4BB008BACC9 /* ZamzeeDevice.xcodeproj */;
-				},
 			);
 			projectRoot = "";
 			targets = (
@@ -451,20 +468,6 @@
 			remoteRef = 9211D77E180B32BC00D418B1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		9211D784180B32BC00D418B1 /* ZamzeeDevice.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ZamzeeDevice.framework;
-			remoteRef = 9211D783180B32BC00D418B1 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		9211D786180B32BC00D418B1 /* ZamzeeDeviceTests.framework.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = ZamzeeDeviceTests.framework.xctest;
-			remoteRef = 9211D785180B32BC00D418B1 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		92841ACC17EDF7BB005C0E18 /* libFireflyDevice.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -479,20 +482,6 @@
 			remoteRef = 92841ACD17EDF7BB005C0E18 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		92FB3E6D1808E4BB008BACC9 /* libZamzeeDevice.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libZamzeeDevice.a;
-			remoteRef = 92FB3E6C1808E4BB008BACC9 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		92FB3E6F1808E4BB008BACC9 /* ZamzeeDeviceTests.library.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = ZamzeeDeviceTests.library.xctest;
-			remoteRef = 92FB3E6E1808E4BB008BACC9 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -504,6 +493,7 @@
 				923C3454189733880068863D /* battery.png in Resources */,
 				923C3455189733880068863D /* battery@2x.png in Resources */,
 				92841A9E17EDF63D005C0E18 /* Main_iPad.storyboard in Resources */,
+				92949D3918A5CAE400FD815F /* FDColorPicker_iPhone.xib in Resources */,
 				92841AA617EDF63D005C0E18 /* Images.xcassets in Resources */,
 				923C3456189733880068863D /* green_fuel.png in Resources */,
 				923C3459189733880068863D /* orange_fuel@2x.png in Resources */,
@@ -532,18 +522,27 @@
 			buildActionMask = 2147483647;
 			files = (
 				929CA42E17F0F30600A4A992 /* FDDetailUpdateViewController.m in Sources */,
+				92949D4518A5D7D100FD815F /* FDColorGamutView.m in Sources */,
 				923C344518972DB20068863D /* FDBatteryView.m in Sources */,
 				929CA42B17F0F01A00A4A992 /* FDUpdateView.m in Sources */,
 				92841AA117EDF63D005C0E18 /* FDMasterViewController.m in Sources */,
 				92841A9817EDF63D005C0E18 /* FDAppDelegate.m in Sources */,
 				92841A9417EDF63D005C0E18 /* main.m in Sources */,
-				929CA40B17F0992E00A4A992 /* FDDetailRadioViewController.m in Sources */,
+				92949D4B18A5DFD700FD815F /* FDColorUtilities.m in Sources */,
+				92949D4E18A5E49000FD815F /* FDColorTouchView.m in Sources */,
+				929CA40B17F0992E00A4A992 /* FDDetailRadioDirectTestModeViewController.m in Sources */,
 				929CA42817F0D73100A4A992 /* FDDetailIndicatorsViewController.m in Sources */,
 				928BF64817F2818000370B91 /* FDDetailTabBarController.m in Sources */,
+				92BE68A018A58D0600364A56 /* FDDetailRadioViewController.m in Sources */,
+				92949D5318A5E80600FD815F /* FDColorSpectrumControl.m in Sources */,
 				929CA43617F1242F00A4A992 /* FDDetailResetViewController.m in Sources */,
 				92F863F817F3C38D000E23AF /* FDFireflyIceCollector.m in Sources */,
 				923C345E18973CFD0068863D /* FDDetailPowerViewController.m in Sources */,
+				92EF7AB018A7208D002A21FF /* FDColorButton.m in Sources */,
 				929CA40F17F0AD3400A4A992 /* FDDetailOverviewViewController.m in Sources */,
+				92949D4818A5DBA200FD815F /* FDColorSpectrumView.m in Sources */,
+				92949D4218A5CB9C00FD815F /* FDColorPickerViewController.m in Sources */,
+				92DF2E4D18A6B6F10084B306 /* FDColorGamutControl.m in Sources */,
 				92841AA417EDF63D005C0E18 /* FDDetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -568,11 +567,6 @@
 			isa = PBXTargetDependency;
 			name = FireflyDevice;
 			targetProxy = 92841AD217EDF80B005C0E18 /* PBXContainerItemProxy */;
-		};
-		92FB3E711808E538008BACC9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = ZamzeeDevice;
-			targetProxy = 92FB3E701808E538008BACC9 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

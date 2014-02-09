@@ -178,10 +178,10 @@
 - (void)checkOutOfDate
 {
     if ([self isOutOfDate]) {
-        FDFireflyDeviceLogInfo(@"firmware %@ is out of date with latest %u.%u.%u (boot loader is version %@)", _version, _major, _minor, _patch, _bootVersion);
+        FDFireflyDeviceLogInfo(@"firmware %@ is out of date with latest %u.%u.%u (boot loader is %@)", _version, _major, _minor, _patch, _bootVersion);
         [self next:@selector(getSectorHashes)];
     } else {
-        FDFireflyDeviceLogInfo(@"firmware %@ is up to date with latest %u.%u.%u (boot loader is version %@)", _version, _major, _minor, _patch, _bootVersion);
+        FDFireflyDeviceLogInfo(@"firmware %@ is up to date with latest %u.%u.%u (boot loader is %@)", _version, _major, _minor, _patch, _bootVersion);
         [self complete];
     }
 }

@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 Firefly Design. All rights reserved.
 //
 
+#import "FDColorButton.h"
+#import "FDColorPickerViewController.h"
 #import "FDDetailIndicatorsViewController.h"
 
 #import <FireflyDevice/FDFireflyIce.h>
@@ -14,21 +16,12 @@
 
 @interface FDDetailIndicatorsViewController ()
 
-@property IBOutlet UISegmentedControl *usbColorSegmentedControl;
-@property IBOutlet UISwitch *usbSwitch;
-
-@property IBOutlet UISwitch *d0Switch;
-
-@property IBOutlet UISwitch *d1Switch;
-@property IBOutlet UIView *d1ColorView;
-
-@property IBOutlet UISwitch *d2Switch;
-@property IBOutlet UIView *d2ColorView;
-
-@property IBOutlet UISwitch *d3Switch;
-@property IBOutlet UIView *d3ColorView;
-
-@property IBOutlet UISwitch *d4Switch;
+@property IBOutlet FDColorButton *usbButton;
+@property IBOutlet FDColorButton *d0Button;
+@property IBOutlet FDColorButton *d1Button;
+@property IBOutlet FDColorButton *d2Button;
+@property IBOutlet FDColorButton *d3Button;
+@property IBOutlet FDColorButton *d4Button;
 
 @property IBOutlet UISlider *durationSlider;
 @property IBOutlet UILabel *durationLabel;
@@ -43,10 +36,75 @@
 {
     [super viewDidLoad];
     [self.buttons addObject:_overrideButton];
+    _usbButton.color = [UIColor orangeColor];
+    _d0Button.color = [UIColor redColor];
+    _d1Button.color = [UIColor whiteColor];
+    _d2Button.color = [UIColor whiteColor];
+    _d3Button.color = [UIColor whiteColor];
+    _d4Button.color = [UIColor redColor];
 }
 
-- (IBAction)pickColor:(id)sender
+- (void)pickColor:(FDColorButton *)button hueRange:(FDRange)hueRange saturationRange:(FDRange)saturationRange
 {
+    FDColorPickerViewController *picker = [FDColorPickerViewController colorPickerViewController];
+    
+    picker.doneBlock = ^(UIColor *color) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+        button.color = color;
+    };
+    
+    picker.hueRange = hueRange;
+    picker.saturationRange = saturationRange;
+    picker.brightnessRange = FDRangeMake(0.0f, 1.0f);
+    
+    picker.color = button.color;
+    
+    [self presentViewController:[[UINavigationController alloc] initWithRootViewController:picker] animated:YES completion:nil];
+}
+
+- (void)pickRedGreenBlue:(FDColorButton *)button
+{
+    [self pickColor:button hueRange:FDRangeMake(0.0f, 360.0f / 360.0f) saturationRange:FDRangeMake(0.0f, 1.0f)];
+}
+
+- (void)pickRedGreen:(FDColorButton *)button
+{
+    [self pickColor:button hueRange:FDRangeMake(0.0f, 120.0f / 360.0f) saturationRange:FDRangeMake(1.0f, 1.0f)];
+}
+
+- (void)pickRed:(FDColorButton *)button
+{
+    [self pickColor:button hueRange:FDRangeMake(0.0f, 0.0f / 360.0f) saturationRange:FDRangeMake(1.0f, 1.0f)];
+}
+
+- (IBAction)pickColorForUSB:(id)sender
+{
+    [self pickRedGreen:_usbButton];
+}
+
+- (IBAction)pickColorForD0:(id)sender
+{
+    [self pickRed:_d0Button];
+}
+
+- (IBAction)pickColorForD1:(id)sender
+{
+    [self pickRedGreenBlue:_d1Button];
+}
+
+- (IBAction)pickColorForD2:(id)sender
+{
+    [self pickRedGreenBlue:_d2Button];
+}
+
+- (IBAction)pickColorForD3:(id)sender
+{
+    [self pickRedGreenBlue:_d3Button];
+}
+
+- (IBAction)pickColorForD4:(id)sender
+{
+    [self pickRed:_d4Button];
 }
 
 - (unsigned)testDuration
@@ -82,25 +140,19 @@
     FDFireflyIce *fireflyIce = self.device[@"fireflyIce"];
     id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
     
-    uint8_t usbOrange = 0;
-    uint8_t usbGreen = 0;
-    if (_usbSwitch.isOn) {
-        if (_usbColorSegmentedControl.selectedSegmentIndex == 0) {
-            usbGreen = 0xff;
-        } else {
-            usbOrange = 0xff;
-        }
-    }
-    uint8_t d0 = _d0Switch.isOn ? 0xff : 0;
-    uint32_t d1 = _d1Switch.isOn ? [self toRGB:_d1ColorView.backgroundColor] : 0;
-    uint32_t d2 = _d2Switch.isOn ? [self toRGB:_d2ColorView.backgroundColor] : 0;
-    uint32_t d3 = _d3Switch.isOn ? [self toRGB:_d3ColorView.backgroundColor] : 0;
-    uint8_t d4 = _d4Switch.isOn ? 0xff : 0;
+    uint32_t rgb = [self toRGB:_usbButton.color];
+    uint8_t usbRed = (rgb >> 16) & 0xff;
+    uint8_t usbGreen = (rgb >> 8) & 0xff;
+    uint8_t d0 = ([self toRGB:_d0Button.color] >> 16) & 0xff;
+    uint32_t d1 = [self toRGB:_d1Button.color];
+    uint32_t d2 = [self toRGB:_d2Button.color];
+    uint32_t d3 = [self toRGB:_d3Button.color];
+    uint8_t d4 = ([self toRGB:_d4Button.color] >> 16) & 0xff;
     
     NSTimeInterval duration = [self testDuration];
 
     [fireflyIce.executor execute:[FDFireflyIceSimpleTask simpleTask:fireflyIce channel:channel block:^(void) {
-        [fireflyIce.coder sendLEDOverride:channel usbOrange:usbOrange usbGreen:usbGreen d0:d0 d1:d1 d2:d2 d3:d3 d4:d4 duration:duration];
+        [fireflyIce.coder sendLEDOverride:channel usbOrange:usbRed usbGreen:usbGreen d0:d0 d1:d1 d2:d2 d3:d3 d4:d4 duration:duration];
     }]];
 }
 

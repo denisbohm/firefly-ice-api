@@ -11,8 +11,6 @@
 #import "FDFireflyIceCollector.h"
 #import "FDMasterViewController.h"
 
-//#import <ZamzeeDevice/ZZSyncTask.h>
-
 #import <FireflyDevice/FDFireflyIce.h>
 #import <FireflyDevice/FDFireflyIceChannelBLE.h>
 #import <FireflyDevice/FDFireflyIceManager.h>
@@ -51,6 +49,10 @@
 	
     _fireflyIceManager = [FDFireflyIceManager managerWithDelegate:self];
     _devices = [NSMutableArray array];
+    
+    FDFireflyIce *fireflyIce = [[FDFireflyIce alloc] init];
+    fireflyIce.name = @"test dummy";
+    [_devices addObject:@{@"fireflyIce":fireflyIce}];
 }
 
 - (FDFireflyIce *)getFireflyIceByPeripheral:(CBPeripheral *)peripheral
@@ -158,7 +160,7 @@
 
 - (void)fireflyIceManager:(FDFireflyIceManager *)manager identified:(FDFireflyIce *)fireflyIce
 {
-//    [fireflyIce.executor execute:[ZZSyncTask syncTask:fireflyIce channel:fireflyIce.channels[@"BLE"]]];
+//    [fireflyIce.executor execute:[FDSyncTask syncTask:fireflyIce channel:fireflyIce.channels[@"BLE"]]];
 }
 
 - (void)setDevice:(NSMutableDictionary *)device
