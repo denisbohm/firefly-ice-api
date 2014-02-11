@@ -26,8 +26,8 @@ typedef enum {Unused, UpToDate, OutOfDate} FDUpdateState;
     return self;
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder {
-    if ((self = [super initWithCoder:aDecoder])) {
+- (id)initWithCoder:(NSCoder *)decoder {
+    if ((self = [super initWithCoder:decoder])) {
         [self updateViewInit];
     }
     return self;

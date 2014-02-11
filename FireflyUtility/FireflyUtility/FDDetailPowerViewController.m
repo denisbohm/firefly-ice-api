@@ -47,11 +47,4 @@
     [self configureView];
 }
 
-- (IBAction)updatePower:(id)sender
-{
-    FDFireflyIce *fireflyIce = self.device[@"fireflyIce"];
-    FDFireflyIceCollector *collector = self.device[@"collector"];
-    [fireflyIce.executor execute:collector];
-}
-
 @end

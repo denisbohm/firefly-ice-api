@@ -35,7 +35,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.buttons addObject:_overrideButton];
+    
+    [self.controls addObject:_overrideButton];
+    
     _usbButton.color = [UIColor orangeColor];
     _d0Button.color = [UIColor redColor];
     _d1Button.color = [UIColor whiteColor];
@@ -124,11 +126,16 @@
 
 - (uint32_t)toRGB:(UIColor *)color
 {
-    CGFloat r;
-    CGFloat g;
-    CGFloat b;
-    CGFloat a;
-    [color getRed:&r green:&g blue:&b alpha:&a];
+    CGFloat r = 0.0f;
+    CGFloat g = 0.0f;
+    CGFloat b = 0.0f;
+    CGFloat a = 0.0f;
+    BOOL result = [color getRed:&r green:&g blue:&b alpha:&a];
+    if (!result) {
+        CGFloat white = 1.0f;;
+        result = [color getWhite:&white alpha:&a];
+        r = g = b = white;
+    }
     uint8_t rb = (uint8_t)round(r * 255);
     uint8_t gb = (uint8_t)round(g * 255);
     uint8_t bb = (uint8_t)round(b * 255);

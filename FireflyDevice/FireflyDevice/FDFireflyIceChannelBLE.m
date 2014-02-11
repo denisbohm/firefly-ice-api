@@ -138,6 +138,7 @@
 - (void)didUpdateValueForCharacteristic:(NSData *)value error:(NSError *)error
 {
 //    FDFireflyDeviceLogDebug(@"didUpdateValueForCharacteristic %@ %@", value, error);
+//    NSLog(@"cv2 %@", value);
     [_detour detourEvent:value];
     if (_detour.state == FDDetourStateSuccess) {
         if ([_delegate respondsToSelector:@selector(fireflyIceChannelPacket:data:)]) {
@@ -156,6 +157,7 @@
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 {
     NSData *data = characteristic.value;
+//    NSLog(@"cv1 %@", data);
     __FDWeak FDFireflyIceChannelBLE *weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         [weakSelf didUpdateValueForCharacteristic:data error:error];

@@ -38,6 +38,7 @@
                                                @"fireflyIce:channel:directTestModeReport:",
                                                @"fireflyIce:channel:sensing:",
                                                @"fireflyIce:channel:txPower:",
+                                               @"fireflyIce:channel:name:",
                           ]];
         _dictionary = [NSMutableDictionary dictionary];
     }
@@ -63,7 +64,8 @@
      FD_CONTROL_PROPERTY_SITE |
      FD_CONTROL_PROPERTY_RESET |
      FD_CONTROL_PROPERTY_STORAGE |
-     FD_CONTROL_PROPERTY_TX_POWER];
+     FD_CONTROL_PROPERTY_TX_POWER |
+     FD_CONTROL_PROPERTY_NAME];
     [self.fireflyIce.coder sendDirectTestModeReport:self.channel];
     
     [self next:@selector(complete)];
@@ -84,6 +86,15 @@
     return [_selectorNames containsObject:selectorName];
 }
 
+- (void)setEntry:(NSString *)key object:(id)object {
+    FDFireflyIceCollectorEntry *entry = [[FDFireflyIceCollectorEntry alloc] init];
+    entry.date = [NSDate date];
+    entry.object = object;
+    _dictionary[key] = entry;
+    
+    [_delegate fireflyIceCollectorEntry:(FDFireflyIceCollectorEntry *)entry];
+}
+
 - (void)forwardInvocation:(NSInvocation *)invocation  {
     SEL selector = invocation.selector;
     NSString *selectorName = NSStringFromSelector(selector);
@@ -91,12 +102,8 @@
     NSString *key = parts[2];
     __unsafe_unretained id object;
     [invocation getArgument:&object atIndex:4];
-    FDFireflyIceCollectorEntry *entry = [[FDFireflyIceCollectorEntry alloc] init];
-    entry.date = [NSDate date];
-    entry.object = object;
-    _dictionary[key] = entry;
     
-    [_delegate fireflyIceCollectorEntry:(FDFireflyIceCollectorEntry *)entry];
+    [self setEntry:key object:object];
 }
 
 @end

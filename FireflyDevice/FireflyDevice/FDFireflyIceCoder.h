@@ -59,6 +59,7 @@
 #define FD_CONTROL_CAPABILITY_IDENTIFY     0x00000008
 #define FD_CONTROL_CAPABILITY_LOGGING      0x00000010
 #define FD_CONTROL_CAPABILITY_DIAGNOSTICS  0x00000010
+#define FD_CONTROL_CAPABILITY_NAME         0x00000020
 
 // property bits for get/set property commands
 #define FD_CONTROL_PROPERTY_VERSION      0x00000001
@@ -73,6 +74,7 @@
 #define FD_CONTROL_PROPERTY_TX_POWER     0x00000200
 #define FD_CONTROL_PROPERTY_BOOT_VERSION 0x00000400
 #define FD_CONTROL_PROPERTY_LOGGING      0x00000800
+#define FD_CONTROL_PROPERTY_NAME         0x00001000
 
 #define FD_CONTROL_RESET_SYSTEM_REQUEST 1
 #define FD_CONTROL_RESET_WATCHDOG 2
@@ -118,6 +120,7 @@ typedef enum {
 - (void)sendSetPropertyMode:(id<FDFireflyIceChannel>)channel mode:(uint8_t)mode;
 - (void)sendSetPropertyTxPower:(id<FDFireflyIceChannel>)channel level:(uint8_t)level;
 - (void)sendSetPropertyLogging:(id<FDFireflyIceChannel>)channel storage:(BOOL)storage;
+- (void)sendSetPropertyName:(id<FDFireflyIceChannel>)channel name:(NSString *)name;
 
 - (void)sendProvision:(id<FDFireflyIceChannel>)channel dictionary:(NSDictionary *)dictionary options:(uint32_t)options;
 - (void)sendReset:(id<FDFireflyIceChannel>)channel type:(uint8_t)type;

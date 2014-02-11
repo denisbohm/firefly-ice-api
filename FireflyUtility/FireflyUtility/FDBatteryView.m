@@ -61,7 +61,7 @@ static const float WARNING_LEVEL = 0.1;  // 10%
         if (animate) {
             [UIView beginAnimations: @"BatteryViewAnimation" context: NULL];
             [UIView setAnimationCurve: UIViewAnimationCurveLinear];
-            [UIView setAnimationDuration: 1.0f];
+            [UIView setAnimationDuration: 0.2f];
         }
         
         CGRect newFrame = self.backgroundLayer.frame;

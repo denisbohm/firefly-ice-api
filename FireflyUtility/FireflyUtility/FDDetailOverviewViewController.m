@@ -13,6 +13,7 @@
 
 @interface FDDetailOverviewViewController ()
 
+@property IBOutlet UITextField *nameTextField;
 @property IBOutlet UILabel *hardwareIdLabel;
 @property IBOutlet UILabel *hardwareRevisionLabel;
 @property IBOutlet UILabel *bootRevisionLabel;
@@ -20,9 +21,6 @@
 @property IBOutlet UILabel *vendorAndProductLabel;
 @property IBOutlet UILabel *debugLockLabel;
 
-@property IBOutlet UILabel *timeLabel;
-
-@property IBOutlet UIButton *setTimeButton;
 @property IBOutlet UIButton *updateButton;
 
 @end
@@ -32,8 +30,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.buttons addObject:_setTimeButton];
-    [self.buttons addObject:_updateButton];
+
+    [self.controls addObject:_nameTextField];
+    [self.controls addObject:_updateButton];
+    
+    self.nameTextField.returnKeyType = UIReturnKeyDone;
 }
 
 - (NSString *)toHex:(NSData *)data
@@ -47,11 +48,11 @@
     return string;
 }
 
-#define JAN_1_2014 1388534400
-
 - (void)configureView
 {
     FDFireflyIceCollector *collector = self.device[@"collector"];
+    
+    _nameTextField.text = [collector objectForKey:@"name"];
     
     FDFireflyIceVersion *version = [collector objectForKey:@"version"];
     FDFireflyIceVersion *bootVersion = [collector objectForKey:@"bootVersion"];
@@ -65,19 +66,6 @@
     
     _firmwareRevisionLabel.text = [NSString stringWithFormat:@"Firmware v%d.%d.%d", version.major, version.minor, version.patch];
     
-    FDFireflyIceCollectorEntry *entry = collector.dictionary[@"time"];
-    NSDate *time = entry.object;
-    if ([time timeIntervalSince1970] < JAN_1_2014) {
-        _timeLabel.text = @"Time is not set.";
-    } else {
-        NSTimeInterval offset = [time timeIntervalSinceDate:entry.date];
-        if (offset < 0) {
-            _timeLabel.text = [NSString stringWithFormat:@"Time is behind by %0.2f seconds.", offset];
-        } else {
-            _timeLabel.text = [NSString stringWithFormat:@"Time is ahead by %0.2f seconds.", -offset];
-        }
-    }
-    
     NSNumber *debugLock = [collector objectForKey:@"debugLock"];
     _debugLockLabel.text = debugLock.boolValue ? @"Debug Lock Set" : @"Debug is Unlocked";
 }
@@ -87,11 +75,28 @@
     [self configureView];
 }
 
-- (IBAction)setTime:(id)sender
+- (IBAction)beginEditingName:(id)sender
+{
+    [_nameTextField setBorderStyle:UITextBorderStyleRoundedRect];
+}
+
+- (IBAction)endEditingName:(id)sender
+{
+    [_nameTextField setBorderStyle:UITextBorderStyleNone];
+    
+    [self updateName:_nameTextField.text];
+}
+
+- (IBAction)doneName:(id)sender
+{
+    [_nameTextField resignFirstResponder];    
+}
+
+- (void)updateName:(NSString *)name
 {
     FDFireflyIce *fireflyIce = self.device[@"fireflyIce"];
     id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
-    [fireflyIce.coder sendSetPropertyTime:channel time:[NSDate date]];
+    [fireflyIce.coder sendSetPropertyName:channel name:name];
 }
 
 - (IBAction)updateOverview:(id)sender

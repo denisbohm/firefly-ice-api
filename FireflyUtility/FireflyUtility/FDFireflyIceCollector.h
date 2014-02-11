@@ -31,5 +31,6 @@
 @property NSMutableDictionary *dictionary;
 
 - (id)objectForKey:(NSString *)key;
+- (void)setEntry:(NSString *)key object:(id)object;
 
 @end

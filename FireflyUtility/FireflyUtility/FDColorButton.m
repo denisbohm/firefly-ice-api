@@ -37,6 +37,8 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetFillColorWithColor(context, _color.CGColor);
     CGContextFillRect(context, self.bounds);
+    CGContextSetFillColorWithColor(context, [UIColor blackColor].CGColor);
+    CGContextStrokeRect(context, self.bounds);
 }
 
 @end

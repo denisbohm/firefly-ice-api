@@ -19,7 +19,6 @@
 @property IBOutlet UISegmentedControl *typeSegmentedControl;
 
 @property IBOutlet UIButton *resetButton;
-@property IBOutlet UIButton *modeButton;
 
 @end
 
@@ -28,8 +27,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.buttons addObject:_resetButton];
-    [self.buttons addObject:_modeButton];
+
+    [self.controls addObject:_resetButton];
 }
 
 - (void)configureView
@@ -59,14 +58,6 @@
     id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
     
     [fireflyIce.coder sendReset:channel type:type];
-}
-
-- (IBAction)enterStorageMode:(id)sender
-{
-    FDFireflyIce *fireflyIce = self.device[@"fireflyIce"];
-    id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
-    
-    [fireflyIce.coder sendSetPropertyMode:channel mode:FD_CONTROL_MODE_STORAGE];
 }
 
 @end

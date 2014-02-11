@@ -35,7 +35,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.buttons addObject:_updateButton];
+    
+    [self.controls addObject:_updateButton];
 }
 
 - (void)firmwareUpdateTask:(FDFirmwareUpdateTask *)task progress:(float)progress

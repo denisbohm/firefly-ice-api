@@ -76,49 +76,42 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Hardware" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P8N-Ww-VO2">
-                                <rect key="frame" x="20" y="72" width="280" height="21"/>
+                                <rect key="frame" x="20" y="216" width="280" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Boot Loader" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nwW-LB-g5b">
-                                <rect key="frame" x="20" y="159" width="280" height="21"/>
+                                <rect key="frame" x="20" y="187" width="280" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Firmware" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bLM-Ou-ovD">
-                                <rect key="frame" x="20" y="188" width="280" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bem-NK-b8z">
-                                <rect key="frame" x="20" y="323" width="280" height="21"/>
+                                <rect key="frame" x="20" y="158" width="280" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Debug" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nKy-JI-ax5">
-                                <rect key="frame" x="20" y="217" width="280" height="21"/>
+                                <rect key="frame" x="20" y="274" width="280" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="UUID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mNp-5v-WoP">
-                                <rect key="frame" x="20" y="101" width="280" height="21"/>
+                                <rect key="frame" x="20" y="129" width="280" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="USB VID / PID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7T2-HW-pv1">
-                                <rect key="frame" x="20" y="130" width="280" height="21"/>
+                                <rect key="frame" x="20" y="245" width="280" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -134,28 +127,28 @@
                                     <action selector="updateOverview:" destination="H6e-73-opa" eventType="touchUpInside" id="9JH-I5-W0R"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ttI-eg-R2O">
-                                <rect key="frame" x="20" y="352" width="280" height="30"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Name" placeholder="Name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="r1x-AE-QXL">
+                                <rect key="frame" x="20" y="91" width="280" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Set Time">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <textInputTraits key="textInputTraits"/>
                                 <connections>
-                                    <action selector="setTime:" destination="H6e-73-opa" eventType="touchUpInside" id="kqE-Cg-tsP"/>
+                                    <action selector="beginEditingName:" destination="H6e-73-opa" eventType="editingDidBegin" id="Ats-nc-duv"/>
+                                    <action selector="doneName:" destination="H6e-73-opa" eventType="editingDidEndOnExit" id="Wh5-NV-Zlc"/>
+                                    <action selector="endEditingName:" destination="H6e-73-opa" eventType="editingDidEnd" id="8Ij-zl-Qgs"/>
                                 </connections>
-                            </button>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Overview" id="VPj-j3-N09"/>
+                    <tabBarItem key="tabBarItem" title="Overview" image="overview" id="VPj-j3-N09"/>
                     <connections>
                         <outlet property="bootRevisionLabel" destination="nwW-LB-g5b" id="JOR-9D-Lpl"/>
                         <outlet property="debugLockLabel" destination="nKy-JI-ax5" id="dj2-Xk-P0M"/>
                         <outlet property="firmwareRevisionLabel" destination="bLM-Ou-ovD" id="bd0-bA-QTd"/>
                         <outlet property="hardwareIdLabel" destination="mNp-5v-WoP" id="ObN-pW-qw6"/>
                         <outlet property="hardwareRevisionLabel" destination="P8N-Ww-VO2" id="rFd-Zr-rIT"/>
-                        <outlet property="setTimeButton" destination="ttI-eg-R2O" id="VLq-9j-nRi"/>
-                        <outlet property="timeLabel" destination="bem-NK-b8z" id="16s-WV-WIO"/>
+                        <outlet property="nameTextField" destination="r1x-AE-QXL" id="EIG-As-9Pa"/>
                         <outlet property="updateButton" destination="fRX-gr-Syb" id="xfe-Y6-jbM"/>
                         <outlet property="vendorAndProductLabel" destination="7T2-HW-pv1" id="qqt-Bz-iL9"/>
                     </connections>
@@ -228,7 +221,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Update" id="VsA-9l-XJ3"/>
+                    <tabBarItem key="tabBarItem" title="Update" image="update" id="VsA-9l-XJ3"/>
                     <connections>
                         <outlet property="currentHashLabel" destination="0dX-re-aut" id="Oav-LJ-pXa"/>
                         <outlet property="currentVersionLabel" destination="pnC-nr-iLt" id="7pc-Z3-8SW"/>
@@ -256,7 +249,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zpt-Rq-m0u">
-                                <rect key="frame" x="20" y="179" width="280" height="30"/>
+                                <rect key="frame" x="20" y="386" width="280" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Reset Device">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -266,7 +259,7 @@
                                 </connections>
                             </button>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Gop-gF-mqw">
-                                <rect key="frame" x="20" y="143" width="280" height="29"/>
+                                <rect key="frame" x="20" y="350" width="280" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
                                     <segment title="System"/>
@@ -287,24 +280,13 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dLu-Yk-OFE">
-                                <rect key="frame" x="20" y="390" width="280" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Enter Storage Mode">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="enterStorageMode:" destination="aeF-lo-CMk" eventType="touchUpInside" id="kRb-44-R3Z"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Reset" id="JXv-kE-QKX"/>
+                    <tabBarItem key="tabBarItem" title="Reset" image="reset" id="JXv-kE-QKX"/>
                     <connections>
                         <outlet property="causeLabel" destination="8yj-vp-M7n" id="syh-e2-DbB"/>
                         <outlet property="dateLabel" destination="Wwh-vD-tm6" id="6VH-zz-Sej"/>
-                        <outlet property="modeButton" destination="dLu-Yk-OFE" id="jMe-sL-5Ek"/>
                         <outlet property="resetButton" destination="zpt-Rq-m0u" id="j9h-AK-C6M"/>
                         <outlet property="typeSegmentedControl" destination="Gop-gF-mqw" id="Uhq-Eu-vyS"/>
                     </connections>
@@ -339,10 +321,12 @@
                         <segue destination="H6e-73-opa" kind="relationship" relationship="viewControllers" id="rr9-xW-eDG"/>
                         <segue destination="kyd-5z-OCi" kind="relationship" relationship="viewControllers" id="mWX-s1-5Xx"/>
                         <segue destination="axe-DP-ghq" kind="relationship" relationship="viewControllers" id="5JL-dS-HQl"/>
+                        <segue destination="6gt-1V-ccn" kind="relationship" relationship="viewControllers" id="bP8-1k-b2O"/>
                         <segue destination="RoO-Sw-bDg" kind="relationship" relationship="viewControllers" id="Jy9-If-POX"/>
                         <segue destination="aeF-lo-CMk" kind="relationship" relationship="viewControllers" id="5ad-B8-oTp"/>
-                        <segue destination="dxJ-83-JeV" kind="relationship" relationship="viewControllers" id="6qT-Pg-1bU"/>
                         <segue destination="biG-54-DJ6" kind="relationship" relationship="viewControllers" id="CFT-jC-Nen"/>
+                        <segue destination="lya-Le-UHt" kind="relationship" relationship="viewControllers" id="19o-0A-hwB"/>
+                        <segue destination="dxJ-83-JeV" kind="relationship" relationship="viewControllers" id="6qT-Pg-1bU"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PCZ-Kr-zpD" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -384,7 +368,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Radio" id="OIs-l4-1pE"/>
+                    <tabBarItem key="tabBarItem" title="Radio" image="radio" id="OIs-l4-1pE"/>
                     <connections>
                         <outlet property="setTxPowerButton" destination="vND-b6-DBj" id="dEK-oA-Vhn"/>
                         <outlet property="txPowerLevel" destination="qmV-8V-LRb" id="nVo-Oc-D6c"/>
@@ -393,6 +377,82 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KOC-Du-cnI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1467" y="1000"/>
+        </scene>
+        <!--Detail Time View Controller - Time-->
+        <scene sceneID="pG2-Ov-YkR">
+            <objects>
+                <viewController id="6gt-1V-ccn" customClass="FDDetailTimeViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="M4M-KW-7V2"/>
+                        <viewControllerLayoutGuide type="bottom" id="PTn-dc-sKs"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="3Dg-U7-w1g">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gRW-ka-azw">
+                                <rect key="frame" x="20" y="229" width="280" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jo1-fe-fyr">
+                                <rect key="frame" x="20" y="378" width="280" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Set Time">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="setTime:" destination="6gt-1V-ccn" eventType="touchUpInside" id="nN2-Tq-v7T"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Time" image="time" id="AP2-yH-IXM"/>
+                    <connections>
+                        <outlet property="setTimeButton" destination="jo1-fe-fyr" id="vth-Yv-jYR"/>
+                        <outlet property="timeLabel" destination="gRW-ka-azw" id="8lO-Bl-ghK"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yvi-vA-fib" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1928" y="1000"/>
+        </scene>
+        <!--Detail Mode View Controller - Mode-->
+        <scene sceneID="tbO-15-ysy">
+            <objects>
+                <viewController id="lya-Le-UHt" customClass="FDDetailModeViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="gst-j6-4VO"/>
+                        <viewControllerLayoutGuide type="bottom" id="gfs-IM-qJo"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="NUS-es-t5w">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jfs-Kc-dZe">
+                                <rect key="frame" x="20" y="382" width="280" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Enter Storage Mode">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="enterStorageMode:" destination="lya-Le-UHt" eventType="touchUpInside" id="MC2-Tg-Hbw"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Mode" image="mode" id="07V-EF-0Rn"/>
+                    <connections>
+                        <outlet property="modeButton" destination="Jfs-Kc-dZe" id="tdo-Rn-hAz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1K4-uj-7mk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2346" y="1000"/>
         </scene>
         <!--Detail Radio Direct Test Mode View Controller - DTM-->
         <scene sceneID="vC8-8S-MVy">
@@ -488,7 +548,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="DTM" id="CIV-ND-4ic"/>
+                    <tabBarItem key="tabBarItem" title="DTM" image="dtm" id="CIV-ND-4ic"/>
                     <connections>
                         <outlet property="duration" destination="Unh-sI-ggA" id="CZh-Vf-oFX"/>
                         <outlet property="durationLabel" destination="rwv-p1-LTA" id="RZ4-AK-B5d"/>
@@ -554,7 +614,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="rIC-EI-mEB">
+                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.083333000000000004" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="rIC-EI-mEB">
                                 <rect key="frame" x="18" y="338" width="284" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
@@ -567,7 +627,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="60 seconds" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="slZ-VL-cNf">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="5 seconds" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="slZ-VL-cNf">
                                 <rect key="frame" x="96" y="309" width="204" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -646,7 +706,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="LEDs" id="fET-uv-VbB"/>
+                    <tabBarItem key="tabBarItem" title="LEDs" image="indicators" id="fET-uv-VbB"/>
                     <connections>
                         <outlet property="d0Button" destination="X4E-qi-yWk" id="Xgn-2p-hU2"/>
                         <outlet property="d1Button" destination="PeE-Lz-PzG" id="KD6-gm-op3"/>
@@ -703,7 +763,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Power" id="xba-EJ-eS9"/>
+                    <tabBarItem key="tabBarItem" title="Power" image="power" id="xba-EJ-eS9"/>
                     <connections>
                         <outlet property="batteryView" destination="sO8-gP-kmX" id="11B-AH-56E"/>
                         <outlet property="temperatureLabel" destination="M18-z8-7Pw" id="K7V-PS-X74"/>
@@ -716,6 +776,17 @@
             <point key="canvasLocation" x="2346" y="390"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="dtm" width="16" height="16"/>
+        <image name="indicators" width="16" height="16"/>
+        <image name="mode" width="16" height="16"/>
+        <image name="overview" width="16" height="16"/>
+        <image name="power" width="16" height="16"/>
+        <image name="radio" width="16" height="16"/>
+        <image name="reset" width="16" height="16"/>
+        <image name="time" width="16" height="16"/>
+        <image name="update" width="16" height="16"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

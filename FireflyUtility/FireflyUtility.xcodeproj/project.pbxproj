@@ -8,6 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		9212D25A180B3F2D00576B41 /* FireflyIce.hex in Resources */ = {isa = PBXBuildFile; fileRef = 9212D259180B3F2D00576B41 /* FireflyIce.hex */; };
+		921E693318A83A8600E90E5B /* update.png in Resources */ = {isa = PBXBuildFile; fileRef = 921E693118A83A8600E90E5B /* update.png */; };
+		921E693418A83A8600E90E5B /* update@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 921E693218A83A8600E90E5B /* update@2x.png */; };
+		921E693718A83B2200E90E5B /* mode.png in Resources */ = {isa = PBXBuildFile; fileRef = 921E693518A83B2200E90E5B /* mode.png */; };
+		921E693818A83B2200E90E5B /* mode@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 921E693618A83B2200E90E5B /* mode@2x.png */; };
+		921E693B18A83BC100E90E5B /* radio.png in Resources */ = {isa = PBXBuildFile; fileRef = 921E693918A83BC100E90E5B /* radio.png */; };
+		921E693C18A83BC100E90E5B /* radio@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 921E693A18A83BC100E90E5B /* radio@2x.png */; };
+		921E694718A83D5F00E90E5B /* dtm.png in Resources */ = {isa = PBXBuildFile; fileRef = 921E693D18A83D5F00E90E5B /* dtm.png */; };
+		921E694818A83D5F00E90E5B /* dtm@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 921E693E18A83D5F00E90E5B /* dtm@2x.png */; };
+		921E694918A83D5F00E90E5B /* indicators.png in Resources */ = {isa = PBXBuildFile; fileRef = 921E693F18A83D5F00E90E5B /* indicators.png */; };
+		921E694A18A83D5F00E90E5B /* indicators@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 921E694018A83D5F00E90E5B /* indicators@2x.png */; };
+		921E694B18A83D5F00E90E5B /* power.png in Resources */ = {isa = PBXBuildFile; fileRef = 921E694118A83D5F00E90E5B /* power.png */; };
+		921E694C18A83D5F00E90E5B /* power@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 921E694218A83D5F00E90E5B /* power@2x.png */; };
+		921E694D18A83D5F00E90E5B /* reset.png in Resources */ = {isa = PBXBuildFile; fileRef = 921E694318A83D5F00E90E5B /* reset.png */; };
+		921E694E18A83D5F00E90E5B /* reset@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 921E694418A83D5F00E90E5B /* reset@2x.png */; };
+		921E694F18A83D5F00E90E5B /* time.png in Resources */ = {isa = PBXBuildFile; fileRef = 921E694518A83D5F00E90E5B /* time.png */; };
+		921E695018A83D5F00E90E5B /* time@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 921E694618A83D5F00E90E5B /* time@2x.png */; };
+		921E695318A84CB300E90E5B /* overview.png in Resources */ = {isa = PBXBuildFile; fileRef = 921E695118A84CB300E90E5B /* overview.png */; };
+		921E695418A84CB300E90E5B /* overview@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 921E695218A84CB300E90E5B /* overview@2x.png */; };
 		923C344518972DB20068863D /* FDBatteryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 923C344318972DB20068863D /* FDBatteryView.m */; };
 		923C3454189733880068863D /* battery.png in Resources */ = {isa = PBXBuildFile; fileRef = 923C344C189733880068863D /* battery.png */; };
 		923C3455189733880068863D /* battery@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 923C344D189733880068863D /* battery@2x.png */; };
@@ -54,6 +72,8 @@
 		929CD2DC17F7BC54004CE8ED /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 929CD2DB17F7BC54004CE8ED /* libz.dylib */; };
 		92BE68A018A58D0600364A56 /* FDDetailRadioViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92BE689F18A58D0600364A56 /* FDDetailRadioViewController.m */; };
 		92DF2E4D18A6B6F10084B306 /* FDColorGamutControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 92DF2E4C18A6B6F10084B306 /* FDColorGamutControl.m */; };
+		92EAB18718A7F8FA00613447 /* FDDetailTimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92EAB18618A7F8FA00613447 /* FDDetailTimeViewController.m */; };
+		92EAB18D18A7F91500613447 /* FDDetailModeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92EAB18C18A7F91500613447 /* FDDetailModeViewController.m */; };
 		92EF7AB018A7208D002A21FF /* FDColorButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 92EF7AAF18A7208D002A21FF /* FDColorButton.m */; };
 		92F863F817F3C38D000E23AF /* FDFireflyIceCollector.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F863F717F3C38D000E23AF /* FDFireflyIceCollector.m */; };
 /* End PBXBuildFile section */
@@ -105,6 +125,24 @@
 
 /* Begin PBXFileReference section */
 		9212D259180B3F2D00576B41 /* FireflyIce.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = FireflyIce.hex; path = ../../FireflyDevice/FireflyDevice/FireflyIce.hex; sourceTree = "<group>"; };
+		921E693118A83A8600E90E5B /* update.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = update.png; sourceTree = "<group>"; };
+		921E693218A83A8600E90E5B /* update@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "update@2x.png"; sourceTree = "<group>"; };
+		921E693518A83B2200E90E5B /* mode.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mode.png; sourceTree = "<group>"; };
+		921E693618A83B2200E90E5B /* mode@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mode@2x.png"; sourceTree = "<group>"; };
+		921E693918A83BC100E90E5B /* radio.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = radio.png; sourceTree = "<group>"; };
+		921E693A18A83BC100E90E5B /* radio@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "radio@2x.png"; sourceTree = "<group>"; };
+		921E693D18A83D5F00E90E5B /* dtm.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dtm.png; sourceTree = "<group>"; };
+		921E693E18A83D5F00E90E5B /* dtm@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dtm@2x.png"; sourceTree = "<group>"; };
+		921E693F18A83D5F00E90E5B /* indicators.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = indicators.png; sourceTree = "<group>"; };
+		921E694018A83D5F00E90E5B /* indicators@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "indicators@2x.png"; sourceTree = "<group>"; };
+		921E694118A83D5F00E90E5B /* power.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = power.png; sourceTree = "<group>"; };
+		921E694218A83D5F00E90E5B /* power@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "power@2x.png"; sourceTree = "<group>"; };
+		921E694318A83D5F00E90E5B /* reset.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = reset.png; sourceTree = "<group>"; };
+		921E694418A83D5F00E90E5B /* reset@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reset@2x.png"; sourceTree = "<group>"; };
+		921E694518A83D5F00E90E5B /* time.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = time.png; sourceTree = "<group>"; };
+		921E694618A83D5F00E90E5B /* time@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "time@2x.png"; sourceTree = "<group>"; };
+		921E695118A84CB300E90E5B /* overview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = overview.png; sourceTree = "<group>"; };
+		921E695218A84CB300E90E5B /* overview@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "overview@2x.png"; sourceTree = "<group>"; };
 		923C344318972DB20068863D /* FDBatteryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDBatteryView.m; sourceTree = "<group>"; };
 		923C344418972DB20068863D /* FDBatteryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDBatteryView.h; sourceTree = "<group>"; };
 		923C344C189733880068863D /* battery.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = battery.png; sourceTree = "<group>"; };
@@ -174,6 +212,10 @@
 		92BE689F18A58D0600364A56 /* FDDetailRadioViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDetailRadioViewController.m; sourceTree = "<group>"; };
 		92DF2E4B18A6B6F10084B306 /* FDColorGamutControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDColorGamutControl.h; sourceTree = "<group>"; };
 		92DF2E4C18A6B6F10084B306 /* FDColorGamutControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDColorGamutControl.m; sourceTree = "<group>"; };
+		92EAB18518A7F8FA00613447 /* FDDetailTimeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDDetailTimeViewController.h; sourceTree = "<group>"; };
+		92EAB18618A7F8FA00613447 /* FDDetailTimeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDetailTimeViewController.m; sourceTree = "<group>"; };
+		92EAB18B18A7F91500613447 /* FDDetailModeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDDetailModeViewController.h; sourceTree = "<group>"; };
+		92EAB18C18A7F91500613447 /* FDDetailModeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDetailModeViewController.m; sourceTree = "<group>"; };
 		92EF7AAE18A7208D002A21FF /* FDColorButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDColorButton.h; sourceTree = "<group>"; };
 		92EF7AAF18A7208D002A21FF /* FDColorButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDColorButton.m; sourceTree = "<group>"; };
 		92F863F617F3C38D000E23AF /* FDFireflyIceCollector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFireflyIceCollector.h; sourceTree = "<group>"; };
@@ -208,6 +250,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		921E691B18A838B700E90E5B /* Detail View Icons */ = {
+			isa = PBXGroup;
+			children = (
+				921E695118A84CB300E90E5B /* overview.png */,
+				921E695218A84CB300E90E5B /* overview@2x.png */,
+				921E693D18A83D5F00E90E5B /* dtm.png */,
+				921E693E18A83D5F00E90E5B /* dtm@2x.png */,
+				921E693F18A83D5F00E90E5B /* indicators.png */,
+				921E694018A83D5F00E90E5B /* indicators@2x.png */,
+				921E694118A83D5F00E90E5B /* power.png */,
+				921E694218A83D5F00E90E5B /* power@2x.png */,
+				921E694318A83D5F00E90E5B /* reset.png */,
+				921E694418A83D5F00E90E5B /* reset@2x.png */,
+				921E694518A83D5F00E90E5B /* time.png */,
+				921E694618A83D5F00E90E5B /* time@2x.png */,
+				921E693918A83BC100E90E5B /* radio.png */,
+				921E693A18A83BC100E90E5B /* radio@2x.png */,
+				921E693518A83B2200E90E5B /* mode.png */,
+				921E693618A83B2200E90E5B /* mode@2x.png */,
+				921E693118A83A8600E90E5B /* update.png */,
+				921E693218A83A8600E90E5B /* update@2x.png */,
+			);
+			name = "Detail View Icons";
+			sourceTree = "<group>";
+		};
 		92841A7B17EDF63D005C0E18 = {
 			isa = PBXGroup;
 			children = (
@@ -257,6 +324,9 @@
 				92841AA017EDF63D005C0E18 /* FDMasterViewController.m */,
 				92841AA217EDF63D005C0E18 /* FDDetailViewController.h */,
 				92841AA317EDF63D005C0E18 /* FDDetailViewController.m */,
+				928BF64617F2818000370B91 /* FDDetailTabBarController.h */,
+				928BF64717F2818000370B91 /* FDDetailTabBarController.m */,
+				921E691B18A838B700E90E5B /* Detail View Icons */,
 				92949D5018A5E79600FD815F /* Detail Views */,
 				92949D4F18A5E77500FD815F /* Color Picker */,
 				92EF7AAD18A70C73002A21FF /* Battery View */,
@@ -346,10 +416,12 @@
 				929CA42D17F0F30600A4A992 /* FDDetailUpdateViewController.m */,
 				929CA43417F1242F00A4A992 /* FDDetailResetViewController.h */,
 				929CA43517F1242F00A4A992 /* FDDetailResetViewController.m */,
-				928BF64617F2818000370B91 /* FDDetailTabBarController.h */,
-				928BF64717F2818000370B91 /* FDDetailTabBarController.m */,
 				923C345C18973CFD0068863D /* FDDetailPowerViewController.h */,
 				923C345D18973CFD0068863D /* FDDetailPowerViewController.m */,
+				92EAB18518A7F8FA00613447 /* FDDetailTimeViewController.h */,
+				92EAB18618A7F8FA00613447 /* FDDetailTimeViewController.m */,
+				92EAB18B18A7F91500613447 /* FDDetailModeViewController.h */,
+				92EAB18C18A7F91500613447 /* FDDetailModeViewController.m */,
 			);
 			name = "Detail Views";
 			sourceTree = "<group>";
@@ -490,19 +562,37 @@
 			buildActionMask = 2147483647;
 			files = (
 				9212D25A180B3F2D00576B41 /* FireflyIce.hex in Resources */,
+				921E694D18A83D5F00E90E5B /* reset.png in Resources */,
+				921E694B18A83D5F00E90E5B /* power.png in Resources */,
+				921E695418A84CB300E90E5B /* overview@2x.png in Resources */,
 				923C3454189733880068863D /* battery.png in Resources */,
 				923C3455189733880068863D /* battery@2x.png in Resources */,
+				921E693718A83B2200E90E5B /* mode.png in Resources */,
 				92841A9E17EDF63D005C0E18 /* Main_iPad.storyboard in Resources */,
+				921E693318A83A8600E90E5B /* update.png in Resources */,
+				921E694E18A83D5F00E90E5B /* reset@2x.png in Resources */,
 				92949D3918A5CAE400FD815F /* FDColorPicker_iPhone.xib in Resources */,
+				921E693B18A83BC100E90E5B /* radio.png in Resources */,
+				921E693C18A83BC100E90E5B /* radio@2x.png in Resources */,
+				921E694C18A83D5F00E90E5B /* power@2x.png in Resources */,
 				92841AA617EDF63D005C0E18 /* Images.xcassets in Resources */,
 				923C3456189733880068863D /* green_fuel.png in Resources */,
 				923C3459189733880068863D /* orange_fuel@2x.png in Resources */,
 				923C345B189733880068863D /* red_fuel@2x.png in Resources */,
+				921E693818A83B2200E90E5B /* mode@2x.png in Resources */,
 				92841A9B17EDF63D005C0E18 /* Main_iPhone.storyboard in Resources */,
 				923C3458189733880068863D /* orange_fuel.png in Resources */,
 				923C345A189733880068863D /* red_fuel.png in Resources */,
+				921E693418A83A8600E90E5B /* update@2x.png in Resources */,
+				921E694718A83D5F00E90E5B /* dtm.png in Resources */,
 				923C3457189733880068863D /* green_fuel@2x.png in Resources */,
+				921E694818A83D5F00E90E5B /* dtm@2x.png in Resources */,
+				921E695318A84CB300E90E5B /* overview.png in Resources */,
+				921E694918A83D5F00E90E5B /* indicators.png in Resources */,
+				921E694A18A83D5F00E90E5B /* indicators@2x.png in Resources */,
 				92841A9217EDF63D005C0E18 /* InfoPlist.strings in Resources */,
+				921E694F18A83D5F00E90E5B /* time.png in Resources */,
+				921E695018A83D5F00E90E5B /* time@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -523,6 +613,7 @@
 			files = (
 				929CA42E17F0F30600A4A992 /* FDDetailUpdateViewController.m in Sources */,
 				92949D4518A5D7D100FD815F /* FDColorGamutView.m in Sources */,
+				92EAB18718A7F8FA00613447 /* FDDetailTimeViewController.m in Sources */,
 				923C344518972DB20068863D /* FDBatteryView.m in Sources */,
 				929CA42B17F0F01A00A4A992 /* FDUpdateView.m in Sources */,
 				92841AA117EDF63D005C0E18 /* FDMasterViewController.m in Sources */,
@@ -537,6 +628,7 @@
 				92949D5318A5E80600FD815F /* FDColorSpectrumControl.m in Sources */,
 				929CA43617F1242F00A4A992 /* FDDetailResetViewController.m in Sources */,
 				92F863F817F3C38D000E23AF /* FDFireflyIceCollector.m in Sources */,
+				92EAB18D18A7F91500613447 /* FDDetailModeViewController.m in Sources */,
 				923C345E18973CFD0068863D /* FDDetailPowerViewController.m in Sources */,
 				92EF7AB018A7208D002A21FF /* FDColorButton.m in Sources */,
 				929CA40F17F0AD3400A4A992 /* FDDetailOverviewViewController.m in Sources */,

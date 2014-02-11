@@ -13,6 +13,7 @@
 
 #import <FireflyDevice/FDFireflyIce.h>
 #import <FireflyDevice/FDFireflyIceChannelBLE.h>
+#import <FireflyDevice/FDFireflyIceCoder.h>
 #import <FireflyDevice/FDFireflyIceManager.h>
 
 #if TARGET_OS_IPHONE
@@ -43,6 +44,78 @@
     [super awakeFromNib];
 }
 
+- (NSMutableDictionary *)makeFakeDevice
+{
+    FDFireflyIce *fireflyIce = [[FDFireflyIce alloc] init];
+    fireflyIce.name = @"test dummy";
+
+    FDFireflyIceCollector *collector = [[FDFireflyIceCollector alloc] init];
+    collector.fireflyIce = fireflyIce;
+    
+    FDFireflyIceVersion *version = [[FDFireflyIceVersion alloc] init];
+    version.major = 1;
+    version.minor = 0;
+    version.patch = 10;
+    version.capabilities = FD_CONTROL_CAPABILITY_LOCK |
+        FD_CONTROL_CAPABILITY_BOOT_VERSION |
+        FD_CONTROL_CAPABILITY_SYNC_FLAGS |
+        FD_CONTROL_CAPABILITY_SYNC_AHEAD |
+        FD_CONTROL_CAPABILITY_IDENTIFY |
+        FD_CONTROL_CAPABILITY_LOGGING |
+        FD_CONTROL_CAPABILITY_DIAGNOSTICS;
+    [collector setEntry:@"version" object:version];
+    
+    FDFireflyIceVersion *bootVersion = [[FDFireflyIceVersion alloc] init];
+    bootVersion.major = 1;
+    bootVersion.minor = 2;
+    bootVersion.patch = 3;
+    [collector setEntry:@"bootVersion" object:bootVersion];
+    
+    FDFireflyIceHardwareId *hardwareId = [[FDFireflyIceHardwareId alloc] init];
+    hardwareId.vendor = 0x2333;
+    hardwareId.product = 0x0002;
+    hardwareId.major = 1;
+    hardwareId.minor = 3;
+    uint8_t bytes[8] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
+    hardwareId.unique = [NSData dataWithBytes:bytes length:sizeof(bytes)];
+    [collector setEntry:@"hardwareId" object:hardwareId];
+    
+    [collector setEntry:@"debugLock" object:[NSNumber numberWithBool:NO]];
+    
+    [collector setEntry:@"time" object:[NSDate dateWithTimeIntervalSinceNow:-1.2]];
+    
+    FDFireflyIcePower *power = [[FDFireflyIcePower alloc] init];
+    power.batteryLevel = 0.87;
+    power.batteryVoltage = 4.05;
+    power.isUSBPowered = YES;
+    power.isCharging = YES;
+    power.chargeCurrent = 0.017;
+    power.temperature = 19.8;
+    [collector setEntry:@"power" object:power];
+    
+    FDFireflyIceReset *reset = [[FDFireflyIceReset alloc] init];
+    reset.cause = 64;
+    reset.date = [NSDate dateWithTimeIntervalSinceNow:-7 * 24 * 60 *60];
+    [collector setEntry:@"reset" object:reset];
+    
+    FDFireflyIceStorage *storage = [[FDFireflyIceStorage alloc] init];
+    storage.pageCount = 0;
+    [collector setEntry:@"storage" object:storage];
+    
+    [collector setEntry:@"txPower" object:[NSNumber numberWithInt:2]];
+    
+    FDFireflyIceDirectTestModeReport *report = [[FDFireflyIceDirectTestModeReport alloc] init];
+    report.packetCount = 0x8000 | 1081;
+    [collector setEntry:@"directTestModeReport" object:report];
+    
+    /*
+    @"fireflyIce:channel:site:",
+    @"fireflyIce:channel:sensing:",
+    */
+    
+    return [NSMutableDictionary dictionaryWithDictionary:@{@"fireflyIce":fireflyIce, @"collector":collector}];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -50,9 +123,8 @@
     _fireflyIceManager = [FDFireflyIceManager managerWithDelegate:self];
     _devices = [NSMutableArray array];
     
-    FDFireflyIce *fireflyIce = [[FDFireflyIce alloc] init];
-    fireflyIce.name = @"test dummy";
-    [_devices addObject:@{@"fireflyIce":fireflyIce}];
+    // !!! just for testing -denis
+    [_devices addObject:[self makeFakeDevice]];
 }
 
 - (FDFireflyIce *)getFireflyIceByPeripheral:(CBPeripheral *)peripheral
@@ -144,6 +216,7 @@
     UIBarButtonItem *connect = self.tabBarController.navigationItem.rightBarButtonItem;
     UIButton *connectButton = (UIButton *)connect.customView;
     [connectButton setTitle:title forState:UIControlStateNormal];
+    [connectButton setEnabled:channel != nil];
 }
 
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel status:(FDFireflyIceChannelStatus)status
@@ -239,6 +312,7 @@
 {
     FDDetailViewController *detailViewController = [self selectedDetailViewController];
     detailViewController.device = _device;
+    [detailViewController configureView];
     NSLog(@"configure %@", NSStringFromClass([detailViewController class]));
 }
 

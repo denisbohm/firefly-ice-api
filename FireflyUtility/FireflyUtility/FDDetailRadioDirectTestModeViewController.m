@@ -37,7 +37,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.buttons addObject:_testButton];
+    
+    [self.controls addObject:_testButton];
 }
 
 - (void)configureView

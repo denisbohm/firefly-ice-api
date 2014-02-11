@@ -24,7 +24,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.buttons addObject:_setTxPowerButton];
+    
+    [self.controls addObject:_setTxPowerButton];
 }
 
 - (void)configureView

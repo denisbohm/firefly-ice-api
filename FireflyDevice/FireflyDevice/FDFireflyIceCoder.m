@@ -216,6 +216,15 @@
     [_observable fireflyIce:fireflyIce channel:channel logging:logging];
 }
 
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel getPropertyName:(FDBinary *)binary
+{
+    uint8_t length = [binary getUInt8];
+    NSData *data = [binary getData:length];
+    NSString *name = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    
+    [_observable fireflyIce:fireflyIce channel:channel name:name];
+}
+
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel getProperties:(NSData *)data
 {
     FDBinary *binary = [[FDBinary alloc] initWithData:data];
@@ -256,6 +265,9 @@
     if (properties & FD_CONTROL_PROPERTY_LOGGING) {
         [self fireflyIce:fireflyIce channel:channel getPropertyLogging:binary];
     }
+    if (properties & FD_CONTROL_PROPERTY_NAME) {
+        [self fireflyIce:fireflyIce channel:channel getPropertyName:binary];
+    }
 }
 
 - (void)sendSetPropertyTime:(id<FDFireflyIceChannel>)channel time:(NSDate *)time
@@ -292,6 +304,17 @@
     [binary putUInt32:FD_CONTROL_PROPERTY_LOGGING];
     [binary putUInt32:FD_CONTROL_LOGGING_STATE];
     [binary putUInt32:FD_CONTROL_LOGGING_STORAGE];
+    [channel fireflyIceChannelSend:binary.dataValue];
+}
+
+- (void)sendSetPropertyName:(id<FDFireflyIceChannel>)channel name:(NSString *)name
+{
+    FDBinary *binary = [[FDBinary alloc] init];
+    [binary putUInt8:FD_CONTROL_SET_PROPERTIES];
+    [binary putUInt32:FD_CONTROL_PROPERTY_NAME];
+    NSData *data = [name dataUsingEncoding:NSUTF8StringEncoding];
+    [binary putUInt8:data.length];
+    [binary putData:data];
     [channel fireflyIceChannelSend:binary.dataValue];
 }
 
