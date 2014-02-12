@@ -18,9 +18,15 @@
 
 @end
 
+@class FDIntelHex;
+
 @interface FDFirmwareUpdateTask : FDFireflyIceTaskSteps
 
 + (FDFirmwareUpdateTask *)firmwareUpdateTask:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel firmware:(NSData *)firmware;
+
++ (FDIntelHex *)loadFirmware:(NSString *)resource;
+
++ (FDFirmwareUpdateTask *)firmwareUpdateTask:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel intelHex:(FDIntelHex *)intelHex;
 
 + (FDFirmwareUpdateTask *)firmwareUpdateTask:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel resource:(NSString *)resource;
 

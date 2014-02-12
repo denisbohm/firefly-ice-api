@@ -18,15 +18,15 @@
 @interface FDDetailUpdateViewController () <FDFirmwareUpdateTaskDelegate>
 
 @property IBOutlet UILabel *currentVersionLabel;
-@property IBOutlet UILabel *currentHashLabel;
 
 @property IBOutlet UILabel *deviceVersionLabel;
-@property IBOutlet UILabel *deviceHashLabel;
 
 @property IBOutlet UIProgressView *progressView;
 @property IBOutlet FDUpdateView *updateView;
 
 @property IBOutlet UIButton *updateButton;
+
+@property FDIntelHex *intelHex;
 
 @end
 
@@ -37,6 +37,16 @@
     [super viewDidLoad];
     
     [self.controls addObject:_updateButton];
+    
+    _intelHex = [FDFirmwareUpdateTask loadFirmware:@"FireflyIce"];
+    _currentVersionLabel.text = [NSString stringWithFormat:@"Latest firmware is %@.%@.%@", _intelHex.properties[@"major"] , _intelHex.properties[@"minor"], _intelHex.properties[@"patch"]];
+}
+
+- (void)configureView
+{
+    FDFireflyIceCollector *collector = self.device[@"collector"];
+    FDFireflyIceVersion *version = [collector objectForKey:@"version"];
+    _deviceVersionLabel.text = [NSString stringWithFormat:@"Device firmware is %d.%d.%d", version.major, version.minor, version.patch];
 }
 
 - (void)firmwareUpdateTask:(FDFirmwareUpdateTask *)task progress:(float)progress
@@ -51,24 +61,6 @@
     _progressView.hidden = YES;
 }
 
-- (NSString *)loadFirmware:(NSString *)name type:(NSString *)type
-{
-    NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:name ofType:@"hex"];
-    return [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
-}
-
-/*
-- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel externalHash:(NSData *)externalHash
-{
-    NSLog(@"external hash %@", externalHash);
-}
-
-- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel pageData:(NSData *)pageData
-{
-    NSLog(@"page data %@", pageData);
-}
-*/
-
 - (IBAction)startFirmwareUpdate:(id)sender
 {
     _progressView.progress = 0;
@@ -77,16 +69,11 @@
     FDFireflyIce *fireflyIce = self.device[@"fireflyIce"];
     id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
     
-    FDFirmwareUpdateTask *task = [FDFirmwareUpdateTask firmwareUpdateTask:fireflyIce channel:channel resource:@"FireflyIce"];
+    FDFirmwareUpdateTask *task = [FDFirmwareUpdateTask firmwareUpdateTask:fireflyIce channel:channel intelHex:_intelHex];
     task.delegate = self;
     _updateView.firmwareUpdateTask = task;
     [_updateView setNeedsDisplay];
     [fireflyIce.executor execute:task];
-    /*
-    uint32_t length = task.firmware.length;
-    NSLog(@"%u expect hash %@", length, [FDCrypto sha1:[task.firmware subdataWithRange:NSMakeRange(0, length)]]);
-    [fireflyIce.coder sendUpdateGetExternalHash:channel address:0 length:length]; // task.firmware.length];
-     */
 }
 
 @end

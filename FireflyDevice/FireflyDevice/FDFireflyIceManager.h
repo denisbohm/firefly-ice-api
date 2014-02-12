@@ -25,6 +25,8 @@
 
 @optional
 
+- (void)fireflyIceManager:(FDFireflyIceManager *)manager advertisementDataHasChanged:(FDFireflyIce *)fireflyIce;
+
 - (void)fireflyIceManager:(FDFireflyIceManager *)manager openedBLE:(FDFireflyIce *)fireflyIce;
 - (void)fireflyIceManager:(FDFireflyIceManager *)manager closedBLE:(FDFireflyIce *)fireflyIce;
 

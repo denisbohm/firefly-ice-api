@@ -107,7 +107,7 @@
 
 - (void)centralManagerPoweredOn
 {
-    [self scan:NO];
+    [self scan:YES];
 }
 
 - (void)centralManagerDidUpdateState:(CBCentralManager *)central
@@ -157,6 +157,15 @@
     
     NSMutableDictionary *dictionary = [self dictionaryForPeripheral:peripheral];
     if (dictionary != nil) {
+        NSDictionary *previousAdvertisementData = dictionary[@"advertisementData"];
+        if (![advertisementData isEqualToDictionary:previousAdvertisementData]) {
+            [dictionary setObject:advertisementData forKey:@"advertisementData"];
+            FDFireflyIce *fireflyIce = dictionary[@"fireflyIce"];
+            fireflyIce.name = [self nameForPeripheral:peripheral advertisementData:advertisementData];
+            if ([_delegate respondsToSelector:@selector(fireflyIceManager:advertisementDataHasChanged:)]) {
+                [_delegate fireflyIceManager:self advertisementDataHasChanged:fireflyIce];
+            }
+        }
         return;
     }
     
@@ -169,6 +178,7 @@
     channel.RSSI = [FDFireflyIceChannelBLERSSI RSSI:[RSSI floatValue]];
     [fireflyIce addChannel:channel type:@"BLE"];
     dictionary = [NSMutableDictionary dictionary];
+    [dictionary setObject:advertisementData forKey:@"advertisementData"];
     [dictionary setObject:peripheral forKey:@"peripheral"];
     [dictionary setObject:fireflyIce forKey:@"fireflyIce"];
     [_dictionaries insertObject:dictionary atIndex:0];

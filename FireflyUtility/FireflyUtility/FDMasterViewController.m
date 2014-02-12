@@ -47,10 +47,12 @@
 - (NSMutableDictionary *)makeFakeDevice
 {
     FDFireflyIce *fireflyIce = [[FDFireflyIce alloc] init];
-    fireflyIce.name = @"test dummy";
+    fireflyIce.name = @"Firefly 43216789-BC01-F900";
 
     FDFireflyIceCollector *collector = [[FDFireflyIceCollector alloc] init];
     collector.fireflyIce = fireflyIce;
+    
+    [collector setEntry:@"name" object:@"Firefly"];
     
     FDFireflyIceVersion *version = [[FDFireflyIceVersion alloc] init];
     version.major = 1;
@@ -151,6 +153,25 @@
     [_devices insertObject:dictionary atIndex:0];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+- (NSIndexPath *)indexPathForFireflyIce:(FDFireflyIce *)fireflyIce
+{
+    for (NSUInteger i = 0; i < _devices.count; ++i) {
+        NSDictionary *dictionary = _devices[i];
+        if (dictionary[@"fireflyIce"] == fireflyIce) {
+            return [NSIndexPath indexPathForRow:i inSection:0];
+        }
+    }
+    return nil;
+}
+
+- (void)fireflyIceManager:(FDFireflyIceManager *)manager advertisementDataHasChanged:(FDFireflyIce *)fireflyIce
+{
+    NSIndexPath *indexPath = [self indexPathForFireflyIce:fireflyIce];
+    if (indexPath != nil) {
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
 }
 
 - (IBAction)connect:(id)sender

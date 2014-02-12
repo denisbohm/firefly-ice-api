@@ -59,7 +59,7 @@
     return firmwareUpdateTask;
 }
 
-+ (FDFirmwareUpdateTask *)firmwareUpdateTask:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel resource:(NSString *)resource
++ (FDIntelHex *)loadFirmware:(NSString *)resource
 {
     NSBundle *mainBundle = [NSBundle mainBundle];
     NSString *path = [mainBundle pathForResource:resource ofType:@"hex"];
@@ -71,8 +71,11 @@
         @throw [NSException exceptionWithName:@"FirmwareUpdateFileNotFound" reason:@"firmware update file not found" userInfo:nil];
     }
     NSString *content = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
-    FDIntelHex *intelHex = [FDIntelHex intelHex:content address:0x08000 length:0x40000 - 0x08000];
-    
+    return [FDIntelHex intelHex:content address:0x08000 length:0x40000 - 0x08000];
+}
+
++ (FDFirmwareUpdateTask *)firmwareUpdateTask:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel intelHex:(FDIntelHex *)intelHex
+{
     FDFirmwareUpdateTask *firmwareUpdateTask = [[FDFirmwareUpdateTask alloc] init];
     firmwareUpdateTask.fireflyIce = fireflyIce;
     firmwareUpdateTask.channel = channel;
@@ -82,6 +85,12 @@
     firmwareUpdateTask.patch = [intelHex.properties[@"patch"] unsignedShortValue];
     
     return firmwareUpdateTask;
+}
+
++ (FDFirmwareUpdateTask *)firmwareUpdateTask:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel resource:(NSString *)resource
+{
+    FDIntelHex *intelHex = [FDFirmwareUpdateTask loadFirmware:resource];
+    return [FDFirmwareUpdateTask firmwareUpdateTask:fireflyIce channel:channel intelHex:intelHex];
 }
 
 + (FDFirmwareUpdateTask *)firmwareUpdateTask:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel
