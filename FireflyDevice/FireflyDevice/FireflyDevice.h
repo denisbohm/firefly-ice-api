@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "FDBundle.h"
+#import "FDBundleManager.h"
 #import "FDFireflyDeviceLogger.h"
 #import "FDFileLog.h"
 #import "FDUSBHIDMonitor.h"

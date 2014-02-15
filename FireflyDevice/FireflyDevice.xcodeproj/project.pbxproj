@@ -30,6 +30,14 @@
 		9259B0001866414D0086F634 /* FDFireflyDeviceLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 9259AFFA18663CB30086F634 /* FDFireflyDeviceLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9259B0071866486F0086F634 /* FDFireflyDeviceLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 9259AFFB18663CB30086F634 /* FDFireflyDeviceLogger.m */; };
 		925D78D2182163F800318FDC /* FireflyDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 929EF4C017EA06580044F6F9 /* FireflyDevice.m */; };
+		9261C34518AEDCF400CDB9F2 /* FDBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 9261C34418AEDCF400CDB9F2 /* FDBundle.m */; };
+		9261C34D18AEEFD600CDB9F2 /* FDBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 9261C34418AEDCF400CDB9F2 /* FDBundle.m */; };
+		9261C34E18AEEFEC00CDB9F2 /* FDBundle.h in Headers */ = {isa = PBXBuildFile; fileRef = 9261C34318AEDCF400CDB9F2 /* FDBundle.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9261C35718AEF18600CDB9F2 /* FDBundle.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9261C34318AEDCF400CDB9F2 /* FDBundle.h */; };
+		9261C35A18AF2E8D00CDB9F2 /* FDBundleManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 9261C35818AF2E8D00CDB9F2 /* FDBundleManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9261C35B18AF2E8D00CDB9F2 /* FDBundleManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9261C35918AF2E8D00CDB9F2 /* FDBundleManager.m */; };
+		9261C35C18AF2E8D00CDB9F2 /* FDBundleManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9261C35918AF2E8D00CDB9F2 /* FDBundleManager.m */; };
+		9261C35D18AF2EE900CDB9F2 /* FDBundleManager.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9261C35818AF2E8D00CDB9F2 /* FDBundleManager.h */; };
 		927F3DB717FA20A200C933DD /* FDFireflyIceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 927F3DB617FA20A200C933DD /* FDFireflyIceManager.m */; };
 		927F3DBC17FA4F0B00C933DD /* FDSyncTask.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 92F863F317F3B4E0000E23AF /* FDSyncTask.h */; };
 		927F3DBD17FA4F0B00C933DD /* FDFireflyIceManager.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 927F3DB517FA20A200C933DD /* FDFireflyIceManager.h */; };
@@ -155,6 +163,8 @@
 			dstPath = "include/${PRODUCT_NAME}";
 			dstSubfolderSpec = 16;
 			files = (
+				9261C35D18AF2EE900CDB9F2 /* FDBundleManager.h in CopyFiles */,
+				9261C35718AEF18600CDB9F2 /* FDBundle.h in CopyFiles */,
 				9283B5211889BB0D00F3A3BE /* FDWeak.h in CopyFiles */,
 				92FE5FD31887151700EDD781 /* FDJSON.h in CopyFiles */,
 				92E81159187E072C002449B2 /* FDFileLog.h in CopyFiles */,
@@ -196,6 +206,12 @@
 		924D016018104C7200EB500A /* FDFireflyIceSimpleTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFireflyIceSimpleTask.m; sourceTree = "<group>"; };
 		9259AFFA18663CB30086F634 /* FDFireflyDeviceLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFireflyDeviceLogger.h; sourceTree = "<group>"; };
 		9259AFFB18663CB30086F634 /* FDFireflyDeviceLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFireflyDeviceLogger.m; sourceTree = "<group>"; };
+		9261C34318AEDCF400CDB9F2 /* FDBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDBundle.h; sourceTree = "<group>"; };
+		9261C34418AEDCF400CDB9F2 /* FDBundle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDBundle.m; sourceTree = "<group>"; };
+		9261C34718AEE52D00CDB9F2 /* plistToDictionary.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = plistToDictionary.sh; sourceTree = "<group>"; };
+		9261C34818AEE6BF00CDB9F2 /* FireflyDevice-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "FireflyDevice-Info.plist"; sourceTree = "<group>"; };
+		9261C35818AF2E8D00CDB9F2 /* FDBundleManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDBundleManager.h; sourceTree = "<group>"; };
+		9261C35918AF2E8D00CDB9F2 /* FDBundleManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDBundleManager.m; sourceTree = "<group>"; };
 		927F3DB517FA20A200C933DD /* FDFireflyIceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFireflyIceManager.h; sourceTree = "<group>"; };
 		927F3DB617FA20A200C933DD /* FDFireflyIceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFireflyIceManager.m; sourceTree = "<group>"; };
 		9283B51F1889B85B00F3A3BE /* FDWeak.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDWeak.h; sourceTree = "<group>"; };
@@ -302,9 +318,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9261C34618AEE52D00CDB9F2 /* scripts */ = {
+			isa = PBXGroup;
+			children = (
+				9261C34718AEE52D00CDB9F2 /* plistToDictionary.sh */,
+			);
+			path = scripts;
+			sourceTree = "<group>";
+		};
 		929EF4AD17EA06580044F6F9 = {
 			isa = PBXGroup;
 			children = (
+				9261C34618AEE52D00CDB9F2 /* scripts */,
 				929EF4BB17EA06580044F6F9 /* FireflyDevice */,
 				929EF4D017EA06580044F6F9 /* FireflyDeviceTests */,
 				929EF4B817EA06580044F6F9 /* Frameworks */,
@@ -393,6 +418,10 @@
 				9231EBB018871342003C78AC /* FDJSON.h */,
 				9231EBB118871342003C78AC /* FDJSON.m */,
 				9283B51F1889B85B00F3A3BE /* FDWeak.h */,
+				9261C34318AEDCF400CDB9F2 /* FDBundle.h */,
+				9261C34418AEDCF400CDB9F2 /* FDBundle.m */,
+				9261C35818AF2E8D00CDB9F2 /* FDBundleManager.h */,
+				9261C35918AF2E8D00CDB9F2 /* FDBundleManager.m */,
 			);
 			path = FireflyDevice;
 			sourceTree = "<group>";
@@ -400,6 +429,7 @@
 		929EF4BC17EA06580044F6F9 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				9261C34818AEE6BF00CDB9F2 /* FireflyDevice-Info.plist */,
 				92DF1463180B0C9400A1B849 /* FireflyIce.hex */,
 				929EF4BD17EA06580044F6F9 /* FireflyDevice-Prefix.pch */,
 			);
@@ -467,6 +497,8 @@
 				92E81156187E06E6002449B2 /* FDFileLog.h in Headers */,
 				9231EBB218871342003C78AC /* FDJSON.h in Headers */,
 				9283B5201889BADA00F3A3BE /* FDWeak.h in Headers */,
+				9261C35A18AF2E8D00CDB9F2 /* FDBundleManager.h in Headers */,
+				9261C34E18AEEFEC00CDB9F2 /* FDBundle.h in Headers */,
 				922F8E61182D5D3100DC853F /* FireflyDevice.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -478,6 +510,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 929EF4DB17EA06580044F6F9 /* Build configuration list for PBXNativeTarget "FireflyDevice.library" */;
 			buildPhases = (
+				9261C34218AED99200CDB9F2 /* ShellScript */,
 				929EF4B217EA06580044F6F9 /* Sources */,
 				929EF4B317EA06580044F6F9 /* Frameworks */,
 				929EF4B417EA06580044F6F9 /* CopyFiles */,
@@ -514,6 +547,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 92DF13B7180B01AE00A1B849 /* Build configuration list for PBXNativeTarget "FireflyDevice.framework" */;
 			buildPhases = (
+				9261C34C18AEEF8D00CDB9F2 /* ShellScript */,
 				92DF138E180B01AE00A1B849 /* Sources */,
 				92DF138F180B01AE00A1B849 /* Frameworks */,
 				92DF1390180B01AE00A1B849 /* Headers */,
@@ -553,6 +587,7 @@
 		929EF4AE17EA06580044F6F9 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = FD;
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "Firefly Design";
 				TargetAttributes = {
@@ -608,6 +643,36 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		9261C34218AED99200CDB9F2 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/FireflyDevice-Info.plist",
+			);
+			outputPaths = (
+				"$(SRCROOT)/FDBundle.m",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd \"${PROJECT_DIR}\" && scripts/plistToDictionary.sh";
+		};
+		9261C34C18AEEF8D00CDB9F2 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/FireflyDevice-Info.plist",
+			);
+			outputPaths = (
+				"$(SRCROOT)/FDBundle.m",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd \"${PROJECT_DIR}\" && scripts/plistToDictionary.sh";
+		};
 		929EF4C517EA06580044F6F9 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -634,10 +699,12 @@
 				929EF4F717EA06C10044F6F9 /* FDExecutor.m in Sources */,
 				92F863F517F3B4E0000E23AF /* FDSyncTask.m in Sources */,
 				929EF4F817EA06C10044F6F9 /* FDFireflyIce.m in Sources */,
+				9261C34518AEDCF400CDB9F2 /* FDBundle.m in Sources */,
 				929EF4F917EA06C10044F6F9 /* FDFireflyIceChannel.m in Sources */,
 				929EF4FA17EA06C10044F6F9 /* FDFireflyIceChannelBLE.m in Sources */,
 				924D016118104C7200EB500A /* FDFireflyIceSimpleTask.m in Sources */,
 				9231EBB318871342003C78AC /* FDJSON.m in Sources */,
+				9261C35B18AF2E8D00CDB9F2 /* FDBundleManager.m in Sources */,
 				929EF4FB17EA06C10044F6F9 /* FDFireflyIceCoder.m in Sources */,
 				929EF4FC17EA06C10044F6F9 /* FDFireflyIceTaskSteps.m in Sources */,
 				929EF4FD17EA06C10044F6F9 /* FDFirmwareUpdateTask.m in Sources */,
@@ -664,6 +731,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9261C34D18AEEFD600CDB9F2 /* FDBundle.m in Sources */,
+				9261C35C18AF2E8D00CDB9F2 /* FDBundleManager.m in Sources */,
 				9234934A1854D33B00FEFBDF /* FDIEEE754.m in Sources */,
 				92DF13D8180B02C800A1B849 /* FDSyncTask.m in Sources */,
 				92DF13D4180B02C800A1B849 /* FDFireflyIceTaskSteps.m in Sources */,
