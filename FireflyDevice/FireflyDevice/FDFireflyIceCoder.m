@@ -225,6 +225,16 @@
     [_observable fireflyIce:fireflyIce channel:channel name:name];
 }
 
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel getPropertyRetained:(FDBinary *)binary
+{
+    FDFireflyIceRetained *retained = [[FDFireflyIceRetained alloc] init];
+    retained.retained = [binary getUInt8] != 0;
+    uint32_t length = [binary getUInt32];
+    retained.data = [binary getData:length];
+    
+    [_observable fireflyIce:fireflyIce channel:channel retained:retained];
+}
+
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel getProperties:(NSData *)data
 {
     FDBinary *binary = [[FDBinary alloc] initWithData:data];
@@ -267,6 +277,9 @@
     }
     if (properties & FD_CONTROL_PROPERTY_NAME) {
         [self fireflyIce:fireflyIce channel:channel getPropertyName:binary];
+    }
+    if (properties & FD_CONTROL_PROPERTY_RETAINED) {
+        [self fireflyIce:fireflyIce channel:channel getPropertyRetained:binary];
     }
 }
 
@@ -572,7 +585,7 @@ void putColor(FDBinary *binary, uint32_t color) {
 {
     FDBinary *binary = [[FDBinary alloc] init];
     [binary putUInt8:FD_CONTROL_DIAGNOSTICS];
-    [binary putUInt32:FD_CONTROL_DIAGNOSTICS_BLE];
+    [binary putUInt32:flags];
     [channel fireflyIceChannelSend:binary.dataValue];
 }
 
@@ -603,6 +616,12 @@ void putColor(FDBinary *binary, uint32_t color) {
         value.bufferCount = [binary getUInt32];
         binary.getIndex = position + length;
         [values addObject:value];
+    }
+    if (diagnostics.flags & FD_CONTROL_DIAGNOSTICS_BLE_TIMING) {
+        uint16_t connectionInterval = [binary getUInt16];
+        uint16_t slaveLatency = [binary getUInt16];
+        uint16_t supervisionTimeout = [binary getUInt16];
+        NSLog(@"BLE timing: %u %u %u", connectionInterval, slaveLatency, supervisionTimeout);
     }
     diagnostics.values = values;
     [_observable fireflyIce:fireflyIce channel:channel diagnostics:diagnostics];

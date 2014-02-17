@@ -136,6 +136,13 @@ typedef uint8_t fd_lock_identifier_t;
 
 @end
 
+@interface FDFireflyIceRetained : NSObject
+
+@property BOOL retained;
+@property NSData *data;
+
+@end
+
 @class FDDetour;
 @class FDFireflyIce;
 @protocol FDFireflyDeviceLog;
@@ -165,6 +172,7 @@ typedef uint8_t fd_lock_identifier_t;
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel logging:(FDFireflyIceLogging *)logging;
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel name:(NSString *)name;
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel diagnostics:(FDFireflyIceDiagnostics *)diagnostics;
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel retained:(FDFireflyIceRetained *)retained;
 
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel directTestModeReport:(FDFireflyIceDirectTestModeReport *)directTestModeReport;
 

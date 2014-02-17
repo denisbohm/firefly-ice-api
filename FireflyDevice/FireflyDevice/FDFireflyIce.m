@@ -238,6 +238,15 @@
 
 @end
 
+@implementation FDFireflyIceRetained
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"retained %@ %@", _retained ? @"YES" : @"NO", _data];
+}
+
+@end
+
 @implementation FDFireflyIceObservable
 
 - (id)init
