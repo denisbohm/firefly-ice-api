@@ -29,7 +29,11 @@
 
 - (NSString *)helpText
 {
-    return @"Overview:\nShows basic information about the firefly ice.";
+    return
+    @"Touch the 'Connect' button above to connect to the device and interact with it.\n\n"
+    @"The overview will show information about the basic configuration of the device.\n\n"
+    @"Touch the device name at the top to modify it."
+    ;
 }
 
 - (void)viewDidLoad

@@ -34,6 +34,15 @@
 
 @implementation FDDetailRadioDirectTestModeViewController
 
+- (NSString *)helpText
+{
+    return
+    @"The Bluetooth Low Energy radio can be put into direct test mode for FCC testing, etc.\n\n"
+    @"Choose the frequency and duration then click 'Start Radio Direct Test Mode'.\n\n"
+    @"To check two Firefly Ice devices, place one in transmit mode and the other in receive mode then start direct test mode on both simultaneously.  After the test completes the number of received packets is shown at the bottom."
+    ;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

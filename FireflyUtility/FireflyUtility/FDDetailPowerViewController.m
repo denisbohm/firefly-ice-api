@@ -20,6 +20,14 @@
 
 @implementation FDDetailPowerViewController
 
+- (NSString *)helpText
+{
+    return
+    @"The Firely Ice has an 80 mAh LiPo battery.  It charges at a maximum rate of 80 mA.\n\n"
+    @"The battery level is estimated based on the voltage and updated based on the expected average discharge and charge rates."
+    ;
+}
+
 - (void)configureView
 {
     FDFireflyIceCollector *collector = self.device[@"collector"];

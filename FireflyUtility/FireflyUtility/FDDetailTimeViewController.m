@@ -20,6 +20,15 @@
 
 @implementation FDDetailTimeViewController
 
+- (NSString *)helpText
+{
+    return
+    @"The Firely Ice has an 32kHz crystal oscillator.  The MCU uses interrupts at 32Hz to update the real time clock.\n\n"
+    @"The crystal frequency can change based on temperature, etc.  Over some time this can cause time drift.\n\n"
+    @"On certain types of resets the time can be lost (for example a low voltage reset)."
+    ;
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];

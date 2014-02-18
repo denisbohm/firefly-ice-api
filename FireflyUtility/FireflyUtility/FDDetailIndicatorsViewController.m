@@ -32,6 +32,15 @@
 
 @implementation FDDetailIndicatorsViewController
 
+- (NSString *)helpText
+{
+    return
+    @"The Firely Ice has 6 indicators.  The indicator over the USB port is red/green.  The outer 2 on the side are red.  The inner 3 are red/green/blue.\n\n"
+    @"Touch any of the color buttons to choose the corresponding LED color.\n\n"
+    @"Click 'Illuminate LEDs' to show the chosen colors on the Firefly Ice."
+    ;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

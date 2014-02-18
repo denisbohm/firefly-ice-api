@@ -24,6 +24,14 @@
 
 @implementation FDDetailResetViewController
 
+- (NSString *)helpText
+{
+    return
+    @"The Firely Ice records the type and time of the last reset (however some resets do not retain the time.)\n\n"
+    @"Various resets can be initiated by selecting the type and clicking 'Reset Device'."
+    ;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

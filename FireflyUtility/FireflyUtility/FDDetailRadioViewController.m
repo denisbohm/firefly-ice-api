@@ -21,6 +21,13 @@
 
 @implementation FDDetailRadioViewController
 
+- (NSString *)helpText
+{
+    return
+    @"The radio transmit strentgh can be reduced by up to -18 dBm."
+    ;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

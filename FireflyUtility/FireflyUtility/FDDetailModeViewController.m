@@ -18,6 +18,14 @@
 
 @implementation FDDetailModeViewController
 
+- (NSString *)helpText
+{
+    return
+    @"The Firefly Ice can be put into a very low power storage mode when not in use.\n\n"
+    @"Plug the device into USB power to wake it up."
+    ;
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
