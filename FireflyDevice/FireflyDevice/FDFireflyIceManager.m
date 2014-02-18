@@ -97,7 +97,14 @@
 
 - (void)scan:(BOOL)allowDuplicates
 {
-    [_centralManager retrieveConnectedPeripheralsWithServices:@[_serviceUUID]];
+    if ([_centralManager respondsToSelector:@selector(retrieveConnectedPeripheralsWithServices:)]) {
+        [_centralManager retrieveConnectedPeripheralsWithServices:@[_serviceUUID]];
+    } else {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+        [_centralManager retrieveConnectedPeripherals];
+#pragma GCC diagnostic pop
+    }
     NSDictionary *options = nil;
     if (allowDuplicates) {
         options = @{CBCentralManagerScanOptionAllowDuplicatesKey: @YES};

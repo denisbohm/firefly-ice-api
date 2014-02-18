@@ -14,6 +14,11 @@
 
 @implementation FDDetailViewController
 
+- (NSString *)helpText
+{
+    return @"Visit fireflydesign.com for full documentation of the Firefly Ice device.";
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

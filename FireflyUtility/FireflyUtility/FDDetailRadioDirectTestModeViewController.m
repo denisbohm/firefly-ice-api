@@ -54,6 +54,11 @@
     } else {
         _reportLabel.text = @"";
     }
+    
+    FDDirectTestModeCommand command = (_mode.selectedSegmentIndex == 0) ? FDDirectTestModeCommandTransmitterTest : FDDirectTestModeCommandReceiverTest;
+    BOOL isTransmitMode = command == FDDirectTestModeCommandTransmitterTest;
+    [_type setEnabled:isTransmitMode];
+    [_length setEnabled:isTransmitMode];
 }
 
 - (unsigned)packetLength

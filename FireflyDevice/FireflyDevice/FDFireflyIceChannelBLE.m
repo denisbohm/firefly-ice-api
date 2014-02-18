@@ -191,7 +191,7 @@
 //        FDFireflyDeviceLogDebug(@"didDiscoverService %@", service.UUID);
         FDFireflyDeviceLogDebug(@"didDiscoverService %@", [FDFireflyIceChannelBLE CBUUIDString:service.UUID]);
         if ([service.UUID isEqual:_serviceUUID]) {
-            [_peripheral discoverCharacteristics:@[_characteristicUUID] forService:service];
+            [_peripheral discoverCharacteristics:nil/*@[_characteristicUUID]*/ forService:service];
         }
     }
 }

@@ -27,6 +27,11 @@
 
 @implementation FDDetailOverviewViewController
 
+- (NSString *)helpText
+{
+    return @"Overview:\nShows basic information about the firefly ice.";
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

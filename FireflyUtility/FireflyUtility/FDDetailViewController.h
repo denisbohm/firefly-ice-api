@@ -20,4 +20,6 @@
 
 - (void)configureView;
 
+@property(readonly) NSString *helpText;
+
 @end

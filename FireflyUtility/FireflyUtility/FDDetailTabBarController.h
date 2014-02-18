@@ -13,6 +13,7 @@
 @protocol FDDetailTabBarControllerDelegate <NSObject>
 
 - (void)detailTabBarControllerDidAppear:(FDDetailTabBarController *)detailTabBarController;
+- (UIView *)detailTabBarControllerHelpView:(FDDetailTabBarController *)detailTabBarController;
 
 @end
 

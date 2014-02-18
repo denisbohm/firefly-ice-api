@@ -44,10 +44,10 @@
     [super awakeFromNib];
 }
 
-- (NSMutableDictionary *)makeFakeDevice
+- (NSMutableDictionary *)makeShamDevice
 {
     FDFireflyIce *fireflyIce = [[FDFireflyIce alloc] init];
-    fireflyIce.name = @"Firefly 43216789-BC01-F900";
+    fireflyIce.name = @"Sham 43216789-BC01-F900";
 
     FDFireflyIceCollector *collector = [[FDFireflyIceCollector alloc] init];
     collector.fireflyIce = fireflyIce;
@@ -126,7 +126,7 @@
     _devices = [NSMutableArray array];
     
     // !!! just for testing -denis
-    [_devices addObject:[self makeFakeDevice]];
+    [_devices addObject:[self makeShamDevice]];
 }
 
 - (FDFireflyIce *)getFireflyIceByPeripheral:(CBPeripheral *)peripheral
@@ -295,6 +295,21 @@
 - (void)detailTabBarControllerDidAppear:(FDDetailTabBarController *)detailTabBarController
 {
     [self configureDetailView];
+}
+
+- (UIView *)detailTabBarControllerHelpView:(FDDetailTabBarController *)detailTabBarController
+{
+//    return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"battery.png"]];
+    UILabel *textView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
+    [textView setLineBreakMode:NSLineBreakByWordWrapping];
+    textView.textColor = [UIColor whiteColor];
+    
+    FDDetailViewController *detailViewController = [self selectedDetailViewController];
+    textView.text = [detailViewController helpText];
+    
+    textView.numberOfLines = 0;
+    [textView sizeToFit];
+    return textView;
 }
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
