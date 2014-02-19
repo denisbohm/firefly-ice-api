@@ -21,4 +21,7 @@
 
 @property id<FDDetailTabBarControllerDelegate> detailTabBarControllerDelegate;
 
+- (void)showHelpOverlay:(NSTimeInterval)duration;
+- (void)hideHelpOverlay;
+
 @end

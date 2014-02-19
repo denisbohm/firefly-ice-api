@@ -305,7 +305,9 @@
     textView.textColor = [UIColor whiteColor];
     
     FDDetailViewController *detailViewController = [self selectedDetailViewController];
-    textView.text = [detailViewController helpText];
+    NSMutableString *text = [NSMutableString stringWithString:[detailViewController helpText]];
+    [text appendString:@"\n\nTap '?' to hide or show this help message."];
+    textView.text = text;
     
     textView.numberOfLines = 0;
     [textView sizeToFit];
@@ -347,9 +349,21 @@
 - (void)configureDetailView
 {
     FDDetailViewController *detailViewController = [self selectedDetailViewController];
+    if (detailViewController == nil) {
+        return;
+    }
     detailViewController.device = _device;
     [detailViewController configureView];
-    NSLog(@"configure %@", NSStringFromClass([detailViewController class]));
+    NSString *className = NSStringFromClass([detailViewController class]);
+    NSLog(@"configure %@", className);
+    
+    NSString *key = [NSString stringWithFormat:@"hasShownHelpFor%@", className];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if (![userDefaults boolForKey:key]) {
+        FDDetailTabBarController *tabBarController = (FDDetailTabBarController *)self.tabBarController;
+        [tabBarController showHelpOverlay:30];
+        [userDefaults setBool:YES forKey:key];
+    }
 }
 
 - (void)unconfigureDetailView

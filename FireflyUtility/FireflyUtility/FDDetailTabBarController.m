@@ -11,6 +11,7 @@
 @interface FDDetailTabBarController ()
 
 @property UIView *helpView;
+@property NSTimer *timer;
 
 @end
 
@@ -30,7 +31,7 @@
     [self.moreNavigationController.navigationBar setHidden:YES];
 }
 
-- (void)showHelpOverlay
+- (void)showHelpOverlay:(NSTimeInterval)duration
 {
     if (self.helpView != nil) {
         return;
@@ -46,10 +47,16 @@
     button.frame = helpView.frame;
     [button addTarget:self action:@selector(hideHelpOverlay) forControlEvents:UIControlEventTouchUpInside];
     
-    CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
-    
+    CGRect barFrame = [[UIApplication sharedApplication] statusBarFrame];
+    id rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    if ([rootViewController isKindOfClass:[UINavigationController class]]) {
+        UINavigationController *navigationController = (UINavigationController *)rootViewController;
+        if(!navigationController.navigationBarHidden) {
+            barFrame.size.height += navigationController.navigationBar.frame.size.height;
+        }
+    }
     UIView *contentView = [_detailTabBarControllerDelegate detailTabBarControllerHelpView:self];
-    [contentView setFrame:CGRectMake(0, (-1) * statusBarFrame.size.height, 320, 480)];
+    [contentView setFrame:CGRectMake(0, barFrame.size.height, 320, 480 - barFrame.size.height)];
     
     [translucentView addSubview:button];
     [helpView addSubview:translucentView];
@@ -57,17 +64,26 @@
     
     self.helpView = helpView;
     [self.view addSubview:helpView];
+    
+    _timer = [NSTimer scheduledTimerWithTimeInterval:duration target:self selector:@selector(hideHelpOverlay) userInfo:nil repeats:NO];
 }
 
 - (void)hideHelpOverlay
 {
     [self.helpView removeFromSuperview];
     self.helpView = nil;
+    
+    [_timer invalidate];
+    _timer = nil;
 }
 
 - (void)help:(id)sender
 {
-    [self showHelpOverlay];
+    if (self.helpView == nil) {
+        [self showHelpOverlay:60];
+    } else {
+        [self hideHelpOverlay];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
