@@ -39,14 +39,14 @@
     [self.controls addObject:_updateButton];
     
     _intelHex = [FDFirmwareUpdateTask loadFirmware:@"FireflyIce"];
-    _currentVersionLabel.text = [NSString stringWithFormat:@"Latest firmware is %@.%@.%@", _intelHex.properties[@"major"] , _intelHex.properties[@"minor"], _intelHex.properties[@"patch"]];
+    _currentVersionLabel.text = [NSString stringWithFormat:@"v%@.%@.%@", _intelHex.properties[@"major"] , _intelHex.properties[@"minor"], _intelHex.properties[@"patch"]];
 }
 
 - (void)configureView
 {
     FDFireflyIceCollector *collector = self.device[@"collector"];
     FDFireflyIceVersion *version = [collector objectForKey:@"version"];
-    _deviceVersionLabel.text = [NSString stringWithFormat:@"Device firmware is %d.%d.%d", version.major, version.minor, version.patch];
+    _deviceVersionLabel.text = [NSString stringWithFormat:@"v%d.%d.%d", version.major, version.minor, version.patch];
 }
 
 - (void)firmwareUpdateTask:(FDFirmwareUpdateTask *)task progress:(float)progress

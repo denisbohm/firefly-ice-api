@@ -57,10 +57,13 @@
         _timeLabel.text = @"Time is not set.";
     } else {
         NSTimeInterval offset = [time timeIntervalSinceDate:entry.date];
+        if (fabs(offset) < 0.5) {
+            _timeLabel.text = @"Time has not drifted significantly.";
+        } else
         if (offset < 0) {
-            _timeLabel.text = [NSString stringWithFormat:@"Time is behind by %0.2f seconds.", offset];
+            _timeLabel.text = [NSString stringWithFormat:@"Time is slow by %0.2f seconds.", -offset];
         } else {
-            _timeLabel.text = [NSString stringWithFormat:@"Time is ahead by %0.2f seconds.", -offset];
+            _timeLabel.text = [NSString stringWithFormat:@"Time is fast by %0.2f seconds.", offset];
         }
     }
 }

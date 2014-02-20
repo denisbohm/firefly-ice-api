@@ -39,18 +39,28 @@
     [self.controls addObject:_resetButton];
 }
 
+#define JAN_1_2014 1388534400
+
 - (void)configureView
 {
     FDFireflyIceCollector *collector = self.device[@"collector"];
     FDFireflyIceReset *reset = [collector objectForKey:@"reset"];
 
-    NSLog(@"reset cause %08x", reset.cause);
-    _causeLabel.text = [reset description];
+    NSString *cause = [reset description];
+    if ([cause hasSuffix:@" Reset"]) {
+        cause = [cause substringToIndex:cause.length - 6];
+    }
+    _causeLabel.text = cause;
 
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-    [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
-    _dateLabel.text = [dateFormatter stringFromDate:reset.date];
+    NSDate *date = reset.date;
+    if ([date timeIntervalSince1970] < JAN_1_2014) {
+        _dateLabel.text = @"";
+    } else {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+        [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
+        _dateLabel.text = [dateFormatter stringFromDate:date];
+    }
 }
 
 - (void)fireflyIceCollectorEntry:(FDFireflyIceCollectorEntry *)entry

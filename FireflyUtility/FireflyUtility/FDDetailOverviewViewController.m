@@ -63,20 +63,19 @@
     
     _nameTextField.text = [collector objectForKey:@"name"];
     
-    FDFireflyIceVersion *version = [collector objectForKey:@"version"];
-    FDFireflyIceVersion *bootVersion = [collector objectForKey:@"bootVersion"];
     FDFireflyIceHardwareId *hardwareId = [collector objectForKey:@"hardwareId"];
+    _hardwareRevisionLabel.text = [NSString stringWithFormat:@"v%d.%d", hardwareId.major, hardwareId.minor];
+    _vendorAndProductLabel.text = [NSString stringWithFormat:@"%04x / %04x", hardwareId.vendor, hardwareId.product];
+    _hardwareIdLabel.text = [NSString stringWithFormat:@"%@", [self toHex:hardwareId.unique]];
     
-    _hardwareRevisionLabel.text = [NSString stringWithFormat:@"Hardware v%d.%d", hardwareId.major, hardwareId.minor];
-    _vendorAndProductLabel.text = [NSString stringWithFormat:@"USB VID %04x / PID %04x", hardwareId.vendor, hardwareId.product];
-    _hardwareIdLabel.text = [NSString stringWithFormat:@"UUID %@", [self toHex:hardwareId.unique]];
+    FDFireflyIceVersion *bootVersion = [collector objectForKey:@"bootVersion"];
+    _bootRevisionLabel.text = [NSString stringWithFormat:@"v%d.%d.%d", bootVersion.major, bootVersion.minor, bootVersion.patch];
     
-    _bootRevisionLabel.text = [NSString stringWithFormat:@"Boot Loader v%d.%d.%d", bootVersion.major, bootVersion.minor, bootVersion.patch];
-    
-    _firmwareRevisionLabel.text = [NSString stringWithFormat:@"Firmware v%d.%d.%d", version.major, version.minor, version.patch];
+    FDFireflyIceVersion *version = [collector objectForKey:@"version"];
+    _firmwareRevisionLabel.text = [NSString stringWithFormat:@"v%d.%d.%d", version.major, version.minor, version.patch];
     
     NSNumber *debugLock = [collector objectForKey:@"debugLock"];
-    _debugLockLabel.text = debugLock.boolValue ? @"Debug Lock Set" : @"Debug is Unlocked";
+    _debugLockLabel.text = debugLock.boolValue ? @"Locked" : @"Unlocked";
 }
 
 - (void)fireflyIceCollectorEntry:(FDFireflyIceCollectorEntry *)entry

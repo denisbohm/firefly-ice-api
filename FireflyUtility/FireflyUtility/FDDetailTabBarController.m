@@ -23,7 +23,7 @@
     UIBarButtonItem *helpButtonItem = [_helpController makeBarButtonItem];
     self.navigationItem.rightBarButtonItems = @[helpButtonItem, self.navigationItem.rightBarButtonItem];
     
-    [self.moreNavigationController.navigationBar setHidden:YES];
+//    [self.moreNavigationController.navigationBar setHidden:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated
