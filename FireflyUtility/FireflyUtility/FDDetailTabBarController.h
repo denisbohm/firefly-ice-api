@@ -8,20 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
+#import "FDHelpController.h"
+
 @class FDDetailTabBarController;
 
 @protocol FDDetailTabBarControllerDelegate <NSObject>
 
 - (void)detailTabBarControllerDidAppear:(FDDetailTabBarController *)detailTabBarController;
-- (UIView *)detailTabBarControllerHelpView:(FDDetailTabBarController *)detailTabBarController;
 
 @end
 
 @interface FDDetailTabBarController : UITabBarController
 
 @property id<FDDetailTabBarControllerDelegate> detailTabBarControllerDelegate;
-
-- (void)showHelpOverlay:(NSTimeInterval)duration;
-- (void)hideHelpOverlay;
+@property FDHelpController *helpController;
 
 @end

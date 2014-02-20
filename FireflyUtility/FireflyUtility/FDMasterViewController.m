@@ -9,6 +9,7 @@
 #import "FDDetailTabBarController.h"
 #import "FDDetailViewController.h"
 #import "FDFireflyIceCollector.h"
+#import "FDHelpController.h"
 #import "FDMasterViewController.h"
 
 #import <FireflyDevice/FDFireflyIce.h>
@@ -22,9 +23,10 @@
 #import <IOBluetooth/IOBluetooth.h>
 #endif
 
-@interface FDMasterViewController () <FDFireflyIceManagerDelegate, FDFireflyIceObserver, UITabBarControllerDelegate, FDDetailTabBarControllerDelegate, UINavigationControllerDelegate>
+@interface FDMasterViewController () <FDFireflyIceManagerDelegate, FDFireflyIceObserver, UITabBarControllerDelegate, FDDetailTabBarControllerDelegate, FDHelpControllerDelegate, UINavigationControllerDelegate>
 
 @property UITabBarController *tabBarController;
+@property FDHelpController *helpController;
 
 @property FDFireflyIceManager *fireflyIceManager;
 
@@ -42,6 +44,14 @@
         self.preferredContentSize = CGSizeMake(320.0, 600.0);
     }
     [super awakeFromNib];
+}
+
+- (NSString *)helpText
+{
+    return
+    @"Select a Firefly Ice device from the list and then connect to interact with it.\n\n"
+    @"If you don't have a device yet but want to explore the interface select the 'Sham' device."
+    ;
 }
 
 - (NSMutableDictionary *)makeShamDevice
@@ -121,12 +131,23 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	
+    
+    _helpController = [[FDHelpController alloc] init];
+    _helpController.delegate = self;
+    UIBarButtonItem *helpButtonItem = [_helpController makeBarButtonItem];
+    self.navigationItem.rightBarButtonItems = @[helpButtonItem];
+
     _fireflyIceManager = [FDFireflyIceManager managerWithDelegate:self];
     _devices = [NSMutableArray array];
     
     // !!! just for testing -denis
     [_devices addObject:[self makeShamDevice]];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    _helpController.parentView = self.view.superview;
+    [_helpController autoShowHelp:NSStringFromClass([self class])];
 }
 
 - (FDFireflyIce *)getFireflyIceByPeripheral:(CBPeripheral *)peripheral
@@ -278,6 +299,7 @@
         if (tabBarController != self.tabBarController) {
             self.tabBarController = tabBarController;
             self.tabBarController.delegate = self;
+            tabBarController.helpController.delegate = self;
             UIBarButtonItem *connect = tabBarController.navigationItem.rightBarButtonItem;
             UIButton *connectButton = (UIButton *)connect.customView;
             [connectButton addTarget:self action:@selector(connect:) forControlEvents:UIControlEventTouchUpInside];
@@ -297,15 +319,19 @@
     [self configureDetailView];
 }
 
-- (UIView *)detailTabBarControllerHelpView:(FDDetailTabBarController *)detailTabBarController
+- (UIView *)helpControllerHelpView:(FDHelpController *)helpController
 {
-//    return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"battery.png"]];
     UILabel *textView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
     [textView setLineBreakMode:NSLineBreakByWordWrapping];
     textView.textColor = [UIColor whiteColor];
     
+    NSMutableString *text = [NSMutableString string];
     FDDetailViewController *detailViewController = [self selectedDetailViewController];
-    NSMutableString *text = [NSMutableString stringWithString:[detailViewController helpText]];
+    if (detailViewController != nil) {
+        [text appendString:[detailViewController helpText]];
+    } else {
+        [text appendString:[self helpText]];
+    }
     [text appendString:@"\n\nTap '?' to hide or show this help message."];
     textView.text = text;
     
@@ -357,13 +383,7 @@
     NSString *className = NSStringFromClass([detailViewController class]);
     NSLog(@"configure %@", className);
     
-    NSString *key = [NSString stringWithFormat:@"hasShownHelpFor%@", className];
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    if (![userDefaults boolForKey:key]) {
-        FDDetailTabBarController *tabBarController = (FDDetailTabBarController *)self.tabBarController;
-        [tabBarController showHelpOverlay:30];
-        [userDefaults setBool:YES forKey:key];
-    }
+    [_helpController autoShowHelp:className];
 }
 
 - (void)unconfigureDetailView

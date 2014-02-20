@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9209193B18B5A02300CB1ECC /* help.png in Resources */ = {isa = PBXBuildFile; fileRef = 9209193918B5A02300CB1ECC /* help.png */; };
+		9209193C18B5A02300CB1ECC /* help@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9209193A18B5A02300CB1ECC /* help@2x.png */; };
+		9209194218B5A15C00CB1ECC /* FDHelpController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9209194118B5A15C00CB1ECC /* FDHelpController.m */; };
 		9212D25A180B3F2D00576B41 /* FireflyIce.hex in Resources */ = {isa = PBXBuildFile; fileRef = 9212D259180B3F2D00576B41 /* FireflyIce.hex */; };
 		921E693318A83A8600E90E5B /* update.png in Resources */ = {isa = PBXBuildFile; fileRef = 921E693118A83A8600E90E5B /* update.png */; };
 		921E693418A83A8600E90E5B /* update@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 921E693218A83A8600E90E5B /* update@2x.png */; };
@@ -124,6 +127,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9209193918B5A02300CB1ECC /* help.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = help.png; sourceTree = "<group>"; };
+		9209193A18B5A02300CB1ECC /* help@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "help@2x.png"; sourceTree = "<group>"; };
+		9209194018B5A15C00CB1ECC /* FDHelpController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDHelpController.h; sourceTree = "<group>"; };
+		9209194118B5A15C00CB1ECC /* FDHelpController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDHelpController.m; sourceTree = "<group>"; };
 		9212D259180B3F2D00576B41 /* FireflyIce.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = FireflyIce.hex; path = ../../FireflyDevice/FireflyDevice/FireflyIce.hex; sourceTree = "<group>"; };
 		921E693118A83A8600E90E5B /* update.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = update.png; sourceTree = "<group>"; };
 		921E693218A83A8600E90E5B /* update@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "update@2x.png"; sourceTree = "<group>"; };
@@ -326,6 +333,8 @@
 				92841AA317EDF63D005C0E18 /* FDDetailViewController.m */,
 				928BF64617F2818000370B91 /* FDDetailTabBarController.h */,
 				928BF64717F2818000370B91 /* FDDetailTabBarController.m */,
+				9209194018B5A15C00CB1ECC /* FDHelpController.h */,
+				9209194118B5A15C00CB1ECC /* FDHelpController.m */,
 				921E691B18A838B700E90E5B /* Detail View Icons */,
 				92949D5018A5E79600FD815F /* Detail Views */,
 				92949D4F18A5E77500FD815F /* Color Picker */,
@@ -337,6 +346,8 @@
 		92841A8E17EDF63D005C0E18 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				9209193918B5A02300CB1ECC /* help.png */,
+				9209193A18B5A02300CB1ECC /* help@2x.png */,
 				9212D259180B3F2D00576B41 /* FireflyIce.hex */,
 				92841A8F17EDF63D005C0E18 /* FireflyUtility-Info.plist */,
 				92841A9017EDF63D005C0E18 /* InfoPlist.strings */,
@@ -581,6 +592,8 @@
 				923C345B189733880068863D /* red_fuel@2x.png in Resources */,
 				921E693818A83B2200E90E5B /* mode@2x.png in Resources */,
 				92841A9B17EDF63D005C0E18 /* Main_iPhone.storyboard in Resources */,
+				9209193B18B5A02300CB1ECC /* help.png in Resources */,
+				9209193C18B5A02300CB1ECC /* help@2x.png in Resources */,
 				923C3458189733880068863D /* orange_fuel.png in Resources */,
 				923C345A189733880068863D /* red_fuel.png in Resources */,
 				921E693418A83A8600E90E5B /* update@2x.png in Resources */,
@@ -611,6 +624,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9209194218B5A15C00CB1ECC /* FDHelpController.m in Sources */,
 				929CA42E17F0F30600A4A992 /* FDDetailUpdateViewController.m in Sources */,
 				92949D4518A5D7D100FD815F /* FDColorGamutView.m in Sources */,
 				92EAB18718A7F8FA00613447 /* FDDetailTimeViewController.m in Sources */,
