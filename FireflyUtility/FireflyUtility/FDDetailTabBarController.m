@@ -8,10 +8,6 @@
 
 #import "FDDetailTabBarController.h"
 
-@interface FDDetailTabBarController ()
-
-@end
-
 @implementation FDDetailTabBarController
 
 - (void)awakeFromNib
@@ -23,13 +19,9 @@
     UIBarButtonItem *helpButtonItem = [_helpController makeBarButtonItem];
     self.navigationItem.rightBarButtonItems = @[helpButtonItem, self.navigationItem.rightBarButtonItem];
     
-//    [self.moreNavigationController.navigationBar setHidden:YES];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [self.detailTabBarControllerDelegate detailTabBarControllerDidAppear:self];
+    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+        [self.moreNavigationController.navigationBar setHidden:YES];
+    }
 }
 
 @end

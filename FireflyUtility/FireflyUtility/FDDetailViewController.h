@@ -12,9 +12,20 @@
 
 #import <UIKit/UIKit.h>
 
+@class FDDetailViewController;
+
+@protocol FDDetailViewControllerDelegate <NSObject>
+
+- (void)detailViewControllerDidAppear:(FDDetailViewController *)detailViewController;
+- (void)detailViewControllerDidDisappear:(FDDetailViewController *)detailViewController;
+
+@end
+
 @interface FDDetailViewController : UIViewController <FDFireflyIceObserver, FDFireflyIceCollectorDelegate>
 
 @property NSMutableArray *controls;
+
+@property id<FDDetailViewControllerDelegate> delegate;
 
 @property(nonatomic) NSMutableDictionary *device;
 

@@ -35,9 +35,9 @@
             action:@selector(help:)];
 }
 
-- (void)showHelpOverlay
+- (void)showHelpOverlay:(NSTimeInterval)delay completion:(void (^)(BOOL finished))completion
 {
-    if (self.helpView != nil) {
+    if (_timer != nil) {
         return;
     }
     
@@ -69,15 +69,27 @@
     self.helpView = helpView;
     helpView.alpha = 0.0;
     [self.parentView addSubview:helpView];
-    [UIView animateWithDuration:0.1 animations:^{
-        helpView.alpha = 1.0;
-    }];
+    [UIView animateWithDuration:0.5
+                          delay:delay
+                        options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionTransitionNone
+                     animations:^{
+                         helpView.alpha = 1.0;
+                     }
+                     completion:completion];
     
     _timer = [NSTimer scheduledTimerWithTimeInterval:_duration target:self selector:@selector(hideHelpOverlay) userInfo:nil repeats:NO];
 }
 
+- (void)showHelpOverlay
+{
+    [self showHelpOverlay:0.0 completion:nil];
+}
+
 - (void)hideHelpOverlay
 {
+    if (_timer == nil) {
+        return;
+    }
     __weak FDHelpController *weakSelf = self;
     [UIView animateWithDuration:0.5
                      animations:^{weakSelf.helpView.alpha = 0.0;}
@@ -101,8 +113,7 @@
     NSString *key = [NSString stringWithFormat:@"hasShownHelpFor%@", name];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if (![userDefaults boolForKey:key]) {
-        [self showHelpOverlay];
-        [userDefaults setBool:YES forKey:key];
+        [self showHelpOverlay:0.5 completion:^(BOOL finished){[userDefaults setBool:YES forKey:key];}];
     }
 }
 

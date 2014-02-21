@@ -10,17 +10,8 @@
 
 #import "FDHelpController.h"
 
-@class FDDetailTabBarController;
-
-@protocol FDDetailTabBarControllerDelegate <NSObject>
-
-- (void)detailTabBarControllerDidAppear:(FDDetailTabBarController *)detailTabBarController;
-
-@end
-
 @interface FDDetailTabBarController : UITabBarController
 
-@property id<FDDetailTabBarControllerDelegate> detailTabBarControllerDelegate;
 @property FDHelpController *helpController;
 
 @end

@@ -25,6 +25,18 @@
     _controls = [NSMutableArray array];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [_delegate detailViewControllerDidAppear:self];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [_delegate detailViewControllerDidDisappear:self];
+}
+
 - (void)configureButtons
 {
     FDFireflyIce *fireflyIce = _device[@"fireflyIce"];

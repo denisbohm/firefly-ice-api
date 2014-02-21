@@ -320,9 +320,9 @@
 			isa = PBXGroup;
 			children = (
 				92841A8E17EDF63D005C0E18 /* Supporting Files */,
+				92841AA517EDF63D005C0E18 /* Images.xcassets */,
 				92841A9917EDF63D005C0E18 /* Main_iPhone.storyboard */,
 				92841A9C17EDF63D005C0E18 /* Main_iPad.storyboard */,
-				92841AA517EDF63D005C0E18 /* Images.xcassets */,
 				92841A9617EDF63D005C0E18 /* FDAppDelegate.h */,
 				92841A9717EDF63D005C0E18 /* FDAppDelegate.m */,
 				92F863F617F3C38D000E23AF /* FDFireflyIceCollector.h */,
@@ -333,10 +333,9 @@
 				92841AA317EDF63D005C0E18 /* FDDetailViewController.m */,
 				928BF64617F2818000370B91 /* FDDetailTabBarController.h */,
 				928BF64717F2818000370B91 /* FDDetailTabBarController.m */,
-				9209194018B5A15C00CB1ECC /* FDHelpController.h */,
-				9209194118B5A15C00CB1ECC /* FDHelpController.m */,
-				921E691B18A838B700E90E5B /* Detail View Icons */,
 				92949D5018A5E79600FD815F /* Detail Views */,
+				921E691B18A838B700E90E5B /* Detail View Icons */,
+				92DA060818B6E8250026FB69 /* Help Support */,
 				92949D4F18A5E77500FD815F /* Color Picker */,
 				92EF7AAD18A70C73002A21FF /* Battery View */,
 			);
@@ -346,8 +345,6 @@
 		92841A8E17EDF63D005C0E18 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				9209193918B5A02300CB1ECC /* help.png */,
-				9209193A18B5A02300CB1ECC /* help@2x.png */,
 				9212D259180B3F2D00576B41 /* FireflyIce.hex */,
 				92841A8F17EDF63D005C0E18 /* FireflyUtility-Info.plist */,
 				92841A9017EDF63D005C0E18 /* InfoPlist.strings */,
@@ -435,6 +432,17 @@
 				92EAB18C18A7F91500613447 /* FDDetailModeViewController.m */,
 			);
 			name = "Detail Views";
+			sourceTree = "<group>";
+		};
+		92DA060818B6E8250026FB69 /* Help Support */ = {
+			isa = PBXGroup;
+			children = (
+				9209194018B5A15C00CB1ECC /* FDHelpController.h */,
+				9209194118B5A15C00CB1ECC /* FDHelpController.m */,
+				9209193918B5A02300CB1ECC /* help.png */,
+				9209193A18B5A02300CB1ECC /* help@2x.png */,
+			);
+			name = "Help Support";
 			sourceTree = "<group>";
 		};
 		92EF7AAD18A70C73002A21FF /* Battery View */ = {

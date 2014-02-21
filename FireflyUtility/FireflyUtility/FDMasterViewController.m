@@ -23,15 +23,17 @@
 #import <IOBluetooth/IOBluetooth.h>
 #endif
 
-@interface FDMasterViewController () <FDFireflyIceManagerDelegate, FDFireflyIceObserver, UITabBarControllerDelegate, FDDetailTabBarControllerDelegate, FDHelpControllerDelegate, UINavigationControllerDelegate>
+@interface FDMasterViewController () <FDFireflyIceManagerDelegate, FDFireflyIceObserver, FDHelpControllerDelegate, FDDetailViewControllerDelegate>
 
-@property UITabBarController *tabBarController;
+@property FDDetailTabBarController *tabBarController;
 @property FDHelpController *helpController;
 
 @property FDFireflyIceManager *fireflyIceManager;
 
 @property NSMutableArray *devices;
 @property(nonatomic) NSMutableDictionary *device;
+
+@property FDDetailViewController *currentDetailViewController;
 
 @end
 
@@ -43,13 +45,14 @@
         self.clearsSelectionOnViewWillAppear = NO;
         self.preferredContentSize = CGSizeMake(320.0, 600.0);
     }
+    
     [super awakeFromNib];
 }
 
 - (NSString *)helpText
 {
     return
-    @"Select a Firefly Ice device from the list and then connect to interact with it.\n\n"
+    @"Select a Firefly Ice device from the list to interact with it.\n\n"
     @"If you don't have a device yet but want to explore the interface select the 'Sham' device."
     ;
 }
@@ -298,25 +301,24 @@
         FDDetailTabBarController *tabBarController = (FDDetailTabBarController *)segue.destinationViewController;
         if (tabBarController != self.tabBarController) {
             self.tabBarController = tabBarController;
-            self.tabBarController.delegate = self;
             tabBarController.helpController.delegate = self;
+            
             UIBarButtonItem *connect = tabBarController.navigationItem.rightBarButtonItem;
             UIButton *connectButton = (UIButton *)connect.customView;
             [connectButton addTarget:self action:@selector(connect:) forControlEvents:UIControlEventTouchUpInside];
-            tabBarController.detailTabBarControllerDelegate = self;
             [self configureConnectButton];
+            
+            for (UIViewController *viewController in tabBarController.viewControllers) {
+                if ([viewController isKindOfClass:[FDDetailViewController class]]) {
+                    FDDetailViewController *detailViewController = (FDDetailViewController *)viewController;
+                    detailViewController.delegate = self;
+                }
+            }
         }
         
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         self.device = _devices[indexPath.row];
-        
-        [self configureDetailView];
     }
-}
-
-- (void)detailTabBarControllerDidAppear:(FDDetailTabBarController *)detailTabBarController
-{
-    [self configureDetailView];
 }
 
 - (UIView *)helpControllerHelpView:(FDHelpController *)helpController
@@ -326,10 +328,10 @@
     textView.textColor = [UIColor whiteColor];
     
     NSMutableString *text = [NSMutableString string];
-    FDDetailViewController *detailViewController = [self selectedDetailViewController];
-    if (detailViewController != nil) {
-        [text appendString:[detailViewController helpText]];
-    } else {
+    if (_currentDetailViewController != nil) {
+        [text appendString:[_currentDetailViewController helpText]];
+    } else
+    if (self.navigationController.visibleViewController == self) {
         [text appendString:[self helpText]];
     }
     [text appendString:@"\n\nTap '?' to hide or show this help message."];
@@ -340,57 +342,21 @@
     return textView;
 }
 
-- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
+- (void)detailViewControllerDidAppear:(FDDetailViewController *)detailViewController
 {
-    [self unconfigureDetailView];
-    return YES;
-}
+    _currentDetailViewController = detailViewController;
 
-- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
-{
-    if ([viewController isKindOfClass:[FDDetailViewController class]]) {
-        [self configureDetailView];
-    } else
-    if (viewController == self.tabBarController.moreNavigationController) {
-        self.tabBarController.moreNavigationController.delegate = self;
-    }
-}
-
-- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
-    [self configureDetailView];
-}
-
-- (FDDetailViewController *)selectedDetailViewController
-{
-    id viewController = self.tabBarController.selectedViewController;
-    if (viewController == self.tabBarController.moreNavigationController) {
-        return nil;
-    }
-    if ([viewController isKindOfClass:[FDDetailViewController class]]) {
-        return (FDDetailViewController *)viewController;
-    }
-    return nil;
-}
-
-- (void)configureDetailView
-{
-    FDDetailViewController *detailViewController = [self selectedDetailViewController];
-    if (detailViewController == nil) {
-        return;
-    }
     detailViewController.device = _device;
     [detailViewController configureView];
     NSString *className = NSStringFromClass([detailViewController class]);
-    NSLog(@"configure %@", className);
-    
-    [_helpController autoShowHelp:className];
+    [self.tabBarController.helpController autoShowHelp:className];
 }
 
-- (void)unconfigureDetailView
+- (void)detailViewControllerDidDisappear:(FDDetailViewController *)detailViewController
 {
-    FDDetailViewController *detailViewController = [self selectedDetailViewController];
-    detailViewController.device = nil;
-    NSLog(@"unconfigure %@", NSStringFromClass([detailViewController class]));
+    _currentDetailViewController.device = nil;
+    
+    _currentDetailViewController = nil;
 }
 
 @end
