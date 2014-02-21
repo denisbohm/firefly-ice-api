@@ -10,6 +10,7 @@ static const float LOW_LEVEL = 0.25;     // 25%
 static const float WARNING_LEVEL = 0.1;  // 10%
 
 @interface FDBatteryView()
+@property CGSize fgImageSize;
 @property (nonatomic, strong) UIImageView* foregroundLayer;
 @property (nonatomic, strong) UIImageView* backgroundLayer;
 @end
@@ -19,7 +20,10 @@ static const float WARNING_LEVEL = 0.1;  // 10%
 @synthesize foregroundLayer, backgroundLayer;
 @synthesize minimum, maximum, animate;
 
-#pragma mark - Custom Properties
+- (CGSize)intrinsicContentSize
+{
+    return _fgImageSize;
+}
 
 - (NSUInteger) currentValue {
     return currentValue_;
@@ -83,8 +87,14 @@ static const float WARNING_LEVEL = 0.1;  // 10%
     maximum = 100;
     animate = YES;
     
+    [self setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+    [self setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    [self setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+    [self setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    
     // the foreground is the battery shell
     UIImage* fgImage = [[UIImage alloc] initWithContentsOfFile: [[NSBundle mainBundle] pathForResource: @"battery" ofType:@"png"]];
+    _fgImageSize = fgImage.size;
     foregroundLayer = [[UIImageView alloc] initWithImage: fgImage];
     foregroundLayer.hidden = NO;
     foregroundLayer.opaque = NO;

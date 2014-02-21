@@ -19,9 +19,7 @@
     UIBarButtonItem *helpButtonItem = [_helpController makeBarButtonItem];
     self.navigationItem.rightBarButtonItems = @[helpButtonItem, self.navigationItem.rightBarButtonItem];
     
-    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
-        [self.moreNavigationController.navigationBar setHidden:YES];
-    }
+    [self.moreNavigationController.navigationBar setHidden:YES];
 }
 
 @end

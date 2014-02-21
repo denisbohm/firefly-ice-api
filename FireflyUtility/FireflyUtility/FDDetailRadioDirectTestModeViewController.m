@@ -13,18 +13,20 @@
 
 @interface FDDetailRadioDirectTestModeViewController ()
 
-@property IBOutlet UISegmentedControl *mode;
-
-@property IBOutlet UISegmentedControl *type;
-
-@property IBOutlet UISlider *length;
-@property IBOutlet UILabel *lengthLabel;
-
 @property IBOutlet UISlider *frequency;
 @property IBOutlet UILabel *frequencyLabel;
 
 @property IBOutlet UISlider *duration;
 @property IBOutlet UILabel *durationLabel;
+
+@property IBOutlet UISegmentedControl *mode;
+
+@property IBOutlet UILabel *typeTitle;
+@property IBOutlet UISegmentedControl *type;
+
+@property IBOutlet UILabel *lengthTitle;
+@property IBOutlet UISlider *length;
+@property IBOutlet UILabel *lengthLabel;
 
 @property IBOutlet UILabel *reportLabel;
 
@@ -66,8 +68,12 @@
     
     FDDirectTestModeCommand command = (_mode.selectedSegmentIndex == 0) ? FDDirectTestModeCommandTransmitterTest : FDDirectTestModeCommandReceiverTest;
     BOOL isTransmitMode = command == FDDirectTestModeCommandTransmitterTest;
-    [_type setEnabled:isTransmitMode];
-    [_length setEnabled:isTransmitMode];
+    [_typeTitle setHidden:!isTransmitMode];
+    [_type setHidden:!isTransmitMode];
+    [_lengthTitle setHidden:!isTransmitMode];
+    [_length setHidden:!isTransmitMode];
+    [_lengthLabel setHidden:!isTransmitMode];
+    [_reportLabel setHidden:isTransmitMode];
 }
 
 - (unsigned)packetLength
