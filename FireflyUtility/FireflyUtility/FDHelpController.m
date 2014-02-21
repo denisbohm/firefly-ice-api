@@ -41,26 +41,36 @@
         return;
     }
     
-    UIView *helpView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
+    CGRect frame = self.viewController.view.frame;
+    frame.origin.x = 0;
+    frame.origin.y = 0;
+    if (
+        [self.viewController respondsToSelector:@selector(edgesForExtendedLayout)] &&
+        (self.viewController.edgesForExtendedLayout & UIRectEdgeTop)
+    ) {
+        CGFloat barHeight = [[UIApplication sharedApplication] statusBarFrame].size.height;
+        id rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+        if ([rootViewController isKindOfClass:[UINavigationController class]]) {
+            UINavigationController *navigationController = (UINavigationController *)rootViewController;
+            if (!navigationController.navigationBarHidden) {
+                barHeight += navigationController.navigationBar.frame.size.height;
+            }
+        }
+        frame.size.height -= barHeight;
+    }
     
-    UIView *translucentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
+    UIView *helpView = [[UIView alloc] initWithFrame:frame];
+    
+    UIView *translucentView = [[UIView alloc] initWithFrame:frame];
     [translucentView setBackgroundColor:[UIColor blackColor]];
     [translucentView setAlpha:0.8];
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.frame = helpView.frame;
+    button.frame = frame;
     [button addTarget:self action:@selector(hideHelpOverlay) forControlEvents:UIControlEventTouchUpInside];
     
-    CGRect barFrame = [[UIApplication sharedApplication] statusBarFrame];
-    id rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
-    if ([rootViewController isKindOfClass:[UINavigationController class]]) {
-        UINavigationController *navigationController = (UINavigationController *)rootViewController;
-        if (!navigationController.navigationBarHidden) {
-            barFrame.size.height += navigationController.navigationBar.frame.size.height;
-        }
-    }
     UIView *contentView = [_delegate helpControllerHelpView:self];
-    [contentView setFrame:CGRectMake(0, barFrame.size.height, 320, 480 - barFrame.size.height)];
+    contentView.frame = frame;
     
     [translucentView addSubview:button];
     [helpView addSubview:translucentView];
@@ -68,7 +78,7 @@
     
     self.helpView = helpView;
     helpView.alpha = 0.0;
-    [self.parentView addSubview:helpView];
+    [self.viewController.view addSubview:helpView];
     [UIView animateWithDuration:0.5
                           delay:delay
                         options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionTransitionNone

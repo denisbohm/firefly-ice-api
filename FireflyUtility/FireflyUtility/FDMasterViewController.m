@@ -143,13 +143,12 @@
     _fireflyIceManager = [FDFireflyIceManager managerWithDelegate:self];
     _devices = [NSMutableArray array];
     
-    // !!! just for testing -denis
     [_devices addObject:[self makeShamDevice]];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    _helpController.parentView = self.view.superview;
+    _helpController.viewController = self;
     [_helpController autoShowHelp:NSStringFromClass([self class])];
 }
 
@@ -324,6 +323,7 @@
 - (UIView *)helpControllerHelpView:(FDHelpController *)helpController
 {
     UILabel *textView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
+    textView.backgroundColor = UIColor.clearColor;
     [textView setLineBreakMode:NSLineBreakByWordWrapping];
     textView.textColor = [UIColor whiteColor];
     

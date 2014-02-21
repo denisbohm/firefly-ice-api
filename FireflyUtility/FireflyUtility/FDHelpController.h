@@ -19,7 +19,7 @@
 @interface FDHelpController : NSObject
 
 @property id<FDHelpControllerDelegate> delegate;
-@property UIView *parentView;
+@property UIViewController *viewController;
 
 - (UIBarButtonItem *)makeBarButtonItem;
 

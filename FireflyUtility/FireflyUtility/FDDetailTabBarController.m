@@ -15,7 +15,7 @@
     [super awakeFromNib];
     
     _helpController = [[FDHelpController alloc] init];
-    _helpController.parentView = self.view;
+    _helpController.viewController = self;
     UIBarButtonItem *helpButtonItem = [_helpController makeBarButtonItem];
     self.navigationItem.rightBarButtonItems = @[helpButtonItem, self.navigationItem.rightBarButtonItem];
     
