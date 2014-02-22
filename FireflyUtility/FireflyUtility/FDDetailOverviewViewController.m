@@ -13,6 +13,8 @@
 
 @interface FDDetailOverviewViewController ()
 
+@property NSUInteger maxNameLength;
+
 @property IBOutlet UITextField *nameTextField;
 @property IBOutlet UILabel *hardwareIdLabel;
 @property IBOutlet UILabel *hardwareRevisionLabel;
@@ -40,6 +42,8 @@
 {
     [super viewDidLoad];
 
+    _maxNameLength = 8;
+    
     [self.controls addObject:_nameTextField];
     [self.controls addObject:_updateButton];
     
@@ -107,11 +111,33 @@
     [_nameTextField setBorderStyle:UITextBorderStyleRoundedRect];
 }
 
+- (IBAction)editingChangedName:(id)sender
+{
+    NSString *text = _nameTextField.text;
+    if (text.length > _maxNameLength) {
+        NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:text];
+        NSDictionary *attributes = @{
+                                     NSBackgroundColorAttributeName:[UIColor redColor],
+                                     NSForegroundColorAttributeName:[UIColor whiteColor],
+                                     };
+        [attributedText setAttributes:attributes range:NSMakeRange(_maxNameLength, text.length - _maxNameLength)];
+        _nameTextField.attributedText = attributedText;
+    } else {
+        _nameTextField.attributedText = nil;
+        _nameTextField.text = text;
+    }
+}
+
 - (IBAction)endEditingName:(id)sender
 {
     [_nameTextField setBorderStyle:UITextBorderStyleNone];
     
-    [self updateName:_nameTextField.text];
+    NSString *name = _nameTextField.text;
+    if (name.length > _maxNameLength) {
+        name = [name substringToIndex:_maxNameLength];
+    }
+    
+    [self updateName:name];
 }
 
 - (IBAction)doneName:(id)sender

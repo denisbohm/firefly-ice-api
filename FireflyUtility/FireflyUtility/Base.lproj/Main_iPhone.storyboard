@@ -192,6 +192,7 @@
                                         <connections>
                                             <action selector="beginEditingName:" destination="H6e-73-opa" eventType="editingDidBegin" id="Ats-nc-duv"/>
                                             <action selector="doneName:" destination="H6e-73-opa" eventType="editingDidEndOnExit" id="Wh5-NV-Zlc"/>
+                                            <action selector="editingChangedName:" destination="H6e-73-opa" eventType="editingChanged" id="8VR-0d-tVQ"/>
                                             <action selector="endEditingName:" destination="H6e-73-opa" eventType="editingDidEnd" id="8Ij-zl-Qgs"/>
                                         </connections>
                                     </textField>

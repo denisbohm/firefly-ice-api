@@ -50,7 +50,7 @@
 
 - (void)abortTasks:(NSMutableArray *)tasks
 {
-    for (id<FDExecutorTask> task in tasks) {
+    for (id<FDExecutorTask> task in [tasks copy]) {
         [self abortTask:task];
     }
     [tasks removeAllObjects];
