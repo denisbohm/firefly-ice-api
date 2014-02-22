@@ -57,9 +57,28 @@
     return string;
 }
 
+- (void)unconfigureView
+{
+    _nameTextField.text = @"-";
+    
+    _hardwareRevisionLabel.text = @"-";
+    _vendorAndProductLabel.text = @"-";
+    _hardwareIdLabel.text = @"-";
+    
+    _bootRevisionLabel.text = @"-";
+    
+    _firmwareRevisionLabel.text = @"-";
+    
+    _debugLockLabel.text = @"-";
+}
+
 - (void)configureView
 {
     FDFireflyIceCollector *collector = self.device[@"collector"];
+    if (collector.dictionary.count == 0) {
+        [self unconfigureView];
+        return;
+    }
     
     _nameTextField.text = [collector objectForKey:@"name"];
     

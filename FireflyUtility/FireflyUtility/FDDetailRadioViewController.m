@@ -35,9 +35,18 @@
     [self.controls addObject:_setTxPowerButton];
 }
 
+- (void)unconfigureView
+{
+    [_txPowerLevel setSelectedSegmentIndex:3];
+}
+
 - (void)configureView
 {
     FDFireflyIceCollector *collector = self.device[@"collector"];
+    if (collector.dictionary.count == 0) {
+        [self unconfigureView];
+        return;
+    }
     
     NSNumber *txPower = [collector objectForKey:@"txPower"];
     if (txPower != nil) {

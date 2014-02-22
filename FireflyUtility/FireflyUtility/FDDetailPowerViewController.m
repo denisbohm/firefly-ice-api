@@ -30,9 +30,28 @@
     ;
 }
 
+- (void)unconfigureView
+{
+    _batteryView.currentValue = 0;
+    _levelLabel.text = @"-";
+    
+    _voltageLabel.text = @"-";
+    
+    _temperatureLabel.text = @"-";
+    
+    _usbLabel.text = @"-";
+    
+    _chargingLabel.text = @"-";
+}
+
 - (void)configureView
 {
     FDFireflyIceCollector *collector = self.device[@"collector"];
+    if (collector.dictionary.count == 0) {
+        [self unconfigureView];
+        return;
+    }
+
     FDFireflyIcePower *power = [collector objectForKey:@"power"];
     
     NSUInteger level = (NSUInteger)(power.batteryLevel * 100);

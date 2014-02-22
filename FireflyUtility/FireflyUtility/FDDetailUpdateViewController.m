@@ -52,9 +52,19 @@
     _currentVersionLabel.text = [NSString stringWithFormat:@"v%@.%@.%@", _intelHex.properties[@"major"] , _intelHex.properties[@"minor"], _intelHex.properties[@"patch"]];
 }
 
+- (void)unconfigureView
+{
+    _deviceVersionLabel.text = @"-";
+}
+
 - (void)configureView
 {
     FDFireflyIceCollector *collector = self.device[@"collector"];
+    if (collector.dictionary.count == 0) {
+        [self unconfigureView];
+        return;
+    }
+
     FDFireflyIceVersion *version = [collector objectForKey:@"version"];
     _deviceVersionLabel.text = [NSString stringWithFormat:@"v%d.%d.%d", version.major, version.minor, version.patch];
 }

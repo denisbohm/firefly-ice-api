@@ -39,11 +39,22 @@
     [self.controls addObject:_resetButton];
 }
 
+- (void)unconfigureView
+{
+    _causeLabel.text = @"-";
+    _dateLabel.text = @"-";
+}
+
 #define JAN_1_2014 1388534400
 
 - (void)configureView
 {
     FDFireflyIceCollector *collector = self.device[@"collector"];
+    if (collector.dictionary.count == 0) {
+        [self unconfigureView];
+        return;
+    }
+
     FDFireflyIceReset *reset = [collector objectForKey:@"reset"];
 
     NSString *cause = [reset description];

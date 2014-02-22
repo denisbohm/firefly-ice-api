@@ -45,11 +45,20 @@
     [self.controls addObject:_setTimeButton];
 }
 
+- (void)unconfigureView
+{
+    _timeLabel.text = @"-";
+}
+
 #define JAN_1_2014 1388534400
 
 - (void)configureView
 {
     FDFireflyIceCollector *collector = self.device[@"collector"];
+    if (collector.dictionary.count == 0) {
+        [self unconfigureView];
+        return;
+    }
     
     FDFireflyIceCollectorEntry *entry = collector.dictionary[@"time"];
     NSDate *time = entry.object;
