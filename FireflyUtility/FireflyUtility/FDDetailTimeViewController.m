@@ -76,7 +76,7 @@
 - (IBAction)setTime:(id)sender
 {
     FDFireflyIce *fireflyIce = self.device[@"fireflyIce"];
-    id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
+    id<FDFireflyIceChannel> channel = self.device[@"channel"];
     [fireflyIce.coder sendSetPropertyTime:channel time:[NSDate date]];
 }
 

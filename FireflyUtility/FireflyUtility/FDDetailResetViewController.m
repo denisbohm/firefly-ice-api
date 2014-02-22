@@ -73,7 +73,7 @@
     uint8_t type = _typeSegmentedControl.selectedSegmentIndex + 1;
     
     FDFireflyIce *fireflyIce = self.device[@"fireflyIce"];
-    id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
+    id<FDFireflyIceChannel> channel = self.device[@"channel"];
     
     [fireflyIce.coder sendReset:channel type:type];
 }

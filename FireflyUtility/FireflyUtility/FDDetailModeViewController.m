@@ -45,7 +45,7 @@
 - (IBAction)enterStorageMode:(id)sender
 {
     FDFireflyIce *fireflyIce = self.device[@"fireflyIce"];
-    id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
+    id<FDFireflyIceChannel> channel = self.device[@"channel"];
     
     [fireflyIce.coder sendSetPropertyMode:channel mode:FD_CONTROL_MODE_STORAGE];
 }

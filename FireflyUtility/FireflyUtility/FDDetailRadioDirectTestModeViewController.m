@@ -101,13 +101,12 @@
 - (IBAction)startDirectTestMode:(id)sender
 {
     FDFireflyIce *fireflyIce = self.device[@"fireflyIce"];
-    
-    id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
+    id<FDFireflyIceChannel> channel = self.device[@"channel"];
     
     FDDirectTestModeCommand command = (_mode.selectedSegmentIndex == 0) ? FDDirectTestModeCommandTransmitterTest : FDDirectTestModeCommandReceiverTest;
     uint8_t frequency = [self packetFrequencyCode];
     uint8_t length = [self packetLength];
-    FDDirectTestModePacketType type = _type.selectedSegmentIndex;
+    FDDirectTestModePacketType type = (FDDirectTestModePacketType)_type.selectedSegmentIndex;
     uint16_t packet = [FDFireflyIceCoder makeDirectTestModePacket:command frequency:frequency length:length type:type];
     
     NSTimeInterval duration = [self testDuration] * 60;

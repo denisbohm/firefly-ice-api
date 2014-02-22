@@ -103,7 +103,7 @@
 - (void)updateName:(NSString *)name
 {
     FDFireflyIce *fireflyIce = self.device[@"fireflyIce"];
-    id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
+    id<FDFireflyIceChannel> channel = self.device[@"channel"];
     [fireflyIce.coder sendSetPropertyName:channel name:name];
 }
 

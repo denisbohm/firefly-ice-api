@@ -23,7 +23,10 @@
 #import "FDFireflyIce.h"
 #import "FDFireflyIceChannel.h"
 #import "FDFireflyIceChannelBLE.h"
+#if !TARGET_OS_IPHONE
 #import "FDFireflyIceChannelUSB.h"
+#endif
+#import "FDFireflyIceChannelMock.h"
 #import "FDFireflyIceCoder.h"
 #import "FDFireflyIceTaskSteps.h"
 #import "FDHelloTask.h"

@@ -37,7 +37,7 @@
     
     NSUInteger level = (NSUInteger)(power.batteryLevel * 100);
     _batteryView.currentValue = level;
-    _levelLabel.text = [NSString stringWithFormat:@"%u%%", level];
+    _levelLabel.text = [NSString stringWithFormat:@"%lu%%", (unsigned long)level];
     
     _voltageLabel.text = [NSMutableString stringWithFormat:@"%0.1fV", power.batteryVoltage];
     

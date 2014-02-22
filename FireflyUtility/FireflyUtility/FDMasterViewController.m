@@ -13,7 +13,8 @@
 #import "FDMasterViewController.h"
 
 #import <FireflyDevice/FDFireflyIce.h>
-#import <FireflyDevice/FDFireflyIceChannelBLE.h>
+#import <FireflyDevice/FDFireflyIceDeviceMock.h>
+#import <FireflyDevice/FDFireflyIceChannelMock.h>
 #import <FireflyDevice/FDFireflyIceCoder.h>
 #import <FireflyDevice/FDFireflyIceManager.h>
 
@@ -23,7 +24,7 @@
 #import <IOBluetooth/IOBluetooth.h>
 #endif
 
-@interface FDMasterViewController () <FDFireflyIceManagerDelegate, FDFireflyIceObserver, FDHelpControllerDelegate, FDDetailViewControllerDelegate>
+@interface FDMasterViewController () <FDFireflyIceManagerDelegate, FDHelpControllerDelegate>
 
 @property FDDetailTabBarController *tabBarController;
 @property FDHelpController *helpController;
@@ -31,9 +32,6 @@
 @property FDFireflyIceManager *fireflyIceManager;
 
 @property NSMutableArray *devices;
-@property(nonatomic) NSMutableDictionary *device;
-
-@property FDDetailViewController *currentDetailViewController;
 
 @end
 
@@ -53,82 +51,26 @@
 {
     return
     @"Select a Firefly Ice device from the list to interact with it.\n\n"
-    @"If you don't have a device yet but want to explore the interface select the 'Sham' device."
+    @"If you don't have a device yet but want to explore the interface select the 'Mock' device."
     ;
 }
 
-- (NSMutableDictionary *)makeShamDevice
+- (NSMutableDictionary *)makeMockDevice
 {
-    FDFireflyIce *fireflyIce = [[FDFireflyIce alloc] init];
-    fireflyIce.name = @"Sham 43216789-BC01-F900";
+    FDFireflyIceDeviceMock *device = [[FDFireflyIceDeviceMock alloc] init];
 
+    FDFireflyIce *fireflyIce = [[FDFireflyIce alloc] init];
+    fireflyIce.name = device.name;
+
+    FDFireflyIceChannelMock *channel = [[FDFireflyIceChannelMock alloc] init];
+    channel.device = device;
+    [fireflyIce addChannel:channel type:channel.name];
+    
     FDFireflyIceCollector *collector = [[FDFireflyIceCollector alloc] init];
     collector.fireflyIce = fireflyIce;
-    
-    [collector setEntry:@"name" object:@"Firefly"];
-    
-    FDFireflyIceVersion *version = [[FDFireflyIceVersion alloc] init];
-    version.major = 1;
-    version.minor = 0;
-    version.patch = 10;
-    version.capabilities = FD_CONTROL_CAPABILITY_LOCK |
-        FD_CONTROL_CAPABILITY_BOOT_VERSION |
-        FD_CONTROL_CAPABILITY_SYNC_FLAGS |
-        FD_CONTROL_CAPABILITY_SYNC_AHEAD |
-        FD_CONTROL_CAPABILITY_IDENTIFY |
-        FD_CONTROL_CAPABILITY_LOGGING |
-        FD_CONTROL_CAPABILITY_DIAGNOSTICS;
-    [collector setEntry:@"version" object:version];
-    
-    FDFireflyIceVersion *bootVersion = [[FDFireflyIceVersion alloc] init];
-    bootVersion.major = 1;
-    bootVersion.minor = 2;
-    bootVersion.patch = 3;
-    [collector setEntry:@"bootVersion" object:bootVersion];
-    
-    FDFireflyIceHardwareId *hardwareId = [[FDFireflyIceHardwareId alloc] init];
-    hardwareId.vendor = 0x2333;
-    hardwareId.product = 0x0002;
-    hardwareId.major = 1;
-    hardwareId.minor = 3;
-    uint8_t bytes[8] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
-    hardwareId.unique = [NSData dataWithBytes:bytes length:sizeof(bytes)];
-    [collector setEntry:@"hardwareId" object:hardwareId];
-    
-    [collector setEntry:@"debugLock" object:[NSNumber numberWithBool:NO]];
-    
-    [collector setEntry:@"time" object:[NSDate dateWithTimeIntervalSinceNow:-1.2]];
-    
-    FDFireflyIcePower *power = [[FDFireflyIcePower alloc] init];
-    power.batteryLevel = 0.87;
-    power.batteryVoltage = 4.05;
-    power.isUSBPowered = YES;
-    power.isCharging = YES;
-    power.chargeCurrent = 0.017;
-    power.temperature = 19.8;
-    [collector setEntry:@"power" object:power];
-    
-    FDFireflyIceReset *reset = [[FDFireflyIceReset alloc] init];
-    reset.cause = 64;
-    reset.date = [NSDate dateWithTimeIntervalSinceNow:-7 * 24 * 60 *60];
-    [collector setEntry:@"reset" object:reset];
-    
-    FDFireflyIceStorage *storage = [[FDFireflyIceStorage alloc] init];
-    storage.pageCount = 0;
-    [collector setEntry:@"storage" object:storage];
-    
-    [collector setEntry:@"txPower" object:[NSNumber numberWithInt:2]];
-    
-    FDFireflyIceDirectTestModeReport *report = [[FDFireflyIceDirectTestModeReport alloc] init];
-    report.packetCount = 0x8000 | 1081;
-    [collector setEntry:@"directTestModeReport" object:report];
-    
-    /*
-    @"fireflyIce:channel:site:",
-    @"fireflyIce:channel:sensing:",
-    */
-    
-    return [NSMutableDictionary dictionaryWithDictionary:@{@"fireflyIce":fireflyIce, @"collector":collector}];
+    collector.channel = channel;
+
+    return [NSMutableDictionary dictionaryWithDictionary:@{@"fireflyIce":fireflyIce, @"channel":channel, @"collector":collector}];
 }
 
 - (void)viewDidLoad
@@ -143,7 +85,7 @@
     _fireflyIceManager = [FDFireflyIceManager managerWithDelegate:self];
     _devices = [NSMutableArray array];
     
-    [_devices addObject:[self makeShamDevice]];
+    [_devices addObject:[self makeMockDevice]];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -168,9 +110,12 @@
 {
     NSMutableDictionary *dictionary = [manager dictionaryFor:fireflyIce key:@"fireflyIce"];
     
+    id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
+    dictionary[@"channel"] = channel;
+    
     FDFireflyIceCollector *collector = [[FDFireflyIceCollector alloc] init];
     collector.fireflyIce = fireflyIce;
-    collector.channel = fireflyIce.channels[@"BLE"];
+    collector.channel = channel;
     dictionary[@"collector"] = collector;
     
     [_devices insertObject:dictionary atIndex:0];
@@ -194,17 +139,6 @@
     NSIndexPath *indexPath = [self indexPathForFireflyIce:fireflyIce];
     if (indexPath != nil) {
         [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    }
-}
-
-- (IBAction)connect:(id)sender
-{
-    FDFireflyIce *fireflyIce = _device[@"fireflyIce"];
-    id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
-    if (channel.status == FDFireflyIceChannelStatusClosed) {
-        [_fireflyIceManager connectBLE:fireflyIce];
-    } else {
-        [_fireflyIceManager disconnectBLE:fireflyIce];
     }
 }
 
@@ -237,60 +171,7 @@
 {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         NSMutableDictionary *device = _devices[indexPath.row];
-        self.device = device;
-    }
-}
-
-- (void)configureConnectButton
-{
-    NSString *title = @"Connect";
-    FDFireflyIce *fireflyIce = _device[@"fireflyIce"];
-    id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
-    switch (channel.status) {
-        case FDFireflyIceChannelStatusClosed:
-            title = @"Connect";
-            break;
-        case FDFireflyIceChannelStatusOpening:
-            title = @"Cancel";
-            break;
-        case FDFireflyIceChannelStatusOpen:
-            title = @"Disconnect";
-            break;
-    }
-    UIBarButtonItem *connect = self.tabBarController.navigationItem.rightBarButtonItem;
-    UIButton *connectButton = (UIButton *)connect.customView;
-    [connectButton setTitle:title forState:UIControlStateNormal];
-    [connectButton setEnabled:channel != nil];
-}
-
-- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel status:(FDFireflyIceChannelStatus)status
-{
-    [self configureConnectButton];
-    if (status == FDFireflyIceChannelStatusOpen) {
-        NSMutableDictionary *device = [_fireflyIceManager dictionaryFor:fireflyIce key:@"fireflyIce"];
-        if (device != nil) {
-            FDFireflyIceCollector *collector = device[@"collector"];
-            [fireflyIce.executor execute:collector];
-        }
-    }
-}
-
-- (void)fireflyIceManager:(FDFireflyIceManager *)manager identified:(FDFireflyIce *)fireflyIce
-{
-//    [fireflyIce.executor execute:[FDSyncTask syncTask:fireflyIce channel:fireflyIce.channels[@"BLE"]]];
-}
-
-- (void)setDevice:(NSMutableDictionary *)device
-{
-    if (_device != device) {
-        FDFireflyIce *fireflyIce = _device[@"fireflyIce"];
-        [fireflyIce.observable removeObserver:self];
-        
-        _device = device;
-        fireflyIce = _device[@"fireflyIce"];
-        [fireflyIce.observable addObserver:self];
-        
-        [self configureConnectButton];
+        self.tabBarController.device = device;
     }
 }
 
@@ -300,23 +181,10 @@
         FDDetailTabBarController *tabBarController = (FDDetailTabBarController *)segue.destinationViewController;
         if (tabBarController != self.tabBarController) {
             self.tabBarController = tabBarController;
-            tabBarController.helpController.delegate = self;
-            
-            UIBarButtonItem *connect = tabBarController.navigationItem.rightBarButtonItem;
-            UIButton *connectButton = (UIButton *)connect.customView;
-            [connectButton addTarget:self action:@selector(connect:) forControlEvents:UIControlEventTouchUpInside];
-            [self configureConnectButton];
-            
-            for (UIViewController *viewController in tabBarController.viewControllers) {
-                if ([viewController isKindOfClass:[FDDetailViewController class]]) {
-                    FDDetailViewController *detailViewController = (FDDetailViewController *)viewController;
-                    detailViewController.delegate = self;
-                }
-            }
+            self.tabBarController.fireflyIceManager = _fireflyIceManager;
         }
-        
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        self.device = _devices[indexPath.row];
+        tabBarController.device = _devices[indexPath.row];
     }
 }
 
@@ -327,36 +195,13 @@
     [textView setLineBreakMode:NSLineBreakByWordWrapping];
     textView.textColor = [UIColor whiteColor];
     
-    NSMutableString *text = [NSMutableString string];
-    if (_currentDetailViewController != nil) {
-        [text appendString:[_currentDetailViewController helpText]];
-    } else
-    if (self.navigationController.visibleViewController == self) {
-        [text appendString:[self helpText]];
-    }
-    [text appendString:@"\n\nTap '?' to hide or show this help message."];
+    NSMutableString *text = [NSMutableString stringWithString:[self helpText]];
+    [text appendString:@"\n\nTouch the information button at the top right to hide or show this message."];
     textView.text = text;
     
     textView.numberOfLines = 0;
     [textView sizeToFit];
     return textView;
-}
-
-- (void)detailViewControllerDidAppear:(FDDetailViewController *)detailViewController
-{
-    _currentDetailViewController = detailViewController;
-
-    detailViewController.device = _device;
-    [detailViewController configureView];
-    NSString *className = NSStringFromClass([detailViewController class]);
-    [self.tabBarController.helpController autoShowHelp:className];
-}
-
-- (void)detailViewControllerDidDisappear:(FDDetailViewController *)detailViewController
-{
-    _currentDetailViewController.device = nil;
-    
-    _currentDetailViewController = nil;
 }
 
 @end

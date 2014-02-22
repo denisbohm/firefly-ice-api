@@ -10,8 +10,11 @@
 
 #import "FDHelpController.h"
 
+#import <FireflyDevice/FDFireflyIceManager.h>
+
 @interface FDDetailTabBarController : UITabBarController
 
-@property FDHelpController *helpController;
+@property FDFireflyIceManager *fireflyIceManager;
+@property(nonatomic) NSMutableDictionary *device;
 
 @end

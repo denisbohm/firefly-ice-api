@@ -39,8 +39,7 @@
 
 - (void)configureButtons
 {
-    FDFireflyIce *fireflyIce = _device[@"fireflyIce"];
-    id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
+    id<FDFireflyIceChannel> channel = self.device[@"channel"];
     BOOL enabled = channel.status == FDFireflyIceChannelStatusOpen;
     for (UIButton *control in _controls) {
         [control setEnabled:enabled];

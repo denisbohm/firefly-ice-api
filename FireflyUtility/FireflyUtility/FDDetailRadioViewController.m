@@ -49,7 +49,7 @@
 - (IBAction)setTxPower:(id)sender
 {
     FDFireflyIce *fireflyIce = self.device[@"fireflyIce"];
-    id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
+    id<FDFireflyIceChannel> channel = self.device[@"channel"];
     
     uint8_t level = _txPowerLevel.selectedSegmentIndex;
     [fireflyIce.coder sendSetPropertyTxPower:channel level:level];

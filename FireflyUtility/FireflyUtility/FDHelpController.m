@@ -28,11 +28,16 @@
 
 - (UIBarButtonItem *)makeBarButtonItem
 {
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeInfoLight];
+    [button addTarget:self action:@selector(help:) forControlEvents:UIControlEventTouchUpInside];
+    return [[UIBarButtonItem alloc] initWithCustomView:button];
+    /*
     return [[UIBarButtonItem alloc]
             initWithImage:[UIImage imageNamed:@"help"]
             style:UIBarButtonItemStylePlain
             target:self
             action:@selector(help:)];
+     */
 }
 
 - (void)showHelpOverlay:(NSTimeInterval)delay completion:(void (^)(BOOL finished))completion

@@ -154,7 +154,7 @@
 - (IBAction)startIndicatorsOverride:(id)sender
 {
     FDFireflyIce *fireflyIce = self.device[@"fireflyIce"];
-    id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
+    id<FDFireflyIceChannel> channel = self.device[@"channel"];
     
     uint32_t rgb = [self toRGB:_usbButton.color];
     uint8_t usbRed = (rgb >> 16) & 0xff;
