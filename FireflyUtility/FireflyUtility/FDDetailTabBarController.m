@@ -29,6 +29,11 @@
 {
     [super awakeFromNib];
     
+    UIBarButtonItem *connect = self.navigationItem.rightBarButtonItem;
+    UIButton *connectButton = (UIButton *)connect.customView;
+    [connectButton addTarget:self action:@selector(connect:) forControlEvents:UIControlEventTouchUpInside];
+    [self configureConnectButton];
+    
     _helpController = [[FDHelpController alloc] init];
     _helpController.delegate = self;
     _helpController.viewController = self;
@@ -37,11 +42,6 @@
     
     [self.moreNavigationController.navigationBar setHidden:YES];
 
-    UIBarButtonItem *connect = self.navigationItem.rightBarButtonItem;
-    UIButton *connectButton = (UIButton *)connect.customView;
-    [connectButton addTarget:self action:@selector(connect:) forControlEvents:UIControlEventTouchUpInside];
-    [self configureConnectButton];
-    
     for (UIViewController *viewController in self.viewControllers) {
         if ([viewController isKindOfClass:[FDDetailViewController class]]) {
             FDDetailViewController *detailViewController = (FDDetailViewController *)viewController;
