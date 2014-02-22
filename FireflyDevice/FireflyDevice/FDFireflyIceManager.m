@@ -27,7 +27,8 @@
 {
     FDFireflyIceManager *manager = [[FDFireflyIceManager alloc] init];
     manager.delegate = delegate;
-    manager.centralManager = [[CBCentralManager alloc] initWithDelegate:manager queue:nil];
+    manager.centralManagerDispatchQueue = dispatch_queue_create("com.fireflydesign.FireflyUtility.centralManagerDispatchQueue", NULL);;
+    manager.centralManager = [[CBCentralManager alloc] initWithDelegate:manager queue:manager.centralManagerDispatchQueue];
     return manager;
 }
 
@@ -153,10 +154,10 @@
     return NO;
 }
 
-- (void)centralManager:(CBCentralManager *)central
- didDiscoverPeripheral:(CBPeripheral *)peripheral
-     advertisementData:(NSDictionary *)advertisementData
-                  RSSI:(NSNumber *)RSSI
+- (void)onMainCentralManager:(CBCentralManager *)central
+       didDiscoverPeripheral:(CBPeripheral *)peripheral
+           advertisementData:(NSDictionary *)advertisementData
+                        RSSI:(NSNumber *)RSSI
 {
     if (![self isFireflyIce:advertisementData[CBAdvertisementDataServiceUUIDsKey]]) {
         return;
@@ -193,7 +194,18 @@
     [_delegate fireflyIceManager:self discovered:fireflyIce];
 }
 
-- (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral
+- (void)centralManager:(CBCentralManager *)central
+ didDiscoverPeripheral:(CBPeripheral *)peripheral
+     advertisementData:(NSDictionary *)advertisementData
+                  RSSI:(NSNumber *)RSSI
+{
+    __weak FDFireflyIceManager *weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [weakSelf onMainCentralManager:central didDiscoverPeripheral:peripheral advertisementData:advertisementData RSSI:RSSI];
+    });
+}
+
+- (void)onMainCentralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral
 {
     NSMutableDictionary *dictionary = [self dictionaryForPeripheral:peripheral];
     FDFireflyIce *fireflyIce = dictionary[@"fireflyIce"];
@@ -201,12 +213,28 @@
     [channel didConnectPeripheral];
 }
 
-- (void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error
+- (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral
+{
+    __weak FDFireflyIceManager *weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [weakSelf onMainCentralManager:central didConnectPeripheral:peripheral];
+    });
+}
+
+- (void)onMainCentralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error
 {
     NSMutableDictionary *dictionary = [self dictionaryForPeripheral:peripheral];
     FDFireflyIce *fireflyIce = dictionary[@"fireflyIce"];
     FDFireflyIceChannelBLE *channel = fireflyIce.channels[@"BLE"];
     [channel didDisconnectPeripheralError:error];
+}
+
+- (void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error
+{
+    __weak FDFireflyIceManager *weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [weakSelf onMainCentralManager:central didDisconnectPeripheral:peripheral error:error];
+    });
 }
 
 - (void)connectBLE:(FDFireflyIce *)fireflyIce

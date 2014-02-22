@@ -137,6 +137,8 @@
         name = [name substringToIndex:_maxNameLength];
     }
     
+    FDFireflyIceCollector *collector = self.device[@"collector"];
+    [collector setEntry:@"name" object:name];
     [self updateName:name];
 }
 

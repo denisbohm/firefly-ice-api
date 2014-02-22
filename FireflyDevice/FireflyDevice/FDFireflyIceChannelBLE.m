@@ -122,7 +122,7 @@
 
 - (void)didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 {
-    //    FDFireflyDeviceLogDebug(@"didWriteValueForCharacteristic %@", error);
+//    FDFireflyDeviceLogDebug(@"didWriteValueForCharacteristic %@", error);
     _writePending = NO;
     [self checkWrite];
 }
@@ -138,7 +138,6 @@
 - (void)didUpdateValueForCharacteristic:(NSData *)value error:(NSError *)error
 {
 //    FDFireflyDeviceLogDebug(@"didUpdateValueForCharacteristic %@ %@", value, error);
-//    NSLog(@"cv2 %@", value);
     [_detour detourEvent:value];
     if (_detour.state == FDDetourStateSuccess) {
         if ([_delegate respondsToSelector:@selector(fireflyIceChannelPacket:data:)]) {
@@ -157,7 +156,6 @@
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 {
     NSData *data = characteristic.value;
-//    NSLog(@"cv1 %@", data);
     __FDWeak FDFireflyIceChannelBLE *weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         [weakSelf didUpdateValueForCharacteristic:data error:error];
@@ -186,10 +184,8 @@
 
 - (void)didDiscoverServices:(NSError *)error
 {
-//    FDFireflyDeviceLogDebug(@"didDiscoverServices %@", peripheral.name);
     for (CBService *service in _peripheral.services) {
-//        FDFireflyDeviceLogDebug(@"didDiscoverService %@", service.UUID);
-        FDFireflyDeviceLogDebug(@"didDiscoverService %@", [FDFireflyIceChannelBLE CBUUIDString:service.UUID]);
+//        FDFireflyDeviceLogDebug(@"didDiscoverService %@", [FDFireflyIceChannelBLE CBUUIDString:service.UUID]);
         if ([service.UUID isEqual:_serviceUUID]) {
             [_peripheral discoverCharacteristics:nil/*@[_characteristicUUID]*/ forService:service];
         }

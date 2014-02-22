@@ -75,7 +75,7 @@
     [button addTarget:self action:@selector(hideHelpOverlay) forControlEvents:UIControlEventTouchUpInside];
     
     UIView *contentView = [_delegate helpControllerHelpView:self];
-    contentView.frame = frame;
+    contentView.frame = CGRectMake(frame.origin.x + 20, frame.origin.y + 20, frame.size.width - 40, frame.size.height - 40);
     
     [translucentView addSubview:button];
     [helpView addSubview:translucentView];

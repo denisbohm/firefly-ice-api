@@ -40,6 +40,7 @@
 
 @property id<FDFireflyIceManagerDelegate> delegate;
 
+@property dispatch_queue_t centralManagerDispatchQueue;
 @property CBCentralManager *centralManager;
 
 - (void)scan:(BOOL)allowDuplicates;

@@ -38,7 +38,7 @@
     @"The Firefly Ice firmware can be updated over the air.\n\n"
     @"A firmware update has two phases:\n"
     @"1) Transferring the firmware.\n"
-    @"2) Commiting the firmware and restarting.\n\n"
+    @"2) Commiting the firmware and restarting."
     ;
 }
 
