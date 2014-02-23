@@ -201,6 +201,11 @@
     
     NSMutableString *text = [NSMutableString stringWithString:[self helpText]];
     [text appendString:@"\n\nTouch the information button at the top right to hide or show this message."];
+    NSBundle *bundle = [NSBundle mainBundle];
+    NSString *name = [bundle objectForInfoDictionaryKey:@"CFBundleName"];
+    NSString *version = [bundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    NSString *copyright = [bundle objectForInfoDictionaryKey:@"NSHumanReadableCopyright"];
+    [text appendFormat:@"\n\n%@ v%@ %@", name, version, copyright];
     textView.text = text;
     
     textView.numberOfLines = 0;
