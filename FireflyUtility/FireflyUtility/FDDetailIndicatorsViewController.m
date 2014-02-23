@@ -142,7 +142,7 @@
     BOOL result = [color getRed:&r green:&g blue:&b alpha:&a];
     if (!result) {
         CGFloat white = 1.0f;;
-        result = [color getWhite:&white alpha:&a];
+        [color getWhite:&white alpha:&a];
         r = g = b = white;
     }
     uint8_t rb = (uint8_t)round(r * 255);

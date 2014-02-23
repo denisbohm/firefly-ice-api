@@ -57,7 +57,7 @@
     BOOL result = [self.color getHue:&hue saturation:&saturation brightness:&brightness alpha:&alpha];
     if (!result) {
         CGFloat white = 1.0f;
-        result = [self.color getWhite:&white alpha:&alpha];
+        [self.color getWhite:&white alpha:&alpha];
         brightness = white;
     }
     // hue wraps around at 1.0f, we want unique values so keep hue in range [0.0f, 1.0f).

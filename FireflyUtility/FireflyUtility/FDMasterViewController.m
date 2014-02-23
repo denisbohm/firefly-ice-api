@@ -55,9 +55,10 @@
     ;
 }
 
-- (NSMutableDictionary *)makeMockDevice
+- (NSMutableDictionary *)makeMockDevice:(NSString *)name;
 {
     FDFireflyIceDeviceMock *device = [[FDFireflyIceDeviceMock alloc] init];
+    device.name = name;
 
     FDFireflyIce *fireflyIce = [[FDFireflyIce alloc] init];
     fireflyIce.name = device.name;
@@ -84,8 +85,11 @@
 
     _fireflyIceManager = [FDFireflyIceManager managerWithDelegate:self];
     _devices = [NSMutableArray array];
+  
+// For making screen shots in the simulator. -denis
+//    [_devices addObject:[self makeMockDevice:@"Firefly 43216789-BC01-F900"]];
     
-    [_devices addObject:[self makeMockDevice]];
+    [_devices addObject:[self makeMockDevice:@"Mock"]];
 }
 
 - (void)viewDidAppear:(BOOL)animated

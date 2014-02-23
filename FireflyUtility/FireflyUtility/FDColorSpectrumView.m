@@ -45,10 +45,10 @@
 	}
 }
 
-- (CGImageRef)createContentImage
+- (CGImageRef)newContentImage
 {
 	UInt8 imageData[256 * 4];
-	CGContextRef context = [FDColorUtilities createBGRxImageContext:imageData w:256 h:1];
+	CGContextRef context = [FDColorUtilities newBGRxImageContext:imageData w:256 h:1];
 	if (context == nil) {
 		return nil;
     }
@@ -67,7 +67,7 @@
 
 - (void)drawRect:(CGRect)rect
 {
-	CGImageRef image = [self createContentImage];
+	CGImageRef image = [self newContentImage];
 	if (image) {
 		CGContextRef context = UIGraphicsGetCurrentContext();
 		CGContextDrawImage(context, [self bounds], image);

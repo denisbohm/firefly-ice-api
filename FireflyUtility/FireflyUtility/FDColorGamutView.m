@@ -42,7 +42,7 @@ static UInt8 blend(UInt8 value, UInt8 percentIn255)
 	return (UInt8)((int)value * percentIn255 / 255);
 }
 
-- (CGImageRef)createImage
+- (CGImageRef)newImage
 {
 	void *data = nil;
     CGContextRef context = nil;
@@ -52,7 +52,7 @@ static UInt8 blend(UInt8 value, UInt8 percentIn255)
         if (data == nil) {
             return nil;
         }
-        context = [FDColorUtilities createBGRxImageContext:data w:256 h:256];
+        context = [FDColorUtilities newBGRxImageContext:data w:256 h:256];
         if (context == nil) {
             return nil;
         }
@@ -111,7 +111,7 @@ static UInt8 blend(UInt8 value, UInt8 percentIn255)
 
 - (void)updateImage
 {
-    CGImageRef imageRef = [self createImage];
+    CGImageRef imageRef = [self newImage];
     self.image = [UIImage imageWithCGImage:imageRef];
     CGImageRelease(imageRef);
 }

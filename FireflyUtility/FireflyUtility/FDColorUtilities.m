@@ -46,7 +46,7 @@
 	}
 }
 
-+ (CGContextRef)createBGRxImageContext:(void *)data w:(int)w h:(int)h
++ (CGContextRef)newBGRxImageContext:(void *)data w:(int)w h:(int)h
 {
 	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
 	CGBitmapInfo kBGRxBitmapInfo = kCGBitmapByteOrder32Little | kCGImageAlphaNoneSkipFirst;

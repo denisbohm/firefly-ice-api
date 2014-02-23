@@ -43,7 +43,7 @@ __FDRangeLimitValueToRange(FDRange range, CGFloat value)
 
 + (void)hueToComponentFactors:(CGFloat)h r:(CGFloat *)r g:(CGFloat *)g b:(CGFloat *)b;
 
-+ (CGContextRef)createBGRxImageContext:(void *)data w:(int)w h:(int)h;
++ (CGContextRef)newBGRxImageContext:(void *)data w:(int)w h:(int)h;
 
 + (CGFloat)luminance:(UIColor *)color;
 
