@@ -8,8 +8,6 @@
 
 #import "FDAppDelegate.h"
 
-#import <ZamzeeDevice/ZZSyncTask.h>
-
 #import <FireflyDevice/FDBinary.h>
 #import <FireflyDevice/FDFireflyIce.h>
 #import <FireflyDevice/FDFireflyIceChannelBLE.h>
@@ -106,7 +104,7 @@
 
 #endif
 
-@interface FDAppDelegate () <CBCentralManagerDelegate, FDUSBHIDMonitorDelegate, NSTableViewDataSource, FDFireflyIceObserver, FDHelloTaskDelegate, ZZSyncTaskDelegate>
+@interface FDAppDelegate () <CBCentralManagerDelegate, FDUSBHIDMonitorDelegate, NSTableViewDataSource, FDFireflyIceObserver, FDHelloTaskDelegate>
 
 @property NSMutableArray *devices;
 
@@ -132,8 +130,6 @@
 @property CPTScatterPlot *activityPlot;
 @property FDActivityPlotDataSource *activityPlotDataSource;
 #endif
-
-@property ZZSyncTask *syncTask;
 
 @end
 
@@ -172,31 +168,6 @@
         case FDFireflyIceChannelStatusClosed:
             break;
     }
-}
-
-- (void)syncTaskActive:(ZZSyncTask *)syncTask
-{
-    NSLog(@"delegate syncTask active");    
-}
-
-- (void)syncTask:(ZZSyncTask *)syncTask error:(NSError *)error
-{
-    NSLog(@"delegate syncTask error %@", error);
-}
-
-- (void)syncTask:(ZZSyncTask *)syncTask progress:(float)progress
-{
-    NSLog(@"delegate syncTask progress %f", progress);
-}
-
-- (void)syncTaskComplete:(ZZSyncTask *)syncTask
-{
-    NSLog(@"delegate syncTask complete");
-}
-
-- (void)syncTaskInactive:(ZZSyncTask *)syncTask
-{
-    NSLog(@"delegate syncTask inactive");
 }
 
 - (void)helloTaskSuccess:(FDHelloTask *)helloTask

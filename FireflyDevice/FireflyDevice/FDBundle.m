@@ -2,7 +2,7 @@
 //  FDBundle.m
 //  FireflyDevice
 //
-//  Created by scripts/plistToDictionary.sh on Sat Feb 22 19:17:10 CST 2014.
+//  Created by scripts/plistToDictionary.sh on Tue Feb 25 09:34:31 CST 2014.
 //
 
 #import "FDBundle.h"
@@ -19,8 +19,8 @@
 {
     return @{
         @"CFBundleName": @"FireflyDevice",
-        @"CFBundleShortVersionString": @"1.0.10",
-        @"CFBundleVersion": @"10",
+        @"CFBundleShortVersionString": @"1.0.11",
+        @"CFBundleVersion": @"11",
         @"NSHumanReadableCopyright": @"Copyright © 2013 Firefly Design. All rights reserved.",
     };
 }

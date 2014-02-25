@@ -12,6 +12,7 @@
 #import "FDFireflyIceChannelBLE.h"
 #import "FDFireflyIceManager.h"
 #import "FDFirmwareUpdateTask.h"
+#import "FDWeak.h"
 
 @interface FDFireflyIceManager () <FDFireflyIceObserver, FDHelloTaskDelegate>
 
@@ -199,7 +200,7 @@
      advertisementData:(NSDictionary *)advertisementData
                   RSSI:(NSNumber *)RSSI
 {
-    __weak FDFireflyIceManager *weakSelf = self;
+    __FDWeak FDFireflyIceManager *weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         [weakSelf onMainCentralManager:central didDiscoverPeripheral:peripheral advertisementData:advertisementData RSSI:RSSI];
     });
@@ -215,7 +216,7 @@
 
 - (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral
 {
-    __weak FDFireflyIceManager *weakSelf = self;
+    __FDWeak FDFireflyIceManager *weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         [weakSelf onMainCentralManager:central didConnectPeripheral:peripheral];
     });
@@ -231,7 +232,7 @@
 
 - (void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error
 {
-    __weak FDFireflyIceManager *weakSelf = self;
+    __FDWeak FDFireflyIceManager *weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         [weakSelf onMainCentralManager:central didDisconnectPeripheral:peripheral error:error];
     });
