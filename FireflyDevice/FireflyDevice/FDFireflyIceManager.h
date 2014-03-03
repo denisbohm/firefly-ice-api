@@ -36,12 +36,16 @@
 
 @interface FDFireflyIceManager : NSObject <CBCentralManagerDelegate>
 
++ (FDFireflyIceManager *)manager;
 + (FDFireflyIceManager *)managerWithDelegate:(id<FDFireflyIceManagerDelegate>)delegate;
 
 @property id<FDFireflyIceManagerDelegate> delegate;
-
+@property NSString *identifier;
 @property dispatch_queue_t centralManagerDispatchQueue;
 @property CBCentralManager *centralManager;
+
+@property(nonatomic) BOOL active;
+@property(nonatomic) BOOL discovery;
 
 - (void)scan:(BOOL)allowDuplicates;
 

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+#import "FDHardwareId.h"
 #import "FDBundle.h"
 #import "FDBundleManager.h"
 #import "FDFireflyDeviceLogger.h"

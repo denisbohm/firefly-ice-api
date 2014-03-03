@@ -28,9 +28,14 @@
 {
     FDFireflyIceManager *manager = [[FDFireflyIceManager alloc] init];
     manager.delegate = delegate;
-    manager.centralManagerDispatchQueue = dispatch_queue_create("com.fireflydesign.FireflyUtility.centralManagerDispatchQueue", NULL);;
-    manager.centralManager = [[CBCentralManager alloc] initWithDelegate:manager queue:manager.centralManagerDispatchQueue];
+    manager.active = YES;
+    manager.discovery = YES;
     return manager;
+}
+
++ (FDFireflyIceManager *)manager
+{
+    return [[FDFireflyIceManager alloc] init];
 }
 
 - (id)init
@@ -38,8 +43,61 @@
     if (self = [super init]) {
         _serviceUUID = [CBUUID UUIDWithString:@"310a0001-1b95-5091-b0bd-b7a681846399"];
         _dictionaries = [NSMutableArray array];
+        _identifier = @"com.fireflydesign.device.centralManagerDispatchQueue";
     }
     return self;
+}
+
+- (void)activate
+{
+    if (_centralManager == nil) {
+        const char *cIdentifier = [_identifier UTF8String];
+        _centralManagerDispatchQueue = dispatch_queue_create(cIdentifier, DISPATCH_QUEUE_SERIAL);
+        NSDictionary *options = @{
+                                  CBCentralManagerOptionShowPowerAlertKey:@YES,
+#if TARGET_OS_IPHONE
+                                  CBCentralManagerOptionRestoreIdentifierKey:_identifier,
+#endif
+                                  };
+        _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:_centralManagerDispatchQueue options:options];
+        
+    }
+}
+
+- (void)deactivate
+{
+}
+
+- (void)setActive:(BOOL)active
+{
+    if (active == _active) {
+        return;
+    }
+    
+    _active = active;
+    
+    if (_active) {
+        [self activate];
+    } else {
+        [self deactivate];
+    }
+}
+
+- (void)setDiscovery:(BOOL)discovery
+{
+    if (_discovery == discovery) {
+        return;
+    }
+    
+    _discovery = discovery;
+    
+    if (_centralManager.state == CBCentralManagerStatePoweredOn) {
+        if (_discovery) {
+            [self scan:YES];
+        } else {
+            [_centralManager stopScan];
+        }
+    }
 }
 
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel status:(FDFireflyIceChannelStatus)status
@@ -116,7 +174,9 @@
 
 - (void)centralManagerPoweredOn
 {
-    [self scan:YES];
+    if (_discovery) {
+        [self scan:YES];
+    }
 }
 
 - (void)centralManagerDidUpdateState:(CBCentralManager *)central
@@ -155,6 +215,16 @@
     return NO;
 }
 
+#if TARGET_OS_IPHONE
+- (void)centralManager:(CBCentralManager *)centralManager willRestoreState:(NSDictionary *)state
+{
+    NSArray *peripherals = state[CBCentralManagerRestoredStatePeripheralsKey];
+    for (CBPeripheral *peripheral in peripherals) {
+        [self onMainCentralManager:_centralManager didDiscoverPeripheral:peripheral advertisementData:nil RSSI:peripheral.RSSI];
+    }
+}
+#endif
+
 - (void)onMainCentralManager:(CBCentralManager *)central
        didDiscoverPeripheral:(CBPeripheral *)peripheral
            advertisementData:(NSDictionary *)advertisementData
@@ -166,13 +236,15 @@
     
     NSMutableDictionary *dictionary = [self dictionaryForPeripheral:peripheral];
     if (dictionary != nil) {
-        NSDictionary *previousAdvertisementData = dictionary[@"advertisementData"];
-        if (![advertisementData isEqualToDictionary:previousAdvertisementData]) {
-            [dictionary setObject:advertisementData forKey:@"advertisementData"];
-            FDFireflyIce *fireflyIce = dictionary[@"fireflyIce"];
-            fireflyIce.name = [self nameForPeripheral:peripheral advertisementData:advertisementData];
-            if ([_delegate respondsToSelector:@selector(fireflyIceManager:advertisementDataHasChanged:)]) {
-                [_delegate fireflyIceManager:self advertisementDataHasChanged:fireflyIce];
+        if (advertisementData != nil) {
+            NSDictionary *previousAdvertisementData = dictionary[@"advertisementData"];
+            if (![advertisementData isEqualToDictionary:previousAdvertisementData]) {
+                [dictionary setObject:advertisementData forKey:@"advertisementData"];
+                FDFireflyIce *fireflyIce = dictionary[@"fireflyIce"];
+                fireflyIce.name = [self nameForPeripheral:peripheral advertisementData:advertisementData];
+                if ([_delegate respondsToSelector:@selector(fireflyIceManager:advertisementDataHasChanged:)]) {
+                    [_delegate fireflyIceManager:self advertisementDataHasChanged:fireflyIce];
+                }
             }
         }
         return;
