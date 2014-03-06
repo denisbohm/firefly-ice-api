@@ -55,7 +55,7 @@
 		92841AAF17EDF63D005C0E18 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92841A8B17EDF63D005C0E18 /* UIKit.framework */; };
 		92841AB717EDF63D005C0E18 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 92841AB517EDF63D005C0E18 /* InfoPlist.strings */; };
 		92841AB917EDF63D005C0E18 /* FireflyUtilityTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 92841AB817EDF63D005C0E18 /* FireflyUtilityTests.m */; };
-		92841AD017EDF7CA005C0E18 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92841ACF17EDF7CA005C0E18 /* CoreBluetooth.framework */; };
+		92841AD017EDF7CA005C0E18 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92841ACF17EDF7CA005C0E18 /* CoreBluetooth.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		92841AD117EDF7F7005C0E18 /* libFireflyDevice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92841ACC17EDF7BB005C0E18 /* libFireflyDevice.a */; };
 		928BF64817F2818000370B91 /* FDDetailTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 928BF64717F2818000370B91 /* FDDetailTabBarController.m */; };
 		92949D3918A5CAE400FD815F /* FDColorPicker_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92949D3818A5CAE400FD815F /* FDColorPicker_iPhone.xib */; };

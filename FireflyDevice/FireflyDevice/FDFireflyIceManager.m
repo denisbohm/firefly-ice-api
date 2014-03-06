@@ -53,13 +53,16 @@
     if (_centralManager == nil) {
         const char *cIdentifier = [_identifier UTF8String];
         _centralManagerDispatchQueue = dispatch_queue_create(cIdentifier, DISPATCH_QUEUE_SERIAL);
-        NSDictionary *options = @{
-                                  CBCentralManagerOptionShowPowerAlertKey:@YES,
+        NSMutableDictionary *options = [NSMutableDictionary dictionary];
+        if ([[_centralManager class] instancesRespondToSelector:@selector(initWithDelegate:queue:options:)]) {
 #if TARGET_OS_IPHONE
-                                  CBCentralManagerOptionRestoreIdentifierKey:_identifier,
+            [options setObject:_identifier forKey:CBCentralManagerOptionRestoreIdentifierKey];
 #endif
-                                  };
-        _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:_centralManagerDispatchQueue options:options];
+            [options setObject:@YES forKey:CBCentralManagerOptionShowPowerAlertKey];
+            _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:_centralManagerDispatchQueue options:options];
+        } else {
+            _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:_centralManagerDispatchQueue];
+        }
         
     }
 }
@@ -197,10 +200,18 @@
 
 - (NSString *)nameForPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData
 {
+    NSString *UUIDString = nil;
 #if TARGET_OS_IPHONE
-    NSString *UUIDString = [peripheral.identifier UUIDString];
+    if ([peripheral respondsToSelector:@selector(identifier)]) {
+        UUIDString = [peripheral.identifier UUIDString];
+    } else {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+        UUIDString = (NSString *)CFBridgingRelease(CFUUIDCreateString(kCFAllocatorDefault, peripheral.UUID));
+#pragma GCC diagnostic pop
+    }
 #else
-    NSString *UUIDString = (NSString *)CFBridgingRelease(CFUUIDCreateString(kCFAllocatorDefault, peripheral.UUID));
+    UUIDString = (NSString *)CFBridgingRelease(CFUUIDCreateString(kCFAllocatorDefault, peripheral.UUID));
 #endif
     return [NSString stringWithFormat:@"%@ %@", advertisementData[CBAdvertisementDataLocalNameKey], UUIDString];
 }

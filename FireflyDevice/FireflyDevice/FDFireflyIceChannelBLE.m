@@ -85,7 +85,10 @@
 
 - (void)shutdown
 {
-    if ((_peripheral.state == CBPeripheralStateConnected) && (_characteristic != nil)) {
+    if (
+        (![_peripheral respondsToSelector:@selector(state)] || (_peripheral.state == CBPeripheralStateConnected)) &&
+        (_characteristic != nil)
+    ) {
         [_peripheral setNotifyValue:NO forCharacteristic:_characteristic];
     }
     _characteristic = nil;
