@@ -551,6 +551,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FireflyGame/FireflyGame-Prefix.pch";
 				INFOPLIST_FILE = "FireflyGame/FireflyGame-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/FireflyGame-coxuywofrahwrbhargftbgjuqwps/Build/Products/Debug-iphoneos",
@@ -578,6 +579,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FireflyGame/FireflyGame-Prefix.pch";
 				INFOPLIST_FILE = "FireflyGame/FireflyGame-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/FireflyGame-coxuywofrahwrbhargftbgjuqwps/Build/Products/Debug-iphoneos",

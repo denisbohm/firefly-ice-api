@@ -34,9 +34,15 @@
 
 @implementation FDViewController
 
-- (void)viewDidLoad
+- (SKView *)view
 {
-    [super viewDidLoad];
+    NSArray *subviews = _subviews;
+    return subviews.firstObject;
+}
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
 
     SKView *skView = (SKView *)self.view;
 //    skView.showsFPS = YES;
@@ -183,26 +189,6 @@
     if ([syncTask.identifier isEqualToString:_syncIdentifier]) {
         [_playScene syncError:error];
     }
-}
-
-- (BOOL)shouldAutorotate
-{
-    return YES;
-}
-
-- (NSUInteger)supportedInterfaceOrientations
-{
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        return UIInterfaceOrientationMaskAllButUpsideDown;
-    } else {
-        return UIInterfaceOrientationMaskAll;
-    }
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Release any cached data, images, etc that aren't in use.
 }
 
 @end
