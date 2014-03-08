@@ -1,7 +1,7 @@
 firefly-sync
 ============
 
-Firefly Device Framework/Library for Mac OS X & iOS with sample applications
+Firefly Ice API & Sample Apps
 
 See http://fireflydesign.com for information on the open source Firefly Activity Monitor.
 
