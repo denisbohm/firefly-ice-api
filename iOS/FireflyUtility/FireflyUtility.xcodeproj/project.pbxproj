@@ -39,6 +39,7 @@
 		923C345A189733880068863D /* red_fuel.png in Resources */ = {isa = PBXBuildFile; fileRef = 923C3452189733880068863D /* red_fuel.png */; };
 		923C345B189733880068863D /* red_fuel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 923C3453189733880068863D /* red_fuel@2x.png */; };
 		923C345E18973CFD0068863D /* FDDetailPowerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 923C345D18973CFD0068863D /* FDDetailPowerViewController.m */; };
+		9264BDA618CBBA8B00F8CB3D /* libFireflyDevice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9264BD9B18CBBA5500F8CB3D /* libFireflyDevice.a */; };
 		92841A8817EDF63D005C0E18 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92841A8717EDF63D005C0E18 /* Foundation.framework */; };
 		92841A8A17EDF63D005C0E18 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92841A8917EDF63D005C0E18 /* CoreGraphics.framework */; };
 		92841A8C17EDF63D005C0E18 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92841A8B17EDF63D005C0E18 /* UIKit.framework */; };
@@ -56,7 +57,6 @@
 		92841AB717EDF63D005C0E18 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 92841AB517EDF63D005C0E18 /* InfoPlist.strings */; };
 		92841AB917EDF63D005C0E18 /* FireflyUtilityTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 92841AB817EDF63D005C0E18 /* FireflyUtilityTests.m */; };
 		92841AD017EDF7CA005C0E18 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92841ACF17EDF7CA005C0E18 /* CoreBluetooth.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		92841AD117EDF7F7005C0E18 /* libFireflyDevice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92841ACC17EDF7BB005C0E18 /* libFireflyDevice.a */; };
 		928BF64817F2818000370B91 /* FDDetailTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 928BF64717F2818000370B91 /* FDDetailTabBarController.m */; };
 		92949D3918A5CAE400FD815F /* FDColorPicker_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92949D3818A5CAE400FD815F /* FDColorPicker_iPhone.xib */; };
 		92949D4218A5CB9C00FD815F /* FDColorPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92949D4118A5CB9C00FD815F /* FDColorPickerViewController.m */; };
@@ -82,19 +82,40 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		9211D77C180B32BC00D418B1 /* PBXContainerItemProxy */ = {
+		9264BD9A18CBBA5500F8CB3D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92841AC617EDF7BB005C0E18 /* FireflyDevice.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 929EF4B617EA06580044F6F9;
+			remoteInfo = FireflyDevice.library;
+		};
+		9264BD9C18CBBA5500F8CB3D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92841AC617EDF7BB005C0E18 /* FireflyDevice.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 929EF4C717EA06580044F6F9;
+			remoteInfo = FireflyDeviceTests.library;
+		};
+		9264BD9E18CBBA5500F8CB3D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 92841AC617EDF7BB005C0E18 /* FireflyDevice.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 92DF1393180B01AE00A1B849;
 			remoteInfo = FireflyDevice.framework;
 		};
-		9211D77E180B32BC00D418B1 /* PBXContainerItemProxy */ = {
+		9264BDA018CBBA5500F8CB3D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 92841AC617EDF7BB005C0E18 /* FireflyDevice.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 92DF13A8180B01AE00A1B849;
 			remoteInfo = FireflyDeviceTests.framework;
+		};
+		9264BDA418CBBA8300F8CB3D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92841AC617EDF7BB005C0E18 /* FireflyDevice.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 929EF4B517EA06580044F6F9;
+			remoteInfo = FireflyDevice.library;
 		};
 		92841AB017EDF63D005C0E18 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -103,27 +124,6 @@
 			remoteGlobalIDString = 92841A8317EDF63D005C0E18;
 			remoteInfo = FireflyUtility;
 		};
-		92841ACB17EDF7BB005C0E18 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92841AC617EDF7BB005C0E18 /* FireflyDevice.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 929EF4B617EA06580044F6F9;
-			remoteInfo = FireflyDevice;
-		};
-		92841ACD17EDF7BB005C0E18 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92841AC617EDF7BB005C0E18 /* FireflyDevice.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 929EF4C717EA06580044F6F9;
-			remoteInfo = FireflyDeviceTests;
-		};
-		92841AD217EDF80B005C0E18 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92841AC617EDF7BB005C0E18 /* FireflyDevice.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 929EF4B517EA06580044F6F9;
-			remoteInfo = FireflyDevice;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -131,7 +131,7 @@
 		9209193A18B5A02300CB1ECC /* help@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "help@2x.png"; sourceTree = "<group>"; };
 		9209194018B5A15C00CB1ECC /* FDHelpController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDHelpController.h; sourceTree = "<group>"; };
 		9209194118B5A15C00CB1ECC /* FDHelpController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDHelpController.m; sourceTree = "<group>"; };
-		9212D259180B3F2D00576B41 /* FireflyIce.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = FireflyIce.hex; path = ../../FireflyDevice/FireflyDevice/FireflyIce.hex; sourceTree = "<group>"; };
+		9212D259180B3F2D00576B41 /* FireflyIce.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = FireflyIce.hex; path = ../../../FireflyDevice/FireflyDevice/FireflyIce.hex; sourceTree = "<group>"; };
 		921E693118A83A8600E90E5B /* update.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = update.png; sourceTree = "<group>"; };
 		921E693218A83A8600E90E5B /* update@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "update@2x.png"; sourceTree = "<group>"; };
 		921E693518A83B2200E90E5B /* mode.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mode.png; sourceTree = "<group>"; };
@@ -184,7 +184,7 @@
 		92841AB417EDF63D005C0E18 /* FireflyUtilityTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FireflyUtilityTests-Info.plist"; sourceTree = "<group>"; };
 		92841AB617EDF63D005C0E18 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		92841AB817EDF63D005C0E18 /* FireflyUtilityTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FireflyUtilityTests.m; sourceTree = "<group>"; };
-		92841AC617EDF7BB005C0E18 /* FireflyDevice.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FireflyDevice.xcodeproj; path = ../FireflyDevice/FireflyDevice.xcodeproj; sourceTree = "<group>"; };
+		92841AC617EDF7BB005C0E18 /* FireflyDevice.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FireflyDevice.xcodeproj; path = ../../FireflyDevice/FireflyDevice.xcodeproj; sourceTree = "<group>"; };
 		92841ACF17EDF7CA005C0E18 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		928BF64617F2818000370B91 /* FDDetailTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDDetailTabBarController.h; sourceTree = "<group>"; };
 		928BF64717F2818000370B91 /* FDDetailTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDetailTabBarController.m; sourceTree = "<group>"; };
@@ -234,9 +234,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9264BDA618CBBA8B00F8CB3D /* libFireflyDevice.a in Frameworks */,
 				929CD2DC17F7BC54004CE8ED /* libz.dylib in Frameworks */,
 				929CD2DA17F7BC14004CE8ED /* libsqlite3.dylib in Frameworks */,
-				92841AD117EDF7F7005C0E18 /* libFireflyDevice.a in Frameworks */,
 				92841AD017EDF7CA005C0E18 /* CoreBluetooth.framework in Frameworks */,
 				92841A8A17EDF63D005C0E18 /* CoreGraphics.framework in Frameworks */,
 				92841A8C17EDF63D005C0E18 /* UIKit.framework in Frameworks */,
@@ -280,6 +280,17 @@
 				921E693218A83A8600E90E5B /* update@2x.png */,
 			);
 			name = "Detail View Icons";
+			sourceTree = "<group>";
+		};
+		9264BD9418CBBA5500F8CB3D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9264BD9B18CBBA5500F8CB3D /* libFireflyDevice.a */,
+				9264BD9D18CBBA5500F8CB3D /* FireflyDeviceTests.library.octest */,
+				9264BD9F18CBBA5500F8CB3D /* FireflyDevice.framework */,
+				9264BDA118CBBA5500F8CB3D /* FireflyDeviceTests.framework.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		92841A7B17EDF63D005C0E18 = {
@@ -370,17 +381,6 @@
 				92841AB517EDF63D005C0E18 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		92841AC717EDF7BB005C0E18 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				92841ACC17EDF7BB005C0E18 /* libFireflyDevice.a */,
-				92841ACE17EDF7BB005C0E18 /* FireflyDeviceTests.library.octest */,
-				9211D77D180B32BC00D418B1 /* FireflyDevice.framework */,
-				9211D77F180B32BC00D418B1 /* FireflyDeviceTests.framework.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		92949D4F18A5E77500FD815F /* Color Picker */ = {
@@ -476,7 +476,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				92841AD317EDF80B005C0E18 /* PBXTargetDependency */,
+				9264BDA518CBBA8300F8CB3D /* PBXTargetDependency */,
 			);
 			name = FireflyUtility;
 			productName = FireflyUtility;
@@ -537,7 +537,7 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 92841AC717EDF7BB005C0E18 /* Products */;
+					ProductGroup = 9264BD9418CBBA5500F8CB3D /* Products */;
 					ProjectRef = 92841AC617EDF7BB005C0E18 /* FireflyDevice.xcodeproj */;
 				},
 			);
@@ -550,32 +550,32 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		9211D77D180B32BC00D418B1 /* FireflyDevice.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = FireflyDevice.framework;
-			remoteRef = 9211D77C180B32BC00D418B1 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		9211D77F180B32BC00D418B1 /* FireflyDeviceTests.framework.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = FireflyDeviceTests.framework.xctest;
-			remoteRef = 9211D77E180B32BC00D418B1 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		92841ACC17EDF7BB005C0E18 /* libFireflyDevice.a */ = {
+		9264BD9B18CBBA5500F8CB3D /* libFireflyDevice.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libFireflyDevice.a;
-			remoteRef = 92841ACB17EDF7BB005C0E18 /* PBXContainerItemProxy */;
+			remoteRef = 9264BD9A18CBBA5500F8CB3D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		92841ACE17EDF7BB005C0E18 /* FireflyDeviceTests.library.octest */ = {
+		9264BD9D18CBBA5500F8CB3D /* FireflyDeviceTests.library.octest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = FireflyDeviceTests.library.octest;
-			remoteRef = 92841ACD17EDF7BB005C0E18 /* PBXContainerItemProxy */;
+			remoteRef = 9264BD9C18CBBA5500F8CB3D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9264BD9F18CBBA5500F8CB3D /* FireflyDevice.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = FireflyDevice.framework;
+			remoteRef = 9264BD9E18CBBA5500F8CB3D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9264BDA118CBBA5500F8CB3D /* FireflyDeviceTests.framework.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = FireflyDeviceTests.framework.xctest;
+			remoteRef = 9264BDA018CBBA5500F8CB3D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -677,15 +677,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		9264BDA518CBBA8300F8CB3D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FireflyDevice.library;
+			targetProxy = 9264BDA418CBBA8300F8CB3D /* PBXContainerItemProxy */;
+		};
 		92841AB117EDF63D005C0E18 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 92841A8317EDF63D005C0E18 /* FireflyUtility */;
 			targetProxy = 92841AB017EDF63D005C0E18 /* PBXContainerItemProxy */;
-		};
-		92841AD317EDF80B005C0E18 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = FireflyDevice;
-			targetProxy = 92841AD217EDF80B005C0E18 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

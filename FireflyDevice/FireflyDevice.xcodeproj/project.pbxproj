@@ -618,7 +618,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = FD;
-				LastUpgradeCheck = 0460;
+				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Firefly Design";
 				TargetAttributes = {
 					92DF13A7180B01AE00A1B849 = {
@@ -891,7 +891,6 @@
 		929EF4DC17EA06580044F6F9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				DSTROOT = /tmp/FireflyDevice.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FireflyDevice/FireflyDevice-Prefix.pch";
@@ -905,7 +904,6 @@
 		929EF4DD17EA06580044F6F9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				DSTROOT = /tmp/FireflyDevice.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FireflyDevice/FireflyDevice-Prefix.pch";

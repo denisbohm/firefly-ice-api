@@ -2,7 +2,7 @@
 //  FDBundle.m
 //  FireflyDevice
 //
-//  Created by scripts/plistToDictionary.sh on Thu Mar  6 10:29:28 CST 2014.
+//  Created by scripts/plistToDictionary.sh on Sat Mar  8 14:57:09 CST 2014.
 //
 
 #import "FDBundle.h"

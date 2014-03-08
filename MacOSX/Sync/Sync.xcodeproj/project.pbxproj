@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9264BDCC18CBBB9F00F8CB3D /* FireflyDevice.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9264BDC618CBBB6600F8CB3D /* FireflyDevice.framework */; };
+		9264BDCD18CBBBA300F8CB3D /* FireflyDevice.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9264BDC618CBBB6600F8CB3D /* FireflyDevice.framework */; };
 		926D3561170D0FA0001E1966 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 926D3560170D0FA0001E1966 /* Cocoa.framework */; };
 		926D356B170D0FA0001E1966 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 926D3569170D0FA0001E1966 /* InfoPlist.strings */; };
 		926D356D170D0FA0001E1966 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 926D356C170D0FA0001E1966 /* main.m */; };
@@ -19,52 +21,50 @@
 		926D358B170D0FA0001E1966 /* SyncTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 926D358A170D0FA0001E1966 /* SyncTests.m */; };
 		926D3598170D1029001E1966 /* IOBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 926D3597170D1029001E1966 /* IOBluetooth.framework */; };
 		9277AF3B171723D0004DE3FB /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9277AF3A171723D0004DE3FB /* IOKit.framework */; };
-		92DF13F2180B038400A1B849 /* FireflyDevice.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92DF13EF180B035100A1B849 /* FireflyDevice.framework */; };
-		92DF13F5180B039800A1B849 /* FireflyDevice.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 92DF13EF180B035100A1B849 /* FireflyDevice.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		926D3581170D0FA0001E1966 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 926D3555170D0F9F001E1966 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 926D355C170D0FA0001E1966;
-			remoteInfo = Sync;
-		};
-		92DF13EA180B035100A1B849 /* PBXContainerItemProxy */ = {
+		9264BDC118CBBB6600F8CB3D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 92DF13E3180B035100A1B849 /* FireflyDevice.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 929EF4B617EA06580044F6F9;
 			remoteInfo = FireflyDevice.library;
 		};
-		92DF13EC180B035100A1B849 /* PBXContainerItemProxy */ = {
+		9264BDC318CBBB6600F8CB3D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 92DF13E3180B035100A1B849 /* FireflyDevice.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 929EF4C717EA06580044F6F9;
-			remoteInfo = FireflyDeviceTests;
+			remoteInfo = FireflyDeviceTests.library;
 		};
-		92DF13EE180B035100A1B849 /* PBXContainerItemProxy */ = {
+		9264BDC518CBBB6600F8CB3D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 92DF13E3180B035100A1B849 /* FireflyDevice.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 92DF1393180B01AE00A1B849;
 			remoteInfo = FireflyDevice.framework;
 		};
-		92DF13F0180B035100A1B849 /* PBXContainerItemProxy */ = {
+		9264BDC718CBBB6600F8CB3D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 92DF13E3180B035100A1B849 /* FireflyDevice.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 92DF13A8180B01AE00A1B849;
-			remoteInfo = FireflyDeviceTests;
+			remoteInfo = FireflyDeviceTests.framework;
 		};
-		92DF13F3180B038D00A1B849 /* PBXContainerItemProxy */ = {
+		9264BDC918CBBB6E00F8CB3D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 92DF13E3180B035100A1B849 /* FireflyDevice.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 92DF1392180B01AE00A1B849;
 			remoteInfo = FireflyDevice.framework;
+		};
+		926D3581170D0FA0001E1966 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 926D3555170D0F9F001E1966 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 926D355C170D0FA0001E1966;
+			remoteInfo = Sync;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -75,7 +75,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				92DF13F5180B039800A1B849 /* FireflyDevice.framework in CopyFiles */,
+				9264BDCD18CBBBA300F8CB3D /* FireflyDevice.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -103,7 +103,7 @@
 		926D358A170D0FA0001E1966 /* SyncTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SyncTests.m; sourceTree = "<group>"; };
 		926D3597170D1029001E1966 /* IOBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOBluetooth.framework; path = System/Library/Frameworks/IOBluetooth.framework; sourceTree = SDKROOT; };
 		9277AF3A171723D0004DE3FB /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
-		92DF13E3180B035100A1B849 /* FireflyDevice.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FireflyDevice.xcodeproj; path = FireflyDevice/FireflyDevice.xcodeproj; sourceTree = "<group>"; };
+		92DF13E3180B035100A1B849 /* FireflyDevice.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FireflyDevice.xcodeproj; path = ../../FireflyDevice/FireflyDevice.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,7 +111,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				92DF13F2180B038400A1B849 /* FireflyDevice.framework in Frameworks */,
+				9264BDCC18CBBB9F00F8CB3D /* FireflyDevice.framework in Frameworks */,
 				926D3561170D0FA0001E1966 /* Cocoa.framework in Frameworks */,
 				926D3598170D1029001E1966 /* IOBluetooth.framework in Frameworks */,
 				9277AF3B171723D0004DE3FB /* IOKit.framework in Frameworks */,
@@ -130,6 +130,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9264BDBB18CBBB6600F8CB3D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9264BDC218CBBB6600F8CB3D /* libFireflyDevice.a */,
+				9264BDC418CBBB6600F8CB3D /* FireflyDeviceTests.library.octest */,
+				9264BDC618CBBB6600F8CB3D /* FireflyDevice.framework */,
+				9264BDC818CBBB6600F8CB3D /* FireflyDeviceTests.framework.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		926D3554170D0F9F001E1966 = {
 			isa = PBXGroup;
 			children = (
@@ -214,17 +225,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		92DF13E4180B035100A1B849 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				92DF13EB180B035100A1B849 /* libFireflyDevice.a */,
-				92DF13ED180B035100A1B849 /* FireflyDeviceTests.library.octest */,
-				92DF13EF180B035100A1B849 /* FireflyDevice.framework */,
-				92DF13F1180B035100A1B849 /* FireflyDeviceTests.framework.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -240,7 +240,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				92DF13F4180B038D00A1B849 /* PBXTargetDependency */,
+				9264BDCA18CBBB6E00F8CB3D /* PBXTargetDependency */,
 			);
 			name = Sync;
 			productName = Sync;
@@ -293,7 +293,7 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 92DF13E4180B035100A1B849 /* Products */;
+					ProductGroup = 9264BDBB18CBBB6600F8CB3D /* Products */;
 					ProjectRef = 92DF13E3180B035100A1B849 /* FireflyDevice.xcodeproj */;
 				},
 			);
@@ -306,32 +306,32 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		92DF13EB180B035100A1B849 /* libFireflyDevice.a */ = {
+		9264BDC218CBBB6600F8CB3D /* libFireflyDevice.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libFireflyDevice.a;
-			remoteRef = 92DF13EA180B035100A1B849 /* PBXContainerItemProxy */;
+			remoteRef = 9264BDC118CBBB6600F8CB3D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		92DF13ED180B035100A1B849 /* FireflyDeviceTests.library.octest */ = {
+		9264BDC418CBBB6600F8CB3D /* FireflyDeviceTests.library.octest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = FireflyDeviceTests.library.octest;
-			remoteRef = 92DF13EC180B035100A1B849 /* PBXContainerItemProxy */;
+			remoteRef = 9264BDC318CBBB6600F8CB3D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		92DF13EF180B035100A1B849 /* FireflyDevice.framework */ = {
+		9264BDC618CBBB6600F8CB3D /* FireflyDevice.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = FireflyDevice.framework;
-			remoteRef = 92DF13EE180B035100A1B849 /* PBXContainerItemProxy */;
+			remoteRef = 9264BDC518CBBB6600F8CB3D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		92DF13F1180B035100A1B849 /* FireflyDeviceTests.framework.xctest */ = {
+		9264BDC818CBBB6600F8CB3D /* FireflyDeviceTests.framework.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = FireflyDeviceTests.framework.xctest;
-			remoteRef = 92DF13F0180B035100A1B849 /* PBXContainerItemProxy */;
+			remoteRef = 9264BDC718CBBB6600F8CB3D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -394,15 +394,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		9264BDCA18CBBB6E00F8CB3D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FireflyDevice.framework;
+			targetProxy = 9264BDC918CBBB6E00F8CB3D /* PBXContainerItemProxy */;
+		};
 		926D3582170D0FA0001E1966 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 926D355C170D0FA0001E1966 /* Sync */;
 			targetProxy = 926D3581170D0FA0001E1966 /* PBXContainerItemProxy */;
-		};
-		92DF13F4180B038D00A1B849 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = FireflyDevice.framework;
-			targetProxy = 92DF13F3180B038D00A1B849 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
