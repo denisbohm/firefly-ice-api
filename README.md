@@ -1,5 +1,5 @@
-firefly-sync
-============
+firefly-ice-api
+===============
 
 Firefly Ice API & Sample Apps
 
