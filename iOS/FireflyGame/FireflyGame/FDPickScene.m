@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Firefly Design. All rights reserved.
 //
 
+#import "FDPickLayout.h"
 #import "FDPickScene.h"
 
 #import <FireflyDevice/FDFireflyIce.h>
@@ -19,6 +20,7 @@
 @property SKEmitterNode *selected;
 @property SKEmitterNode *closest;
 @property CGRect calculatedFrame;
+@property SKSpriteNode *sprite;
 @property SKLabelNode *label;
 
 @property FDFireflyIce *fireflyIce;
@@ -35,6 +37,8 @@
 @end
 
 @interface FDPickScene ()
+
+@property NSSet *imageNames;
 
 @property SKLabelNode *searchingLabel;
 
@@ -54,6 +58,8 @@
 - (id)initWithSize:(CGSize)size
 {
     if (self = [super initWithSize:size]) {
+        _imageNames = [NSSet setWithArray:@[@"firefly-black", @"firefly-blue", @"firefly-green", @"firefly-pink", @"firefly-yellow"]];
+        
         _spriteByIdentifier = [NSMutableDictionary dictionary];
         
         _x = CGRectGetMidX(self.frame);
@@ -81,21 +87,26 @@
     return [name substringToIndex:range.location];
 }
 
+- (double)blendFactorForSignalStrength:(double)strength
+{
+    return 0.0;
+}
+
 - (void)updateDevices:(NSArray *)fireflyIces
 {
+    FDPickLayout *layout = [[FDPickLayout alloc] init:self.frame.size cellSize:CGSizeMake(50.0f, 72.0f) cellSpace:CGSizeMake(8.0f, 8.0f)];
     double closestStrength = -1000;
     FDDeviceNode *closestNode = nil;
     for (FDFireflyIce *fireflyIce in fireflyIces) {
         _searchingLabel.hidden = YES;
         FDFireflyIceChannelBLE *channel = fireflyIce.channels[@"BLE"];
         NSString *identifier = [channel.peripheral.identifier UUIDString];
-
+        
         NSString *name = [self shortName:fireflyIce.name];
         FDDeviceNode *node = _spriteByIdentifier[identifier];
         if (node == nil) {
             node = [[FDDeviceNode alloc] init];
             node.fireflyIce = fireflyIce;
-            node.position = CGPointMake(_x, _y);
             
             NSString *selectedPath = [[NSBundle mainBundle] pathForResource:@"FDSelectedEmitter" ofType:@"sks"];
             SKEmitterNode *selected = [NSKeyedUnarchiver unarchiveObjectWithFile:selectedPath];
@@ -113,26 +124,31 @@
             node.closest = closest;
             [node addChild:closest];
             
-            SKSpriteNode *sprite = [SKSpriteNode spriteNodeWithImageNamed:@"firefly_green"];
-            sprite.xScale = _scale / 3.0;
-            sprite.yScale = _scale / 3.0;
+            NSString *imageName = [NSString stringWithFormat:@"firefly-%@", [name lowercaseString]];
+            if (![_imageNames containsObject:imageName]) {
+                imageName = @"firefly-orange";
+            }
+            SKSpriteNode *sprite = [SKSpriteNode spriteNodeWithImageNamed:imageName];
+            sprite.color = [SKColor blackColor];
+            sprite.xScale = 1.0;
+            sprite.yScale = 1.0;
             [node addChild:sprite];
+            node.sprite = sprite;
             
             SKLabelNode *label = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
             label.text = name;
             label.fontSize = 12;
             label.color = [UIColor redColor];
             label.position = CGPointMake(0, -(12 + sprite.frame.size.height / 2.0f));
+            label.color = [SKColor blackColor];
             [node addChild:label];
             node.label = label;
             
             [self addChild:node];
             node.calculatedFrame = [node calculateAccumulatedFrame];
             _spriteByIdentifier[identifier] = node;
-            
-            _y -= 24 + sprite.frame.size.height;
-            _scale -= 0.04;
         }
+        node.position = [layout nextPoint];
         node.label.text = name;
         
         double strength = [channel.peripheral.RSSI doubleValue];
@@ -140,6 +156,9 @@
             closestStrength = strength;
             closestNode = node;
         }
+        double blendFactor = [self blendFactorForSignalStrength:strength];
+        node.sprite.colorBlendFactor = blendFactor;
+        node.label.colorBlendFactor = blendFactor;
     }
     
     if (_closestNode != closestNode) {

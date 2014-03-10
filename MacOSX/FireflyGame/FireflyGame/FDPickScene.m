@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Firefly Design. All rights reserved.
 //
 
+#import "FDPickLayout.h"
 #import "FDPickScene.h"
 
 #import <FireflyDevice/FDFireflyIce.h>
@@ -19,6 +20,7 @@
 @property SKEmitterNode *selected;
 @property SKEmitterNode *closest;
 @property CGRect calculatedFrame;
+@property SKSpriteNode *sprite;
 @property SKLabelNode *label;
 
 @property FDFireflyIce *fireflyIce;
@@ -36,12 +38,12 @@
 
 @interface FDPickScene ()
 
+@property NSSet *imageNames;
+
 @property SKLabelNode *searchingLabel;
 
 @property NSMutableDictionary *spriteByIdentifier;
 
-@property CGFloat x;
-@property CGFloat y;
 @property CGFloat scale;
 
 @property FDDeviceNode *closestNode;
@@ -54,10 +56,10 @@
 - (id)initWithSize:(CGSize)size
 {
     if (self = [super initWithSize:size]) {
+        _imageNames = [NSSet setWithArray:@[@"firefly-black", @"firefly-blue", @"firefly-green", @"firefly-pink", @"firefly-yellow"]];
+        
         _spriteByIdentifier = [NSMutableDictionary dictionary];
         
-        _x = CGRectGetMidX(self.frame);
-        _y = CGRectGetHeight(self.frame) - 75;
         _scale = 0.20;
 
         self.backgroundColor = [SKColor colorWithRed:0.15 green:0.15 blue:0.3 alpha:1.0];
@@ -81,8 +83,14 @@
     return [name substringToIndex:range.location];
 }
 
+- (double)blendFactorForSignalStrength:(double)strength
+{
+    return 0.0;
+}
+
 - (void)updateDevices:(NSArray *)fireflyIces
 {
+    FDPickLayout *layout = [[FDPickLayout alloc] init:self.frame.size cellSize:CGSizeMake(50.0f, 72.0f) cellSpace:CGSizeMake(8.0f, 8.0f)];
     double closestStrength = -1000;
     FDDeviceNode *closestNode = nil;
     for (FDFireflyIce *fireflyIce in fireflyIces) {
@@ -95,7 +103,6 @@
         if (node == nil) {
             node = [[FDDeviceNode alloc] init];
             node.fireflyIce = fireflyIce;
-            node.position = CGPointMake(_x, _y);
             
             NSString *selectedPath = [[NSBundle mainBundle] pathForResource:@"FDSelectedEmitter" ofType:@"sks"];
             SKEmitterNode *selected = [NSKeyedUnarchiver unarchiveObjectWithFile:selectedPath];
@@ -113,26 +120,31 @@
             node.closest = closest;
             [node addChild:closest];
             
-            SKSpriteNode *sprite = [SKSpriteNode spriteNodeWithImageNamed:@"firefly-green"];
-            sprite.xScale = _scale / 3.0;
-            sprite.yScale = _scale / 3.0;
+            NSString *imageName = [NSString stringWithFormat:@"firefly-%@", [name lowercaseString]];
+            if (![_imageNames containsObject:imageName]) {
+                imageName = @"firefly-orange";
+            }
+            SKSpriteNode *sprite = [SKSpriteNode spriteNodeWithImageNamed:imageName];
+            sprite.color = [SKColor blackColor];
+            sprite.xScale = 3.0;
+            sprite.yScale = 3.0;
             [node addChild:sprite];
+            node.sprite = sprite;
             
             SKLabelNode *label = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
             label.text = name;
             label.fontSize = 12;
             label.color = [NSColor redColor];
             label.position = CGPointMake(0, -(12 + sprite.frame.size.height / 2.0f));
+            label.color = [SKColor blackColor];
             [node addChild:label];
             node.label = label;
             
             [self addChild:node];
             node.calculatedFrame = [node calculateAccumulatedFrame];
             _spriteByIdentifier[identifier] = node;
-            
-            _y -= 24 + sprite.frame.size.height;
-            _scale -= 0.04;
         }
+        node.position = [layout nextPoint];
         node.label.text = name;
         
         double strength = [channel.peripheral.RSSI doubleValue];
@@ -140,6 +152,9 @@
             closestStrength = strength;
             closestNode = node;
         }
+        double blendFactor = [self blendFactorForSignalStrength:strength];
+        node.sprite.colorBlendFactor = blendFactor;
+        node.label.colorBlendFactor = blendFactor;
     }
     
     if (_closestNode != closestNode) {
@@ -155,11 +170,11 @@
 
 - (FDDeviceNode *)nodeTouched:(NSEvent *)event
 {
-    NSPoint location = [event locationInNode:self];
     for (SKNode *node in self.children) {
         if (![node isKindOfClass:[FDDeviceNode class]]) {
             continue;
         }
+        NSPoint location = [event locationInNode:node];
         CGRect frame = node.frame;
         if (CGRectContainsPoint(frame, location)) {
             FDDeviceNode *deviceNode = (FDDeviceNode *)node;

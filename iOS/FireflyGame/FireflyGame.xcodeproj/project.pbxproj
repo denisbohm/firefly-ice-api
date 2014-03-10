@@ -11,6 +11,11 @@
 		921B3518181B587E00802C9E /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = 921B3516181B587E00802C9E /* spark.png */; };
 		921B351D181B5BE200802C9E /* FDClosestEmitter.sks in Resources */ = {isa = PBXBuildFile; fileRef = 921B351C181B5BE200802C9E /* FDClosestEmitter.sks */; };
 		924A78AC18180BCF00D2D176 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 924A78AB18180BCF00D2D176 /* libz.dylib */; };
+		9254644518CE4853009C0F90 /* FDPickLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 9254644418CE4853009C0F90 /* FDPickLayout.m */; };
+		9254644D18CE4873009C0F90 /* firefly-black.png in Resources */ = {isa = PBXBuildFile; fileRef = 9254644918CE4873009C0F90 /* firefly-black.png */; };
+		9254644E18CE4873009C0F90 /* firefly-orange.png in Resources */ = {isa = PBXBuildFile; fileRef = 9254644A18CE4873009C0F90 /* firefly-orange.png */; };
+		9254644F18CE4873009C0F90 /* firefly-pink.png in Resources */ = {isa = PBXBuildFile; fileRef = 9254644B18CE4873009C0F90 /* firefly-pink.png */; };
+		9254645018CE4873009C0F90 /* firefly-yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 9254644C18CE4873009C0F90 /* firefly-yellow.png */; };
 		9264BDB818CBBB0900F8CB3D /* libFireflyDevice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9264BDAF18CBBAE200F8CB3D /* libFireflyDevice.a */; };
 		92751E5318172BD1003ED73B /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92751E5218172BD1003ED73B /* CoreBluetooth.framework */; };
 		92C26BE01816150800CA6765 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92C26BDF1816150800CA6765 /* Foundation.framework */; };
@@ -87,6 +92,12 @@
 		921B351C181B5BE200802C9E /* FDClosestEmitter.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = FDClosestEmitter.sks; sourceTree = "<group>"; };
 		922931C918C3B98A007F8514 /* FireflyDevice.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FireflyDevice.xcodeproj; path = ../../FireflyDevice/FireflyDevice.xcodeproj; sourceTree = "<group>"; };
 		924A78AB18180BCF00D2D176 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		9254644318CE4853009C0F90 /* FDPickLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDPickLayout.h; sourceTree = "<group>"; };
+		9254644418CE4853009C0F90 /* FDPickLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDPickLayout.m; sourceTree = "<group>"; };
+		9254644918CE4873009C0F90 /* firefly-black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "firefly-black.png"; sourceTree = "<group>"; };
+		9254644A18CE4873009C0F90 /* firefly-orange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "firefly-orange.png"; sourceTree = "<group>"; };
+		9254644B18CE4873009C0F90 /* firefly-pink.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "firefly-pink.png"; sourceTree = "<group>"; };
+		9254644C18CE4873009C0F90 /* firefly-yellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "firefly-yellow.png"; sourceTree = "<group>"; };
 		9259AFEA186632AD0086F634 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libTestFlight.a; path = ../../TestFlightSDK2/libTestFlight.a; sourceTree = "<group>"; };
 		92751E5218172BD1003ED73B /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		92B5FA131817FEDA002A4F73 /* libFireflyDevice.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFireflyDevice.a; path = "../../../../Library/Developer/Xcode/DerivedData/FireflyGame-coxuywofrahwrbhargftbgjuqwps/Build/Products/Debug-iphoneos/libFireflyDevice.a"; sourceTree = "<group>"; };
@@ -202,19 +213,25 @@
 				92C26BF31816150800CA6765 /* Main_iPhone.storyboard */,
 				92C26BF61816150800CA6765 /* Main_iPad.storyboard */,
 				92C26C011816150800CA6765 /* Images.xcassets */,
-				92C26C1F1816180300CA6765 /* firefly-blue.png */,
-				92C26C201816180300CA6765 /* firefly-green.png */,
 				92C26BF01816150800CA6765 /* FDAppDelegate.h */,
 				92C26BF11816150800CA6765 /* FDAppDelegate.m */,
 				92C26BF91816150800CA6765 /* FDViewController.h */,
 				92C26BFA1816150800CA6765 /* FDViewController.m */,
 				92C26BFC1816150800CA6765 /* FDPickScene.h */,
 				92C26BFD1816150800CA6765 /* FDPickScene.m */,
+				9254644318CE4853009C0F90 /* FDPickLayout.h */,
+				9254644418CE4853009C0F90 /* FDPickLayout.m */,
 				92C26C281816205000CA6765 /* FDPlayScene.h */,
 				92C26C291816205000CA6765 /* FDPlayScene.m */,
 				921B351C181B5BE200802C9E /* FDClosestEmitter.sks */,
 				921B3515181B587E00802C9E /* FDSelectedEmitter.sks */,
 				921B3516181B587E00802C9E /* spark.png */,
+				9254644918CE4873009C0F90 /* firefly-black.png */,
+				92C26C1F1816180300CA6765 /* firefly-blue.png */,
+				9254644A18CE4873009C0F90 /* firefly-orange.png */,
+				92C26C201816180300CA6765 /* firefly-green.png */,
+				9254644B18CE4873009C0F90 /* firefly-pink.png */,
+				9254644C18CE4873009C0F90 /* firefly-yellow.png */,
 			);
 			path = FireflyGame;
 			sourceTree = "<group>";
@@ -376,12 +393,16 @@
 				92C26C021816150800CA6765 /* Images.xcassets in Resources */,
 				92C26BF81816150800CA6765 /* Main_iPad.storyboard in Resources */,
 				92C26C241816180300CA6765 /* firefly-blue.png in Resources */,
+				9254644F18CE4873009C0F90 /* firefly-pink.png in Resources */,
 				921B3517181B587E00802C9E /* FDSelectedEmitter.sks in Resources */,
 				92C26BF51816150800CA6765 /* Main_iPhone.storyboard in Resources */,
+				9254644D18CE4873009C0F90 /* firefly-black.png in Resources */,
 				921B351D181B5BE200802C9E /* FDClosestEmitter.sks in Resources */,
 				92C26C251816180300CA6765 /* firefly-green.png in Resources */,
 				92C26BEC1816150800CA6765 /* InfoPlist.strings in Resources */,
+				9254645018CE4873009C0F90 /* firefly-yellow.png in Resources */,
 				92CAB0CC181C51E200A42210 /* FireflyIce.hex in Resources */,
+				9254644E18CE4873009C0F90 /* firefly-orange.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -400,6 +421,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9254644518CE4853009C0F90 /* FDPickLayout.m in Sources */,
 				92C26C2A1816205000CA6765 /* FDPlayScene.m in Sources */,
 				92C26BFE1816150800CA6765 /* FDPickScene.m in Sources */,
 				92C26BF21816150800CA6765 /* FDAppDelegate.m in Sources */,
