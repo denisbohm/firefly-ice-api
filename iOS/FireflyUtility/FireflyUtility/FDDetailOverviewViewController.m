@@ -25,6 +25,8 @@
 
 @property IBOutlet UIButton *updateButton;
 
+@property BOOL isEditing;
+
 @end
 
 @implementation FDDetailOverviewViewController
@@ -113,6 +115,11 @@
 
 - (IBAction)editingChangedName:(id)sender
 {
+    if (_isEditing) {
+        return;
+    }
+    _isEditing = YES;
+    
     NSString *text = _nameTextField.text;
     if (text.length > _maxNameLength) {
         NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:text];
@@ -126,6 +133,8 @@
         _nameTextField.attributedText = nil;
         _nameTextField.text = text;
     }
+    
+    _isEditing = NO;
 }
 
 - (IBAction)endEditingName:(id)sender
