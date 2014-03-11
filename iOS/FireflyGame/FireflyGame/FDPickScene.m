@@ -175,8 +175,8 @@
 - (FDDeviceNode *)nodeTouched:(NSSet *)touches withEvent:(UIEvent *)event
 {
     UITouch *touch = [touches anyObject];
-    CGPoint location = [touch locationInNode:self];
     for (SKNode *node in self.children) {
+        CGPoint location = [touch locationInNode:node];
         if (![node isKindOfClass:[FDDeviceNode class]]) {
             continue;
         }
