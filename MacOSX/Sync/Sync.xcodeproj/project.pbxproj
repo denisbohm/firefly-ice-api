@@ -15,7 +15,6 @@
 		926D3571170D0FA0001E1966 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 926D356F170D0FA0001E1966 /* Credits.rtf */; };
 		926D3574170D0FA0001E1966 /* FDAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 926D3573170D0FA0001E1966 /* FDAppDelegate.m */; };
 		926D3577170D0FA0001E1966 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 926D3575170D0FA0001E1966 /* MainMenu.xib */; };
-		926D357F170D0FA0001E1966 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 926D357E170D0FA0001E1966 /* SenTestingKit.framework */; };
 		926D3580170D0FA0001E1966 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 926D3560170D0FA0001E1966 /* Cocoa.framework */; };
 		926D3588170D0FA0001E1966 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 926D3586170D0FA0001E1966 /* InfoPlist.strings */; };
 		926D358B170D0FA0001E1966 /* SyncTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 926D358A170D0FA0001E1966 /* SyncTests.m */; };
@@ -95,8 +94,7 @@
 		926D3572170D0FA0001E1966 /* FDAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDAppDelegate.h; sourceTree = "<group>"; };
 		926D3573170D0FA0001E1966 /* FDAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FDAppDelegate.m; sourceTree = "<group>"; };
 		926D3576170D0FA0001E1966 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		926D357D170D0FA0001E1966 /* SyncTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SyncTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
-		926D357E170D0FA0001E1966 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		926D357D170D0FA0001E1966 /* SyncTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SyncTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		926D3585170D0FA0001E1966 /* SyncTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SyncTests-Info.plist"; sourceTree = "<group>"; };
 		926D3587170D0FA0001E1966 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		926D3589170D0FA0001E1966 /* SyncTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SyncTests.h; sourceTree = "<group>"; };
@@ -122,7 +120,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				926D357F170D0FA0001E1966 /* SenTestingKit.framework in Frameworks */,
 				926D3580170D0FA0001E1966 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -156,7 +153,7 @@
 			isa = PBXGroup;
 			children = (
 				926D355D170D0FA0001E1966 /* Sync.app */,
-				926D357D170D0FA0001E1966 /* SyncTests.octest */,
+				926D357D170D0FA0001E1966 /* SyncTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -167,7 +164,6 @@
 				926D3560170D0FA0001E1966 /* Cocoa.framework */,
 				926D3597170D1029001E1966 /* IOBluetooth.framework */,
 				9277AF3A171723D0004DE3FB /* IOKit.framework */,
-				926D357E170D0FA0001E1966 /* SenTestingKit.framework */,
 				926D3562170D0FA0001E1966 /* Other Frameworks */,
 			);
 			name = Frameworks;
@@ -263,8 +259,8 @@
 			);
 			name = SyncTests;
 			productName = SyncTests;
-			productReference = 926D357D170D0FA0001E1966 /* SyncTests.octest */;
-			productType = "com.apple.product-type.bundle";
+			productReference = 926D357D170D0FA0001E1966 /* SyncTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -273,6 +269,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = FD;
+				LastTestingUpgradeCheck = 0510;
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Firefly Design";
 				TargetAttributes = {
@@ -454,7 +451,7 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -490,7 +487,7 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -510,8 +507,8 @@
 		926D358F170D0FA0001E1966 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -526,8 +523,8 @@
 		926D3590170D0FA0001E1966 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -544,13 +541,15 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Sync.app/Contents/MacOS/Sync";
 				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\\\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\\\"",
+					"$(inherited)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Sync/Sync-Prefix.pch";
 				INFOPLIST_FILE = "SyncTests/SyncTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
 		};
@@ -559,13 +558,15 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Sync.app/Contents/MacOS/Sync";
 				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\\\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\\\"",
+					"$(inherited)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Sync/Sync-Prefix.pch";
 				INFOPLIST_FILE = "SyncTests/SyncTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
 		};
