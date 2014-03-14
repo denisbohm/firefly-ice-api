@@ -5,36 +5,36 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>459F3D23-88FC-4EEE-9DEE-568DB21C0BF9</string>
+	<string>F756749D-E441-499D-9FB0-8A4A4F73FE27</string>
 	<key>IDESourceControlProjectName</key>
 	<string>FireflyDevice</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>21AD9E61-602F-4B2E-ACB5-DC31C1495232</key>
-		<string>https://github.com/denisbohm/firefly-sync.git</string>
+		<key>3E7F79C4-0063-4B58-9ACB-4DF31CE7EDB4</key>
+		<string>https://github.com/denisbohm/firefly-ice-api.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>FireflyDevice/FireflyDevice.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>21AD9E61-602F-4B2E-ACB5-DC31C1495232</key>
+		<key>3E7F79C4-0063-4B58-9ACB-4DF31CE7EDB4</key>
 		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/denisbohm/firefly-sync.git</string>
+	<string>https://github.com/denisbohm/firefly-ice-api.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>21AD9E61-602F-4B2E-ACB5-DC31C1495232</string>
+	<string>3E7F79C4-0063-4B58-9ACB-4DF31CE7EDB4</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>21AD9E61-602F-4B2E-ACB5-DC31C1495232</string>
+			<string>3E7F79C4-0063-4B58-9ACB-4DF31CE7EDB4</string>
 			<key>IDESourceControlWCCName</key>
-			<string>firefly-sync</string>
+			<string>firefly-ice-api</string>
 		</dict>
 	</array>
 </dict>

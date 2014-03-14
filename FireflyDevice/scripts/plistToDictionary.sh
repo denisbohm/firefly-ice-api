@@ -1,4 +1,11 @@
 #!/bin/sh
+#
+#  plistToDictionary.sh
+#  FireflyDevice
+#
+#  Created by Denis Bohm on 2/14/14.
+#  Copyright (c) 2014 Firefly Design LLC / Denis Bohm. All rights reserved.
+#
 
 if [ -z "$PROJECT_NAME" ]
 then
@@ -15,7 +22,7 @@ echo "//
 //  ${PREFIX}Bundle.m
 //  ${PROJECT_NAME}
 //
-//  Created by $0 on ${NOW}.
+//  Created by $0
 //
 
 #import \"${PREFIX}Bundle.h\"

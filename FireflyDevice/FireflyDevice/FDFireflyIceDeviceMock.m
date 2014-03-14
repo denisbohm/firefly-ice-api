@@ -3,7 +3,7 @@
 //  FireflyDevice
 //
 //  Created by Denis Bohm on 2/22/14.
-//  Copyright (c) 2014 Firefly Design. All rights reserved.
+//  Copyright (c) 2014 Firefly Design LLC / Denis Bohm. All rights reserved.
 //
 
 #import "FDFireflyIceDeviceMock.h"

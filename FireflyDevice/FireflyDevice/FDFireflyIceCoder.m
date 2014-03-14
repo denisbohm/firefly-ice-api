@@ -1,9 +1,9 @@
 //
 //  FDFireflyIceCoder.m
-//  Sync
+//  FireflyDevice
 //
 //  Created by Denis Bohm on 7/19/13.
-//  Copyright (c) 2013 Firefly Design. All rights reserved.
+//  Copyright (c) 2013-2014 Firefly Design LLC / Denis Bohm. All rights reserved.
 //
 
 #import "FDBinary.h"
