@@ -106,6 +106,7 @@
         _sectorSize = 4096;
         _pagesPerSector = _sectorSize / _pageSize;
         _commit = YES;
+        _reset = YES;
     }
     return self;
 }

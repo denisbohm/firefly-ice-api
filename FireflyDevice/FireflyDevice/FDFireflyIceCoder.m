@@ -614,7 +614,7 @@ void putColor(FDBinary *binary, uint32_t color) {
         value.dtmRequest = [binary getUInt16];
         value.dtmData = [binary getUInt16];
         value.bufferCount = [binary getUInt32];
-        binary.getIndex = position + length;
+        binary.getIndex = (uint32_t)(position + length);
         [values addObject:value];
     }
     if (diagnostics.flags & FD_CONTROL_DIAGNOSTICS_BLE_TIMING) {
