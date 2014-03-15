@@ -16,6 +16,9 @@
 
 @property NSTimeInterval maxOffset;
 
+@property NSMutableSet *selectorNames;
+@property uint32_t properties;
+
 @property NSDate *time;
 @property FDFireflyIceReset *reset;
 
@@ -37,46 +40,61 @@
     if (self = [super init]) {
         self.priority = 100;
         _maxOffset = 120;
+        _propertyValues = [NSMutableDictionary dictionary];
+        _selectorNames = [NSMutableSet set];
+        
+        [self queryProperty:FD_CONTROL_PROPERTY_VERSION delegateMethodName:@"fireflyIce:channel:version:"];
+        [self queryProperty:FD_CONTROL_PROPERTY_BOOT_VERSION delegateMethodName:@"fireflyIce:channel:bootVersion:"];
+        [self queryProperty:FD_CONTROL_PROPERTY_HARDWARE_ID delegateMethodName:@"fireflyIce:channel:hardwareId:"];
+        [self queryProperty:FD_CONTROL_PROPERTY_RTC delegateMethodName:@"fireflyIce:channel:time:"];
+        [self queryProperty:FD_CONTROL_PROPERTY_RESET delegateMethodName:@"fireflyIce:channel:reset:"];
     }
     return self;
+}
+
+- (void)queryProperty:(uint32_t)property delegateMethodName:(NSString *)delegateMethodName
+{
+    _properties |= property;
+    [_selectorNames addObject:delegateMethodName];
+}
+
+- (BOOL)respondsToSelector:(SEL)selector {
+    if ([super respondsToSelector:selector]) {
+        return YES;
+    }
+    
+    NSString *selectorName = NSStringFromSelector(selector);
+    return [_selectorNames containsObject:selectorName];
+}
+
+- (void)forwardInvocation:(NSInvocation *)invocation  {
+    SEL selector = invocation.selector;
+    NSString *selectorName = NSStringFromSelector(selector);
+    NSArray *parts = [selectorName componentsSeparatedByString:@":"];
+    NSString *key = parts[2];
+    __unsafe_unretained id object;
+    [invocation getArgument:&object atIndex:4];
+    
+    [_propertyValues setObject:object forKey:key];
 }
 
 - (void)executorTaskStarted:(FDExecutor *)executor
 {
     [super executorTaskStarted:executor];
     
-    [self.fireflyIce.coder sendGetProperties:self.channel properties:FD_CONTROL_PROPERTY_VERSION | FD_CONTROL_PROPERTY_HARDWARE_ID | FD_CONTROL_PROPERTY_RTC | FD_CONTROL_PROPERTY_RESET];
+    [self.fireflyIce.coder sendGetProperties:self.channel properties:_properties];
     [self next:@selector(checkVersion)];
-}
-
-- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel version:(FDFireflyIceVersion *)version
-{
-    fireflyIce.version = version;
-}
-
-- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel bootVersion:(FDFireflyIceVersion *)bootVersion
-{
-    fireflyIce.bootVersion = bootVersion;
-}
-
-- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel hardwareId:(FDFireflyIceHardwareId *)hardwareId
-{
-    fireflyIce.hardwareId = hardwareId;
-}
-
-- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel time:(NSDate *)time
-{
-    _time = time;
-}
-
-- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel reset:(FDFireflyIceReset *)reset
-{
-    _reset = reset;
 }
 
 - (void)checkVersion
 {
-    if ((self.fireflyIce.version == nil) || (self.fireflyIce.hardwareId == nil)) {
+    FDFireflyIceVersion *version = _propertyValues[@"version"];
+    FDFireflyIceHardwareId *hardwareId = _propertyValues[@"hardwareId"];
+    FDFireflyIceVersion *bootVersion = _propertyValues[@"bootVersion"];
+    NSDate *time = _propertyValues[@"time"];
+    FDFireflyIceReset *reset = _propertyValues[@"reset"];
+    
+    if ((version == nil) || (hardwareId == nil)) {
         NSString *description = NSLocalizedString(@"Incomplete information received on initial communication with the device", @"");
         FDFireflyDeviceLogInfo(description);
         [self.channel close];
@@ -88,6 +106,12 @@
         [self.fireflyIce.executor fail:self error:error];
         return;
     }
+    
+    self.fireflyIce.version = version;
+    self.fireflyIce.bootVersion = bootVersion;
+    self.fireflyIce.hardwareId = hardwareId;
+    self.time = time;
+    self.reset = reset;
     
     if (self.fireflyIce.version.capabilities & FD_CONTROL_CAPABILITY_BOOT_VERSION) {
         [self.fireflyIce.coder sendGetProperties:self.channel properties:FD_CONTROL_PROPERTY_BOOT_VERSION];

@@ -31,4 +31,8 @@ enum {
 
 @property id<FDHelloTaskDelegate> delegate;
 
+@property NSMutableDictionary *propertyValues;
+
+- (void)queryProperty:(uint32_t)property delegateMethodName:(NSString *)delegateMethodName;
+
 @end
