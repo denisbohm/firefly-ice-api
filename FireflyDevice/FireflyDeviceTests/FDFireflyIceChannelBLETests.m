@@ -20,7 +20,7 @@
 
 @interface FDFireflyIceChannelBLE (ExposePrivateMethodsUsedForTesting)
 
-- (void)didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error;
+- (void)didUpdateValueForCharacteristic:(NSData *)data error:(NSError *)error;
 
 @end
 
@@ -55,13 +55,9 @@
     NilFireflyIceChannelDelegate *delegate = [[NilFireflyIceChannelDelegate alloc] init];
     channel.delegate = delegate;
     
-    id characteristic = [OCMockObject mockForClass:[CBCharacteristic class]];
     NSData *data = [NSData data];
-    [(CBCharacteristic *)[[characteristic expect] andReturn:data] value];
     
-    [channel didUpdateValueForCharacteristic:characteristic error:nil];
-    
-    [characteristic verify];
+    [channel didUpdateValueForCharacteristic:data error:nil];
 }
 
 @end
