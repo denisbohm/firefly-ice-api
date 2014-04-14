@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FDBinary.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FDIEEE754.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FDFileLog.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FDFireflyDeviceLogger.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FDError.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FDFireflyIce.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FDFireflyIceChannel.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FDExecutor.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FDFireflyIceCoder.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FDTime.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FDString.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FDDetour.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FDDetourSource.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FDFireflyIceTaskSteps.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FDFireflyIceSimpleTask.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FDHelloTask.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FDFirmwareUpdateTask.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FDSyncTask.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FDIntelHex.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FDFireflyIceChannelUSB.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FDCrypto.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FDUsb.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FDBundle.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FDBundleManager.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FireflyDevice.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FDHardwareId.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="picojson.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FDBinary.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FDIEEE754.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FDFileLog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FDFireflyDeviceLogger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FDError.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FDFireflyIce.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FDFireflyIceChannel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FDExecutor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FDFireflyIceCoder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FDTime.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FDString.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FDDetour.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FDDetourSource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FDFireflyIceTaskSteps.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FDFireflyIceSimpleTask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FDHelloTask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FDFirmwareUpdateTask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FDSyncTask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FDIntelHex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FDFireflyIceChannelUSB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FDCrypto.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FDUsb.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FDBundle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FDBundleManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FireflyDevice.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FDHardwareId.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

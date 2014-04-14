@@ -118,6 +118,8 @@ void FDUSBHIDDeviceInputReportCallback(void *context, IOReturn result, void *sen
     
     [_devices removeObject:device];
     [_delegate usbHidMonitor:self deviceRemoved:device];
+    CFRelease(device.hidDeviceRef);
+    device.hidDeviceRef = 0;
 }
 
 static
@@ -132,6 +134,7 @@ void FDUSBHIDMonitorRemovalCallback(void *context, IOReturn result, void *sender
     FDUSBHIDDevice *device = [[FDUSBHIDDevice alloc] init];
     device.monitor = self;
     device.hidDeviceRef = hidDeviceRef;
+    CFRetain(hidDeviceRef);
     [_devices addObject:device];
     
     IOHIDDeviceRegisterRemovalCallback(hidDeviceRef, FDUSBHIDMonitorRemovalCallback, (__bridge void*)device);
