@@ -16,7 +16,7 @@
 #include <sstream>
 #include <string>
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 	class FDFileLog : FDFireflyDeviceLog {
 	public:

@@ -16,7 +16,7 @@
 
 #include <algorithm>
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 	std::string FDFireflyIceVersion::description()
 	{
@@ -208,6 +208,295 @@ namespace fireflydesign {
 		}
 	}
 
+	void FDFireflyIceObservable::except(std::exception e) {
+	}
+
+	void FDFireflyIceObservable::fireflyIceStatus(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, FDFireflyIceChannelStatus status) {
+		std::vector<std::shared_ptr<FDFireflyIceObserver>> observers(_observers);
+		for (std::shared_ptr<FDFireflyIceObserver> observer : observers) {
+			try {
+				observer->fireflyIceStatus(fireflyIce, channel, status);
+			} catch (std::exception e) {
+				except(e);
+			}
+		}
+	}
+	void FDFireflyIceObservable::fireflyIceDetourError(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, std::shared_ptr<FDDetour> detour, std::shared_ptr<FDError> error) {
+		std::vector<std::shared_ptr<FDFireflyIceObserver>> observers(_observers);
+		for (std::shared_ptr<FDFireflyIceObserver> observer : observers) {
+			try {
+				observer->fireflyIceDetourError(fireflyIce, channel, detour, error);
+			}
+			catch (std::exception e) {
+				except(e);
+			}
+		}
+	}
+	void FDFireflyIceObservable::fireflyIcePing(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, std::vector<uint8_t> data) {
+		std::vector<std::shared_ptr<FDFireflyIceObserver>> observers(_observers);
+		for (std::shared_ptr<FDFireflyIceObserver> observer : observers) {
+			try {
+				observer->fireflyIcePing(fireflyIce, channel, data);
+			}
+			catch (std::exception e) {
+				except(e);
+			}
+		}
+	}
+	void FDFireflyIceObservable::fireflyIceVersion(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, FDFireflyIceVersion version) {
+		std::vector<std::shared_ptr<FDFireflyIceObserver>> observers(_observers);
+		for (std::shared_ptr<FDFireflyIceObserver> observer : observers) {
+			try {
+				observer->fireflyIceVersion(fireflyIce, channel, version);
+			}
+			catch (std::exception e) {
+				except(e);
+			}
+		}
+	}
+	void FDFireflyIceObservable::fireflyIceHardwareId(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, FDFireflyIceHardwareId hardwareId) {
+		std::vector<std::shared_ptr<FDFireflyIceObserver>> observers(_observers);
+		for (std::shared_ptr<FDFireflyIceObserver> observer : observers) {
+			try {
+				observer->fireflyIceHardwareId(fireflyIce, channel, hardwareId);
+			}
+			catch (std::exception e) {
+				except(e);
+			}
+		}
+	}
+	void FDFireflyIceObservable::fireflyIceBootVersion(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, FDFireflyIceVersion bootVersion) {
+		std::vector<std::shared_ptr<FDFireflyIceObserver>> observers(_observers);
+		for (std::shared_ptr<FDFireflyIceObserver> observer : observers) {
+			try {
+				observer->fireflyIceBootVersion(fireflyIce, channel, bootVersion);
+			}
+			catch (std::exception e) {
+				except(e);
+			}
+		}
+	}
+	void FDFireflyIceObservable::fireflyIceDebugLock(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, bool debugLock) {
+		std::vector<std::shared_ptr<FDFireflyIceObserver>> observers(_observers);
+		for (std::shared_ptr<FDFireflyIceObserver> observer : observers) {
+			try {
+				observer->fireflyIceDebugLock(fireflyIce, channel, debugLock);
+			}
+			catch (std::exception e) {
+				except(e);
+			}
+		}
+	}
+	void FDFireflyIceObservable::fireflyIceTime(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, time_type time) {
+		std::vector<std::shared_ptr<FDFireflyIceObserver>> observers(_observers);
+		for (std::shared_ptr<FDFireflyIceObserver> observer : observers) {
+			try {
+				observer->fireflyIceTime(fireflyIce, channel, time);
+			}
+			catch (std::exception e) {
+				except(e);
+			}
+		}
+	}
+	void FDFireflyIceObservable::fireflyIcePower(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, FDFireflyIcePower power) {
+		std::vector<std::shared_ptr<FDFireflyIceObserver>> observers(_observers);
+		for (std::shared_ptr<FDFireflyIceObserver> observer : observers) {
+			try {
+				observer->fireflyIcePower(fireflyIce, channel, power);
+			}
+			catch (std::exception e) {
+				except(e);
+			}
+		}
+	}
+	void FDFireflyIceObservable::fireflyIceSite(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, std::string site) {
+		std::vector<std::shared_ptr<FDFireflyIceObserver>> observers(_observers);
+		for (std::shared_ptr<FDFireflyIceObserver> observer : observers) {
+			try {
+				observer->fireflyIceSite(fireflyIce, channel, site);
+			}
+			catch (std::exception e) {
+				except(e);
+			}
+		}
+	}
+	void FDFireflyIceObservable::fireflyIceReset(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, FDFireflyIceReset reset) {
+		std::vector<std::shared_ptr<FDFireflyIceObserver>> observers(_observers);
+		for (std::shared_ptr<FDFireflyIceObserver> observer : observers) {
+			try {
+				observer->fireflyIceReset(fireflyIce, channel, reset);
+			}
+			catch (std::exception e) {
+				except(e);
+			}
+		}
+	}
+	void FDFireflyIceObservable::fireflyIceStorage(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel>channel, FDFireflyIceStorage storage) {
+		std::vector<std::shared_ptr<FDFireflyIceObserver>> observers(_observers);
+		for (std::shared_ptr<FDFireflyIceObserver> observer : observers) {
+			try {
+				observer->fireflyIceStorage(fireflyIce, channel, storage);
+			}
+			catch (std::exception e) {
+				except(e);
+			}
+		}
+	}
+	void FDFireflyIceObservable::fireflyIceMode(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, int mode) {
+		std::vector<std::shared_ptr<FDFireflyIceObserver>> observers(_observers);
+		for (std::shared_ptr<FDFireflyIceObserver> observer : observers) {
+			try {
+				observer->fireflyIceMode(fireflyIce, channel, mode);
+			}
+			catch (std::exception e) {
+				except(e);
+			}
+		}
+	}
+	void FDFireflyIceObservable::fireflyIceTxPower(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, int txPower) {
+		std::vector<std::shared_ptr<FDFireflyIceObserver>> observers(_observers);
+		for (std::shared_ptr<FDFireflyIceObserver> observer : observers) {
+			try {
+				observer->fireflyIceTxPower(fireflyIce, channel, txPower);
+			}
+			catch (std::exception e) {
+				except(e);
+			}
+		}
+	}
+	void FDFireflyIceObservable::fireflyIceLock(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, FDFireflyIceLock lock) {
+		std::vector<std::shared_ptr<FDFireflyIceObserver>> observers(_observers);
+		for (std::shared_ptr<FDFireflyIceObserver> observer : observers) {
+			try {
+				observer->fireflyIceLock(fireflyIce, channel, lock);
+			}
+			catch (std::exception e) {
+				except(e);
+			}
+		}
+	}
+	void FDFireflyIceObservable::fireflyIceLogging(std::shared_ptr<FDFireflyIce>fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, FDFireflyIceLogging logging) {
+		std::vector<std::shared_ptr<FDFireflyIceObserver>> observers(_observers);
+		for (std::shared_ptr<FDFireflyIceObserver> observer : observers) {
+			try {
+				observer->fireflyIceLogging(fireflyIce, channel, logging);
+			}
+			catch (std::exception e) {
+				except(e);
+			}
+		}
+	}
+	void FDFireflyIceObservable::fireflyIceName(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, std::string name) {
+		std::vector<std::shared_ptr<FDFireflyIceObserver>> observers(_observers);
+		for (std::shared_ptr<FDFireflyIceObserver> observer : observers) {
+			try {
+				observer->fireflyIceName(fireflyIce, channel, name);
+			}
+			catch (std::exception e) {
+				except(e);
+			}
+		}
+	}
+	void FDFireflyIceObservable::fireflyIceDiagnostics(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, FDFireflyIceDiagnostics diagnostics) {
+		std::vector<std::shared_ptr<FDFireflyIceObserver>> observers(_observers);
+		for (std::shared_ptr<FDFireflyIceObserver> observer : observers) {
+			try {
+				observer->fireflyIceDiagnostics(fireflyIce, channel, diagnostics);
+			}
+			catch (std::exception e) {
+				except(e);
+			}
+		}
+	}
+	void FDFireflyIceObservable::fireflyIceRetained(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, FDFireflyIceRetained retained) {
+		std::vector<std::shared_ptr<FDFireflyIceObserver>> observers(_observers);
+		for (std::shared_ptr<FDFireflyIceObserver> observer : observers) {
+			try {
+				observer->fireflyIceRetained(fireflyIce, channel, retained);
+			}
+			catch (std::exception e) {
+				except(e);
+			}
+		}
+	}
+	void FDFireflyIceObservable::fireflyIceDirectTestModeReport(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, FDFireflyIceDirectTestModeReport directTestModeReport) {
+		std::vector<std::shared_ptr<FDFireflyIceObserver>> observers(_observers);
+		for (std::shared_ptr<FDFireflyIceObserver> observer : observers) {
+			try {
+				observer->fireflyIceDirectTestModeReport(fireflyIce, channel, directTestModeReport);
+			}
+			catch (std::exception e) {
+				except(e);
+			}
+		}
+	}
+	void FDFireflyIceObservable::fireflyIceExternalHash(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, std::vector<uint8_t> externalHash) {
+		std::vector<std::shared_ptr<FDFireflyIceObserver>> observers(_observers);
+		for (std::shared_ptr<FDFireflyIceObserver> observer : observers) {
+			try {
+				observer->fireflyIceExternalHash(fireflyIce, channel, externalHash);
+			}
+			catch (std::exception e) {
+				except(e);
+			}
+		}
+	}
+	void FDFireflyIceObservable::fireflyIcePageData(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, std::vector<uint8_t> pageData) {
+		std::vector<std::shared_ptr<FDFireflyIceObserver>> observers(_observers);
+		for (std::shared_ptr<FDFireflyIceObserver> observer : observers) {
+			try {
+				observer->fireflyIcePageData(fireflyIce, channel, pageData);
+			}
+			catch (std::exception e) {
+				except(e);
+			}
+		}
+	}
+	void FDFireflyIceObservable::fireflyIceSectorHashes(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, std::vector<FDFireflyIceSectorHash> sectorHashes) {
+		std::vector<std::shared_ptr<FDFireflyIceObserver>> observers(_observers);
+		for (std::shared_ptr<FDFireflyIceObserver> observer : observers) {
+			try {
+				observer->fireflyIceSectorHashes(fireflyIce, channel, sectorHashes);
+			}
+			catch (std::exception e) {
+				except(e);
+			}
+		}
+	}
+	void FDFireflyIceObservable::fireflyIceUpdateCommit(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, FDFireflyIceUpdateCommit updateCommit) {
+		std::vector<std::shared_ptr<FDFireflyIceObserver>> observers(_observers);
+		for (std::shared_ptr<FDFireflyIceObserver> observer : observers) {
+			try {
+				observer->fireflyIceUpdateCommit(fireflyIce, channel, updateCommit);
+			}
+			catch (std::exception e) {
+				except(e);
+			}
+		}
+	}
+	void FDFireflyIceObservable::fireflyIceSensing(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, FDFireflyIceSensing sensing) {
+		std::vector<std::shared_ptr<FDFireflyIceObserver>> observers(_observers);
+		for (std::shared_ptr<FDFireflyIceObserver> observer : observers) {
+			try {
+				observer->fireflyIceSensing(fireflyIce, channel, sensing);
+			}
+			catch (std::exception e) {
+				except(e);
+			}
+		}
+	}
+	void FDFireflyIceObservable::fireflyIceSync(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, std::vector<uint8_t> syncData) {
+		std::vector<std::shared_ptr<FDFireflyIceObserver>> observers(_observers);
+		for (std::shared_ptr<FDFireflyIceObserver> observer : observers) {
+			try {
+				observer->fireflyIceSync(fireflyIce, channel, syncData);
+			}
+			catch (std::exception e) {
+				except(e);
+			}
+		}
+	}
+
 	class FDFireflyIceRep : public FDFireflyIceChannelDelegate {
 	public:
 		FDFireflyIceRep(std::shared_ptr<FDFireflyIce> fireflyIce) {
@@ -222,7 +511,8 @@ namespace fireflydesign {
 
 	FDFireflyIce::FDFireflyIce()
 	{
-		coder = std::make_unique<FDFireflyIceCoder>();
+		observable = std::make_shared<FDFireflyIceObservable>();
+		coder = std::make_unique<FDFireflyIceCoder>(observable);
 		executor = std::make_unique<FDExecutor>();
 		name = "anonymous";
 	}
@@ -252,7 +542,7 @@ namespace fireflydesign {
 
 	void FDFireflyIceRep::fireflyIceChannelStatus(std::shared_ptr<FDFireflyIceChannel> channel, FDFireflyIceChannelStatus status)
 	{
-		fireflyIce->observable.fireflyIceStatus(fireflyIce, channel, status);
+		fireflyIce->observable->fireflyIceStatus(fireflyIce, channel, status);
 
 		fireflyIce->executor->setRun(status == FDFireflyIceChannelStatusOpen);
 	}
@@ -268,7 +558,7 @@ namespace fireflydesign {
 
 	void FDFireflyIceRep::fireflyIceChannelDetourError(std::shared_ptr<FDFireflyIceChannel> channel, std::shared_ptr<FDDetour> detour, std::shared_ptr<FDError> error)
 	{
-		fireflyIce->observable.fireflyIceDetourError(fireflyIce, channel, detour, error);
+		fireflyIce->observable->fireflyIceDetourError(fireflyIce, channel, detour, error);
 	}
 
 }

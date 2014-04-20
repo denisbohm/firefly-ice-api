@@ -8,6 +8,8 @@
 
 #import "FDFireflyDeviceLogger.h"
 
+#include <string.h>
+
 static id<FDFireflyDeviceLog> fireflyDeviceLogger;
 
 @implementation FDFireflyDeviceLogger
@@ -24,6 +26,11 @@ static id<FDFireflyDeviceLog> fireflyDeviceLogger;
 
 + (void)log:(id<FDFireflyDeviceLog>)log file:(char *)file line:(NSUInteger)line class:(Class)class method:(NSString *)method format:(NSString *)format, ...
 {
+    char *short_file = strrchr(file, '/');
+    if (short_file != NULL) {
+        file = short_file + 1;
+    }
+    
     va_list args;
     va_start(args, format);
     NSString *message = [[NSString alloc] initWithFormat:format arguments:args];

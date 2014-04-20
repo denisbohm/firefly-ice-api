@@ -12,7 +12,7 @@
 #include <cstdint>
 #include <vector>
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 	class FDBinary {
 	public:

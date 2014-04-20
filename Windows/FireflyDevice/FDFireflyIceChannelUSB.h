@@ -13,23 +13,23 @@
 
 #include <memory>
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
-	class FDUSBHIDDevice;
+	class FDFireflyIceChannelUSBDevice;
 
-	class FDUSBHIDDeviceDelegate {
+	class FDFireflyIceChannelUSBDeviceDelegate {
 	public:
-		virtual ~FDUSBHIDDeviceDelegate() {}
+		virtual ~FDFireflyIceChannelUSBDeviceDelegate() {}
 
-		virtual void usbHidDeviceReport(std::shared_ptr<FDUSBHIDDevice> device, std::vector<uint8_t> data) = 0;
+		virtual void usbHidDeviceReport(std::shared_ptr<FDFireflyIceChannelUSBDevice> device, std::vector<uint8_t> data) = 0;
 	};
 
-	class FDUSBHIDDevice {
+	class FDFireflyIceChannelUSBDevice {
 	public:
-		virtual ~FDUSBHIDDevice() {}
+		virtual ~FDFireflyIceChannelUSBDevice() {}
 
-		virtual void setDelegate(std::shared_ptr<FDUSBHIDDeviceDelegate> delegate) = 0;
-		virtual std::shared_ptr<FDUSBHIDDeviceDelegate> getDelegate() = 0;
+		virtual void setDelegate(std::shared_ptr<FDFireflyIceChannelUSBDeviceDelegate> delegate) = 0;
+		virtual std::shared_ptr<FDFireflyIceChannelUSBDeviceDelegate> getDelegate() = 0;
 
 		virtual void open() = 0;
 		virtual void close() = 0;
@@ -37,9 +37,9 @@ namespace fireflydesign {
 		virtual void setReport(std::vector<uint8_t> data) = 0;
 	};
 
-	class FDFireflyIceChannelUSB : public FDFireflyIceChannel, public FDUSBHIDDeviceDelegate, public std::enable_shared_from_this<FDFireflyIceChannelUSB> {
+	class FDFireflyIceChannelUSB : public FDFireflyIceChannel, public FDFireflyIceChannelUSBDeviceDelegate, public std::enable_shared_from_this<FDFireflyIceChannelUSB> {
 	public:
-		FDFireflyIceChannelUSB(std::shared_ptr<FDUSBHIDDevice> device);
+		FDFireflyIceChannelUSB(std::shared_ptr<FDFireflyIceChannelUSBDevice> device);
 
 		virtual std::string getName();
 
@@ -57,13 +57,13 @@ namespace fireflydesign {
 		virtual void close();
 
 	public:
-		virtual void usbHidDeviceReport(std::shared_ptr<FDUSBHIDDevice> device, std::vector<uint8_t> data);
+		virtual void usbHidDeviceReport(std::shared_ptr<FDFireflyIceChannelUSBDevice> device, std::vector<uint8_t> data);
 
 	public:
 		std::shared_ptr<FDFireflyDeviceLog> log;
 
 	private:
-		std::shared_ptr<FDUSBHIDDevice> _device;
+		std::shared_ptr<FDFireflyIceChannelUSBDevice> _device;
 		std::shared_ptr<FDFireflyIceChannelDelegate> _delegate;
 		FDFireflyIceChannelStatus _status;
 	public:

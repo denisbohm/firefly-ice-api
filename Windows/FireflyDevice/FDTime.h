@@ -9,7 +9,7 @@
 #ifndef FDTIME_H
 #define FDTIME_H
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 	class FDTime {
 	public:

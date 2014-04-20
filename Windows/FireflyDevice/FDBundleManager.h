@@ -14,7 +14,7 @@
 #include <memory>
 #include <vector>
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 	class FDBundleManager {
 	public:

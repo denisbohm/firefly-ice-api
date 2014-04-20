@@ -13,7 +13,7 @@
 #include <sstream>
 #include <strstream>
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 	std::shared_ptr<FDIntelHex> FDIntelHex::intelHex(std::string hex, uint32_t address, uint32_t length)
 	{

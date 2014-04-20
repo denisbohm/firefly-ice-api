@@ -14,7 +14,7 @@
 #include <memory>
 #include <string>
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 #define FDFireflyDeviceLogError(f, ...) FDFireflyDeviceLogger::log(log, __FILE__, __LINE__, "anon", __FUNCSIG__, f, ##__VA_ARGS__)
 #define FDFireflyDeviceLogWarn(f, ...) FDFireflyDeviceLogger::log(log, __FILE__, __LINE__, "anon", __FUNCSIG__, f, ##__VA_ARGS__)

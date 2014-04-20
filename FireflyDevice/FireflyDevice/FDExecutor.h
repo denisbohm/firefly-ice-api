@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "FDObservable.h"
+
 @protocol FDFireflyDeviceLog;
 @class FDExecutor;
 
@@ -34,9 +36,18 @@ enum {
     FDExecutorErrorCodeTimeout,
 };
 
+@protocol FDExecutorObserver
+@optional
+- (void)executorChanged:(FDExecutor *)executor;
+@end
+
+@interface FDExecutorObservable : FDObservable <FDExecutorObserver>
+@end
+
 @interface FDExecutor : NSObject
 
 @property id<FDFireflyDeviceLog> log;
+@property FDExecutorObservable *observable;
 @property NSTimeInterval timeoutCheckInterval;
 
 @property(nonatomic) BOOL run;

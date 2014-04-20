@@ -11,7 +11,7 @@
 
 #include <cstdint>
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 	class FDIEEE754 {
 	public:

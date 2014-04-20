@@ -14,8 +14,6 @@
 
 @interface FDHelloTask ()
 
-@property NSTimeInterval maxOffset;
-
 @property NSMutableSet *selectorNames;
 @property uint32_t properties;
 
@@ -39,7 +37,8 @@
 {
     if (self = [super init]) {
         self.priority = 100;
-        _maxOffset = 120;
+        _setTimeEnabled = YES;
+        _setTimeTolerance = 120;
         _propertyValues = [NSMutableDictionary dictionary];
         _selectorNames = [NSMutableSet set];
         
@@ -133,12 +132,16 @@
     
     if (_time == nil) {
         FDFireflyDeviceLogInfo(@"time not set for hw %@ fw %@ (last reset %@)", self.fireflyIce.hardwareId, self.fireflyIce.version, _reset);
-        [self setTime];
+        if (_setTimeEnabled) {
+            [self setTime];
+        }
     } else {
         NSTimeInterval offset = [_time timeIntervalSinceDate:[NSDate date]];
-        if (fabs(offset) > _maxOffset) {
+        if (fabs(offset) > _setTimeTolerance) {
             FDFireflyDeviceLogInfo(@"time is off by %0.3f seconds for hw %@ fw %@ (last reset %@)", offset, self.fireflyIce.hardwareId, self.fireflyIce.version, _reset);
-            [self setTime];
+            if (_setTimeEnabled) {
+                [self setTime];
+            }
         } else {
 //            FDFireflyDeviceLogDebug(@"time is off by %0.3f seconds for hw %@ fw %@", offset, self.fireflyIce.hardwareId, self.fireflyIce.version);
         }

@@ -12,7 +12,7 @@
 #include <iomanip>
 #include <iostream>
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 	FDFileLog::FDFileLog() {
 		logLimit = 100000;

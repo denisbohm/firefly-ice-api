@@ -42,6 +42,8 @@
 @interface FDFireflyIceReset : NSObject
 @property uint32_t cause;
 @property NSDate *date;
+
++ (NSString *)causeDescription:(uint32_t)cause;
 @end
 
 @interface FDFireflyIceStorage : NSObject

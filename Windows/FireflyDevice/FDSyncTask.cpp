@@ -26,7 +26,7 @@
 #include <sstream>
 #include <string>
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 	std::shared_ptr<FDSyncTask> FDSyncTask::syncTask(std::string hardwareId, std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, std::shared_ptr<FDSyncTaskDelegate> delegate, std::string identifier)
 	{
@@ -100,7 +100,7 @@ namespace fireflydesign {
 	void FDSyncTask::activate(FDExecutor *executor)
 	{
 		_isActive = true;
-		fireflyIce->observable.addObserver(shared_from_this());
+		fireflyIce->observable->addObserver(shared_from_this());
 
 		if (delegate) {
 			delegate->syncTaskActive(this);
@@ -120,7 +120,7 @@ namespace fireflydesign {
 		}
 
 		_isActive = false;
-		fireflyIce->observable.removeObserver(shared_from_this());
+		fireflyIce->observable->removeObserver(shared_from_this());
 
 		if (delegate) {
 			delegate->syncTaskInactive(this);

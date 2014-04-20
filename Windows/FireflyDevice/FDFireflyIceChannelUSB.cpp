@@ -11,9 +11,9 @@
 #include "FDFireflyIceChannelUSB.h"
 #include "FDFireflyDeviceLogger.h"
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
-	FDFireflyIceChannelUSB::FDFireflyIceChannelUSB(std::shared_ptr<FDUSBHIDDevice> device)
+	FDFireflyIceChannelUSB::FDFireflyIceChannelUSB(std::shared_ptr<FDFireflyIceChannelUSBDevice> device)
 	{
 		_device = device;
 		_detour = std::make_shared<FDDetour>();
@@ -79,11 +79,15 @@ namespace fireflydesign {
 		FDDetourSource source(64, data);
 		std::vector<uint8_t> subdata;
 		while ((subdata = source.next()).size() > 0) {
-			_device->setReport(subdata);
+			std::vector<uint8_t> report;
+			report.push_back(0);
+			report.insert(report.end(), subdata.begin(), subdata.end());
+			report.resize(65);
+			_device->setReport(report);
 		}
 	}
 
-	void FDFireflyIceChannelUSB::usbHidDeviceReport(std::shared_ptr<FDUSBHIDDevice> device, std::vector<uint8_t> data)
+	void FDFireflyIceChannelUSB::usbHidDeviceReport(std::shared_ptr<FDFireflyIceChannelUSBDevice> device, std::vector<uint8_t> data)
 	{
 		//    FDFireflyDeviceLogDebug(@"usbHidDevice:inputReport: %@", data);
 		_detour->detourEvent(data);

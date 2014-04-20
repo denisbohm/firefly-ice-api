@@ -14,7 +14,7 @@
 #include <functional>
 #include <memory>
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 	class FDFireflyIceSimpleTask : public FDFireflyIceTaskSteps {
 	public:

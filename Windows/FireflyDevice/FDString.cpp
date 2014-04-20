@@ -11,12 +11,12 @@
 #include <cstdarg>
 #include <vector>
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
-	std::string FDString::format(const std::string &fmt, ...) {
+	std::string FDString::format(const std::string fmt, ...) {
 		std::vector<char> str(100, '\0');
-		va_list ap;
 		while (1) {
+			va_list ap;
 			va_start(ap, fmt);
 			auto n = vsnprintf_s(str.data(), str.size(), _TRUNCATE, fmt.c_str(), ap);
 			va_end(ap);

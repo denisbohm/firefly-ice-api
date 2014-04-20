@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <bcrypt.h>
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 #define NT_SUCCESS(Status)          (((NTSTATUS)(Status)) >= 0)
 

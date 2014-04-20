@@ -15,7 +15,7 @@
 #include <memory>
 #include <vector>
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 	class FDDetour;
 	class FDError;

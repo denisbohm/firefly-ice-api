@@ -10,7 +10,7 @@
 #include "FDFireflyDeviceLogger.h"
 #include "FDTime.h"
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 	FDExecutorTask::FDExecutorTask() {
 		timeout = 10;

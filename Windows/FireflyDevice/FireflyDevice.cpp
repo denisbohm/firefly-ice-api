@@ -8,7 +8,7 @@
 
 #include "FireflyDevice.h"
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 	FireflyDevice::FireflyDevice() {
 	}

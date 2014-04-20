@@ -19,7 +19,7 @@
 #pragma comment( lib, "Hid" )
 #pragma comment( lib, "Setupapi" )
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 #define FIREFLY_ICE_VENDOR_ID 0x2333
 #define FIREFLY_ICE_PRODUCT_ID 0x0002

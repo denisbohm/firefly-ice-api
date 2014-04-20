@@ -8,7 +8,7 @@
 
 #include "FDBundleManager.h"
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 	static std::vector<std::shared_ptr<FDBundleInfo>> libraryBundles;
 

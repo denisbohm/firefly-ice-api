@@ -68,33 +68,38 @@
 
 @implementation FDFireflyIceReset
 
-- (NSString *)description
++ (NSString *)causeDescription:(uint32_t)cause
 {
-    if (_cause & 1) {
+    if (cause & 1) {
         return @"Power On Reset";
     }
-    if (_cause & 2) {
+    if (cause & 2) {
         return @"Brown Out Detector Unregulated Domain Reset";
     }
-    if (_cause & 4) {
+    if (cause & 4) {
         return @"Brown Out Detector Regulated Domain Reset";
     }
-    if (_cause & 8) {
+    if (cause & 8) {
         return @"External Pin Reset";
     }
-    if (_cause & 16) {
+    if (cause & 16) {
         return @"Watchdog Reset";
     }
-    if (_cause & 32) {
+    if (cause & 32) {
         return @"LOCKUP Reset";
     }
-    if (_cause & 64) {
+    if (cause & 64) {
         return @"System Request Reset";
     }
-    if (_cause == 0) {
+    if (cause == 0) {
         return @"No Reset";
     }
-    return [NSString stringWithFormat:@"0x%08x Reset", _cause];
+    return [NSString stringWithFormat:@"0x%08x Reset", cause];
+}
+
+- (NSString *)description
+{
+    return [FDFireflyIceReset causeDescription:_cause];
 }
 
 @end

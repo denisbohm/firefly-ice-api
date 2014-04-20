@@ -13,9 +13,11 @@
 
 #include <random>
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
-	FDFireflyIceTaskSteps::FDFireflyIceTaskSteps() {
+	FDFireflyIceTaskSteps::FDFireflyIceTaskSteps(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel) {
+		this->fireflyIce = fireflyIce;
+		this->channel = channel;
 		timeout = 15;
 		priority = 0;
 		isSuspended = false;
@@ -31,31 +33,31 @@ namespace fireflydesign {
 	void FDFireflyIceTaskSteps::executorTaskStarted(FDExecutor *executor)
 	{
 		//    FDFireflyDeviceLogDebug(@"%@ task started", NSStringFromClass([self class]));
-		fireflyIce->observable.addObserver(shared_from_this());
+		fireflyIce->observable->addObserver(shared_from_this());
 	}
 
 	void FDFireflyIceTaskSteps::executorTaskSuspended(FDExecutor *executor)
 	{
 		//    FDFireflyDeviceLogDebug(@"%@ task suspended", NSStringFromClass([self class]));
-		fireflyIce->observable.removeObserver(shared_from_this());
+		fireflyIce->observable->removeObserver(shared_from_this());
 	}
 
 	void FDFireflyIceTaskSteps::executorTaskResumed(FDExecutor *executor)
 	{
 		//    FDFireflyDeviceLogDebug(@"%@ task resumed", NSStringFromClass([self class]));
-		fireflyIce->observable.addObserver(shared_from_this());
+		fireflyIce->observable->addObserver(shared_from_this());
 	}
 
 	void FDFireflyIceTaskSteps::executorTaskCompleted(FDExecutor *executor)
 	{
 		//    FDFireflyDeviceLogDebug(@"%@ task completed", NSStringFromClass([self class]));
-		fireflyIce->observable.removeObserver(shared_from_this());
+		fireflyIce->observable->removeObserver(shared_from_this());
 	}
 
 	void FDFireflyIceTaskSteps::executorTaskFailed(FDExecutor *executo, std::shared_ptr<FDError> error)
 	{
 		//    FDFireflyDeviceLogDebug(@"%@ task failed with error %@", NSStringFromClass([self class]), error);
-		fireflyIce->observable.removeObserver(shared_from_this());
+		fireflyIce->observable->removeObserver(shared_from_this());
 	}
 
 	void FDFireflyIceTaskSteps::fireflyIceDetourError(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, std::shared_ptr<FDDetour> detour, std::shared_ptr<FDError> error)

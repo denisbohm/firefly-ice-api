@@ -11,13 +11,13 @@
 #include "FDFireflyIceChannel.h"
 #include "FDFireflyIceCoder.h"
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 #define HASH_SIZE 20
 
-	FDFireflyIceCoder::FDFireflyIceCoder()
+	FDFireflyIceCoder::FDFireflyIceCoder(std::shared_ptr<FDFireflyIceObservable> observable)
 	{
-		observable = std::make_unique<FDFireflyIceObservable>();
+		this->observable = observable;
 	}
 
 	void FDFireflyIceCoder::sendPing(std::shared_ptr<FDFireflyIceChannel> channel, std::vector<uint8_t> data)

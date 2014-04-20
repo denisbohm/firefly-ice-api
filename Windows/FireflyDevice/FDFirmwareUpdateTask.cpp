@@ -19,13 +19,11 @@
 #include <exception>
 #include <fstream>
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 	std::shared_ptr<FDFirmwareUpdateTask> FDFirmwareUpdateTask::firmwareUpdateTask(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, std::vector<uint8_t> firmware)
 	{
-		std::shared_ptr<FDFirmwareUpdateTask> firmwareUpdateTask = std::make_shared<FDFirmwareUpdateTask>();
-		firmwareUpdateTask->fireflyIce = fireflyIce;
-		firmwareUpdateTask->channel = channel;
+		std::shared_ptr<FDFirmwareUpdateTask> firmwareUpdateTask = std::make_shared<FDFirmwareUpdateTask>(fireflyIce, channel);
 		firmwareUpdateTask->setFirmware(firmware);
 		return firmwareUpdateTask;
 	}
@@ -43,9 +41,7 @@ namespace fireflydesign {
 
 	std::shared_ptr<FDFirmwareUpdateTask> FDFirmwareUpdateTask::firmwareUpdateTask(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, std::shared_ptr<FDIntelHex> intelHex)
 	{
-		std::shared_ptr<FDFirmwareUpdateTask> firmwareUpdateTask = std::make_shared<FDFirmwareUpdateTask>();
-		firmwareUpdateTask->fireflyIce = fireflyIce;
-		firmwareUpdateTask->channel = channel;
+		std::shared_ptr<FDFirmwareUpdateTask> firmwareUpdateTask = std::make_shared<FDFirmwareUpdateTask>(fireflyIce, channel);
 		firmwareUpdateTask->setFirmware(intelHex->data);
 		firmwareUpdateTask->major = stoi(intelHex->properties["major"]);
 		firmwareUpdateTask->minor = stoi(intelHex->properties["minor"]);
@@ -65,7 +61,8 @@ namespace fireflydesign {
 		return FDFirmwareUpdateTask::firmwareUpdateTask(fireflyIce, channel, "FireflyIce");
 	}
 
-	FDFirmwareUpdateTask::FDFirmwareUpdateTask()
+	FDFirmwareUpdateTask::FDFirmwareUpdateTask(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel)
+		: FDFireflyIceTaskSteps(fireflyIce, channel)
 	{
 		priority = -100;
 		_pageSize = 256;

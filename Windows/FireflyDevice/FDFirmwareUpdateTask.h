@@ -14,7 +14,7 @@
 #include <memory>
 #include <vector>
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 	class FDFirmwareUpdateTask;
 
@@ -36,7 +36,7 @@ namespace fireflydesign {
 		static std::shared_ptr<FDFirmwareUpdateTask> firmwareUpdateTask(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, std::string resource);
 		static std::shared_ptr<FDFirmwareUpdateTask> firmwareUpdateTask(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel);
 
-		FDFirmwareUpdateTask();
+		FDFirmwareUpdateTask(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel);
 
 		// firmware must start at firmware address and be a multiple of the page size (2048)
 		void setFirmware(std::vector<uint8_t> unpaddedFirmware);

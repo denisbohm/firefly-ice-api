@@ -8,7 +8,7 @@
 #include "FDBundle.h"
 #include "FDBundleManager.h"
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 	FDBundle::FDBundle() {
 		infoDictionary["CFBundleName"] = "FireflyDevice";

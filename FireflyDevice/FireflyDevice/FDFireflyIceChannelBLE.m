@@ -69,6 +69,18 @@
         _peripheral.delegate = self;
         _detour = [[FDDetour alloc] init];
         _detourSources = [NSMutableArray array];
+        
+        switch (_peripheral.state) {
+            case CBPeripheralStateConnected:
+                _status = FDFireflyIceChannelStatusOpen;
+                break;
+            case CBPeripheralStateConnecting:
+                _status = FDFireflyIceChannelStatusOpening;
+                break;
+            case CBPeripheralStateDisconnected:
+                _status = FDFireflyIceChannelStatusClosed;
+            
+        }
     }
     return self;
 }

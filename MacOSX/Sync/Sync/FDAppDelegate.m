@@ -13,6 +13,7 @@
 #import <FireflyDevice/FDFireflyIceChannelBLE.h>
 #import <FireflyDevice/FDFireflyIceChannelUSB.h>
 #import <FireflyDevice/FDFireflyIceCoder.h>
+#import <FireflyDevice/FDFireflyIceSimpleTask.h>
 #import <FireflyDevice/FDFirmwareUpdateTask.h>
 #import <FireflyDevice/FDHelloTask.h>
 #import <FireflyDevice/FDIntelHex.h>
@@ -155,6 +156,30 @@
     [self setupGraph];
     
     [_usbMonitor start];
+}
+
+- (IBAction)clearDeviceList:(id)sender
+{
+    [_devices removeAllObjects];
+    [_fireflyDevices removeAllObjects];
+    [_bluetoothTableView reloadData];
+    [_centralManager stopScan];
+    [_centralManager scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:@"310a0001-1b95-5091-b0bd-b7a681846399"]] options:@{CBCentralManagerScanOptionAllowDuplicatesKey:@YES}];
+}
+
+- (IBAction)putAllDevicesIntoStorageMode:(id)sender
+{
+    for (FDFireflyIce *fireflyIce in _devices) {
+        FDFireflyIceChannelBLE *channel = (FDFireflyIceChannelBLE *)fireflyIce.channels[@"BLE"];
+        if (channel == nil) {
+            continue;
+        }
+        [fireflyIce.executor execute:[FDFireflyIceSimpleTask simpleTask:fireflyIce channel:channel block:^() {
+            FDFireflyIceCoder *coder = [[FDFireflyIceCoder alloc] init];
+            [coder sendSetPropertyMode:channel mode:FD_CONTROL_MODE_STORAGE];
+        }]];
+        [_centralManager connectPeripheral:channel.peripheral options:nil];
+    }
 }
 
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel status:(FDFireflyIceChannelStatus)status
@@ -429,7 +454,8 @@
 {
     FDFireflyIceChannelBLE *channel = [self getSelectedFireflyDevice];
     FDFireflyIceCoder *coder = [[FDFireflyIceCoder alloc] init];
-    [coder sendSyncStart:channel];
+    [coder sendLock:channel identifier:fd_lock_identifier_sync operation:fd_lock_operation_acquire];
+//    [coder sendSyncStart:channel];
 }
 
 - (IBAction)bluetoothStorage:(id)sender
@@ -483,7 +509,7 @@
 
 - (void)centralManagerPoweredOn
 {
-    [_centralManager scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:@"310a0001-1b95-5091-b0bd-b7a681846399"]] options:nil];
+    [_centralManager scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:@"310a0001-1b95-5091-b0bd-b7a681846399"]] options:@{CBCentralManagerScanOptionAllowDuplicatesKey:@YES}];
 }
 
 - (void)centralManagerDidUpdateState:(CBCentralManager *)central

@@ -11,11 +11,11 @@
 
 #include <string>
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 	class FDString {
 	public:
-		static std::string FDString::format(const std::string &fmt, ...);
+		static std::string FDString::format(const std::string fmt, ...);
 	};
 
 }

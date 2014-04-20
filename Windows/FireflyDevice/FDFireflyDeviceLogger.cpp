@@ -8,7 +8,7 @@
 
 #include "FDFireflyDeviceLogger.h"
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 	static std::shared_ptr<FDFireflyDeviceLog> fireflyDeviceLogger;
 
@@ -27,6 +27,11 @@ namespace fireflydesign {
 		vsnprintf_s(buffer, sizeof(buffer), format.c_str(), args);
 		va_end(args);
 		std::string message(buffer);
+
+		size_t index = file.find_last_of('\\');
+		if (index != std::string::npos) {
+			file = file.substr(index + 1);
+		}
 
 		if (!log) {
 			log = fireflyDeviceLogger;

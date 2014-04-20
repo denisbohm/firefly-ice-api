@@ -30,7 +30,7 @@
 #include "FDFirmwareUpdateTask.h"
 #include "FDFireflyIceSimpleTask.h"
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
     class FireflyDevice {
 	public:

@@ -10,7 +10,7 @@
 
 #include <memory>
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 	std::shared_ptr<FDError> FDError::error(std::string domain, int code, std::map<std::string, std::string> userInfo) {
 		std::shared_ptr<FDError> error = std::make_shared<FDError>();

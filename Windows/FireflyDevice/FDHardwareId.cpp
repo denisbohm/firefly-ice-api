@@ -9,7 +9,7 @@
 #include "FDHardwareId.h"
 #include "FDString.h"
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 	std::string FDHardwareId::hardwareId(std::vector<uint8_t> unique)
 	{

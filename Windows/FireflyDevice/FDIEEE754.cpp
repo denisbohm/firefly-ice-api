@@ -73,7 +73,7 @@
 #include <math.h>
 #include <string.h>
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 	// Macros ---------------------------------------------------------------------
 

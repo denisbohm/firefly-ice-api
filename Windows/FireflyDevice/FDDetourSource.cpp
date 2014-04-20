@@ -8,7 +8,7 @@
 
 #include "FDDetourSource.h"
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 	FDDetourSource::FDDetourSource(size_type size, std::vector<uint8_t> bytes)
 	{

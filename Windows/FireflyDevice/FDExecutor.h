@@ -15,7 +15,7 @@
 #include <list>
 #include <vector>
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 	class FDFireflyDeviceLog;
 	class FDExecutor;

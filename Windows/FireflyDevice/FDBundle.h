@@ -11,7 +11,7 @@
 
 #include <map>
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 	class FDBundleInfo {
 	public:

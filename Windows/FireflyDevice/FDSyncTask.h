@@ -12,7 +12,7 @@
 #include "FDExecutor.h"
 #include "FDFireflyIce.h"
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 	class FDSyncTaskUpload;
 

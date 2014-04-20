@@ -14,12 +14,12 @@
 
 #include <memory>
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 	class FDFireflyIceTaskSteps : public FDExecutorTask, public FDFireflyIceObserver, public std::enable_shared_from_this<FDFireflyIceTaskSteps>
 	{
 	public:
-		FDFireflyIceTaskSteps();
+		FDFireflyIceTaskSteps(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel);
 		virtual ~FDFireflyIceTaskSteps();
 
 		std::shared_ptr<FDFireflyIce> fireflyIce;

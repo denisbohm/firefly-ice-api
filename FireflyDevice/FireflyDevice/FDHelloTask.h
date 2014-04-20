@@ -30,6 +30,8 @@ enum {
 + (FDHelloTask *)helloTask:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel delegate:(id<FDHelloTaskDelegate>)delegate;
 
 @property id<FDHelloTaskDelegate> delegate;
+@property BOOL setTimeEnabled;
+@property NSTimeInterval setTimeTolerance;
 
 @property NSMutableDictionary *propertyValues;
 

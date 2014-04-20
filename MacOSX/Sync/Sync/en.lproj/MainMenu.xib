@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13A3017" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13D38" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1080" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -58,6 +58,25 @@
                             <menuItem title="Quit Sync" keyEquivalent="q" id="136">
                                 <connections>
                                     <action selector="terminate:" target="-3" id="449"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
+                <menuItem title="Bluetooth" id="KB1-C9-jy6">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Bluetooth" id="fPQ-IQ-92U">
+                        <items>
+                            <menuItem title="Put All Devices Into Storage Mode" id="vM7-s8-iS0">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="putAllDevicesIntoStorageMode:" target="494" id="E2Q-Vo-K2x"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Clear Device List" id="lra-H2-yGJ">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="clearDeviceList:" target="494" id="r30-qE-LcU"/>
                                 </connections>
                             </menuItem>
                         </items>
@@ -832,17 +851,17 @@
                                 <slider horizontalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="699">
                                     <rect key="frame" x="87" y="160" width="20" height="96"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <sliderCell key="cell" enabled="NO" alignment="left" minValue="-1" maxValue="1" tickMarkPosition="right" sliderType="linear" id="700"/>
+                                    <sliderCell key="cell" enabled="NO" alignment="left" minValue="-1" maxValue="1" tickMarkPosition="left" sliderType="linear" id="700"/>
                                 </slider>
                                 <slider horizontalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="704">
                                     <rect key="frame" x="62" y="160" width="20" height="96"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <sliderCell key="cell" enabled="NO" alignment="left" minValue="-1" maxValue="1" tickMarkPosition="right" sliderType="linear" id="706"/>
+                                    <sliderCell key="cell" enabled="NO" alignment="left" minValue="-1" maxValue="1" tickMarkPosition="left" sliderType="linear" id="706"/>
                                 </slider>
                                 <slider horizontalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="713">
                                     <rect key="frame" x="37" y="160" width="20" height="96"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <sliderCell key="cell" enabled="NO" alignment="left" minValue="-1" maxValue="1" tickMarkPosition="right" sliderType="linear" id="714"/>
+                                    <sliderCell key="cell" enabled="NO" alignment="left" minValue="-1" maxValue="1" tickMarkPosition="left" sliderType="linear" id="714"/>
                                 </slider>
                                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="722">
                                     <rect key="frame" x="24" y="262" width="96" height="17"/>
@@ -892,17 +911,17 @@
                                 <slider horizontalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="848">
                                     <rect key="frame" x="87" y="36" width="20" height="96"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <sliderCell key="cell" enabled="NO" alignment="left" minValue="-0.0001" maxValue="0.0001" tickMarkPosition="right" sliderType="linear" id="863"/>
+                                    <sliderCell key="cell" enabled="NO" alignment="left" minValue="-0.0001" maxValue="0.0001" tickMarkPosition="left" sliderType="linear" id="863"/>
                                 </slider>
                                 <slider horizontalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="849">
                                     <rect key="frame" x="62" y="36" width="20" height="96"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <sliderCell key="cell" enabled="NO" alignment="left" minValue="-0.0001" maxValue="0.0001" tickMarkPosition="right" sliderType="linear" id="862"/>
+                                    <sliderCell key="cell" enabled="NO" alignment="left" minValue="-0.0001" maxValue="0.0001" tickMarkPosition="left" sliderType="linear" id="862"/>
                                 </slider>
                                 <slider horizontalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="850">
                                     <rect key="frame" x="37" y="36" width="20" height="96"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <sliderCell key="cell" enabled="NO" alignment="left" minValue="-0.0001" maxValue="0.0001" tickMarkPosition="right" sliderType="linear" id="861"/>
+                                    <sliderCell key="cell" enabled="NO" alignment="left" minValue="-0.0001" maxValue="0.0001" tickMarkPosition="left" sliderType="linear" id="861"/>
                                 </slider>
                             </subviews>
                         </view>
@@ -1068,7 +1087,7 @@
                             <action selector="bluetoothStorage:" target="494" id="2nz-qC-GpW"/>
                         </connections>
                     </button>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VMo-lH-Z5d">
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="VMo-lH-Z5d">
                         <rect key="frame" x="309" y="240" width="101" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="Storage" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ZUJ-fu-mWZ">
@@ -1085,6 +1104,7 @@
                     <constraint firstAttribute="trailing" secondItem="990" secondAttribute="trailing" constant="20" symbolic="YES" id="20C-rf-Rwn"/>
                     <constraint firstItem="1193" firstAttribute="top" secondItem="1162" secondAttribute="bottom" constant="12" symbolic="YES" id="2FV-kl-DIj"/>
                     <constraint firstItem="551" firstAttribute="leading" secondItem="536" secondAttribute="trailing" constant="8" symbolic="YES" id="4Gv-74-LNn"/>
+                    <constraint firstItem="VMo-lH-Z5d" firstAttribute="baseline" secondItem="1169" secondAttribute="baseline" id="4d8-eS-Cfk"/>
                     <constraint firstItem="608" firstAttribute="leading" secondItem="581" secondAttribute="trailing" constant="8" symbolic="YES" id="62W-FQ-7XK"/>
                     <constraint firstItem="gvm-yq-a6m" firstAttribute="leading" secondItem="551" secondAttribute="trailing" constant="12" symbolic="YES" id="6eL-fm-j5j"/>
                     <constraint firstItem="1271" firstAttribute="leading" secondItem="1218" secondAttribute="trailing" constant="12" symbolic="YES" id="79Y-kV-Yig"/>
@@ -1093,6 +1113,7 @@
                     <constraint firstItem="gvm-yq-a6m" firstAttribute="baseline" secondItem="551" secondAttribute="baseline" id="AKI-Db-6ub"/>
                     <constraint firstItem="1265" firstAttribute="leading" secondItem="1193" secondAttribute="trailing" constant="12" symbolic="YES" id="AgJ-QL-Y0h"/>
                     <constraint firstItem="581" firstAttribute="leading" secondItem="536" secondAttribute="leading" id="AxP-8V-n60"/>
+                    <constraint firstItem="VMo-lH-Z5d" firstAttribute="leading" secondItem="1169" secondAttribute="trailing" constant="12" symbolic="YES" id="BYU-6z-Q4v"/>
                     <constraint firstItem="990" firstAttribute="leading" secondItem="7mu-cI-2bp" secondAttribute="trailing" constant="8" symbolic="YES" id="BhJ-gO-mzl"/>
                     <constraint firstItem="608" firstAttribute="top" secondItem="581" secondAttribute="top" id="C73-OL-j5U"/>
                     <constraint firstItem="556" firstAttribute="top" secondItem="1193" secondAttribute="bottom" constant="12" symbolic="YES" id="C9e-Sv-OYw"/>
@@ -1116,6 +1137,7 @@
                     <constraint firstItem="1139" firstAttribute="top" secondItem="1249" secondAttribute="bottom" constant="8" symbolic="YES" id="Vnm-rq-m6J"/>
                     <constraint firstItem="1162" firstAttribute="top" secondItem="551" secondAttribute="bottom" constant="12" symbolic="YES" id="WWx-N3-0Uf"/>
                     <constraint firstItem="1162" firstAttribute="leading" secondItem="536" secondAttribute="trailing" constant="8" symbolic="YES" id="Wn3-2Q-fgx"/>
+                    <constraint firstItem="990" firstAttribute="leading" secondItem="VMo-lH-Z5d" secondAttribute="trailing" constant="8" symbolic="YES" id="Xuo-vZ-77S"/>
                     <constraint firstItem="cNN-Ki-2se" firstAttribute="leading" secondItem="608" secondAttribute="trailing" constant="12" symbolic="YES" id="YqA-8Q-azA"/>
                     <constraint firstItem="643" firstAttribute="top" secondItem="536" secondAttribute="bottom" constant="8" symbolic="YES" id="b3v-nI-S2E"/>
                     <constraint firstItem="1169" firstAttribute="leading" secondItem="581" secondAttribute="trailing" constant="8" symbolic="YES" id="che-GD-B7E"/>

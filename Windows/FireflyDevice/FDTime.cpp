@@ -10,7 +10,7 @@
 
 #include <ctime>
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 	FDTime::time_type FDTime::time() {
 		time_t timer;

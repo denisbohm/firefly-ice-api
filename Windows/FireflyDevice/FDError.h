@@ -13,7 +13,7 @@
 #include <memory>
 #include <string>
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 #define FDLocalizedDescriptionKey "description"
 #define FDLocalizedRecoveryOptionsErrorKey "recoveryOptionsError"

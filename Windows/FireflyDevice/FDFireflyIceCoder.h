@@ -15,7 +15,7 @@
 #include <memory>
 #include <vector>
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 #define FD_CONTROL_PING 1
 
@@ -127,7 +127,7 @@ namespace fireflydesign {
 		typedef double time_type;
 		typedef double duration_type;
 
-		FDFireflyIceCoder();
+		FDFireflyIceCoder(std::shared_ptr<FDFireflyIceObservable> observable);
 
 		FDFireflyIceObservable* getObservable();
 
@@ -174,7 +174,7 @@ namespace fireflydesign {
 	    void sendDiagnostics(std::shared_ptr<FDFireflyIceChannel> channel, uint32_t flags);
 
 	private:
-		std::unique_ptr<FDFireflyIceObservable> observable;
+		std::shared_ptr<FDFireflyIceObservable> observable;
 
 		std::vector<uint8_t> FDFireflyIceCoder::dictionaryMap(std::map<std::string, std::string> dictionary);
 			

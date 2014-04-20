@@ -8,11 +8,11 @@
 
 #include "FDFireflyIceSimpleTask.h"
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
-	FDFireflyIceSimpleTask::FDFireflyIceSimpleTask(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, std::function<void(void)> block) {
-		this->fireflyIce = fireflyIce;
-		this->channel = channel;
+	FDFireflyIceSimpleTask::FDFireflyIceSimpleTask(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, std::function<void(void)> block)
+		: FDFireflyIceTaskSteps(fireflyIce, channel)
+	{
 		_block = block;
 	}
 

@@ -14,7 +14,7 @@
 
 #include <windows.h>
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 	class FDUsb {
 	public:

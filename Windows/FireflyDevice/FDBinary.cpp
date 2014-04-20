@@ -9,7 +9,7 @@
 #include "FDBinary.h"
 #include "FDIEEE754.h"
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 	uint8_t FDBinary::unpackUInt8(uint8_t *buffer) {
 		return buffer[0];

@@ -14,7 +14,7 @@
 
 #include <map>
 
-namespace fireflydesign {
+namespace FireflyDesign {
 
 	FDDetour::FDDetour() {
 		clear();
@@ -42,7 +42,7 @@ namespace fireflydesign {
 		unsigned total = buffer.size() + data.size();
 		if (total > length) {
 			// ignore any extra data at the end of the transfer
-			data = std::vector<uint8_t>(data.begin(), data.begin() + length - buffer.size());
+			data = std::vector<uint8_t>(data.begin(), data.begin() + (length - buffer.size()));
 		}
 		buffer.insert(buffer.end(), data.begin(), data.end());
 		if (buffer.size() >= length) {

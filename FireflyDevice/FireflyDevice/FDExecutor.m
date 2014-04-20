@@ -9,6 +9,17 @@
 #import "FDExecutor.h"
 #import "FDFireflyDeviceLogger.h"
 
+@implementation FDExecutorObservable
+
+- (id)init
+{
+    if (self = [super init:@protocol(FDExecutorObserver)]) {
+    }
+    return self;
+}
+
+@end
+
 @interface FDExecutor ()
 
 @property NSMutableArray *tasks;
@@ -25,6 +36,7 @@
 - (id)init
 {
     if (self = [super init]) {
+        _observable = [[FDExecutorObservable alloc] init];
         _timeoutCheckInterval = 5;
         _tasks = [NSMutableArray array];
         _appointmentTasks = [NSMutableArray array];
@@ -67,6 +79,7 @@
     }
     [self abortTasks:_appointmentTasks];
     [self abortTasks:_tasks];
+    [self schedule];
 }
 
 - (void)setRun:(BOOL)run
@@ -152,48 +165,52 @@
 
 - (void)schedule
 {
-    if (!_run) {
-        return;
-    }
-    
-    if (_currentTask != nil) {
+    @try {
+        if (!_run) {
+            return;
+        }
+        
+        if (_currentTask != nil) {
+            if (_tasks.count == 0) {
+                return;
+            }
+            id<FDExecutorTask> task = _tasks[0];
+            if (_currentTask.priority >= task.priority) {
+                return;
+            }
+            id<FDExecutorTask> currentTask = _currentTask;
+            _currentTask = nil;
+            currentTask.isSuspended = YES;
+            [self addTask:currentTask];
+            @try {
+                [currentTask executorTaskSuspended:self];
+            } @catch (NSException *e) {
+                [self taskException:e];
+            }
+        }
         if (_tasks.count == 0) {
             return;
         }
-        id<FDExecutorTask> task = _tasks[0];
-        if (_currentTask.priority >= task.priority) {
-            return;
+        
+        _currentTask = _tasks[0];
+        [_tasks removeObjectAtIndex:0];
+        _currentFeedTime = [NSDate date];
+        if (_currentTask.isSuspended) {
+            _currentTask.isSuspended = NO;
+            @try {
+                [_currentTask executorTaskResumed:self];
+            } @catch (NSException *e) {
+                [self taskException:e];
+            }
+        } else {
+            @try {
+                [_currentTask executorTaskStarted:self];
+            } @catch (NSException *e) {
+                [self taskException:e];
+            }
         }
-        id<FDExecutorTask> currentTask = _currentTask;
-        _currentTask = nil;
-        currentTask.isSuspended = YES;
-        [self addTask:currentTask];
-        @try {
-            [currentTask executorTaskSuspended:self];
-        } @catch (NSException *e) {
-            [self taskException:e];
-        }
-    }
-    if (_tasks.count == 0) {
-        return;
-    }
-    
-    _currentTask = _tasks[0];
-    [_tasks removeObjectAtIndex:0];
-    _currentFeedTime = [NSDate date];
-    if (_currentTask.isSuspended) {
-        _currentTask.isSuspended = NO;
-        @try {
-            [_currentTask executorTaskResumed:self];
-        } @catch (NSException *e) {
-            [self taskException:e];
-        }
-    } else {
-        @try {
-            [_currentTask executorTaskStarted:self];
-        } @catch (NSException *e) {
-            [self taskException:e];
-        }
+    } @finally {
+        [_observable executorChanged:self];
     }
 }
 
@@ -251,6 +268,8 @@
     }
     [_tasks removeObject:task];
     [_appointmentTasks removeObject:task];
+    
+    [self schedule];
 }
 
 - (NSArray *)allTasks
