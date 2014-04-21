@@ -154,7 +154,10 @@ namespace FireflyDesign {
 	void FDFirmwareUpdateTask::checkOutOfDate()
 	{
 		std::string versionDescription = _version->description();
-		std::string bootVersionDescription = _bootVersion->description();
+		std::string bootVersionDescription = "0";
+		if (_bootVersion) {
+			bootVersionDescription = _bootVersion->description();
+		}
 		if (isOutOfDate()) {
 			FDFireflyDeviceLogInfo("firmware %s is out of date with latest %u.%u.%u (boot loader is %s)", versionDescription.c_str(), major, minor, patch, bootVersionDescription.c_str());
 			next(std::bind(&FDFirmwareUpdateTask::getSectorHashes, this));
@@ -184,6 +187,9 @@ namespace FireflyDesign {
 
 	void FDFirmwareUpdateTask::checkVersion()
 	{
+		if (!_version) {
+			throw std::exception("version not found");
+		}
 		if (_version->capabilities & FD_CONTROL_CAPABILITY_BOOT_VERSION) {
 			fireflyIce->coder->sendGetProperties(channel, FD_CONTROL_PROPERTY_BOOT_VERSION);
 			next(std::bind(&FDFirmwareUpdateTask::checkVersions, this));

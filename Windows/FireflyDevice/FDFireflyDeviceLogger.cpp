@@ -7,6 +7,9 @@
 //
 
 #include "FDFireflyDeviceLogger.h"
+#include "FDString.h"
+
+#include <Windows.h>
 
 namespace FireflyDesign {
 
@@ -20,10 +23,10 @@ namespace FireflyDesign {
 		return fireflyDeviceLogger;
 	}
 
-	void FDFireflyDeviceLogger::log(std::shared_ptr<FDFireflyDeviceLog> log, std::string file, unsigned line, std::string cls, std::string method, std::string format, ...) {
+	void FDFireflyDeviceLogger::log(std::shared_ptr<FDFireflyDeviceLog> log, std::string file, unsigned line, std::string method, std::string format, ...) {
 		va_list args;
 		va_start(args, format);
-		char buffer[256];
+		char buffer[512];
 		vsnprintf_s(buffer, sizeof(buffer), format.c_str(), args);
 		va_end(args);
 		std::string message(buffer);
@@ -37,9 +40,12 @@ namespace FireflyDesign {
 			log = fireflyDeviceLogger;
 		}
 		if (log) {
-			log->log(file, line, cls, method, message);
+			log->log(file, line, method, message);
 		} else {
-			printf("log: %s:%lu %@.%@ %@", file.c_str(), (unsigned long)line, cls.c_str(), method.c_str(), message.c_str());
+			std::string s = FDString::format("%s:%lu %s %s\n", file.c_str(), (unsigned long)line, method.c_str(), message.c_str());
+			printf("%s", s.c_str());
+			std::wstring ws(s.begin(), s.end());
+			OutputDebugString(ws.c_str());
 		}
 	}
 

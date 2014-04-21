@@ -94,7 +94,7 @@ namespace FireflyDesign {
 	void FDExecutor::sortTasksByPriority()
 	{
 		tasks.sort([](std::shared_ptr<FDExecutorTask> a, std::shared_ptr<FDExecutorTask> b) {
-			return a->priority < b->priority;
+			return a->priority > b->priority;
 		});
 	}
 

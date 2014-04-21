@@ -39,6 +39,9 @@ namespace FireflyDesign {
 
 	class FDSyncTaskUpload {
 	public:
+		FDSyncTaskUpload();
+		virtual ~FDSyncTaskUpload();
+
 		std::shared_ptr<FDSyncTaskUploadDelegate> delegate;
 		bool isConnectionOpen;
 		std::string site;
@@ -110,14 +113,13 @@ namespace FireflyDesign {
 		std::shared_ptr<FDSyncTaskDelegate> delegate;
 		std::string identifier;
 		std::shared_ptr<FDSyncTaskUpload> upload;
-
 		bool reschedule;
 
-		int initialBacklog;
-		int currentBacklog;
+		int getInitialBacklog();
+		int getCurrentBacklog();
 
-		time_type lastDataDate;
-		std::shared_ptr<FDError> error;
+		time_type getLastDataDate();
+		std::shared_ptr<FDError> getError();
 
 	public:
 		virtual void fireflyIceVersion(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, FDFireflyIceVersion version);
@@ -157,6 +159,8 @@ namespace FireflyDesign {
 		std::shared_ptr<FDFireflyIceStorage> _storage;
 		int _initialBacklog;
 		int _currentBacklog;
+		time_type _lastDataDate;
+		std::shared_ptr<FDError> _error;
 		bool _isSyncDataPending;
 		std::vector<FDSyncTaskItem> _syncAheadItems;
 		std::vector<FDSyncTaskUploadItem> _syncUploadItems;
@@ -169,6 +173,10 @@ namespace FireflyDesign {
 		duration_type _wait;
 		duration_type _minWait;
 		duration_type _maxWait;
+
+	public:
+		std::string hardwareIdPrefix;
+		virtual std::string formatHardwareId(std::vector<uint8_t> unique);
 	};
 
 }

@@ -24,10 +24,18 @@
 #include "FDSyncTask.h"
 #include "FDTime.h"
 
+#include <iomanip>
 #include <sstream>
 #include <string>
 
 namespace FireflyDesign {
+
+	FDSyncTaskUpload::FDSyncTaskUpload() {
+		isConnectionOpen = false;
+	}
+
+	FDSyncTaskUpload::~FDSyncTaskUpload() {
+	}
 
 	std::shared_ptr<FDSyncTask> FDSyncTask::syncTask(std::string hardwareId, std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, std::shared_ptr<FDSyncTaskDelegate> delegate, std::string identifier)
 	{
@@ -43,10 +51,38 @@ namespace FireflyDesign {
 	FDSyncTask::FDSyncTask() {
 		priority = -50;
 		timeout = 60;
+
+		reschedule = false;
+
+		_initialBacklog = 0;
+		_currentBacklog = 0;
+		_lastDataDate = 0;
+		_isSyncDataPending = false;
+		_isActive = false;
+		_syncAheadLimit = 1;
+		_complete = false;
+
 		_minWait = 60;
 		_maxWait = 3600;
 		_wait = _minWait;
-		_syncAheadLimit = 8;
+
+		hardwareIdPrefix = "FireflyIce-";
+	}
+
+	int FDSyncTask::getInitialBacklog() {
+		return _initialBacklog;
+	}
+
+	int FDSyncTask::getCurrentBacklog() {
+		return _currentBacklog;
+	}
+
+	FDSyncTask::time_type FDSyncTask::getLastDataDate() {
+		return _lastDataDate;
+	}
+
+	std::shared_ptr<FDError> FDSyncTask::getError() {
+		return _error;
 	}
 
 	void FDSyncTask::startSync()
@@ -107,7 +143,7 @@ namespace FireflyDesign {
 			delegate->syncTaskActive(this);
 		}
 
-		if (upload->isConnectionOpen) {
+		if (upload && upload->isConnectionOpen) {
 			executor->complete(shared_from_this());
 		} else {
 			fireflyIce->coder->sendGetProperties(channel, FD_CONTROL_PROPERTY_VERSION);
@@ -116,7 +152,7 @@ namespace FireflyDesign {
 
 	void FDSyncTask::deactivate(FDExecutor *executor)
 	{
-		if (upload->isConnectionOpen) {
+		if (upload && upload->isConnectionOpen) {
 			upload->cancel(FDError::error(FDSyncTaskErrorDomain, FDSyncTaskErrorCodeCancelling, "sync task deactivated: canceling upload"));
 		}
 
@@ -165,7 +201,7 @@ namespace FireflyDesign {
 
 	void FDSyncTask::notifyError(std::shared_ptr<FDError> error)
 	{
-		this->error = error;
+		_error = error;
 		if (delegate) {
 			delegate->syncTaskError(this, error);
 		}
@@ -272,8 +308,8 @@ namespace FireflyDesign {
 		}
 
 		time_type lastDataDate = time + (n - 1) * interval;
-		if ((this->lastDataDate == 0) || (lastDataDate > this->lastDataDate)) {
-			this->lastDataDate = lastDataDate;
+		if ((_lastDataDate == 0) || (lastDataDate > _lastDataDate)) {
+			_lastDataDate = lastDataDate;
 		}
 
 		FDSyncTaskItem item;
@@ -320,12 +356,12 @@ namespace FireflyDesign {
 		}
 	}
 
-	static std::string formatHardwareId(std::vector<uint8_t> unique)
+	std::string FDSyncTask::formatHardwareId(std::vector<uint8_t> unique)
 	{
 		std::ostringstream os;
-		os << "FireflyIce-";
+		os << hardwareIdPrefix;
 		for (uint8_t byte : unique) {
-			os << std::hex << byte;
+			os << std::setfill('0') << std::setw(2) << std::hex << (byte & 0xff);
 		}
 		std::string hardwareId = os.str();
 		return hardwareId;
@@ -350,7 +386,7 @@ namespace FireflyDesign {
 		// No sync data left? If so wait for uploads to complete or finish up now if there aren't any open uploads.
 		if (page == 0xfffffffe) {
 			_complete = true;
-			if (!upload->isConnectionOpen) {
+			if (!(upload && upload->isConnectionOpen)) {
 				onComplete();
 			}
 			return;
@@ -391,7 +427,7 @@ namespace FireflyDesign {
 			return;
 		}
 
-		if (error) {
+		if (!error) {
 			if (_currentBacklog > (int)_syncUploadItems.size()) {
 				_currentBacklog -= _syncUploadItems.size();
 			}

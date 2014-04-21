@@ -16,17 +16,17 @@
 
 namespace FireflyDesign {
 
-#define FDFireflyDeviceLogError(f, ...) FDFireflyDeviceLogger::log(log, __FILE__, __LINE__, "anon", __FUNCSIG__, f, ##__VA_ARGS__)
-#define FDFireflyDeviceLogWarn(f, ...) FDFireflyDeviceLogger::log(log, __FILE__, __LINE__, "anon", __FUNCSIG__, f, ##__VA_ARGS__)
-#define FDFireflyDeviceLogInfo(f, ...) FDFireflyDeviceLogger::log(log, __FILE__, __LINE__, "anon", __FUNCSIG__, f, ##__VA_ARGS__)
-#define FDFireflyDeviceLogDebug(f, ...) FDFireflyDeviceLogger::log(log, __FILE__, __LINE__, "anon", __FUNCSIG__, f, ##__VA_ARGS__)
-#define FDFireflyDeviceLogVerbose(f, ...) FDFireflyDeviceLogger::log(log, __FILE__, __LINE__, "anon", __FUNCSIG__, f, ##__VA_ARGS__)
+#define FDFireflyDeviceLogError(f, ...) FDFireflyDeviceLogger::log(log, __FILE__, __LINE__, __FUNCSIG__, f, ##__VA_ARGS__)
+#define FDFireflyDeviceLogWarn(f, ...) FDFireflyDeviceLogger::log(log, __FILE__, __LINE__, __FUNCSIG__, f, ##__VA_ARGS__)
+#define FDFireflyDeviceLogInfo(f, ...) FDFireflyDeviceLogger::log(log, __FILE__, __LINE__, __FUNCSIG__, f, ##__VA_ARGS__)
+#define FDFireflyDeviceLogDebug(f, ...) FDFireflyDeviceLogger::log(log, __FILE__, __LINE__, __FUNCSIG__, f, ##__VA_ARGS__)
+#define FDFireflyDeviceLogVerbose(f, ...) FDFireflyDeviceLogger::log(log, __FILE__, __LINE__, __FUNCSIG__, f, ##__VA_ARGS__)
 
 	class FDFireflyDeviceLog {
 	public:
 		~FDFireflyDeviceLog() {}
 
-		virtual void log(std::string file, unsigned line, std::string cls, std::string method, std::string message) = 0;
+		virtual void log(std::string file, unsigned line, std::string method, std::string message) = 0;
 	};
 
 	class FDFireflyDeviceLogger {
@@ -34,7 +34,7 @@ namespace FireflyDesign {
 		void setLog(std::shared_ptr<FDFireflyDeviceLog> log);
 		std::shared_ptr<FDFireflyDeviceLog> getLog();
 
-		static void log(std::shared_ptr<FDFireflyDeviceLog> log, std::string file, unsigned line, std::string cls, std::string method, std::string format, ...);
+		static void log(std::shared_ptr<FDFireflyDeviceLog> log, std::string file, unsigned line, std::string method, std::string format, ...);
 	};
 
 }

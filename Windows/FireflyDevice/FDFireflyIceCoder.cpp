@@ -601,7 +601,7 @@ namespace FireflyDesign {
 
 	void FDFireflyIceCoder::dispatchSyncData(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, FDBinary& binary)
 	{
-		observable->fireflyIceSync(fireflyIce, channel, binary.dataValue());
+		observable->fireflyIceSync(fireflyIce, channel, binary.getRemainingData());
 	}
 
 	void FDFireflyIceCoder::dispatchSensing(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, FDBinary& binary)
