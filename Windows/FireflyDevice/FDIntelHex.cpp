@@ -53,6 +53,10 @@ namespace FireflyDesign {
 		return strings;
 	}
 
+	static bool startsWith(const std::string& s1, const std::string& s2) {
+		return s2.size() <= s1.size() && s1.compare(0, s2.size(), s2) == 0;
+	}
+
 	void FDIntelHex::read(std::string content, uint32_t address, uint32_t length)
 	{
 		std::vector<uint8_t> firmware;
@@ -60,8 +64,8 @@ namespace FireflyDesign {
 		bool done = false;
 		std::vector<std::string> lines = split(content, '\n');
 		for (std::string line : lines) {
-			if (line.compare(":") != 0) {
-				if (line.compare("#! ") == 0) {
+			if (!startsWith(line, ":")) {
+				if (startsWith(line, "#! ")) {
 					picojson::value v;
 					std::string err;
 					picojson::parse(v, line.begin() + 2, line.end(), &err);

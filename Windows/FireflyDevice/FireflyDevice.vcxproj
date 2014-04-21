@@ -96,6 +96,7 @@
     <ClInclude Include="FDHelloTask.h" />
     <ClInclude Include="FDIEEE754.h" />
     <ClInclude Include="FDIntelHex.h" />
+    <ClInclude Include="FDResource.h" />
     <ClInclude Include="FDString.h" />
     <ClInclude Include="FDSyncTask.h" />
     <ClInclude Include="FDTime.h" />
@@ -127,6 +128,7 @@
     <ClCompile Include="FDHelloTask.cpp" />
     <ClCompile Include="FDIEEE754.cpp" />
     <ClCompile Include="FDIntelHex.cpp" />
+    <ClCompile Include="FDResource.cpp" />
     <ClCompile Include="FDSyncTask.cpp" />
     <ClCompile Include="FDTime.cpp" />
     <ClCompile Include="FDString.cpp" />

@@ -14,6 +14,7 @@
 #include "FDFireflyIceChannel.h"
 #include "FDFirmwareUpdateTask.h"
 #include "FDIntelHex.h"
+#include "FDResource.h"
 
 #include <algorithm>
 #include <exception>
@@ -30,12 +31,7 @@ namespace FireflyDesign {
 
 	std::shared_ptr<FDIntelHex> FDFirmwareUpdateTask::loadFirmware(std::string resource)
 	{
-		std::string path = resource + std::string(".hex");
-		std::ifstream in(path);
-		if (in.good()) {
-			throw std::exception("firmware update file not found");
-		}
-		std::string content((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
+		std::string content = FDResource::stringWithContentsOfResource(resource + std::string(".hex"));
 		return FDIntelHex::intelHex(content, 0x08000, 0x40000 - 0x08000);
 	}
 
@@ -65,11 +61,20 @@ namespace FireflyDesign {
 		: FDFireflyIceTaskSteps(fireflyIce, channel)
 	{
 		priority = -100;
+
+		downgrade = false;
+		commit = true;
+		reset = true;
+
+		major = 0;
+		minor = 0;
+		patch = 0;
+
 		_pageSize = 256;
 		_sectorSize = 4096;
 		_pagesPerSector = _sectorSize / _pageSize;
-		commit = true;
-		reset = true;
+
+		_lastProgressPercent = 0;
 	}
 
 	std::vector<uint8_t> FDFirmwareUpdateTask::getFirmware()
@@ -148,12 +153,14 @@ namespace FireflyDesign {
 
 	void FDFirmwareUpdateTask::checkOutOfDate()
 	{
+		std::string versionDescription = _version->description();
+		std::string bootVersionDescription = _bootVersion->description();
 		if (isOutOfDate()) {
-			FDFireflyDeviceLogInfo("firmware %s is out of date with latest %u.%u.%u (boot loader is %s)", _version->description(), major, minor, patch, _bootVersion->description());
+			FDFireflyDeviceLogInfo("firmware %s is out of date with latest %u.%u.%u (boot loader is %s)", versionDescription.c_str(), major, minor, patch, bootVersionDescription.c_str());
 			next(std::bind(&FDFirmwareUpdateTask::getSectorHashes, this));
 		}
 		else {
-			FDFireflyDeviceLogInfo("firmware %s is up to date with latest %u.%u.%u (boot loader is %s)", _version->description(), major, minor, patch, _bootVersion->description());
+			FDFireflyDeviceLogInfo("firmware %s is up to date with latest %u.%u.%u (boot loader is %s)", versionDescription.c_str(), major, minor, patch, bootVersionDescription.c_str());
 			complete();
 		}
 	}
@@ -355,7 +362,11 @@ namespace FireflyDesign {
 		}
 
 		bool isFirmwareUpToDate = (_updatePages.size() == 0);
-		FDFireflyDeviceLogInfo("isFirmwareUpToDate = %s, commit %s result = %u", isFirmwareUpToDate ? "YES" : "NO", _updateCommit ? "YES" : "NO", _updateCommit->result);
+		unsigned result = 0;
+		if (_updateCommit) {
+			result = _updateCommit->result;
+		}
+		FDFireflyDeviceLogInfo("isFirmwareUpToDate = %s, commit %s result = %u", isFirmwareUpToDate ? "YES" : "NO", _updateCommit ? "YES" : "NO", result);
 		if (delegate) {
 			delegate->firmwareUpdateTaskComplete(this, isFirmwareUpToDate);
 		}

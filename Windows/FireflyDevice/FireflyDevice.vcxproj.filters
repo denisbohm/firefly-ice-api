@@ -105,6 +105,9 @@
     <ClInclude Include="picojson.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="FDResource.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -186,6 +189,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FDHardwareId.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FDResource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

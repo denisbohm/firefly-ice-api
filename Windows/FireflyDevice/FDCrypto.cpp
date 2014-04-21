@@ -12,6 +12,8 @@
 #include <stdio.h>
 #include <bcrypt.h>
 
+#pragma comment( lib, "Bcrypt" )
+
 namespace FireflyDesign {
 
 #define NT_SUCCESS(Status)          (((NTSTATUS)(Status)) >= 0)
