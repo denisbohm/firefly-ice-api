@@ -9,6 +9,9 @@
 #include "FDString.h"
 
 #include <cstdarg>
+#include <cstdio>
+#include <iomanip>
+#include <sstream>
 #include <vector>
 
 namespace FireflyDesign {
@@ -29,6 +32,17 @@ namespace FireflyDesign {
 				str.resize(str.size() * 2);
 		}
 		return str.data();
+	}
+
+	std::string FDString::formatDateTime(time_type epochTime) {
+		std::time_t time = (std::time_t)epochTime;
+		struct tm tm;
+		gmtime_s(&tm, &time);
+		std::stringstream ss;
+		// "yyyy-MM-dd HH:mm:ss.SSS"
+		ss << std::put_time(&tm, "%Y-%m-%d %H:%M:%S");
+		std::string s = ss.str();
+		return s;
 	}
 
 }

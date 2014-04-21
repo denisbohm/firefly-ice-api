@@ -7,6 +7,7 @@
 //
 
 #include "FDError.h"
+#include "FDString.h"
 
 #include <memory>
 
@@ -20,10 +21,15 @@ namespace FireflyDesign {
 		return error;
 	}
 
-	static std::shared_ptr<FDError> error(std::string domain, int code, std::string description) {
+	std::shared_ptr<FDError> FDError::error(std::string domain, int code, std::string description) {
 		std::map<std::string, std::string> userInfo;
 		userInfo[FDLocalizedDescriptionKey] = description;
 		return FDError::error(domain, code, userInfo);
+	}
+
+	std::string FDError::description() {
+		std::string s = userInfo[FDLocalizedDescriptionKey];
+		return FDString::format("%s %u %s", domain.c_str(), code, s.c_str());
 	}
 
 }

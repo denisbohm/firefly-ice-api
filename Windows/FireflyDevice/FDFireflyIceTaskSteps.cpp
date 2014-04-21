@@ -77,7 +77,7 @@ namespace FireflyDesign {
 
 		if (_invocation != nullptr) {
 			//        FDFireflyDeviceLogDebug(@"invoking step %@", NSStringFromSelector(_invocation.selector));
-			std::function<void(void)> invocation = _invocation;
+			std::function<void()> invocation = _invocation;
 			_invocation = nullptr;
 			invocation();
 		}
@@ -87,7 +87,7 @@ namespace FireflyDesign {
 		}
 	}
 
-	void FDFireflyIceTaskSteps::next(std::function<void(void)> invocation)
+	void FDFireflyIceTaskSteps::next(std::function<void()> invocation)
 	{
 		//    FDFireflyDeviceLogDebug(@"queing next step %@", NSStringFromSelector(selector));
 

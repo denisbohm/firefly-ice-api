@@ -20,6 +20,7 @@
 #include "FDFireflyDeviceLogger.h"
 #include "FDFireflyIceChannel.h"
 #include "FDFireflyIceCoder.h"
+#include "FDString.h"
 #include "FDSyncTask.h"
 #include "FDTime.h"
 
@@ -172,7 +173,7 @@ namespace FireflyDesign {
 
 	void FDSyncTask::executorTaskFailed(FDExecutor *executor, std::shared_ptr<FDError> error)
 	{
-		FDFireflyDeviceLogInfo("task failed with error %s", error->description());
+		FDFireflyDeviceLogInfo("task failed with error %s", error->description().c_str());
 
 		if ((error->domain.compare("FDDetour") == 0) && (error->code == 0)) {
 			// !!! flush out and start sync again...
@@ -188,13 +189,13 @@ namespace FireflyDesign {
 	void FDSyncTask::fireflyIceSite(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, std::string site)
 	{
 		_site = site;
-		FDFireflyDeviceLogInfo("device site %s", _site);
+		FDFireflyDeviceLogInfo("device site %s", _site.c_str());
 	}
 
 	void FDSyncTask::fireflyIceStorage(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel>channel, FDFireflyIceStorage storage)
 	{
 		_storage = std::make_shared<FDFireflyIceStorage>(storage);
-		FDFireflyDeviceLogInfo("storage %s", _storage->description());
+		FDFireflyDeviceLogInfo("storage %s", _storage->description().c_str());
 		_initialBacklog = _storage->pageCount;
 		_currentBacklog = _storage->pageCount;
 	}
@@ -217,18 +218,15 @@ namespace FireflyDesign {
 #define FD_VMA_TYPE FD_STORAGE_TYPE('F', 'D', 'V', 'M')
 #define FD_VMA2_TYPE FD_STORAGE_TYPE('F', 'D', 'V', '2')
 
-	/*
 	void FDSyncTask::syncLog(std::string hardwareId, FDBinary& binary)
 	{
 		time_type time = binary.getTime64();
-		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-		[dateFormatter setDateStyle : NSDateFormatterMediumStyle];
-		[dateFormatter setTimeStyle : NSDateFormatterMediumStyle];
-		NSString *date = [dateFormatter stringFromDate : [NSDate dateWithTimeIntervalSince1970 : time]];
-		NSString *message = [[NSString alloc] initWithData:[binary getRemainingData] encoding : NSUTF8StringEncoding];
-		FDFireflyDeviceLogInfo(@"device message %@ %@ %@", hardwareId, date, message);
+		std::string date = FDString::formatDateTime(time);
+		std::vector<uint8_t> data = binary.getRemainingData();
+		uint8_t *bytes = data.data();
+		std::string message(bytes, bytes + data.size());
+		FDFireflyDeviceLogInfo("device message %s %s %s", hardwareId.c_str(), date.c_str(), message.c_str());
 	}
-	*/
 
 	std::vector<FDSyncTaskUploadItem> FDSyncTask::getUploadItems()
 	{
@@ -335,7 +333,7 @@ namespace FireflyDesign {
 
 	void FDSyncTask::fireflyIceSync(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, std::vector<uint8_t> data)
 	{
-		FDFireflyDeviceLogInfo("sync data for %s", _site);
+		FDFireflyDeviceLogInfo("sync data for %s", _site.c_str());
 
 		fireflyIce->executor->feedWatchdog(shared_from_this());
 

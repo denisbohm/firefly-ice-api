@@ -25,14 +25,14 @@ namespace FireflyDesign {
 		std::shared_ptr<FDFireflyIce> fireflyIce;
 		std::shared_ptr<FDFireflyIceChannel> channel;
 
-		void next(std::function<void(void)> invocation);
+		void next(std::function<void()> invocation);
 		void done();
 
 		std::shared_ptr<FDFireflyDeviceLog> log;
 
 	private:
 		std::function<uint32_t()> _random;
-		std::function<void(void)> _invocation;
+		std::function<void()> _invocation;
 		uint32_t _invocationId;
 
 	public:

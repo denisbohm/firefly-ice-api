@@ -9,6 +9,7 @@
 #include "FDExecutor.h"
 #include "FDFireflyDeviceLogger.h"
 #include "FDTime.h"
+#include "FDTimer.h"
 
 namespace FireflyDesign {
 
@@ -25,7 +26,7 @@ namespace FireflyDesign {
 	FDExecutor::FDExecutor() {
 		timeoutCheckInterval = 5;
 		_run = false;
-		currentFeedTime = 0;
+		_currentFeedTime = 0;
 	}
 
 	FDExecutor::~FDExecutor() {
@@ -33,7 +34,10 @@ namespace FireflyDesign {
 
 	void FDExecutor::start()
 	{
-//		_timer = [NSTimer scheduledTimerWithTimeInterval : _timeoutCheckInterval target : self selector : @selector(check:) userInfo:nil repeats : true];
+		if (!_timer) {
+			_timer = FDTimerFactory::defaultTimerFactory->makeTimer(std::bind(&FDExecutor::check, this), timeoutCheckInterval, FDTimer::Repeating);
+		}
+		_timer->setEnabled(true);
 		schedule();
 	}
 
@@ -57,8 +61,8 @@ namespace FireflyDesign {
 
 	void FDExecutor::stop()
 	{
-//		[_timer invalidate];
-//		_timer = nil;
+		_timer->setEnabled(false);
+		_timer.reset();
 
 		if (currentTask) {
 			abortTask(currentTask);
@@ -66,6 +70,10 @@ namespace FireflyDesign {
 		}
 		abortTasks(appointmentTasks);
 		abortTasks(tasks);
+	}
+
+	bool FDExecutor::getRun() {
+		return _run;
 	}
 
 	void FDExecutor::setRun(bool run)
@@ -118,11 +126,11 @@ namespace FireflyDesign {
 
 	void FDExecutor::checkTimeout()
 	{
-		if (currentTask) {
+		if (!currentTask) {
 			return;
 		}
 
-		FDTime::duration_type duration = FDTime::time() - currentFeedTime;
+		FDTime::duration_type duration = FDTime::time() - _currentFeedTime;
 		if (duration > currentTask->timeout) {
 			FDFireflyDeviceLogInfo("executor task timeout");
 			std::map<std::string, std::string> userInfo{ { FDLocalizedDescriptionKey, "executor task timed out" } };
@@ -171,7 +179,7 @@ namespace FireflyDesign {
 
 		currentTask = tasks.front();
 		tasks.erase(tasks.begin());
-		currentFeedTime = FDTime::time();
+		_currentFeedTime = FDTime::time();
 		if (currentTask->isSuspended) {
 			currentTask->isSuspended = false;
 			try {
@@ -199,7 +207,7 @@ namespace FireflyDesign {
 	void FDExecutor::feedWatchdog(std::shared_ptr<FDExecutorTask> task)
 	{
 		if (currentTask == task) {
-			currentFeedTime = FDTime::time();
+			_currentFeedTime = FDTime::time();
 		} else {
 			FDFireflyDeviceLogWarn("expected current task to feed watchdog...");
 		}

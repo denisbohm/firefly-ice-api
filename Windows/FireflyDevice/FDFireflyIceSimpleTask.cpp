@@ -10,7 +10,7 @@
 
 namespace FireflyDesign {
 
-	FDFireflyIceSimpleTask::FDFireflyIceSimpleTask(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, std::function<void(void)> block)
+	FDFireflyIceSimpleTask::FDFireflyIceSimpleTask(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, std::function<void()> block)
 		: FDFireflyIceTaskSteps(fireflyIce, channel)
 	{
 		_block = block;

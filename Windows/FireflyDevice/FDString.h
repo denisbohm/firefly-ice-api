@@ -15,7 +15,10 @@ namespace FireflyDesign {
 
 	class FDString {
 	public:
-		static std::string FDString::format(const std::string fmt, ...);
+		typedef double time_type;
+
+		static std::string format(const std::string fmt, ...);
+		static std::string formatDateTime(time_type time);
 	};
 
 }

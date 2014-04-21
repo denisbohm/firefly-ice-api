@@ -18,9 +18,9 @@ namespace FireflyDesign {
 
 	class FDSyncTaskUploadDelegate {
 	public:
-		virtual ~FDSyncTaskUploadDelegate();
+		virtual ~FDSyncTaskUploadDelegate() {}
 
-		virtual void uploadComplete(FDSyncTaskUpload* upload, std::shared_ptr<FDError> error);
+		virtual void uploadComplete(FDSyncTaskUpload* upload, std::shared_ptr<FDError> error) {}
 	};
 
 	class FDSyncTaskUploadItem {
@@ -40,12 +40,11 @@ namespace FireflyDesign {
 	class FDSyncTaskUpload {
 	public:
 		std::shared_ptr<FDSyncTaskUploadDelegate> delegate;
-
 		bool isConnectionOpen;
 		std::string site;
 
-		void post(std::string site, std::vector<FDSyncTaskUploadItem> items, int backlog);
-		void cancel(std::shared_ptr<FDError> error);
+		virtual void post(std::string site, std::vector<FDSyncTaskUploadItem> items, int backlog) = 0;
+		virtual void cancel(std::shared_ptr<FDError> error) = 0;
 	};
 
 	/*
@@ -101,7 +100,7 @@ namespace FireflyDesign {
 	public:
 		FDSyncTask();
 
-		std::shared_ptr<FDSyncTask> syncTask(std::string hardwareId, std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, std::shared_ptr<FDSyncTaskDelegate> delegate, std::string identifier);
+		static std::shared_ptr<FDSyncTask> syncTask(std::string hardwareId, std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, std::shared_ptr<FDSyncTaskDelegate> delegate, std::string identifier);
 
 		std::shared_ptr<FDFireflyDeviceLog> log;
 

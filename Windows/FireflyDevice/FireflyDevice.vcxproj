@@ -100,6 +100,7 @@
     <ClInclude Include="FDString.h" />
     <ClInclude Include="FDSyncTask.h" />
     <ClInclude Include="FDTime.h" />
+    <ClInclude Include="FDTimer.h" />
     <ClInclude Include="FDUsb.h" />
     <ClInclude Include="FireflyDevice.h" />
     <ClInclude Include="picojson.h" />
@@ -132,6 +133,7 @@
     <ClCompile Include="FDSyncTask.cpp" />
     <ClCompile Include="FDTime.cpp" />
     <ClCompile Include="FDString.cpp" />
+    <ClCompile Include="FDTimer.cpp" />
     <ClCompile Include="FDUsb.cpp" />
     <ClCompile Include="FireflyDevice.cpp" />
     <ClCompile Include="stdafx.cpp">

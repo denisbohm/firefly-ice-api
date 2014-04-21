@@ -13,12 +13,14 @@
 
 #include <exception>
 #include <list>
+#include <memory>
 #include <vector>
 
 namespace FireflyDesign {
 
-	class FDFireflyDeviceLog;
 	class FDExecutor;
+	class FDFireflyDeviceLog;
+	class FDTimer;
 
 #define FDExecutorErrorDomain "com.fireflydesign.device.FDExecutor"
 
@@ -73,13 +75,12 @@ namespace FireflyDesign {
 		void fail(std::shared_ptr<FDExecutorTask> task, std::shared_ptr<FDError> error);
 
 	private:
-	public:
 		std::list<std::shared_ptr<FDExecutorTask>> tasks;
 		std::list<std::shared_ptr<FDExecutorTask>> appointmentTasks;
 		std::shared_ptr<FDExecutorTask> currentTask;
 		bool _run;
-		date_type currentFeedTime;
-//		@property NSTimer *timer;
+		date_type _currentFeedTime;
+		std::shared_ptr<FDTimer> _timer;
 
 		void start();
 		void abortTask(std::shared_ptr<FDExecutorTask> task);

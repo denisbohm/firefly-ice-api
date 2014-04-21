@@ -18,7 +18,7 @@ namespace FireflyDesign {
 
 	class FDFireflyIceSimpleTask : public FDFireflyIceTaskSteps {
 	public:
-		FDFireflyIceSimpleTask(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, std::function<void(void)> block);
+		FDFireflyIceSimpleTask(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, std::function<void()> block);
 
 	public:
 		virtual void executorTaskStarted(FDExecutor *executor);
@@ -26,7 +26,7 @@ namespace FireflyDesign {
 	private:
 		void complete();
 
-		std::function<void(void)> _block;
+		std::function<void()> _block;
 	};
 
 }
