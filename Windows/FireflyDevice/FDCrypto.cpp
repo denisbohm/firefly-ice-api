@@ -10,6 +10,8 @@
 
 #include <windows.h>
 #include <stdio.h>
+
+#ifdef NO_XP
 #include <bcrypt.h>
 
 #pragma comment( lib, "Bcrypt" )
@@ -26,7 +28,6 @@ namespace FireflyDesign {
 		~WinSha1();
 
 		std::vector<uint8_t> hash(std::vector<uint8_t> data);
-
 	private:
 		BCRYPT_ALG_HANDLE       hAlg;
 		BCRYPT_HASH_HANDLE      hHash;
@@ -160,11 +161,20 @@ namespace FireflyDesign {
 		}
 	}
 
-	std::vector<uint8_t> FDCrypto::sha1(std::vector<uint8_t> data)
-	{
-		WinSha1 winSha1;
-		return winSha1.hash(data);
-	}
+}
+#endif
+
+namespace FireflyDesign {
+
+	class WinSha1 {
+	public:
+		WinSha1() {}
+		~WinSha1() {}
+
+		std::vector<uint8_t> hash(std::vector<uint8_t> data) {
+			throw std::exception("unimplemented");
+		}
+	};
 
 	class WinAes {
 	public:
@@ -252,6 +262,12 @@ namespace FireflyDesign {
 		uint8_t *end = buffer + buffer_length;
 		std::vector<uint8_t> hash(end - 20, end);
 		return hash;
+	}
+
+	std::vector<uint8_t> FDCrypto::sha1(std::vector<uint8_t> data)
+	{
+		WinSha1 winSha1;
+		return winSha1.hash(data);
 	}
 
 	std::vector<uint8_t> FDCrypto::hash(std::vector<uint8_t> key, std::vector<uint8_t> iv, std::vector<uint8_t> data)
