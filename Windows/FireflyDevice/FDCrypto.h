@@ -9,6 +9,8 @@
 #ifndef FDCRYPTO_H
 #define FDCRYPTO_H
 
+#include "FDCommon.h"
+
 #include <cstdint>
 #include <vector>
 

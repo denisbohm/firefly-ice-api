@@ -9,6 +9,8 @@
 #ifndef FDBUNDLE_H
 #define FDBUNDLE_H
 
+#include "FDCommon.h"
+
 #include <map>
 
 namespace FireflyDesign {

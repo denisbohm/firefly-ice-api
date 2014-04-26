@@ -9,6 +9,8 @@
 #ifndef FDDETOUR_H
 #define FDDETOUR_H
 
+#include "FDCommon.h"
+
 #include <memory>
 #include <vector>
 

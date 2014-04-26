@@ -9,6 +9,8 @@
 #ifndef FDFIREFLYICESIMPLETASK_H
 #define FDFIREFLYICESIMPLETASK_H
 
+#include "FDCommon.h"
+
 #include "FDFireflyIceTaskSteps.h"
 
 #include <functional>

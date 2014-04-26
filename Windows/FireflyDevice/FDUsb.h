@@ -9,6 +9,8 @@
 #ifndef FDUSB_H
 #define FDUSB_H
 
+#include "FDCommon.h"
+
 #include <cstdint>
 #include <vector>
 

@@ -9,6 +9,8 @@
 #ifndef FDRESOURCE_H
 #define FDRESOURCE_H
 
+#include "FDCommon.h"
+
 #include <string>
 
 namespace FireflyDesign {

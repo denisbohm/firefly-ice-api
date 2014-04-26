@@ -9,6 +9,8 @@
 #ifndef FDBINARY_H
 #define FDBINARY_H
 
+#include "FDCommon.h"
+
 #include <cstdint>
 #include <vector>
 

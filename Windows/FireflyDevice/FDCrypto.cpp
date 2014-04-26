@@ -136,17 +136,17 @@ namespace FireflyDesign {
 		}
 
 		int buffer_length = data.size() + 2 * kAesBytes128;
-		buffer = new uint8_t[];
+		std::vector<uint8_t> buffer(buffer_length);
 
 		HCRYPTHASH hHash = NULL;
 		BOOL Final = true;
 		DWORD dwFlags = 0;
 		DWORD pdwDataLen = data.size();
-		if (!CryptEncrypt(hCryptKey, hHash, Final, dwFlags, buffer, &pdwDataLen, buffer_length)) {
+		if (!CryptEncrypt(hCryptKey, hHash, Final, dwFlags, buffer.data(), &pdwDataLen, buffer_length)) {
 			throw std::exception("error returned by CryptEncrypt");
 		}
 
-		uint8_t *end = buffer + buffer_length;
+		uint8_t *end = buffer.data() + buffer_length;
 		std::vector<uint8_t> hash(end - 20, end);
 		return hash;
 	}

@@ -9,6 +9,8 @@
 #ifndef FDFILELOG_H
 #define FDFILELOG_H
 
+#include "FDCommon.h"
+
 #include "FDFireflyDeviceLogger.h"
 
 #include <filesystem>

@@ -9,6 +9,8 @@
 #ifndef FDFIRMWAREUPDATETASK_H
 #define FDFIRMWAREUPDATETASK_H
 
+#include "FDCommon.h"
+
 #include "FDFireflyIceTaskSteps.h"
 
 #include <memory>

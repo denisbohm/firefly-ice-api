@@ -9,6 +9,8 @@
 #ifndef FDFIREFLYICECHANNELUSB_H
 #define FDFIREFLYICECHANNELUSB_H
 
+#include "FDCommon.h"
+
 #include "FDFireflyIceChannel.h"
 
 #include <memory>

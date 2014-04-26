@@ -9,6 +9,8 @@
 #ifndef FDFIREFLYICECODER_H
 #define FDFIREFLYICECODER_H
 
+#include "FDCommon.h"
+
 #include "FDFireflyIce.h"
 
 #include <map>

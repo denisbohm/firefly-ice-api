@@ -9,6 +9,8 @@
 #ifndef FDIEEE754_H
 #define FDIEEE754_H
 
+#include "FDCommon.h"
+
 #include <cstdint>
 
 namespace FireflyDesign {

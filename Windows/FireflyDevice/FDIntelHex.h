@@ -9,6 +9,8 @@
 #ifndef FDINTELHEX_H
 #define FDINTELHEX_H
 
+#include "FDCommon.h"
+
 #include <map>
 #include <memory>
 #include <vector>

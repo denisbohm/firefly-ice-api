@@ -9,6 +9,8 @@
 #ifndef FDHELLOTASK_H
 #define FDHELLOTASK_H
 
+#include "FDCommon.h"
+
 #include "FDFireflyIceTaskSteps.h"
 
 namespace FireflyDesign {

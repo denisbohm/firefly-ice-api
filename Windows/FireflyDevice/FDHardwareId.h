@@ -9,6 +9,8 @@
 #ifndef FDHARDWAREID_H
 #define FDHARDWAREID_H
 
+#include "FDCommon.h"
+
 #include <cstdint>
 #include <vector>
 

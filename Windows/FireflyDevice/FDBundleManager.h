@@ -9,6 +9,8 @@
 #ifndef FDBUNDLEMANAGER_H
 #define FDBUNDLEMANAGER_H
 
+#include "FDCommon.h"
+
 #include "FDBundle.h"
 
 #include <memory>

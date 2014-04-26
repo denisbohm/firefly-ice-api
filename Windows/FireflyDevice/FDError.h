@@ -9,6 +9,8 @@
 #ifndef FDERROR_H
 #define FDERROR_H
 
+#include "FDCommon.h"
+
 #include <map>
 #include <memory>
 #include <string>

@@ -83,6 +83,7 @@
     <ClInclude Include="FDBinary.h" />
     <ClInclude Include="FDBundle.h" />
     <ClInclude Include="FDBundleManager.h" />
+    <ClInclude Include="FDCommon.h" />
     <ClInclude Include="FDCrypto.h" />
     <ClInclude Include="FDDetour.h" />
     <ClInclude Include="FDDetourSource.h" />

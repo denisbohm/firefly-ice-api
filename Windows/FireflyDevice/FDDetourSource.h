@@ -9,6 +9,8 @@
 #ifndef FDDETOURSOURCE_H
 #define FDDETOURSOURCE_H
 
+#include "FDCommon.h"
+
 #include <memory>
 #include <vector>
 

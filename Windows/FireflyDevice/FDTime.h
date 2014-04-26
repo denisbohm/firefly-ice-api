@@ -9,6 +9,8 @@
 #ifndef FDTIME_H
 #define FDTIME_H
 
+#include "FDCommon.h"
+
 namespace FireflyDesign {
 
 	class FDTime {

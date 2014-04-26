@@ -9,6 +9,8 @@
 #ifndef FDFIREFLYDEVICELOGGER_H
 #define FDFIREFLYDEVICELOGGER_H
 
+#include "FDCommon.h"
+
 #include <stdarg.h>
 
 #include <memory>

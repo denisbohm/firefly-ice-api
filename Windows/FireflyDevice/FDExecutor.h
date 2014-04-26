@@ -9,6 +9,8 @@
 #ifndef FDEXECUTOR_H
 #define FDEXECUTOR_H
 
+#include "FDCommon.h"
+
 #include "FDError.h"
 
 #include <exception>

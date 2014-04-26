@@ -9,6 +9,8 @@
 #ifndef FDFIREFLYICE_H
 #define FDFIREFLYICE_H
 
+#include "FDCommon.h"
+
 #include "FDError.h"
 
 #include <cstdint>

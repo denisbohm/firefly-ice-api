@@ -9,6 +9,8 @@
 #ifndef FDTIMER_H
 #define FDTIMER_H
 
+#include "FDCommon.h"
+
 #include <functional>
 #include <memory>
 

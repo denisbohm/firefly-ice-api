@@ -9,6 +9,8 @@
 #ifndef FDSYNCTASK_H
 #define FDSYNCTASK_H
 
+#include "FDCommon.h"
+
 #include "FDExecutor.h"
 #include "FDFireflyIce.h"
 

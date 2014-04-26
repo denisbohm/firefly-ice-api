@@ -9,6 +9,8 @@
 #ifndef FDFIREFLYICECHANNEL_H
 #define FDFIREFLYICECHANNEL_H
 
+#include "FDCommon.h"
+
 #include "FDFireflyIce.h"
 
 #include <cstdint>

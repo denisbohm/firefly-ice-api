@@ -9,6 +9,8 @@
 #ifndef FDSTRING_H
 #define FDSTRING_H
 
+#include "FDCommon.h"
+
 #include <string>
 
 namespace FireflyDesign {
