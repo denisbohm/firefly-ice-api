@@ -11,16 +11,7 @@
 #include <windows.h>
 #include <stdio.h>
 
-#ifdef NO_XP
-#include <bcrypt.h>
-
-#pragma comment( lib, "Bcrypt" )
-
 namespace FireflyDesign {
-
-#define NT_SUCCESS(Status)          (((NTSTATUS)(Status)) >= 0)
-
-#define STATUS_UNSUCCESSFUL         ((NTSTATUS)0xC0000001L)
 
 	class WinSha1 {
 	public:
@@ -28,153 +19,49 @@ namespace FireflyDesign {
 		~WinSha1();
 
 		std::vector<uint8_t> hash(std::vector<uint8_t> data);
+		
 	private:
-		BCRYPT_ALG_HANDLE       hAlg;
-		BCRYPT_HASH_HANDLE      hHash;
-		NTSTATUS                status;
-		DWORD                   cbData;
-		DWORD					cbHash;
-		DWORD					cbHashObject;
-		PBYTE                   pbHashObject;
-		PBYTE                   pbHash;
+		HCRYPTPROV hProv;
+		HCRYPTHASH hHash;
 	};
 
-	WinSha1::WinSha1()
-	{
-		hAlg = NULL;
-		hHash = NULL;
-		status = STATUS_UNSUCCESSFUL;
-		cbData = 0;
-		cbHash = 0;
-		cbHashObject = 0;
-		pbHashObject = NULL;
-		pbHash = NULL;
+	WinSha1::WinSha1() {
+		hProv = 0;
+		hHash = 0;
 	}
 
-	std::vector<uint8_t> WinSha1::hash(std::vector<uint8_t> data)
-	{
-		//open an algorithm handle
-		if (!NT_SUCCESS(status = BCryptOpenAlgorithmProvider(
-			&hAlg,
-			BCRYPT_SHA256_ALGORITHM,
-			NULL,
-			0)))
-		{
-			throw std::exception("error returned by BCryptOpenAlgorithmProvider");
+	WinSha1::~WinSha1() {
+		if (hHash != 0) {
+			CryptDestroyHash(hHash);
+			hHash = 0;
 		}
-
-		//calculate the size of the buffer to hold the hash object
-		if (!NT_SUCCESS(status = BCryptGetProperty(
-			hAlg,
-			BCRYPT_OBJECT_LENGTH,
-			(PBYTE)&cbHashObject,
-			sizeof(DWORD),
-			&cbData,
-			0)))
-		{
-			throw std::exception("errorreturned by BCryptGetProperty");
-		}
-
-		//allocate the hash object on the heap
-		pbHashObject = (PBYTE)HeapAlloc(GetProcessHeap(), 0, cbHashObject);
-		if (NULL == pbHashObject)
-		{
-			throw std::exception("memory allocation failed");
-		}
-
-		//calculate the length of the hash
-		if (!NT_SUCCESS(status = BCryptGetProperty(
-			hAlg,
-			BCRYPT_HASH_LENGTH,
-			(PBYTE)&cbHash,
-			sizeof(DWORD),
-			&cbData,
-			0)))
-		{
-			throw std::exception("error returned by BCryptGetProperty");
-		}
-
-		//allocate the hash buffer on the heap
-		pbHash = (PBYTE)HeapAlloc(GetProcessHeap(), 0, cbHash);
-		if (NULL == pbHash)
-		{
-			throw std::exception("memory allocation failed");
-		}
-
-		//create a hash
-		if (!NT_SUCCESS(status = BCryptCreateHash(
-			hAlg,
-			&hHash,
-			pbHashObject,
-			cbHashObject,
-			NULL,
-			0,
-			0)))
-		{
-			throw std::exception("error returned by BCryptCreateHash");
-		}
-
-		//hash some data
-		if (!NT_SUCCESS(status = BCryptHashData(
-			hHash,
-			(PBYTE)data.data(),
-			sizeof(data.size()),
-			0)))
-		{
-			throw std::exception("error returned by BCryptHashData");
-		}
-
-		//close the hash
-		if (!NT_SUCCESS(status = BCryptFinishHash(
-			hHash,
-			pbHash,
-			cbHash,
-			0)))
-		{
-			throw std::exception("error returned by BCryptFinishHash");
-		}
-
-		std::vector<uint8_t> hash(pbHash, pbHash + cbHash);
-		return hash;
-	}
-
-	WinSha1::~WinSha1()
-	{
-		if (hAlg)
-		{
-			BCryptCloseAlgorithmProvider(hAlg, 0);
-		}
-
-		if (hHash)
-		{
-			BCryptDestroyHash(hHash);
-		}
-
-		if (pbHashObject)
-		{
-			HeapFree(GetProcessHeap(), 0, pbHashObject);
-		}
-
-		if (pbHash)
-		{
-			HeapFree(GetProcessHeap(), 0, pbHash);
+		if (hProv != 0) {
+			CryptReleaseContext(hProv, 0);
+			hProv = 0;
 		}
 	}
 
-}
-#endif
-
-namespace FireflyDesign {
-
-	class WinSha1 {
-	public:
-		WinSha1() {}
-		~WinSha1() {}
-
-		std::vector<uint8_t> hash(std::vector<uint8_t> data) {
-			throw std::exception("unimplemented");
+	std::vector<uint8_t> WinSha1::hash(std::vector<uint8_t> data) {
+		if (!CryptAcquireContext(&hProv, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT)) {
+			throw std::exception("error returned by CryptAcquireContext");
 		}
-	};
+
+		if (!CryptCreateHash(hProv, CALG_SHA, 0, 0, &hHash)) {
+			throw std::exception("error returned by CryptCreateHash");
+		}
+
+		if (!CryptHashData(hHash, data.data(), data.size(), 0)) {
+			throw std::exception("error returned by CryptHashData");
+		}
+
+		uint8_t hash[20]; //SHA hash is 20 bytes
+		DWORD hashLength = sizeof(hash);
+		if (!CryptGetHashParam(hHash, HP_HASHVAL, hash, &hashLength, 0)) {
+			throw std::exception("error returned by CryptGetHashParam");
+		}
+
+		return std::vector<uint8_t>(hash, hash + sizeof(hash));
+	}
 
 	class WinAes {
 	public:
