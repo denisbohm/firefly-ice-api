@@ -43,7 +43,8 @@
 
 enum {
     FDSyncTaskErrorCodeCancelling,
-    FDSyncTaskErrorCodeException
+    FDSyncTaskErrorCodeException,
+    FDSyncTaskErrorCodeCouldNotAcquireLock
 };
 
 @class FDSyncTask;
@@ -83,6 +84,7 @@ enum {
 @property id<FDSyncTaskDelegate> delegate;
 @property NSString *identifier;
 @property id<FDSyncTaskUpload> upload;
+@property NSUInteger syncAheadLimit;
 
 @property BOOL reschedule;
 

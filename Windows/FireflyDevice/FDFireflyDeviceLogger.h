@@ -33,8 +33,8 @@ namespace FireflyDesign {
 
 	class FDFireflyDeviceLogger {
 	public:
-		void setLog(std::shared_ptr<FDFireflyDeviceLog> log);
-		std::shared_ptr<FDFireflyDeviceLog> getLog();
+		static void setLog(std::shared_ptr<FDFireflyDeviceLog> log);
+		static std::shared_ptr<FDFireflyDeviceLog> getLog();
 
 		static void log(std::shared_ptr<FDFireflyDeviceLog> log, std::string file, unsigned line, std::string method, std::string format, ...);
 	};

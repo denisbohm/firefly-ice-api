@@ -50,8 +50,8 @@
 @property BOOL isSyncDataPending;
 @property NSMutableArray *syncAheadItems;
 @property NSArray *syncUploadItems;
+@property uint32_t lastPage;
 @property BOOL isActive;
-@property NSUInteger syncAheadLimit;
 @property BOOL complete;
 
 // Wait time between sync attempts.  Starts at minWait.  On error backs off linearly until maxWait.
@@ -119,6 +119,7 @@
     _complete = NO;
     _syncAheadItems = [NSMutableArray array];
     _isSyncDataPending = NO;
+    _lastPage = 0xfffffff0; // 0xfffffffe == no more data, 0xffffffff == ram data, low numbers are actual page numbers
     [self startSync];
 }
 
@@ -138,7 +139,7 @@
         [self beginSync];
     } else {
         FDFireflyDeviceLogInfo(@"sync could not acquire lock");
-        [_fireflyIce.executor complete:self];
+        [_fireflyIce.executor fail:self error:[NSError errorWithDomain:FDSyncTaskErrorDomain code:FDSyncTaskErrorCodeCouldNotAcquireLock userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"sync task could not acquire lock", @"")}]];
     }
 }
 
@@ -365,17 +366,6 @@
     }
 }
 
-+ (NSString *)hardwareId:(NSData *)unique
-{
-    NSMutableString *hardwareId = [NSMutableString stringWithString:@"FireflyIce-"];
-    uint8_t *bytes = (uint8_t *)unique.bytes;
-    for (NSUInteger i = 0; i < unique.length; ++i) {
-		uint8_t byte = bytes[i];
-        [hardwareId appendFormat:@"%02X", byte];
-	}
-    return hardwareId;
-}
-
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel syncData:(NSData *)data
 {
     FDFireflyDeviceLogInfo(@"sync data for %@", _site);
@@ -384,13 +374,12 @@
     
     FDBinary *binary = [[FDBinary alloc] initWithData:data];
     NSData *product __unused = [binary getData:8];
-    NSData *unique = [binary getData:8];
-    NSString *hardwareId = [FDSyncTask hardwareId:unique];
+    NSData *unique __unused = [binary getData:8];
     uint32_t page = [binary getUInt32];
     uint16_t length = [binary getUInt16];
     uint16_t hash = [binary getUInt16];
     uint32_t type = [binary getUInt32];
-    FDFireflyDeviceLogInfo(@"syncData: page=%u length=%u hash=0x%04x type=0x%08x", page, length, hash, type);
+    FDFireflyDeviceLogInfo(@"syncData: page=%08x length=%u hash=0x%04x type=0x%08x", page, length, hash, type);
     
     // No sync data left? If so wait for uploads to complete or finish up now if there aren't any open uploads.
     if (page == 0xfffffffe) {
@@ -400,6 +389,19 @@
         }
         return;
     }
+    
+    // Note that page == 0xffffffff is used for the RAM buffer (data that hasn't been flushed out to EEPROM yet). -denis
+    if ((page != 0xffffffff) && (_lastPage == page)) {
+        // got a repeat, a message must have been dropped...
+        // need to resync to recover...
+        [_upload cancel:nil];
+        [_syncAheadItems removeAllObjects];
+        _syncUploadItems = nil;
+        _isSyncDataPending = NO;
+        [self startSync];
+        return;
+    }
+    _lastPage = page;
     
     FDBinary *response = [[FDBinary alloc] init];
     [response putUInt8:FD_CONTROL_SYNC_ACK];
@@ -412,11 +414,11 @@
     switch (type) {
         case FD_VMA_TYPE:
         case FD_VMA2_TYPE:
-            [self syncVMA:hardwareId binary:binary floatBytes:type == FD_VMA2_TYPE ? 2 : 4 responseData:responseData];
+            [self syncVMA:_hardwareId binary:binary floatBytes:type == FD_VMA2_TYPE ? 2 : 4 responseData:responseData];
             // don't respond now.  need to wait for http post to complete before responding
             break;
         case FD_LOG_TYPE:
-            [self syncLog:hardwareId binary:binary];
+            [self syncLog:_hardwareId binary:binary];
             [channel fireflyIceChannelSend:responseData];
             break;
         default:
