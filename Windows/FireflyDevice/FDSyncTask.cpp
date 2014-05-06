@@ -58,6 +58,7 @@ namespace FireflyDesign {
 		_currentBacklog = 0;
 		_lastDataDate = 0;
 		_isSyncDataPending = false;
+		_lastPage = 0xfffffff0;
 		_isActive = false;
 		_syncAheadLimit = 1;
 		_complete = false;
@@ -65,8 +66,6 @@ namespace FireflyDesign {
 		_minWait = 60;
 		_maxWait = 3600;
 		_wait = _minWait;
-
-		hardwareIdPrefix = "FireflyIce-";
 	}
 
 	int FDSyncTask::getInitialBacklog() {
@@ -111,6 +110,7 @@ namespace FireflyDesign {
 		_complete = false;
 		_syncAheadItems.clear();
 		_isSyncDataPending = false;
+		_lastPage = 0xfffffff0; // 0xfffffffe == no more data, 0xffffffff == ram data, low numbers are actual page numbers
 		startSync();
 	}
 
@@ -356,17 +356,6 @@ namespace FireflyDesign {
 		}
 	}
 
-	std::string FDSyncTask::formatHardwareId(std::vector<uint8_t> unique)
-	{
-		std::ostringstream os;
-		os << hardwareIdPrefix;
-		for (uint8_t byte : unique) {
-			os << std::setfill('0') << std::setw(2) << std::hex << (byte & 0xff);
-		}
-		std::string hardwareId = os.str();
-		return hardwareId;
-	}
-
 	void FDSyncTask::fireflyIceSync(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, std::vector<uint8_t> data)
 	{
 		FDFireflyDeviceLogInfo("sync data for %s", _site.c_str());
@@ -376,7 +365,6 @@ namespace FireflyDesign {
 		FDBinary binary(data);
 		std::vector<uint8_t> product = binary.getData(8);
 		std::vector<uint8_t> unique = binary.getData(8);
-		std::string hardwareId = formatHardwareId(unique);
 		uint32_t page = binary.getUInt32();
 		uint16_t length = binary.getUInt16();
 		uint16_t hash = binary.getUInt16();
@@ -391,6 +379,22 @@ namespace FireflyDesign {
 			}
 			return;
 		}
+
+		// Note that page == 0xffffffff is used for the RAM buffer (data that hasn't been flushed out to EEPROM yet). -denis
+		if ((page != 0xffffffff) && (_lastPage == page)) {
+			// got a repeat, a message must have been dropped...
+			// need to resync to recover...
+			if (upload) {
+				std::shared_ptr<FDError> error;
+				upload->cancel(error);
+			}
+			_syncAheadItems.clear();
+			_syncUploadItems.clear();
+			_isSyncDataPending = false;
+			startSync();
+			return;
+		}
+		_lastPage = page;
 
 		FDBinary response;
 		response.putUInt8(FD_CONTROL_SYNC_ACK);

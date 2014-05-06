@@ -166,6 +166,7 @@ namespace FireflyDesign {
 		bool _isSyncDataPending;
 		std::vector<FDSyncTaskItem> _syncAheadItems;
 		std::vector<FDSyncTaskUploadItem> _syncUploadItems;
+		uint32_t _lastPage;
 		bool _isActive;
 		int _syncAheadLimit;
 		bool _complete;
@@ -175,10 +176,6 @@ namespace FireflyDesign {
 		duration_type _wait;
 		duration_type _minWait;
 		duration_type _maxWait;
-
-	public:
-		std::string hardwareIdPrefix;
-		virtual std::string formatHardwareId(std::vector<uint8_t> unique);
 	};
 
 }
