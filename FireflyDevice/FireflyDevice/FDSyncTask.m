@@ -40,7 +40,7 @@
 @implementation FDSyncTaskItem
 @end
 
-@interface FDSyncTask () <FDSyncTaskUploadDelegate>
+@interface FDSyncTask ()
 
 @property FDFireflyIceVersion *version;
 @property NSString *site;
@@ -456,7 +456,11 @@
             _wait = _minWait;
             
             if (_complete) {
-                [self onComplete];
+                if (_syncAheadItems.count > 0) {
+                    [self checkUpload];
+                } else {
+                    [self onComplete];
+                }
             } else {
                 [self startSync];
             }

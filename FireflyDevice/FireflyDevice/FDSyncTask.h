@@ -74,7 +74,7 @@ enum {
 
 @end
 
-@interface FDSyncTask : NSObject <FDExecutorTask, FDFireflyIceObserver>
+@interface FDSyncTask : NSObject <FDExecutorTask, FDFireflyIceObserver, FDSyncTaskUploadDelegate>
 
 + (FDSyncTask *)syncTask:(NSString *)hardwareId fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel delegate:(id<FDSyncTaskDelegate>)delegate identifier:(NSString *)identifier;
 

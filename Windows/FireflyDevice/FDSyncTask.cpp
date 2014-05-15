@@ -450,7 +450,11 @@ namespace FireflyDesign {
 				_wait = _minWait;
 
 				if (_complete) {
-					onComplete();
+					if (_syncAheadItems.size() > 0) {
+						checkUpload();
+					} else {
+						onComplete();
+					}
 				} else {
 					startSync();
 				}
