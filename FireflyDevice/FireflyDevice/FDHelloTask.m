@@ -120,10 +120,21 @@
     }
 }
 
+- (NSDate *)date
+{
+    if ([_delegate respondsToSelector:@selector(helloTaskDate)]) {
+        return [_delegate helloTaskDate];
+    }
+    return [NSDate date];
+}
+
 - (void)setTime
 {
-    FDFireflyDeviceLogInfo(@"setting the time");
-    [self.fireflyIce.coder sendSetPropertyTime:self.channel time:[NSDate date]];
+    NSDate *date = [self date];
+    if (date != nil) {
+        FDFireflyDeviceLogInfo(@"setting the time");
+        [self.fireflyIce.coder sendSetPropertyTime:self.channel time:date];
+    }
 }
 
 - (void)checkTime
@@ -136,14 +147,17 @@
             [self setTime];
         }
     } else {
-        NSTimeInterval offset = [_time timeIntervalSinceDate:[NSDate date]];
-        if (fabs(offset) > _setTimeTolerance) {
-            FDFireflyDeviceLogInfo(@"time is off by %0.3f seconds for hw %@ fw %@ (last reset %@)", offset, self.fireflyIce.hardwareId, self.fireflyIce.version, _reset);
-            if (_setTimeEnabled) {
-                [self setTime];
+        NSDate * date = [self date];
+        if (date != nil) {
+            NSTimeInterval offset = [_time timeIntervalSinceDate:date];
+            if (fabs(offset) > _setTimeTolerance) {
+                FDFireflyDeviceLogInfo(@"time is off by %0.3f seconds for hw %@ fw %@ (last reset %@)", offset, self.fireflyIce.hardwareId, self.fireflyIce.version, _reset);
+                if (_setTimeEnabled) {
+                    [self setTime];
+                }
+            } else {
+//                FDFireflyDeviceLogDebug(@"time is off by %0.3f seconds for hw %@ fw %@", offset, self.fireflyIce.hardwareId, self.fireflyIce.version);
             }
-        } else {
-//            FDFireflyDeviceLogDebug(@"time is off by %0.3f seconds for hw %@ fw %@", offset, self.fireflyIce.hardwareId, self.fireflyIce.version);
         }
     }
     [self done];

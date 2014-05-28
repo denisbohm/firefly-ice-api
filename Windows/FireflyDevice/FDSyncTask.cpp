@@ -68,6 +68,29 @@ namespace FireflyDesign {
 		_wait = _minWait;
 	}
 
+	FDSyncTask::~FDSyncTask() {
+		cancelTimer();
+	}
+
+	void FDSyncTask::startTimer() {
+		cancelTimer();
+
+		_timer = FDTimerFactory::defaultTimerFactory->makeTimer(std::bind(&FDSyncTask::timerFired, this), 2.0, FDTimer::OneShot);
+		_timer->setEnabled(true);
+	}
+
+	void FDSyncTask::timerFired() {
+		FDFireflyDeviceLogInfo("timeout waiting for sync data response");
+		resync();
+	}
+
+	void FDSyncTask::cancelTimer() {
+		if (_timer) {
+			_timer->setEnabled(false);
+			_timer.reset();
+		}
+	}
+
 	int FDSyncTask::getInitialBacklog() {
 		return _initialBacklog;
 	}
@@ -95,6 +118,7 @@ namespace FireflyDesign {
 			if (!_isSyncDataPending) {
 				FDFireflyDeviceLogInfo("requesting sync data with offset %u", pending);
 				fireflyIce->coder->sendSyncStart(channel, pending);
+				startTimer();
 				_isSyncDataPending = true;
 			} else {
 				FDFireflyDeviceLogInfo("waiting for pending sync data before starting new sync data request");
@@ -152,6 +176,8 @@ namespace FireflyDesign {
 
 	void FDSyncTask::deactivate(FDExecutor *executor)
 	{
+		cancelTimer();
+
 		if (upload && upload->isConnectionOpen) {
 			upload->cancel(FDError::error(FDSyncTaskErrorDomain, FDSyncTaskErrorCodeCancelling, "sync task deactivated: canceling upload"));
 		}
@@ -356,6 +382,17 @@ namespace FireflyDesign {
 		}
 	}
 
+	void FDSyncTask::resync() {
+		if (upload) {
+			std::shared_ptr<FDError> error;
+			upload->cancel(error);
+		}
+		_syncAheadItems.clear();
+		_syncUploadItems.clear();
+		_isSyncDataPending = false;
+		startSync();
+	}
+
 	void FDSyncTask::fireflyIceSync(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, std::vector<uint8_t> data)
 	{
 		FDFireflyDeviceLogInfo("sync data for %s", _site.c_str());
@@ -384,14 +421,7 @@ namespace FireflyDesign {
 		if ((page != 0xffffffff) && (_lastPage == page)) {
 			// got a repeat, a message must have been dropped...
 			// need to resync to recover...
-			if (upload) {
-				std::shared_ptr<FDError> error;
-				upload->cancel(error);
-			}
-			_syncAheadItems.clear();
-			_syncUploadItems.clear();
-			_isSyncDataPending = false;
-			startSync();
+			resync();
 			return;
 		}
 		_lastPage = page;

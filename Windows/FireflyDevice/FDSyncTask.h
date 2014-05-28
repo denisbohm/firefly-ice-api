@@ -13,6 +13,7 @@
 
 #include "FDExecutor.h"
 #include "FDFireflyIce.h"
+#include "FDTimer.h"
 
 namespace FireflyDesign {
 
@@ -104,6 +105,7 @@ namespace FireflyDesign {
 	class FDSyncTask : public FDExecutorTask, public FDFireflyIceObserver, public FDSyncTaskUploadDelegate, public std::enable_shared_from_this<FDSyncTask> {
 	public:
 		FDSyncTask();
+		virtual ~FDSyncTask();
 
 		static std::shared_ptr<FDSyncTask> syncTask(std::string hardwareId, std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, std::shared_ptr<FDSyncTaskDelegate> delegate, std::string identifier);
 
@@ -155,6 +157,10 @@ namespace FireflyDesign {
 		void uploadComplete(FDSyncTaskUpload* upload, std::shared_ptr<FDError> error);
 		void onComplete();
 		void syncVMA(std::string hardwareId, FDBinary& binary, int floatBytes, std::vector<uint8_t> responseData);
+		void resync();
+		void startTimer();
+		void timerFired();
+		void cancelTimer();
 
 		std::shared_ptr<FDFireflyIceVersion> _version;
 		std::string _site;
@@ -170,6 +176,7 @@ namespace FireflyDesign {
 		bool _isActive;
 		int _syncAheadLimit;
 		bool _complete;
+		std::shared_ptr<FDTimer> _timer;
 
 		// Wait time between sync attempts.  Starts at minWait.  On error backs off linearly until maxWait.
 		// On success reverts to minWait.

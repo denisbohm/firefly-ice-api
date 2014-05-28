@@ -91,8 +91,11 @@ namespace FireflyDesign {
 
 	void FDHelloTask::setTime()
 	{
-		FDFireflyDeviceLogInfo("setting the time");
-		fireflyIce->coder->sendSetPropertyTime(channel, FDTime::time());
+		FDTime::time_type time = delegate != NULL ? delegate->helloTaskDate() : FDTime::time();
+		if (time != 0) {
+			FDFireflyDeviceLogInfo("setting the time");
+			fireflyIce->coder->sendSetPropertyTime(channel, time);
+		}
 	}
 
 	void FDHelloTask::checkTime()
@@ -105,15 +108,16 @@ namespace FireflyDesign {
 		if (_time == 0) {
 			FDFireflyDeviceLogInfo("time not set for hw %s fw %s (last reset %s)", hardwareIdDescription.c_str(), versionDescription.c_str(), resetDescription.c_str());
 			setTime();
-		}
-		else {
-			duration_type offset = FDTime::time() - _time;
-			if (fabs(offset) > _maxOffset) {
-				FDFireflyDeviceLogInfo("time is off by %0.3f seconds for hw %s fw %s (last reset %s)", offset, hardwareIdDescription.c_str(), versionDescription.c_str(), resetDescription.c_str());
-				setTime();
-			}
-			else {
-				//            FDFireflyDeviceLogDebug(@"time is off by %0.3f seconds for hw %@ fw %@", offset, self.fireflyIce.hardwareId, self.fireflyIce.version);
+		} else {
+			FDTime::time_type time = delegate != NULL ? delegate->helloTaskDate() : FDTime::time();
+			if (time != 0) {
+				duration_type offset = time - _time;
+				if (fabs(offset) > _maxOffset) {
+					FDFireflyDeviceLogInfo("time is off by %0.3f seconds for hw %s fw %s (last reset %s)", offset, hardwareIdDescription.c_str(), versionDescription.c_str(), resetDescription.c_str());
+					setTime();
+				} else {
+					//            FDFireflyDeviceLogDebug(@"time is off by %0.3f seconds for hw %@ fw %@", offset, self.fireflyIce.hardwareId, self.fireflyIce.version);
+				}
 			}
 		}
 		done();

@@ -53,6 +53,7 @@
 @property uint32_t lastPage;
 @property BOOL isActive;
 @property BOOL complete;
+@property NSTimer *timer;
 
 // Wait time between sync attempts.  Starts at minWait.  On error backs off linearly until maxWait.
 // On success reverts to minWait.
@@ -93,6 +94,24 @@
     return self;
 }
 
+- (void)startTimer
+{
+    [self cancelTimer];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(timerFired:) userInfo:nil repeats:NO];
+}
+
+- (void)timerFired:(NSTimer *)timer
+{
+    NSLog(@"timeout waiting for sync data response");
+    [self resync];
+}
+
+- (void)cancelTimer
+{
+    [_timer invalidate];
+    _timer = nil;
+}
+
 - (void)startSync
 {
     NSUInteger limit = 1;
@@ -104,6 +123,7 @@
         if (!_isSyncDataPending) {
             FDFireflyDeviceLogInfo(@"requesting sync data with offset %u", pending);
             [_fireflyIce.coder sendSyncStart:_channel offset:(uint32_t)pending];
+            [self startTimer];
             _isSyncDataPending = YES;
         } else {
             FDFireflyDeviceLogInfo(@"waiting for pending sync data before starting new sync data request");
@@ -161,6 +181,8 @@
 
 - (void)deactivate:(FDExecutor *)executor
 {
+    [self cancelTimer];
+    
     if (_upload.isConnectionOpen) {
         [_upload cancel:[NSError errorWithDomain:FDSyncTaskErrorDomain code:FDSyncTaskErrorCodeCancelling userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"sync task deactivated: canceling upload", @"")}]];
     }
@@ -366,10 +388,21 @@
     }
 }
 
+- (void)resync
+{
+    NSLog(@"initiating a resync");
+    [_upload cancel:nil];
+    [_syncAheadItems removeAllObjects];
+    _syncUploadItems = nil;
+    _isSyncDataPending = NO;
+    [self startSync];
+}
+
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel syncData:(NSData *)data
 {
     FDFireflyDeviceLogInfo(@"sync data for %@", _site);
     
+    [self cancelTimer];
     [_fireflyIce.executor feedWatchdog:self];
     
     FDBinary *binary = [[FDBinary alloc] initWithData:data];
@@ -394,11 +427,7 @@
     if ((page != 0xffffffff) && (_lastPage == page)) {
         // got a repeat, a message must have been dropped...
         // need to resync to recover...
-        [_upload cancel:nil];
-        [_syncAheadItems removeAllObjects];
-        _syncUploadItems = nil;
-        _isSyncDataPending = NO;
-        [self startSync];
+        [self resync];
         return;
     }
     _lastPage = page;

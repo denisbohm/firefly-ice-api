@@ -23,6 +23,10 @@ enum {
 - (void)helloTaskSuccess:(FDHelloTask *)helloTask;
 - (void)helloTask:(FDHelloTask *)helloTask error:(NSError *)error;
 
+@optional
+
+- (NSDate *)helloTaskDate;
+
 @end
 
 @interface FDHelloTask : FDFireflyIceTaskSteps

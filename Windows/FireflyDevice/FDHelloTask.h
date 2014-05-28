@@ -10,8 +10,8 @@
 #define FDHELLOTASK_H
 
 #include "FDCommon.h"
-
 #include "FDFireflyIceTaskSteps.h"
+#include "FDTime.h"
 
 namespace FireflyDesign {
 
@@ -26,6 +26,7 @@ namespace FireflyDesign {
 	class FDHelloTaskDelegate {
 	public:
 		virtual ~FDHelloTaskDelegate() {}
+		virtual FDTime::time_type helloTaskDate() { return FDTime::time(); }
 		virtual void helloTaskSuccess(FDHelloTask *helloTask) {}
 		virtual void helloTaskError(FDHelloTask *helloTask, std::shared_ptr<FDError> error) {}
 	};
