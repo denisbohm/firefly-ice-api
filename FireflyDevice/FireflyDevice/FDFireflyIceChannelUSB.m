@@ -6,11 +6,11 @@
 //  Copyright (c) 2013-2014 Firefly Design LLC / Denis Bohm. All rights reserved.
 //
 
-#import "FDDetour.h"
-#import "FDDetourSource.h"
-#import "FDFireflyIceChannelUSB.h"
-#import "FDUSBHIDMonitor.h"
-#import "FDFireflyDeviceLogger.h"
+#import <FireflyDevice/FDDetour.h>
+#import <FireflyDevice/FDDetourSource.h>
+#import <FireflyDevice/FDFireflyIceChannelUSB.h>
+#import <FireflyDevice/FDUSBHIDMonitor.h>
+#import <FireflyDevice/FDFireflyDeviceLogger.h>
 
 @interface FDFireflyIceChannelUSB () <FDUSBHIDDeviceDelegate>
 

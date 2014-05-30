@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Firefly Design LLC / Denis Bohm. All rights reserved.
 //
 
-#import "FDBundle.h"
+#import <FireflyDevice/FDBundle.h>
 
 @interface FDBundleManager : NSObject
 

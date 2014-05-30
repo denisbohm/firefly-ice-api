@@ -6,8 +6,8 @@
 //  Copyright (c) 2013-2014 Firefly Design LLC / Denis Bohm. All rights reserved.
 //
 
-#import "FDExecutor.h"
-#import "FDFireflyIce.h"
+#import <FireflyDevice/FDExecutor.h>
+#import <FireflyDevice/FDFireflyIce.h>
 
 @interface FDFireflyIceTaskSteps : NSObject <FDExecutorTask, FDFireflyIceObserver>
 

@@ -6,7 +6,7 @@
 //  Copyright (c) 2013-2014 Firefly Design LLC / Denis Bohm. All rights reserved.
 //
 
-#import "FDIEEE754.h"
+#import <FireflyDevice/FDIEEE754.h>
 
 #import <XCTest/XCTest.h>
 

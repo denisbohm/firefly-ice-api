@@ -6,9 +6,9 @@
 //  Copyright (c) 2013-2014 Firefly Design LLC / Denis Bohm. All rights reserved.
 //
 
-#import "FDFireflyIceCoder.h"
-#import "FDHelloTask.h"
-#import "FDFireflyDeviceLogger.h"
+#import <FireflyDevice/FDFireflyIceCoder.h>
+#import <FireflyDevice/FDHelloTask.h>
+#import <FireflyDevice/FDFireflyDeviceLogger.h>
 
 #define _log self.fireflyIce.log
 

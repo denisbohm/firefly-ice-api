@@ -25,12 +25,13 @@ echo "//
 //  Created by $0
 //
 
-#import \"${PREFIX}Bundle.h\"
+#import <${PROJECT_NAME}/${PREFIX}Bundle.h>
+
 #import <FireflyDevice/FDBundleManager.h>
 
 @implementation ${PREFIX}Bundle
 
-+ (void)load
++ (void)loadBundle
 {
     [FDBundleManager addLibraryBundle:[[${PREFIX}Bundle alloc] init]];
 }

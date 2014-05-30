@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Firefly Design LLC / Denis Bohm. All rights reserved.
 //
 
-#import "FDFireflyIceDeviceMock.h"
-#import "FDFireflyIceCoder.h"
+#import <FireflyDevice/FDFireflyIceDeviceMock.h>
+#import <FireflyDevice/FDFireflyIceCoder.h>
 
 @implementation FDFireflyIceDeviceMock
 

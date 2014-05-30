@@ -6,9 +6,9 @@
 //  Copyright (c) 2013-2014 Firefly Design LLC / Denis Bohm. All rights reserved.
 //
 
-#import "FDBinary.h"
-#import "FDDetour.h"
-#import "FDFireflyDeviceLogger.h"
+#import <FireflyDevice/FDBinary.h>
+#import <FireflyDevice/FDDetour.h>
+#import <FireflyDevice/FDFireflyDeviceLogger.h>
 
 @interface FDDetour ()
 

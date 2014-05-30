@@ -6,8 +6,8 @@
 //  Copyright (c) 2013-2014 Firefly Design LLC / Denis Bohm. All rights reserved.
 //
 
-#import "FDIntelHex.h"
-#import "FDJSON.h"
+#import <FireflyDevice/FDIntelHex.h>
+#import <FireflyDevice/FDJSON.h>
 
 @implementation FDIntelHex
 

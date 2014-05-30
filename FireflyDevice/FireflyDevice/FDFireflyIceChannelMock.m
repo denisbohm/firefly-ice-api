@@ -6,11 +6,11 @@
 //  Copyright (c) 2014 Firefly Design LLC / Denis Bohm. All rights reserved.
 //
 
-#import "FDBinary.h"
-#import "FDCrypto.h"
-#import "FDFireflyIce.h"
-#import "FDFireflyIceCoder.h"
-#import "FDFireflyIceChannelMock.h"
+#import <FireflyDevice/FDBinary.h>
+#import <FireflyDevice/FDCrypto.h>
+#import <FireflyDevice/FDFireflyIce.h>
+#import <FireflyDevice/FDFireflyIceCoder.h>
+#import <FireflyDevice/FDFireflyIceChannelMock.h>
 
 @interface FDFireflyIceChannelMock ()
 

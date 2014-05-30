@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Firefly Design LLC / Denis Bohm. All rights reserved.
 //
 
-#import "FDJSON.h"
+#import <FireflyDevice/FDJSON.h>
 
 @implementation FDJSON
 

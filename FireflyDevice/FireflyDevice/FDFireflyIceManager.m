@@ -6,13 +6,13 @@
 //  Copyright (c) 2013-2014 Firefly Design LLC / Denis Bohm. All rights reserved.
 //
 
-#import "FDExecutor.h"
-#import "FDHelloTask.h"
-#import "FDFireflyIce.h"
-#import "FDFireflyIceChannelBLE.h"
-#import "FDFireflyIceManager.h"
-#import "FDFirmwareUpdateTask.h"
-#import "FDWeak.h"
+#import <FireflyDevice/FDExecutor.h>
+#import <FireflyDevice/FDHelloTask.h>
+#import <FireflyDevice/FDFireflyIce.h>
+#import <FireflyDevice/FDFireflyIceChannelBLE.h>
+#import <FireflyDevice/FDFireflyIceManager.h>
+#import <FireflyDevice/FDFirmwareUpdateTask.h>
+#import <FireflyDevice/FDWeak.h>
 
 @interface FDFireflyIceManager () <FDFireflyIceObserver, FDHelloTaskDelegate>
 

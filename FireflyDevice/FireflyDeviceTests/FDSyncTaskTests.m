@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Firefly Design LLC / Denis Bohm. All rights reserved.
 //
 
-#import "FDBinary.h"
-#import "FDFireflyIceCoder.h"
-#import "FDSyncTask.h"
+#import <FireflyDevice/FDBinary.h>
+#import <FireflyDevice/FDFireflyIceCoder.h>
+#import <FireflyDevice/FDSyncTask.h>
 
 #import <XCTest/XCTest.h>
 

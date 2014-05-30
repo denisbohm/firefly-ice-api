@@ -6,8 +6,8 @@
 //  Copyright (c) 2013-2014 Firefly Design LLC / Denis Bohm. All rights reserved.
 //
 
-#import "FDFireflyIce.h"
-#import "FDFireflyIceChannelBLE.h"
+#import <FireflyDevice/FDFireflyIce.h>
+#import <FireflyDevice/FDFireflyIceChannelBLE.h>
 
 #import <Foundation/Foundation.h>
 

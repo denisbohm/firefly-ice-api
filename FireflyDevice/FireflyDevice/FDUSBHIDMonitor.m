@@ -6,9 +6,9 @@
 //  Copyright (c) 2013-2014 Firefly Design LLC / Denis Bohm. All rights reserved.
 //
 
-#import "FDUSBHIDMonitor.h"
-#import "FDFireflyDeviceLogger.h"
-#import "FDWeak.h"
+#import <FireflyDevice/FDUSBHIDMonitor.h>
+#import <FireflyDevice/FDFireflyDeviceLogger.h>
+#import <FireflyDevice/FDWeak.h>
 
 #import <IOKit/hid/IOHIDManager.h>
 

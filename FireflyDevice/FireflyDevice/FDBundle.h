@@ -16,4 +16,6 @@
 
 @interface FDBundle : NSObject <FDBundleInfo>
 
++ (void)loadBundle;
+
 @end

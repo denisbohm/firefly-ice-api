@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Firefly Design LLC / Denis Bohm. All rights reserved.
 //
 
-#import "FDFireflyIceChannel.h"
-#import "FDFireflyIceDeviceMock.h"
+#import <FireflyDevice/FDFireflyIceChannel.h>
+#import <FireflyDevice/FDFireflyIceDeviceMock.h>
 
 @interface FDFireflyIceChannelMock : NSObject <FDFireflyIceChannel>
 

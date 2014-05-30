@@ -6,12 +6,12 @@
 //  Copyright (c) 2013-2014 Firefly Design LLC / Denis Bohm. All rights reserved.
 //
 
-#import "FDBinary.h"
-#import "FDDetour.h"
-#import "FDDetourSource.h"
-#import "FDFireflyIceChannelBLE.h"
-#import "FDFireflyDeviceLogger.h"
-#import "FDWeak.h"
+#import <FireflyDevice/FDBinary.h>
+#import <FireflyDevice/FDDetour.h>
+#import <FireflyDevice/FDDetourSource.h>
+#import <FireflyDevice/FDFireflyIceChannelBLE.h>
+#import <FireflyDevice/FDFireflyDeviceLogger.h>
+#import <FireflyDevice/FDWeak.h>
 
 #if TARGET_OS_IPHONE
 #import <CoreBluetooth/CoreBluetooth.h>

@@ -8,35 +8,37 @@
 
 #import <Foundation/Foundation.h>
 
-#import "FDHardwareId.h"
-#import "FDBundle.h"
-#import "FDBundleManager.h"
-#import "FDFireflyDeviceLogger.h"
-#import "FDFileLog.h"
-#import "FDUSBHIDMonitor.h"
-#import "FDBinary.h"
-#import "FDCrypto.h"
-#import "FDDetour.h"
-#import "FDDetourSource.h"
-#import "FDIntelHex.h"
-#import "FDObservable.h"
-#import "FDExecutor.h"
-#import "FDFireflyIce.h"
-#import "FDFireflyIceChannel.h"
-#import "FDFireflyIceChannelBLE.h"
+#import <FireflyDevice/FDHardwareId.h>
+#import <FireflyDevice/FDBundle.h>
+#import <FireflyDevice/FDBundleManager.h>
+#import <FireflyDevice/FDFireflyDeviceLogger.h>
+#import <FireflyDevice/FDFileLog.h>
 #if !TARGET_OS_IPHONE
-#import "FDFireflyIceChannelUSB.h"
+#import <FireflyDevice/FDUSBHIDMonitor.h>
 #endif
-#import "FDFireflyIceChannelMock.h"
-#import "FDFireflyIceCoder.h"
-#import "FDFireflyIceTaskSteps.h"
-#import "FDHelloTask.h"
-#import "FDSyncTask.h"
-#import "FDFirmwareUpdateTask.h"
-#import "FDFireflyIceManager.h"
-#import "FDFireflyIceSimpleTask.h"
-#import "FDJSON.h"
-#import "FDWeak.h"
+#import <FireflyDevice/FDBinary.h>
+#import <FireflyDevice/FDCrypto.h>
+#import <FireflyDevice/FDDetour.h>
+#import <FireflyDevice/FDDetourSource.h>
+#import <FireflyDevice/FDIntelHex.h>
+#import <FireflyDevice/FDObservable.h>
+#import <FireflyDevice/FDExecutor.h>
+#import <FireflyDevice/FDFireflyIce.h>
+#import <FireflyDevice/FDFireflyIceChannel.h>
+#import <FireflyDevice/FDFireflyIceChannelBLE.h>
+#if !TARGET_OS_IPHONE
+#import <FireflyDevice/FDFireflyIceChannelUSB.h>
+#endif
+#import <FireflyDevice/FDFireflyIceChannelMock.h>
+#import <FireflyDevice/FDFireflyIceCoder.h>
+#import <FireflyDevice/FDFireflyIceTaskSteps.h>
+#import <FireflyDevice/FDHelloTask.h>
+#import <FireflyDevice/FDSyncTask.h>
+#import <FireflyDevice/FDFirmwareUpdateTask.h>
+#import <FireflyDevice/FDFireflyIceManager.h>
+#import <FireflyDevice/FDFireflyIceSimpleTask.h>
+#import <FireflyDevice/FDJSON.h>
+#import <FireflyDevice/FDWeak.h>
 
 @interface FireflyDevice : NSObject
 

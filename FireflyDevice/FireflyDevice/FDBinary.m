@@ -6,8 +6,8 @@
 //  Copyright (c) 2013-2014 Firefly Design LLC / Denis Bohm. All rights reserved.
 //
 
-#import "FDBinary.h"
-#import "FDIEEE754.h"
+#import <FireflyDevice/FDBinary.h>
+#import <FireflyDevice/FDIEEE754.h>
 
 #include <stdint.h>
 #include <string.h>

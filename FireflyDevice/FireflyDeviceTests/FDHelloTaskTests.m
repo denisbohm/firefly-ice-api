@@ -6,7 +6,7 @@
 //  Copyright (c) 2013-2014 Firefly Design LLC / Denis Bohm. All rights reserved.
 //
 
-#import "FDHelloTask.h"
+#import <FireflyDevice/FDHelloTask.h>
 
 #import <XCTest/XCTest.h>
 

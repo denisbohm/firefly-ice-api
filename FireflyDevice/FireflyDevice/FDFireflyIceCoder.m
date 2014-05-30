@@ -6,10 +6,10 @@
 //  Copyright (c) 2013-2014 Firefly Design LLC / Denis Bohm. All rights reserved.
 //
 
-#import "FDBinary.h"
-#import "FDFireflyIce.h"
-#import "FDFireflyIceChannel.h"
-#import "FDFireflyIceCoder.h"
+#import <FireflyDevice/FDBinary.h>
+#import <FireflyDevice/FDFireflyIce.h>
+#import <FireflyDevice/FDFireflyIceChannel.h>
+#import <FireflyDevice/FDFireflyIceCoder.h>
 
 #define HASH_SIZE 20
 

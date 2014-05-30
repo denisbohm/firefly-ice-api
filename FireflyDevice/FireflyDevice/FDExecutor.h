@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "FDObservable.h"
+#import <FireflyDevice/FDObservable.h>
 
 @protocol FDFireflyDeviceLog;
 @class FDExecutor;

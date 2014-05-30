@@ -5,12 +5,13 @@
 //  Created by scripts/plistToDictionary.sh
 //
 
-#import "FDBundle.h"
+#import <FireflyDevice/FDBundle.h>
+
 #import <FireflyDevice/FDBundleManager.h>
 
 @implementation FDBundle
 
-+ (void)load
++ (void)loadBundle
 {
     [FDBundleManager addLibraryBundle:[[FDBundle alloc] init]];
 }

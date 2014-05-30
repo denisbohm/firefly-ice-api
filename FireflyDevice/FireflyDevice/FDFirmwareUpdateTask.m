@@ -6,14 +6,14 @@
 //  Copyright (c) 2013-2014 Firefly Design LLC / Denis Bohm. All rights reserved.
 //
 
-#import "FDBinary.h"
-#import "FDCrypto.h"
-#import "FDFireflyIce.h"
-#import "FDFireflyIceCoder.h"
-#import "FDFireflyIceChannel.h"
-#import "FDFirmwareUpdateTask.h"
-#import "FDIntelHex.h"
-#import "FDFireflyDeviceLogger.h"
+#import <FireflyDevice/FDBinary.h>
+#import <FireflyDevice/FDCrypto.h>
+#import <FireflyDevice/FDFireflyIce.h>
+#import <FireflyDevice/FDFireflyIceCoder.h>
+#import <FireflyDevice/FDFireflyIceChannel.h>
+#import <FireflyDevice/FDFirmwareUpdateTask.h>
+#import <FireflyDevice/FDIntelHex.h>
+#import <FireflyDevice/FDFireflyDeviceLogger.h>
 
 #import <CommonCrypto/CommonDigest.h>
 

@@ -6,8 +6,8 @@
 //  Copyright (c) 2013-2014 Firefly Design LLC / Denis Bohm. All rights reserved.
 //
 
-#import "FDExecutor.h"
-#import "FDFireflyDeviceLogger.h"
+#import <FireflyDevice/FDExecutor.h>
+#import <FireflyDevice/FDFireflyDeviceLogger.h>
 
 @implementation FDExecutorObservable
 

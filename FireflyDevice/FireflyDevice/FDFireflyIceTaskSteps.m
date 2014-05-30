@@ -6,10 +6,10 @@
 //  Copyright (c) 2013-2014 Firefly Design LLC / Denis Bohm. All rights reserved.
 //
 
-#import "FDBinary.h"
-#import "FDFireflyIceCoder.h"
-#import "FDFireflyIceTaskSteps.h"
-#import "FDFireflyDeviceLogger.h"
+#import <FireflyDevice/FDBinary.h>
+#import <FireflyDevice/FDFireflyIceCoder.h>
+#import <FireflyDevice/FDFireflyIceTaskSteps.h>
+#import <FireflyDevice/FDFireflyDeviceLogger.h>
 
 #define _log _fireflyIce.log
 

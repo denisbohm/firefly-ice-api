@@ -6,8 +6,8 @@
 //  Copyright (c) 2013-2014 Firefly Design LLC / Denis Bohm. All rights reserved.
 //
 
-#import "FDFireflyIceChannel.h"
-#import "FDObservable.h"
+#import <FireflyDevice/FDFireflyIceChannel.h>
+#import <FireflyDevice/FDObservable.h>
 
 @interface FDFireflyIceVersion : NSObject
 @property uint16_t major;
