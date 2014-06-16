@@ -39,6 +39,7 @@
 		923C345A189733880068863D /* red_fuel.png in Resources */ = {isa = PBXBuildFile; fileRef = 923C3452189733880068863D /* red_fuel.png */; };
 		923C345B189733880068863D /* red_fuel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 923C3453189733880068863D /* red_fuel@2x.png */; };
 		923C345E18973CFD0068863D /* FDDetailPowerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 923C345D18973CFD0068863D /* FDDetailPowerViewController.m */; };
+		923DF034194A2A4300B54A13 /* FDDetailSyncViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 923DF033194A2A4300B54A13 /* FDDetailSyncViewController.m */; };
 		9264BDA618CBBA8B00F8CB3D /* libFireflyDevice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9264BD9B18CBBA5500F8CB3D /* libFireflyDevice.a */; };
 		92841A8817EDF63D005C0E18 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92841A8717EDF63D005C0E18 /* Foundation.framework */; };
 		92841A8A17EDF63D005C0E18 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92841A8917EDF63D005C0E18 /* CoreGraphics.framework */; };
@@ -162,6 +163,9 @@
 		923C3453189733880068863D /* red_fuel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red_fuel@2x.png"; sourceTree = "<group>"; };
 		923C345C18973CFD0068863D /* FDDetailPowerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDDetailPowerViewController.h; sourceTree = "<group>"; };
 		923C345D18973CFD0068863D /* FDDetailPowerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDetailPowerViewController.m; sourceTree = "<group>"; };
+		923DF032194A2A4300B54A13 /* FDDetailSyncViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDDetailSyncViewController.h; sourceTree = "<group>"; };
+		923DF033194A2A4300B54A13 /* FDDetailSyncViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDetailSyncViewController.m; sourceTree = "<group>"; };
+		923DF038194A44E400B54A13 /* FireflyUtility.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = FireflyUtility.entitlements; sourceTree = "<group>"; };
 		92841A8417EDF63D005C0E18 /* FireflyUtility.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FireflyUtility.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		92841A8717EDF63D005C0E18 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		92841A8917EDF63D005C0E18 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -330,6 +334,7 @@
 		92841A8D17EDF63D005C0E18 /* FireflyUtility */ = {
 			isa = PBXGroup;
 			children = (
+				923DF038194A44E400B54A13 /* FireflyUtility.entitlements */,
 				92841A8E17EDF63D005C0E18 /* Supporting Files */,
 				92841AA517EDF63D005C0E18 /* Images.xcassets */,
 				92841A9917EDF63D005C0E18 /* Main_iPhone.storyboard */,
@@ -430,6 +435,8 @@
 				92EAB18618A7F8FA00613447 /* FDDetailTimeViewController.m */,
 				92EAB18B18A7F91500613447 /* FDDetailModeViewController.h */,
 				92EAB18C18A7F91500613447 /* FDDetailModeViewController.m */,
+				923DF032194A2A4300B54A13 /* FDDetailSyncViewController.h */,
+				923DF033194A2A4300B54A13 /* FDDetailSyncViewController.m */,
 			);
 			name = "Detail Views";
 			sourceTree = "<group>";
@@ -515,6 +522,9 @@
 						DevelopmentTeam = TVNL896ZKT;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
 								enabled = 1;
 							};
 						};
@@ -661,6 +671,7 @@
 				929CA40F17F0AD3400A4A992 /* FDDetailOverviewViewController.m in Sources */,
 				92949D4818A5DBA200FD815F /* FDColorSpectrumView.m in Sources */,
 				92949D4218A5CB9C00FD815F /* FDColorPickerViewController.m in Sources */,
+				923DF034194A2A4300B54A13 /* FDDetailSyncViewController.m in Sources */,
 				92DF2E4D18A6B6F10084B306 /* FDColorGamutControl.m in Sources */,
 				92841AA417EDF63D005C0E18 /* FDDetailViewController.m in Sources */,
 			);
@@ -803,6 +814,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = FireflyUtility/FireflyUtility.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -810,7 +822,7 @@
 				INFOPLIST_FILE = "FireflyUtility/FireflyUtility-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "51DBA0E7-2163-4536-94DB-0F30DAB89164";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -821,6 +833,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = FireflyUtility/FireflyUtility.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -828,7 +841,7 @@
 				INFOPLIST_FILE = "FireflyUtility/FireflyUtility-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "51DBA0E7-2163-4536-94DB-0F30DAB89164";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

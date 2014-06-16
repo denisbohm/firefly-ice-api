@@ -8,6 +8,7 @@
 
 #import "FDDetailResetViewController.h"
 
+#import <FireflyDevice/FDBinary.h>
 #import <FireflyDevice/FDFireflyIce.h>
 #import <FireflyDevice/FDFireflyIceCoder.h>
 
@@ -15,6 +16,8 @@
 
 @property IBOutlet UILabel *causeLabel;
 @property IBOutlet UILabel *dateLabel;
+@property IBOutlet UILabel *retainedLabel;
+@property IBOutlet UILabel *contextLabel;
 
 @property IBOutlet UISegmentedControl *typeSegmentedControl;
 
@@ -71,6 +74,22 @@
         [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
         [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
         _dateLabel.text = [dateFormatter stringFromDate:date];
+    }
+    
+    FDFireflyIceRetained *retained = [collector objectForKey:@"retained"];
+    NSLog(@"retained %@", retained.data);
+    if (retained.data.length > 32) {
+        // lr 20, pc 24
+        FDBinary *binary = [[FDBinary alloc] initWithData:retained.data];
+        binary.getIndex += 20;
+        uint32_t lr = [binary getUInt32];
+        uint32_t pc = [binary getUInt32];
+        uint32_t cx = [binary getUInt32];
+        _retainedLabel.text = [NSString stringWithFormat:@"pc=0x%08x lr=0x%08x", pc, lr];
+        _contextLabel.text = [NSString stringWithFormat:@"cx=%c%c%c%c", (cx >> 0) & 0xff, (cx >> 8) & 0xff, (cx >> 16) & 0xff, (cx >> 24) & 0xff];
+    } else {
+        _retainedLabel.text = @"";
+        _contextLabel.text = @"";
     }
 }
 

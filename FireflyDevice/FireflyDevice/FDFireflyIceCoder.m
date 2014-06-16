@@ -202,6 +202,20 @@
     [_observable fireflyIce:fireflyIce channel:channel txPower:level];
 }
 
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel getPropertyRegulator:(FDBinary *)binary
+{
+    NSNumber *regulator = [NSNumber numberWithUnsignedChar:[binary getUInt8]];
+    
+    [_observable fireflyIce:fireflyIce channel:channel regulator:regulator];
+}
+
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel getPropertySensingCount:(FDBinary *)binary
+{
+    NSNumber *sensingCount = [NSNumber numberWithUnsignedInt:[binary getUInt32]];
+    
+    [_observable fireflyIce:fireflyIce channel:channel sensingCount:sensingCount];
+}
+
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel getPropertyLogging:(FDBinary *)binary
 {
     FDFireflyIceLogging *logging = [[FDFireflyIceLogging alloc] init];
@@ -281,6 +295,12 @@
     if (properties & FD_CONTROL_PROPERTY_RETAINED) {
         [self fireflyIce:fireflyIce channel:channel getPropertyRetained:binary];
     }
+    if (properties & FD_CONTROL_PROPERTY_REGULATOR) {
+        [self fireflyIce:fireflyIce channel:channel getPropertyRegulator:binary];
+    }
+    if (properties & FD_CONTROL_PROPERTY_SENSING_COUNT) {
+        [self fireflyIce:fireflyIce channel:channel getPropertySensingCount:binary];
+    }
 }
 
 - (void)sendSetPropertyTime:(id<FDFireflyIceChannel>)channel time:(NSDate *)time
@@ -310,6 +330,15 @@
     [channel fireflyIceChannelSend:binary.dataValue];
 }
 
+- (void)sendSetPropertyRegulator:(id<FDFireflyIceChannel>)channel regulator:(uint8_t)regulator
+{
+    FDBinary *binary = [[FDBinary alloc] init];
+    [binary putUInt8:FD_CONTROL_SET_PROPERTIES];
+    [binary putUInt32:FD_CONTROL_PROPERTY_REGULATOR];
+    [binary putUInt8:regulator];
+    [channel fireflyIceChannelSend:binary.dataValue];
+}
+
 - (void)sendSetPropertyLogging:(id<FDFireflyIceChannel>)channel storage:(BOOL)storage
 {
     FDBinary *binary = [[FDBinary alloc] init];
@@ -328,6 +357,15 @@
     NSData *data = [name dataUsingEncoding:NSUTF8StringEncoding];
     [binary putUInt8:data.length];
     [binary putData:data];
+    [channel fireflyIceChannelSend:binary.dataValue];
+}
+
+- (void)sendSetPropertySensingCount:(id<FDFireflyIceChannel>)channel count:(uint32_t)count
+{
+    FDBinary *binary = [[FDBinary alloc] init];
+    [binary putUInt8:FD_CONTROL_SET_PROPERTIES];
+    [binary putUInt32:FD_CONTROL_PROPERTY_SENSING_COUNT];
+    [binary putUInt32:count];
     [channel fireflyIceChannelSend:binary.dataValue];
 }
 

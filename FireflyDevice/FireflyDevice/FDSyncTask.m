@@ -23,6 +23,9 @@
 
 #define _log self.fireflyIce.log
 
+@implementation FDSyncTaskAcc
+@end
+
 @implementation FDSyncTaskUploadItem
 @end
 
@@ -284,6 +287,7 @@
 #define FD_LOG_TYPE FD_STORAGE_TYPE('F', 'D', 'L', 'O')
 #define FD_VMA_TYPE FD_STORAGE_TYPE('F', 'D', 'V', 'M')
 #define FD_VMA2_TYPE FD_STORAGE_TYPE('F', 'D', 'V', '2')
+#define FD_ACC_TYPE FD_STORAGE_TYPE('F', 'D', 'S', 'A')
 
 - (void)syncLog:(NSString *)hardwareId binary:(FDBinary *)binary
 {
@@ -329,9 +333,15 @@
 
 - (void)syncVMA:(NSString *)hardwareId binary:(FDBinary *)binary floatBytes:(NSUInteger)floatBytes responseData:(NSData *)responseData
 {
+    if ([binary getRemainingLength] < 6) {
+        // invalid record
+        FDFireflyDeviceLogWarn(@"invalid VMA record");
+        [_channel fireflyIceChannelSend:responseData];
+        return;
+    }
     NSTimeInterval time = [binary getUInt32]; // 4-byte time
     uint16_t interval = [binary getUInt16];
-    NSUInteger n = [binary getRemainingLength] / floatBytes; // 4 bytes == sizeof(float32)
+    NSUInteger n = [binary getRemainingLength] / floatBytes; // 4 bytes == sizeof(float32), 2 bytes == sizeof(float16)
     FDFireflyDeviceLogInfo(@"sync VMAs: %lu values", (unsigned long)n);
     NSMutableArray *vmas = [NSMutableArray array];
     for (NSUInteger i = 0; i < n; ++i) {
@@ -359,10 +369,43 @@
         if (backlog > 0) {
             --backlog;
         }
-        [_delegate syncTask:self site:_site hardwareId:hardwareId time:time interval:interval vmas:vmas backlog:backlog];
+        if ([_delegate respondsToSelector:@selector(syncTask:site:hardwareId:time:interval:vmas:backlog:)]) {
+            [_delegate syncTask:self site:_site hardwareId:hardwareId time:time interval:interval vmas:vmas backlog:backlog];
+        }
         
         [self getUploadItems];
         [self performSelectorOnMainThread:@selector(uploadComplete) withObject:nil waitUntilDone:NO];
+    }
+}
+
+// 8G scale
+#define SCALE 0.0001
+
+- (void)syncAcc:(NSString *)hardwareId binary:(FDBinary *)binary
+{
+    if ([binary getRemainingLength] < 10) {
+        // invalid record
+        FDFireflyDeviceLogWarn(@"invalid ACC record");
+        return;
+    }
+    NSTimeInterval time = [binary getTime64];
+    uint16_t interval = [binary getUInt16];
+    NSUInteger n = [binary getRemainingLength] / 4;
+    FDFireflyDeviceLogInfo(@"sync ACC: %lu values", (unsigned long)n);
+    NSMutableArray *accs = [NSMutableArray array];
+    for (NSUInteger i = 0; i < n; ++i) {
+        uint32_t xyz = [binary getUInt32];
+        int16_t x10 = ((xyz >> 20) & 0x03ff) << 6;
+        int16_t y10 = ((xyz >> 10) & 0x03ff) << 6;
+        int16_t z10 = ((xyz >>  0) & 0x03ff) << 6;
+        FDSyncTaskAcc *acc = [[FDSyncTaskAcc alloc] init];
+        acc.x = x10 * SCALE;
+        acc.y = y10 * SCALE;
+        acc.z = z10 * SCALE;
+        [accs addObject:acc];
+    }
+    if ([_delegate respondsToSelector:@selector(syncTask:site:hardwareId:time:interval:accs:backlog:)]) {
+        [_delegate syncTask:self site:_site hardwareId:hardwareId time:time interval:interval accs:accs backlog:_currentBacklog];
     }
 }
 
@@ -445,6 +488,10 @@
         case FD_VMA2_TYPE:
             [self syncVMA:_hardwareId binary:binary floatBytes:type == FD_VMA2_TYPE ? 2 : 4 responseData:responseData];
             // don't respond now.  need to wait for http post to complete before responding
+            break;
+        case FD_ACC_TYPE:
+            [self syncAcc:_hardwareId binary:binary];
+            [channel fireflyIceChannelSend:responseData];
             break;
         case FD_LOG_TYPE:
             [self syncLog:_hardwareId binary:binary];

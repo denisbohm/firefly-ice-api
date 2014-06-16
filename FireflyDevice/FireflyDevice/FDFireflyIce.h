@@ -149,6 +149,7 @@ typedef uint8_t fd_lock_identifier_t;
 @class FDFireflyIce;
 @protocol FDFireflyDeviceLog;
 
+/// @brief Protocol used to observe messages sent from the Firefly Ice device to your iOS or Mac OS X device.  Typically sent in response to commands sent from your iOS or Mac OS X device to the Firefly Ice device.
 @protocol FDFireflyIceObserver <NSObject>
 
 @optional
@@ -170,6 +171,8 @@ typedef uint8_t fd_lock_identifier_t;
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel storage:(FDFireflyIceStorage *)storage;
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel mode:(NSNumber *)mode;
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel txPower:(NSNumber *)level;
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel regulator:(NSNumber *)regulator;
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel sensingCount:(NSNumber *)sensingCount;
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel lock:(FDFireflyIceLock *)lock;
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel logging:(FDFireflyIceLogging *)logging;
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel name:(NSString *)name;

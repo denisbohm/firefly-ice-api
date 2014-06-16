@@ -9,9 +9,12 @@
 #import "FDBatteryView.h"
 #import "FDDetailPowerViewController.h"
 
+#import <FireflyDevice/FDFireflyIceCoder.h>
+
 @interface FDDetailPowerViewController ()
 
 @property IBOutlet FDBatteryView *batteryView;
+@property IBOutlet UISegmentedControl *regulatorSegmentedControl;
 @property IBOutlet UILabel *voltageLabel;
 @property IBOutlet UILabel *levelLabel;
 @property IBOutlet UILabel *temperatureLabel;
@@ -54,6 +57,9 @@
 
     FDFireflyIcePower *power = [collector objectForKey:@"power"];
     
+    NSInteger regulator = [[collector objectForKey:@"regulator"] integerValue];
+    _regulatorSegmentedControl.selectedSegmentIndex = regulator == 0 ? 0 : 1;
+    
     NSUInteger level = (NSUInteger)(power.batteryLevel * 100);
     _batteryView.currentValue = level;
     _levelLabel.text = [NSString stringWithFormat:@"%lu%%", (unsigned long)level];
@@ -73,6 +79,14 @@
     } else {
         _chargingLabel.text = @"No";
     }
+}
+
+- (IBAction)setRegulator:(id)sender
+{
+    uint8_t regulator = (uint8_t)_regulatorSegmentedControl.selectedSegmentIndex;
+    FDFireflyIce *fireflyIce = self.device[@"fireflyIce"];
+    id<FDFireflyIceChannel> channel = self.device[@"channel"];
+    [fireflyIce.coder sendSetPropertyRegulator:channel regulator:regulator];
 }
 
 - (void)fireflyIceCollectorEntry:(FDFireflyIceCollectorEntry *)entry

@@ -10,6 +10,12 @@
 #import <FireflyDevice/FDFireflyIce.h>
 #import <FireflyDevice/FDWeak.h>
 
+@interface FDSyncTaskAcc : NSObject
+@property float x;
+@property float y;
+@property float z;
+@end
+
 @protocol FDSyncTaskUpload;
 
 @protocol FDSyncTaskUploadDelegate <NSObject>
@@ -59,6 +65,9 @@ enum {
 
 // Called if there is no upload object.
 - (void)syncTask:(FDSyncTask *)syncTask site:(NSString *)site hardwareId:(NSString *)hardwareId time:(NSTimeInterval)time interval:(NSTimeInterval)interval vmas:(NSArray *)vmas backlog:(NSUInteger)backlog;
+
+// Called if there is raw accelerometer data uploaded.
+- (void)syncTask:(FDSyncTask *)syncTask site:(NSString *)site hardwareId:(NSString *)hardwareId time:(NSTimeInterval)time interval:(NSTimeInterval)interval accs:(NSArray *)accs backlog:(NSUInteger)backlog;
 
 // Called when there is an error uploading.
 - (void)syncTask:(FDSyncTask *)syncTask error:(NSError *)error;
