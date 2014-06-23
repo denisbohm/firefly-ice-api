@@ -161,8 +161,8 @@
     if ((lock.identifier == fd_lock_identifier_sync) && [_channel.name isEqualToString:lock.ownerName]) {
         [self beginSync];
     } else {
-        FDFireflyDeviceLogInfo(@"sync could not acquire lock");
-        [_fireflyIce.executor fail:self error:[NSError errorWithDomain:FDSyncTaskErrorDomain code:FDSyncTaskErrorCodeCouldNotAcquireLock userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"sync task could not acquire lock", @"")}]];
+        FDFireflyDeviceLogInfo([NSString stringWithFormat:@"sync could not acquire lock (owned by %@)", lock.ownerName]);
+        [_fireflyIce.executor fail:self error:[NSError errorWithDomain:FDSyncTaskErrorDomain code:FDSyncTaskErrorCodeCouldNotAcquireLock userInfo:@{NSLocalizedDescriptionKey:[NSString stringWithFormat:NSLocalizedString(@"sync task could not acquire lock (owned by %@)", @""), lock.ownerName]}]];
     }
 }
 

@@ -27,13 +27,17 @@
 
 @property IBOutlet UILabel *samplesLabel;
 @property IBOutlet UISlider *samplesSlider;
+@property IBOutlet UILabel *samplesCountdown;
 @property IBOutlet UIProgressView *progressView;
 
 @property IBOutlet UIButton *sampleButton;
 @property IBOutlet UIButton *syncButton;
 @property IBOutlet UIButton *saveButton;
+@property IBOutlet UIButton *discardSamplesButton;
 
 @property NSMutableArray *sampleSets;
+@property NSTimer *countdownTimer;
+@property int countdown;
 
 @end
 
@@ -57,10 +61,18 @@
     _sampleSets = [NSMutableArray array];
 }
 
+- (void)unconfigureView
+{
+    [self stopCountdown];
+}
+
 - (void)configureView
 {
-    double seconds = _samplesSlider.value * 10.0;
+    double seconds = _samplesSlider.value * 60.0;
     _samplesLabel.text = [NSString stringWithFormat:@"%0.1f seconds", seconds];
+    
+    _saveButton.enabled = _sampleSets.count > 0;
+    _discardSamplesButton.enabled = _sampleSets.count > 0;
 }
 
 - (IBAction)valueChanged:(id)sender
@@ -76,11 +88,13 @@
 - (void)syncTaskComplete:(FDSyncTask *)syncTask;
 {
     _progressView.hidden = YES;
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^() { [self configureView]; });
 }
 
 - (void)syncTask:(FDSyncTask *)syncTask error:(NSError *)error
 {
     _progressView.hidden = YES;
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^() { [self configureView]; });
 }
 
 - (void)syncTask:(FDSyncTask *)syncTask site:(NSString *)site hardwareId:(NSString *)hardwareId time:(NSTimeInterval)time interval:(NSTimeInterval)interval accs:(NSArray *)accs backlog:(NSUInteger)backlog
@@ -90,11 +104,41 @@
     sampleSet.interval = interval;
     sampleSet.accs = accs;
     [_sampleSets addObject:sampleSet];
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^() { [self configureView]; });
+}
+
+- (void)stopCountdown
+{
+    _samplesCountdown.hidden = YES;
+    [_countdownTimer invalidate];
+    _countdownTimer = nil;
+}
+
+- (void)updateCountdown:(NSTimer *)timer
+{
+    --_countdown;
+    if (_countdown < 0) {
+        [self stopCountdown];
+        [self startSync:_syncButton];
+    } else {
+        _samplesCountdown.text = [NSString stringWithFormat:@"%d", _countdown];
+    }
+}
+
+- (void)startCountdown
+{
+    [self stopCountdown];
+    
+    _countdown = (int)ceil(_samplesSlider.value * 60.0);
+    _samplesCountdown.text = [NSString stringWithFormat:@"%d", _countdown];
+    _samplesCountdown.hidden = NO;
+    
+    _countdownTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(updateCountdown:) userInfo:nil repeats:YES];
 }
 
 - (IBAction)startSampling:(id)sender
 {
-    uint32_t count = _samplesSlider.value * 250;
+    uint32_t count = _samplesSlider.value * 60 * 25;
     
     FDFireflyIce *fireflyIce = self.device[@"fireflyIce"];
     id<FDFireflyIceChannel> channel = self.device[@"channel"];
@@ -103,6 +147,8 @@
         [fireflyIce.coder sendSetPropertySensingCount:channel count:count];
     }];
     [fireflyIce.executor execute:task];
+    
+    [self startCountdown];
 }
 
 - (NSString *)sampleSetsAsText
@@ -119,6 +165,12 @@
         }
     }
     return text;
+}
+
+- (IBAction)discardSamples:(id)sender
+{
+    _sampleSets = [NSMutableArray array];
+    [self configureView];
 }
 
 - (IBAction)saveSamples:(id)sender
@@ -154,7 +206,8 @@
             return;
         }
         NSLog(@"samples saved to iCloud");
-        _sampleSets = [NSMutableArray array];
+        
+        [self discardSamples:_discardSamplesButton];
     });
 }
 
