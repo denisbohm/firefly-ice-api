@@ -216,6 +216,13 @@
     [_observable fireflyIce:fireflyIce channel:channel sensingCount:sensingCount];
 }
 
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel getPropertyIndicate:(FDBinary *)binary
+{
+    NSNumber *indicate = [NSNumber numberWithBool:[binary getUInt8] != 0];
+    
+    [_observable fireflyIce:fireflyIce channel:channel indicate:indicate];
+}
+
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel getPropertyLogging:(FDBinary *)binary
 {
     FDFireflyIceLogging *logging = [[FDFireflyIceLogging alloc] init];
@@ -366,6 +373,15 @@
     [binary putUInt8:FD_CONTROL_SET_PROPERTIES];
     [binary putUInt32:FD_CONTROL_PROPERTY_SENSING_COUNT];
     [binary putUInt32:count];
+    [channel fireflyIceChannelSend:binary.dataValue];
+}
+
+- (void)sendSetPropertyIndicate:(id<FDFireflyIceChannel>)channel indicate:(BOOL)indicate
+{
+    FDBinary *binary = [[FDBinary alloc] init];
+    [binary putUInt8:FD_CONTROL_SET_PROPERTIES];
+    [binary putUInt32:FD_CONTROL_PROPERTY_INDICATE];
+    [binary putUInt8:indicate ? 1 : 0];
     [channel fireflyIceChannelSend:binary.dataValue];
 }
 
@@ -624,6 +640,15 @@ void putColor(FDBinary *binary, uint32_t color) {
     FDBinary *binary = [[FDBinary alloc] init];
     [binary putUInt8:FD_CONTROL_DIAGNOSTICS];
     [binary putUInt32:flags];
+    [channel fireflyIceChannelSend:binary.dataValue];
+}
+
+- (void)sendSensingSynthesize:(id<FDFireflyIceChannel>)channel samples:(uint32_t)samples vma:(float)vma
+{
+    FDBinary *binary = [[FDBinary alloc] init];
+    [binary putUInt8:FD_CONTROL_SENSING_SYNTHESIZE];
+    [binary putUInt32:samples];
+    [binary putFloat32:vma];
     [channel fireflyIceChannelSend:binary.dataValue];
 }
 

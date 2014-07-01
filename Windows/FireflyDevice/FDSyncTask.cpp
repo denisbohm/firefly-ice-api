@@ -75,13 +75,21 @@ namespace FireflyDesign {
 	void FDSyncTask::startTimer() {
 		cancelTimer();
 
-		_timer = FDTimerFactory::defaultTimerFactory->makeTimer(std::bind(&FDSyncTask::timerFired, this), 2.0, FDTimer::OneShot);
+		_timer = FDTimerFactory::defaultTimerFactory->makeTimer(std::bind(&FDSyncTask::timerFired, this), 0.1, FDTimer::OneShot);
 		_timer->setEnabled(true);
 	}
 
 	void FDSyncTask::timerFired() {
-		FDFireflyDeviceLogInfo("timeout waiting for sync data response");
-		resync();
+		try {
+			FDFireflyDeviceLogInfo("timeout waiting for sync data response");
+			resync();
+		}
+		catch (std::exception &)
+		{
+			std::shared_ptr<FDError> error = FDError::error(FDSyncTaskErrorDomain, FDSyncTaskErrorCodeException, "sync task exception");
+			fireflyIce->executor->fail(shared_from_this(), error);
+			notifyError(error);
+		}
 	}
 
 	void FDSyncTask::cancelTimer() {
@@ -369,6 +377,7 @@ namespace FireflyDesign {
 	void FDSyncTask::fireflyIceDetourError(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, std::shared_ptr<FDDetour> detour, std::shared_ptr<FDError> error)
 	{
 		fireflyIce->executor->fail(shared_from_this(), error);
+		notifyError(error);
 	}
 
 	void FDSyncTask::onComplete()
@@ -501,7 +510,6 @@ namespace FireflyDesign {
 				_wait = _maxWait;
 			}
 			fireflyIce->executor->fail(shared_from_this(), error);
-
 			notifyError(error);
 		}
 	}

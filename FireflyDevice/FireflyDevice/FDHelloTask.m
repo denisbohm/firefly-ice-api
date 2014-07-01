@@ -39,6 +39,7 @@
         self.priority = 100;
         _setTimeEnabled = YES;
         _setTimeTolerance = 120;
+        _indicate = YES;
         _propertyValues = [NSMutableDictionary dictionary];
         _selectorNames = [NSMutableSet set];
         
@@ -82,6 +83,7 @@
     [super executorTaskStarted:executor];
     
     [self.fireflyIce.coder sendGetProperties:self.channel properties:_properties];
+    [self.fireflyIce.coder sendSetPropertyIndicate:self.channel indicate:_indicate];
     [self next:@selector(checkVersion)];
 }
 

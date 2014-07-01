@@ -43,6 +43,8 @@
 
 #define FD_CONTROL_DIAGNOSTICS 22
 
+#define FD_CONTROL_SENSING_SYNTHESIZE 23
+
 #define FD_CONTROL_DIAGNOSTICS_BLE        0x00000001
 #define FD_CONTROL_DIAGNOSTICS_BLE_TIMING 0x00000002
 
@@ -65,6 +67,7 @@
 #define FD_CONTROL_CAPABILITY_ADC_VDD       0x00000080
 #define FD_CONTROL_CAPABILITY_REGULATOR     0x00000100
 #define FD_CONTROL_CAPABILITY_SENSING_COUNT 0x00000200
+#define FD_CONTROL_CAPABILITY_INDICATE      0x00000400
 
 // property bits for get/set property commands
 #define FD_CONTROL_PROPERTY_VERSION       0x00000001
@@ -84,6 +87,7 @@
 #define FD_CONTROL_PROPERTY_ADC_VDD       0x00004000
 #define FD_CONTROL_PROPERTY_REGULATOR     0x00008000
 #define FD_CONTROL_PROPERTY_SENSING_COUNT 0x00010000
+#define FD_CONTROL_PROPERTY_INDICATE      0x00020000
 
 #define FD_CONTROL_PROVISION_OPTION_DEBUG_LOCK 0x00000001
 #define FD_CONTROL_PROVISION_OPTION_RESET 0x00000002
@@ -135,6 +139,7 @@ typedef enum {
 - (void)sendSetPropertyName:(id<FDFireflyIceChannel>)channel name:(NSString *)name;
 - (void)sendSetPropertyRegulator:(id<FDFireflyIceChannel>)channel regulator:(uint8_t)regulator;
 - (void)sendSetPropertySensingCount:(id<FDFireflyIceChannel>)channel count:(uint32_t)count;
+- (void)sendSetPropertyIndicate:(id<FDFireflyIceChannel>)channel indicate:(BOOL)indicate;
 
 - (void)sendProvision:(id<FDFireflyIceChannel>)channel dictionary:(NSDictionary *)dictionary options:(uint32_t)options;
 - (void)sendReset:(id<FDFireflyIceChannel>)channel type:(uint8_t)type;
@@ -192,6 +197,8 @@ typedef enum {
 - (void)sendSyncStart:(id<FDFireflyIceChannel>)channel offset:(uint32_t)offset;
 
 - (void)sendDiagnostics:(id<FDFireflyIceChannel>)channel flags:(uint32_t)flags;
+
+- (void)sendSensingSynthesize:(id<FDFireflyIceChannel>)channel samples:(uint32_t)samples vma:(float)vma;
 
 @end
 

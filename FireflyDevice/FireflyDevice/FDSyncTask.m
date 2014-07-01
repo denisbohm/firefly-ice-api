@@ -64,6 +64,8 @@
 @property NSTimeInterval minWait;
 @property NSTimeInterval maxWait;
 
+@property NSDateFormatter *dateFormatter;
+
 @end
 
 @implementation FDSyncTask
@@ -93,6 +95,8 @@
         _maxWait = 3600;
         _wait = _minWait;
         _syncAheadLimit = 8;
+        _dateFormatter = [[NSDateFormatter alloc] init];
+        [_dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     }
     return self;
 }
@@ -349,6 +353,10 @@
         [vmas addObject:[NSNumber numberWithFloat:value]];
     }
     
+    NSDate *start = [NSDate dateWithTimeIntervalSince1970:time + interval];
+    NSDate *end = [NSDate dateWithTimeIntervalSince1970:time + interval + vmas.count * interval];
+    FDFireflyDeviceLogInfo(@"got syncData %@ - %@ %@", [_dateFormatter stringFromDate:start], [_dateFormatter stringFromDate:end], responseData);
+
     NSDate *lastDataDate = [NSDate dateWithTimeIntervalSince1970:time + (n - 1) * interval];
     if ((_lastDataDate == nil) || ([lastDataDate compare:_lastDataDate] == NSOrderedDescending)) {
         _lastDataDate = lastDataDate;
@@ -524,7 +532,9 @@
         
         @try {
             for (FDSyncTaskItem *item in _syncUploadItems) {
-                FDFireflyDeviceLogInfo(@"sending syncData response %@", item.responseData);
+                NSDate *start = [NSDate dateWithTimeIntervalSince1970:item.time + item.interval];
+                NSDate *end = [NSDate dateWithTimeIntervalSince1970:item.time + item.interval + item.vmas.count * item.interval];
+                FDFireflyDeviceLogInfo(@"sending syncData response %@ - %@ %@", [_dateFormatter stringFromDate:start], [_dateFormatter stringFromDate:end], item.responseData);
                 [_channel fireflyIceChannelSend:item.responseData];
             }
             _syncUploadItems = nil;

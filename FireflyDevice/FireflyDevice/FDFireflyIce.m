@@ -152,27 +152,33 @@
     return @"invalid";
 }
 
-- (NSString *)ownerName
++ (NSString *)formatOwnerName:(uint32_t)owner
 {
-    if (_owner == 0) {
+    if (owner == 0) {
         return @"none";
     }
     
     NSMutableString *name = [NSMutableString string];
-    uint8_t bytes[] = {(_owner >> 24) & 0xff, (_owner >> 16) & 0xff, (_owner >> 8) & 0xff, _owner & 0xff};
+    uint8_t bytes[] = {(owner >> 24) & 0xff, (owner >> 16) & 0xff, (owner >> 8) & 0xff, owner & 0xff};
     for (NSUInteger i = 0; i < sizeof(bytes); ++i) {
         uint8_t byte = bytes[i];
         if (isalnum(byte)) {
             [name appendFormat:@"%c", byte];
         } else
-        if (!isspace(byte)) {
-            name = nil;
-        }
+            if (!isspace(byte)) {
+                name = nil;
+            }
     }
     if (name.length == 0) {
-        return [NSString stringWithFormat:@"anon-0x%08x", _owner];
+        return [NSString stringWithFormat:@"anon-0x%08x", owner];
     }
     return name;
+}
+
+
+- (NSString *)ownerName
+{
+    return [FDFireflyIceLock formatOwnerName:_owner];
 }
 
 - (NSString *)description

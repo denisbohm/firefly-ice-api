@@ -36,6 +36,7 @@ enum {
 @property id<FDHelloTaskDelegate> delegate;
 @property BOOL setTimeEnabled;
 @property NSTimeInterval setTimeTolerance;
+@property BOOL indicate;
 
 @property NSMutableDictionary *propertyValues;
 
