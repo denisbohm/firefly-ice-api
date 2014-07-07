@@ -18,7 +18,8 @@ namespace FireflyDesign {
 
 	class FDHardwareId {
 	public:
-		std::string hardwareId(std::vector<uint8_t> unique);
+		static std::string hardwareId(std::vector<uint8_t> unique, std::string prefix);
+		static std::string hardwareId(std::vector<uint8_t> unique);
 	};
 
 }

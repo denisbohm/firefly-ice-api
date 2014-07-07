@@ -11,13 +11,19 @@
 
 namespace FireflyDesign {
 
-	std::string FDHardwareId::hardwareId(std::vector<uint8_t> unique)
+	std::string FDHardwareId::hardwareId(std::vector<uint8_t> unique, std::string prefix)
 	{
-		std::string hardwareId = "FireflyIce-";
+		std::string hardwareId = prefix;
 		for (uint8_t byte : unique) {
 			hardwareId += FDString::format("%02X", byte);
 		}
 		return hardwareId;
+	}
+
+	std::string FDHardwareId::hardwareId(std::vector<uint8_t> unique)
+	{
+		std::string prefix = "FireflyIce-";
+		return hardwareId(unique, prefix);
 	}
 
 }

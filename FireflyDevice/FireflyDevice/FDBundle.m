@@ -20,8 +20,8 @@
 {
     return @{
         @"CFBundleName": @"FireflyDevice",
-        @"CFBundleShortVersionString": @"1.0.17",
-        @"CFBundleVersion": @"17",
+        @"CFBundleShortVersionString": @"1.0.18",
+        @"CFBundleVersion": @"18",
         @"NSHumanReadableCopyright": @"Copyright © 2013-2014 Firefly Design LLC / Denis Bohm. All rights reserved.",
     };
 }
