@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Firefly Design. All rights reserved.
 //
 
+#import "FDAppDelegate.h"
 #import "FDDetailTabBarController.h"
 #import "FDDetailViewController.h"
 #import "FDFireflyIceCollector.h"
@@ -30,8 +31,6 @@
 @property FDHelpController *helpController;
 
 @property FDFireflyIceManager *fireflyIceManager;
-
-@property NSMutableArray *devices;
 
 @end
 
@@ -78,6 +77,10 @@
 {
     [super viewDidLoad];
     
+    UIApplication *application = [UIApplication sharedApplication];
+    FDAppDelegate *appDelegate = (FDAppDelegate *)application.delegate;
+    appDelegate.masterViewController = self;
+
     _helpController = [[FDHelpController alloc] init];
     _helpController.delegate = self;
     UIBarButtonItem *helpButtonItem = [_helpController makeBarButtonItem];

@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+@class FDMasterViewController;
+
 @interface FDAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+@property (strong, nonatomic) FDMasterViewController *masterViewController;
 
 @end

@@ -509,11 +509,11 @@ namespace FireflyDesign {
 		std::shared_ptr<FDFireflyIce> fireflyIce;
 	};
 
-	FDFireflyIce::FDFireflyIce()
+	FDFireflyIce::FDFireflyIce(std::shared_ptr<FDTimerFactory> timerFactory)
 	{
 		observable = std::make_shared<FDFireflyIceObservable>();
 		coder = std::make_unique<FDFireflyIceCoder>(observable);
-		executor = std::make_unique<FDExecutor>();
+		executor = std::make_unique<FDExecutor>(timerFactory);
 		name = "anonymous";
 	}
 

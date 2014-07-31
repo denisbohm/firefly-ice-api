@@ -12,4 +12,6 @@
 
 @interface FDMasterViewController : UITableViewController
 
+@property NSMutableArray *devices;
+
 @end

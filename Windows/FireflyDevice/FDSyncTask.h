@@ -107,7 +107,7 @@ namespace FireflyDesign {
 		FDSyncTask();
 		virtual ~FDSyncTask();
 
-		static std::shared_ptr<FDSyncTask> syncTask(std::string hardwareId, std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, std::shared_ptr<FDSyncTaskDelegate> delegate, std::string identifier);
+		static std::shared_ptr<FDSyncTask> syncTask(std::string hardwareId, std::shared_ptr<FDTimerFactory> timerFactory, std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, std::shared_ptr<FDSyncTaskDelegate> delegate, std::string identifier);
 
 		std::shared_ptr<FDFireflyDeviceLog> log;
 
@@ -162,6 +162,7 @@ namespace FireflyDesign {
 		void timerFired();
 		void cancelTimer();
 
+		std::shared_ptr<FDTimerFactory> _timerFactory;
 		std::shared_ptr<FDFireflyIceVersion> _version;
 		std::string _site;
 		std::shared_ptr<FDFireflyIceStorage> _storage;

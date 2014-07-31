@@ -75,9 +75,12 @@
 		929CD2DA17F7BC14004CE8ED /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 929CD2D917F7BC14004CE8ED /* libsqlite3.dylib */; };
 		929CD2DC17F7BC54004CE8ED /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 929CD2DB17F7BC54004CE8ED /* libz.dylib */; };
 		92BE68A018A58D0600364A56 /* FDDetailRadioViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92BE689F18A58D0600364A56 /* FDDetailRadioViewController.m */; };
+		92BEA1E0196C6A17009C1DFB /* FDDetailTimingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92BEA1DF196C6A17009C1DFB /* FDDetailTimingViewController.m */; };
 		92DF2E4D18A6B6F10084B306 /* FDColorGamutControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 92DF2E4C18A6B6F10084B306 /* FDColorGamutControl.m */; };
 		92EAB18718A7F8FA00613447 /* FDDetailTimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92EAB18618A7F8FA00613447 /* FDDetailTimeViewController.m */; };
 		92EAB18D18A7F91500613447 /* FDDetailModeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92EAB18C18A7F91500613447 /* FDDetailModeViewController.m */; };
+		92ED9CD5196B52C3008182DE /* FDDetailSynthesizeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92ED9CD4196B52C3008182DE /* FDDetailSynthesizeViewController.m */; };
+		92ED9CDB196B55AD008182DE /* FDTimingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92ED9CDA196B55AD008182DE /* FDTimingView.m */; };
 		92EF7AB018A7208D002A21FF /* FDColorButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 92EF7AAF18A7208D002A21FF /* FDColorButton.m */; };
 		92F863F817F3C38D000E23AF /* FDFireflyIceCollector.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F863F717F3C38D000E23AF /* FDFireflyIceCollector.m */; };
 /* End PBXBuildFile section */
@@ -221,12 +224,18 @@
 		929CD2DB17F7BC54004CE8ED /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		92BE689E18A58D0600364A56 /* FDDetailRadioViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDDetailRadioViewController.h; sourceTree = "<group>"; };
 		92BE689F18A58D0600364A56 /* FDDetailRadioViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDetailRadioViewController.m; sourceTree = "<group>"; };
+		92BEA1DE196C6A17009C1DFB /* FDDetailTimingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDDetailTimingViewController.h; sourceTree = "<group>"; };
+		92BEA1DF196C6A17009C1DFB /* FDDetailTimingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDetailTimingViewController.m; sourceTree = "<group>"; };
 		92DF2E4B18A6B6F10084B306 /* FDColorGamutControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDColorGamutControl.h; sourceTree = "<group>"; };
 		92DF2E4C18A6B6F10084B306 /* FDColorGamutControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDColorGamutControl.m; sourceTree = "<group>"; };
 		92EAB18518A7F8FA00613447 /* FDDetailTimeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDDetailTimeViewController.h; sourceTree = "<group>"; };
 		92EAB18618A7F8FA00613447 /* FDDetailTimeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDetailTimeViewController.m; sourceTree = "<group>"; };
 		92EAB18B18A7F91500613447 /* FDDetailModeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDDetailModeViewController.h; sourceTree = "<group>"; };
 		92EAB18C18A7F91500613447 /* FDDetailModeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDetailModeViewController.m; sourceTree = "<group>"; };
+		92ED9CD3196B52C3008182DE /* FDDetailSynthesizeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDDetailSynthesizeViewController.h; sourceTree = "<group>"; };
+		92ED9CD4196B52C3008182DE /* FDDetailSynthesizeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDetailSynthesizeViewController.m; sourceTree = "<group>"; };
+		92ED9CD9196B55AD008182DE /* FDTimingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDTimingView.h; sourceTree = "<group>"; };
+		92ED9CDA196B55AD008182DE /* FDTimingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDTimingView.m; sourceTree = "<group>"; };
 		92EF7AAE18A7208D002A21FF /* FDColorButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDColorButton.h; sourceTree = "<group>"; };
 		92EF7AAF18A7208D002A21FF /* FDColorButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDColorButton.m; sourceTree = "<group>"; };
 		92F863F617F3C38D000E23AF /* FDFireflyIceCollector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFireflyIceCollector.h; sourceTree = "<group>"; };
@@ -437,6 +446,12 @@
 				92EAB18C18A7F91500613447 /* FDDetailModeViewController.m */,
 				923DF032194A2A4300B54A13 /* FDDetailSyncViewController.h */,
 				923DF033194A2A4300B54A13 /* FDDetailSyncViewController.m */,
+				92ED9CD3196B52C3008182DE /* FDDetailSynthesizeViewController.h */,
+				92ED9CD4196B52C3008182DE /* FDDetailSynthesizeViewController.m */,
+				92ED9CD9196B55AD008182DE /* FDTimingView.h */,
+				92ED9CDA196B55AD008182DE /* FDTimingView.m */,
+				92BEA1DE196C6A17009C1DFB /* FDDetailTimingViewController.h */,
+				92BEA1DF196C6A17009C1DFB /* FDDetailTimingViewController.m */,
 			);
 			name = "Detail Views";
 			sourceTree = "<group>";
@@ -655,6 +670,7 @@
 				929CA42B17F0F01A00A4A992 /* FDUpdateView.m in Sources */,
 				92841AA117EDF63D005C0E18 /* FDMasterViewController.m in Sources */,
 				92841A9817EDF63D005C0E18 /* FDAppDelegate.m in Sources */,
+				92ED9CDB196B55AD008182DE /* FDTimingView.m in Sources */,
 				92841A9417EDF63D005C0E18 /* main.m in Sources */,
 				92949D4B18A5DFD700FD815F /* FDColorUtilities.m in Sources */,
 				92949D4E18A5E49000FD815F /* FDColorTouchView.m in Sources */,
@@ -669,11 +685,13 @@
 				923C345E18973CFD0068863D /* FDDetailPowerViewController.m in Sources */,
 				92EF7AB018A7208D002A21FF /* FDColorButton.m in Sources */,
 				929CA40F17F0AD3400A4A992 /* FDDetailOverviewViewController.m in Sources */,
+				92BEA1E0196C6A17009C1DFB /* FDDetailTimingViewController.m in Sources */,
 				92949D4818A5DBA200FD815F /* FDColorSpectrumView.m in Sources */,
 				92949D4218A5CB9C00FD815F /* FDColorPickerViewController.m in Sources */,
 				923DF034194A2A4300B54A13 /* FDDetailSyncViewController.m in Sources */,
 				92DF2E4D18A6B6F10084B306 /* FDColorGamutControl.m in Sources */,
 				92841AA417EDF63D005C0E18 /* FDDetailViewController.m in Sources */,
+				92ED9CD5196B52C3008182DE /* FDDetailSynthesizeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

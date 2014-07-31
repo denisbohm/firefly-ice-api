@@ -40,8 +40,6 @@ namespace FireflyDesign {
 
 	class FDTimerFactory {
 	public:
-		static std::shared_ptr<FDTimerFactory> defaultTimerFactory;
-
 		virtual ~FDTimerFactory();
 
 		virtual std::shared_ptr<FDTimer> makeTimer(std::function<void()> invocation, FDTimer::duration_type timeout, FDTimer::Type type) = 0;

@@ -13,8 +13,6 @@ namespace FireflyDesign {
 	FDTimer::~FDTimer() {
 	}
 
-	std::shared_ptr<FDTimerFactory> FDTimerFactory::defaultTimerFactory;
-
 	FDTimerFactory::~FDTimerFactory() {
 	}
 

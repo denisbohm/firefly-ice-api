@@ -23,19 +23,28 @@ namespace FireflyDesign {
 	FDExecutorTask::~FDExecutorTask() {
 	}
 
-	FDExecutor::FDExecutor() {
+	FDExecutor::FDExecutor(std::shared_ptr<FDTimerFactory> timerFactory) {
+		_timerFactory = timerFactory;
 		timeoutCheckInterval = 5;
 		_run = false;
 		_currentFeedTime = 0;
 	}
 
 	FDExecutor::~FDExecutor() {
+		cancelTimer();
+	}
+
+	void FDExecutor::cancelTimer() {
+		if (_timer) {
+			_timer->setEnabled(false);
+			_timer.reset();
+		}
 	}
 
 	void FDExecutor::start()
 	{
 		if (!_timer) {
-			_timer = FDTimerFactory::defaultTimerFactory->makeTimer(std::bind(&FDExecutor::check, this), timeoutCheckInterval, FDTimer::Repeating);
+			_timer = _timerFactory->makeTimer(std::bind(&FDExecutor::check, this), timeoutCheckInterval, FDTimer::Repeating);
 		}
 		_timer->setEnabled(true);
 		schedule();
@@ -61,8 +70,7 @@ namespace FireflyDesign {
 
 	void FDExecutor::stop()
 	{
-		_timer->setEnabled(false);
-		_timer.reset();
+		cancelTimer();
 
 		if (currentTask) {
 			abortTask(currentTask);

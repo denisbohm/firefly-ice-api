@@ -23,6 +23,7 @@ namespace FireflyDesign {
 	class FDExecutor;
 	class FDFireflyDeviceLog;
 	class FDTimer;
+	class FDTimerFactory;
 
 #define FDExecutorErrorDomain "com.fireflydesign.device.FDExecutor"
 
@@ -57,7 +58,7 @@ namespace FireflyDesign {
 		typedef double time_interval_type;
 		typedef double date_type;
 
-		FDExecutor();
+		FDExecutor(std::shared_ptr<FDTimerFactory> timerFactory);
 		~FDExecutor();
 
 		std::shared_ptr<FDFireflyDeviceLog> log;
@@ -80,10 +81,12 @@ namespace FireflyDesign {
 		std::list<std::shared_ptr<FDExecutorTask>> tasks;
 		std::list<std::shared_ptr<FDExecutorTask>> appointmentTasks;
 		std::shared_ptr<FDExecutorTask> currentTask;
+		std::shared_ptr<FDTimerFactory> _timerFactory;
 		bool _run;
 		date_type _currentFeedTime;
 		std::shared_ptr<FDTimer> _timer;
 
+		void cancelTimer();
 		void start();
 		void abortTask(std::shared_ptr<FDExecutorTask> task);
 		void abortTasks(std::list<std::shared_ptr<FDExecutorTask>>);

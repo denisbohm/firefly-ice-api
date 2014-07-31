@@ -266,10 +266,11 @@ namespace FireflyDesign {
 	class FDExecutor;
 	class FDFireflyIceCoder;
 	class FDFireflyIceRep;
+	class FDTimerFactory;
 
 	class FDFireflyIce : public FDFireflyIceObserver, public std::enable_shared_from_this<FDFireflyIce> {
 	public:
-		FDFireflyIce::FDFireflyIce();
+		FDFireflyIce::FDFireflyIce(std::shared_ptr<FDTimerFactory> timerFactory);
 		FDFireflyIce::~FDFireflyIce();
 
 		void addChannel(std::shared_ptr<FDFireflyIceChannel> channel, std::string type);

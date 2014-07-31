@@ -37,9 +37,10 @@ namespace FireflyDesign {
 	FDSyncTaskUpload::~FDSyncTaskUpload() {
 	}
 
-	std::shared_ptr<FDSyncTask> FDSyncTask::syncTask(std::string hardwareId, std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, std::shared_ptr<FDSyncTaskDelegate> delegate, std::string identifier)
+	std::shared_ptr<FDSyncTask> FDSyncTask::syncTask(std::string hardwareId, std::shared_ptr<FDTimerFactory> timerFactory, std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, std::shared_ptr<FDSyncTaskDelegate> delegate, std::string identifier)
 	{
 		std::shared_ptr<FDSyncTask> syncTask = std::make_shared<FDSyncTask>();
+		syncTask->_timerFactory = timerFactory;
 		syncTask->hardwareId = hardwareId;
 		syncTask->fireflyIce = fireflyIce;
 		syncTask->channel = channel;
@@ -75,7 +76,7 @@ namespace FireflyDesign {
 	void FDSyncTask::startTimer() {
 		cancelTimer();
 
-		_timer = FDTimerFactory::defaultTimerFactory->makeTimer(std::bind(&FDSyncTask::timerFired, this), 0.1, FDTimer::OneShot);
+		_timer = _timerFactory->makeTimer(std::bind(&FDSyncTask::timerFired, this), 0.1, FDTimer::OneShot);
 		_timer->setEnabled(true);
 	}
 

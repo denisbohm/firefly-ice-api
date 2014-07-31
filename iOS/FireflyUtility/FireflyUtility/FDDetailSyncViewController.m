@@ -29,13 +29,9 @@
 @property IBOutlet UISlider *samplesSlider;
 @property IBOutlet UILabel *samplesCountdown;
 
-@property IBOutlet UILabel *synthesizeLabel;
-@property IBOutlet UISlider *synthesizeSlider;
-
 @property IBOutlet UIProgressView *progressView;
 
 @property IBOutlet UIButton *sampleButton;
-@property IBOutlet UIButton *synthesizeButton;
 @property IBOutlet UIButton *syncButton;
 @property IBOutlet UIButton *saveButton;
 @property IBOutlet UIButton *discardSamplesButton;
@@ -60,7 +56,6 @@
     [super viewDidLoad];
     
     [self.controls addObject:_sampleButton];
-    [self.controls addObject:_synthesizeButton];
     [self.controls addObject:_syncButton];
 //    [self.controls addObject:_saveButton];
     
@@ -75,8 +70,6 @@
 - (void)configureView
 {
     _samplesLabel.text = [NSString stringWithFormat:@"%0.1f seconds", _samplesSlider.value * 60.0];
-    
-    _synthesizeLabel.text = [NSString stringWithFormat:@"%0.1f days", _synthesizeSlider.value * 2];
     
     _saveButton.enabled = _sampleSets.count > 0;
     _discardSamplesButton.enabled = _sampleSets.count > 0;
@@ -156,19 +149,6 @@
     [fireflyIce.executor execute:task];
     
     [self startCountdown];
-}
-
-- (IBAction)synthesize:(id)sender
-{
-    uint32_t samples = _synthesizeSlider.value * 2 * 24 * 60 * 6;
-    
-    FDFireflyIce *fireflyIce = self.device[@"fireflyIce"];
-    id<FDFireflyIceChannel> channel = self.device[@"channel"];
-    
-    FDFireflyIceSimpleTask *task = [FDFireflyIceSimpleTask simpleTask:fireflyIce channel:channel block:^() {
-        [fireflyIce.coder sendSensingSynthesize:channel samples:samples vma:3.0f];
-    }];
-    [fireflyIce.executor execute:task];
 }
 
 - (NSString *)sampleSetsAsText
