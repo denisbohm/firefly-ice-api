@@ -90,6 +90,7 @@
     id<FDFireflyIceChannel> channel = self.device[@"channel"];
     
     FDFirmwareUpdateTask *task = [FDFirmwareUpdateTask firmwareUpdateTask:fireflyIce channel:channel intelHex:_intelHex];
+    task.downgrade = true;
     task.delegate = self;
     _updateView.firmwareUpdateTask = task;
     [_updateView setNeedsDisplay];
