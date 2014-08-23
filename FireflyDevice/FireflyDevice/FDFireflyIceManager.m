@@ -24,6 +24,16 @@
 
 @implementation FDFireflyIceManager
 
++ (FDFireflyIceManager *)managerWithServiceUUID:(CBUUID *)serviceUUID withDelegate:(id<FDFireflyIceManagerDelegate>)delegate
+{
+    FDFireflyIceManager *manager = [[FDFireflyIceManager alloc] init];
+    manager.serviceUUID = serviceUUID;
+    manager.delegate = delegate;
+    manager.active = YES;
+    manager.discovery = YES;
+    return manager;
+}
+
 + (FDFireflyIceManager *)managerWithDelegate:(id<FDFireflyIceManagerDelegate>)delegate
 {
     FDFireflyIceManager *manager = [[FDFireflyIceManager alloc] init];
@@ -42,6 +52,7 @@
 {
     if (self = [super init]) {
         _serviceUUID = [CBUUID UUIDWithString:@"310a0001-1b95-5091-b0bd-b7a681846399"];
+        
         _dictionaries = [NSMutableArray array];
         _identifier = @"com.fireflydesign.device.centralManagerDispatchQueue";
     }
@@ -266,7 +277,7 @@
     fireflyIce.name = [self nameForPeripheral:peripheral advertisementData:advertisementData];
 
     [fireflyIce.observable addObserver:self];
-    FDFireflyIceChannelBLE *channel = [[FDFireflyIceChannelBLE alloc] initWithCentralManager:central withPeripheral:peripheral];
+    FDFireflyIceChannelBLE *channel = [[FDFireflyIceChannelBLE alloc] initWithCentralManager:central withPeripheral:peripheral withServiceUUID:_serviceUUID];
     channel.RSSI = [FDFireflyIceChannelBLERSSI RSSI:[RSSI floatValue]];
     [fireflyIce addChannel:channel type:@"BLE"];
     dictionary = [NSMutableDictionary dictionary];

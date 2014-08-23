@@ -58,11 +58,13 @@
 
 @synthesize log;
 
-- (id)initWithCentralManager:(CBCentralManager *)centralManager withPeripheral:(CBPeripheral *)peripheral
+- (id)initWithCentralManager:(CBCentralManager *)centralManager withPeripheral:(CBPeripheral *)peripheral withServiceUUID:(CBUUID *)serviceUUID
 {
     if (self = [super init]) {
-        _serviceUUID = [CBUUID UUIDWithString:@"310a0001-1b95-5091-b0bd-b7a681846399"];
-        _characteristicUUID = [CBUUID UUIDWithString:@"310a0002-1b95-5091-b0bd-b7a681846399"];
+        _serviceUUID = serviceUUID;
+        NSString *baseUUID = [FDFireflyIceChannelBLE CBUUIDString:serviceUUID];
+        NSString *s = [baseUUID stringByReplacingCharactersInRange:NSMakeRange(4, 4) withString:@"0002"];
+        _characteristicUUID = [CBUUID UUIDWithString:s];
 
         _centralManager = centralManager;
         _peripheral = peripheral;

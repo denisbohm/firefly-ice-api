@@ -86,7 +86,9 @@
     UIBarButtonItem *helpButtonItem = [_helpController makeBarButtonItem];
     self.navigationItem.rightBarButtonItems = @[helpButtonItem];
 
-    _fireflyIceManager = [FDFireflyIceManager managerWithDelegate:self];
+    CBUUID *serviceUUID = [CBUUID UUIDWithString:@"310a0001-1b95-5091-b0bd-b7a681846399"]; // Firefly Ice
+//    CBUUID *serviceUUID = [CBUUID UUIDWithString:@"577FB8B4-553E-4807-9779-8647481D49B3"]; // Atlas Wearable
+    _fireflyIceManager = [FDFireflyIceManager managerWithServiceUUID:serviceUUID withDelegate:self];
     _devices = [NSMutableArray array];
   
 // For making screen shots in the simulator. -denis

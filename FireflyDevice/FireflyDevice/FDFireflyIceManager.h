@@ -38,6 +38,7 @@
 
 + (FDFireflyIceManager *)manager;
 + (FDFireflyIceManager *)managerWithDelegate:(id<FDFireflyIceManagerDelegate>)delegate;
++ (FDFireflyIceManager *)managerWithServiceUUID:(CBUUID *)serviceUUID withDelegate:(id<FDFireflyIceManagerDelegate>)delegate;
 
 @property id<FDFireflyIceManagerDelegate> delegate;
 @property NSString *identifier;

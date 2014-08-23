@@ -40,19 +40,38 @@
     return value;
 }
 
+- (uint32_t)getHexProperty:(NSString *)key fallback:(uint32_t)fallback
+{
+    NSObject *object = [_properties valueForKey:key];
+    if (object) {
+        NSScanner *scanner = [NSScanner scannerWithString:(NSString *)object];
+        unsigned int value = 0;
+        if ([scanner scanHexInt:&value]) {
+            return value;
+        }
+    }
+    return fallback;
+}
+
 - (void)read:(NSString *)content address:(uint32_t)address length:(uint32_t)length
 {
     _properties = [NSMutableDictionary dictionary];
+    NSArray *lines = [content componentsSeparatedByString:@"\n"];
+    for (NSString *line in lines) {
+        if ([line hasPrefix:@"#! "]) {
+            NSDictionary *dictionary = [FDJSON JSONObjectWithData:[[line substringFromIndex:2] dataUsingEncoding:NSUTF8StringEncoding]];
+            [_properties addEntriesFromDictionary:dictionary];
+        }
+    }
+    
+    address = [self getHexProperty:@"address" fallback:address];
+    length = [self getHexProperty:@"length" fallback:length];
+    
     NSMutableData *firmware = [NSMutableData data];
     uint32_t extendedAddress = 0;
     bool done = false;
-    NSArray *lines = [content componentsSeparatedByString:@"\n"];
     for (NSString *line in lines) {
         if (![line hasPrefix:@":"]) {
-            if ([line hasPrefix:@"#! "]) {
-                NSDictionary *dictionary = [FDJSON JSONObjectWithData:[[line substringFromIndex:2] dataUsingEncoding:NSUTF8StringEncoding]];
-                [_properties addEntriesFromDictionary:dictionary];
-            }
             continue;
         }
         if (done) {
@@ -76,33 +95,37 @@
         }
         switch (recordType) {
             case 0: { // Data Record
-                uint32_t dataAddress = extendedAddress + recordAddress;
-                uint32_t length = dataAddress + (uint32_t)data.length;
-                if (length > firmware.length) {
-                    firmware.length = length;
+                uint32_t targetAddress = extendedAddress + recordAddress;
+                if (targetAddress >= address) {
+                    uint32_t dataAddress = targetAddress - address;
+                    uint32_t length = dataAddress + (uint32_t)data.length;
+                    if (length > firmware.length) {
+                        firmware.length = length;
+                    }
+                    uint8_t *bytes = (uint8_t *)firmware.bytes;
+                    memcpy(&bytes[dataAddress], data.bytes, data.length);
                 }
-                uint8_t *bytes = (uint8_t *)firmware.bytes;
-                memcpy(&bytes[dataAddress], data.bytes, data.length);
             } break;
             case 1: { // End Of File Record
                 done = true;
             } break;
             case 2: { // Extended Segment Address Record
                 uint8_t *bytes = (uint8_t *)data.bytes;
-                extendedAddress = ((bytes[0] << 8) | bytes[1]) << 4;
+                extendedAddress = ((bytes[0] << 8) | (bytes[1]) << 4);
             } break;
             case 3: { // Start Segment Address Record
                 // ignore
             } break;
             case 4: { // Extended Linear Address Record
-                // ignore
+                uint8_t *bytes = (uint8_t *)data.bytes;
+                extendedAddress = ((bytes[0] << 24) | (bytes[1]) << 16);
             } break;
             case 5: { // Start Linear Address Record
                 // ignore
             } break;
         }
     }
-    _data = [firmware subdataWithRange:NSMakeRange(address, firmware.length - address)];
+    _data = firmware;
 }
 
 @end

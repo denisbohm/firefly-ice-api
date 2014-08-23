@@ -10,6 +10,7 @@
 
 @class CBCentralManager;
 @class CBPeripheral;
+@class CBUUID;
 
 @interface FDFireflyIceChannelBLERSSI : NSObject
 
@@ -27,7 +28,7 @@
 @property id<FDFireflyIceChannelDelegate> delegate;
 @property FDFireflyIceChannelBLERSSI *RSSI;
 
-- (id)initWithCentralManager:(CBCentralManager *)centralManager withPeripheral:(CBPeripheral *)peripheral;
+- (id)initWithCentralManager:(CBCentralManager *)centralManager withPeripheral:(CBPeripheral *)peripheral withServiceUUID:(CBUUID *)serviceUUID;
 
 - (void)didConnectPeripheral;
 - (void)didDisconnectPeripheralError:(NSError *)error;
