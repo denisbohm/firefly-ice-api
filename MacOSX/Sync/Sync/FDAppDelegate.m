@@ -109,10 +109,14 @@
 
 @property NSMutableArray *devices;
 
+@property (assign) IBOutlet NSTextField *serviceUUIDTextField;
+@property CBUUID *serviceUUID;
 @property (assign) IBOutlet NSTableView *bluetoothTableView;
 @property CBCentralManager *centralManager;
 @property NSMutableArray *fireflyDevices;
 
+@property (assign) IBOutlet NSTextField *usbVendorIdTextField;
+@property (assign) IBOutlet NSTextField *usbProductIdTextField;
 @property (assign) IBOutlet NSTableView *usbTableView;
 @property FDUSBHIDMonitor *usbMonitor;
 @property FDUSBTableViewDataSource *usbTableViewDataSource;
@@ -136,19 +140,40 @@
 
 @implementation FDAppDelegate
 
++ (uint16_t)scanHexUInt16:(NSString *)text
+{
+    unsigned int value = 0;
+    [[NSScanner scannerWithString:text] scanHexInt:&value];
+    return value;
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults objectForKey:@"bluetoothServiceUUID"]) {
+        _serviceUUIDTextField.stringValue = [userDefaults stringForKey:@"bluetoothServiceUUID"];
+    }
+    
     _devices = [NSMutableArray array];
     
+    _serviceUUID = [CBUUID UUIDWithString:_serviceUUIDTextField.stringValue];
     _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
     _fireflyDevices = [NSMutableArray array];
     _bluetoothTableView.dataSource = self;
     
     _usbMonitor = [[FDUSBHIDMonitor alloc] init];
-//    _usbMonitor.vendor = 0x2544;
-//    _usbMonitor.product = 0x0001;
-    _usbMonitor.vendor = 0x2333;
-    _usbMonitor.product = 0x0002;
+    if ([userDefaults objectForKey:@"usbVendorID"]) {
+        _usbVendorIdTextField.stringValue = [userDefaults stringForKey:@"usbVendorID"];
+        _usbMonitor.vendor = [FDAppDelegate scanHexUInt16:_usbVendorIdTextField.stringValue];
+    } else {
+        _usbMonitor.vendor = 0x2333;
+    }
+    if ([userDefaults objectForKey:@"usbProductID"]) {
+        _usbProductIdTextField.stringValue = [userDefaults stringForKey:@"usbProductID"];
+        _usbMonitor.product = [FDAppDelegate scanHexUInt16:_usbProductIdTextField.stringValue];
+    } else {
+        _usbMonitor.product = 0x0002;
+    }
     _usbMonitor.delegate = self;
     _usbTableViewDataSource = [[FDUSBTableViewDataSource alloc] init];
     _usbTableView.dataSource = _usbTableViewDataSource;
@@ -158,13 +183,41 @@
     [_usbMonitor start];
 }
 
+- (IBAction)setDefaults:(id)sender
+{
+    _serviceUUIDTextField.stringValue = @"310a0001-1b95-5091-b0bd-b7a681846399";
+    _usbVendorIdTextField.stringValue = @"2333";
+    _usbProductIdTextField.stringValue = @"0002";
+}
+
+- (IBAction)configure:(id)sender
+{
+    CBUUID *UUID = [CBUUID UUIDWithString:_serviceUUIDTextField.stringValue];
+    _serviceUUID = UUID;
+    
+    unsigned int vendor = [FDAppDelegate scanHexUInt16:_usbVendorIdTextField.stringValue];
+    unsigned int product = [FDAppDelegate scanHexUInt16:_usbProductIdTextField.stringValue];
+
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:_serviceUUIDTextField.stringValue forKey:@"bluetoothServiceUUID"];
+    [userDefaults setObject:_usbVendorIdTextField.stringValue forKey:@"usbVendorID"];
+    [userDefaults setObject:_usbProductIdTextField.stringValue forKey:@"usbProductID"];
+    
+    [self clearDeviceList:sender];
+
+    [_usbMonitor stop];
+    _usbMonitor.vendor = vendor;
+    _usbMonitor.product = product;
+    [_usbMonitor start];
+}
+
 - (IBAction)clearDeviceList:(id)sender
 {
     [_devices removeAllObjects];
     [_fireflyDevices removeAllObjects];
     [_bluetoothTableView reloadData];
     [_centralManager stopScan];
-    [_centralManager scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:@"310a0001-1b95-5091-b0bd-b7a681846399"]] options:@{CBCentralManagerScanOptionAllowDuplicatesKey:@YES}];
+    [_centralManager scanForPeripheralsWithServices:@[_serviceUUID] options:@{CBCentralManagerScanOptionAllowDuplicatesKey:@YES}];
 }
 
 - (IBAction)putAllDevicesIntoStorageMode:(id)sender
@@ -551,7 +604,7 @@
 //    NSLog(@"didDiscoverPeripheral %@ ad=%@", peripheral, advertisementData);
     FDFireflyIce *fireflyIce = [[FDFireflyIce alloc] init];
     [fireflyIce.observable addObserver:self];
-    FDFireflyIceChannelBLE *channelBLE = [[FDFireflyIceChannelBLE alloc] initWithCentralManager:_centralManager withPeripheral:peripheral];
+    FDFireflyIceChannelBLE *channelBLE = [[FDFireflyIceChannelBLE alloc] initWithCentralManager:_centralManager withPeripheral:peripheral withServiceUUID:_serviceUUID];
     [fireflyIce addChannel:channelBLE type:@"BLE"];
     [_devices addObject:fireflyIce];
     [_fireflyDevices addObject:channelBLE];
