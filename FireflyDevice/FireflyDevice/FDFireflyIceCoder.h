@@ -123,9 +123,14 @@ typedef enum {
 @class FDFireflyIceObservable;
 @protocol FDFireflyIceObserver;
 
+typedef void (^FDFireflyIceCoderCommandBlock)(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, NSData *data);
+
 @interface FDFireflyIceCoder : NSObject
 
 @property FDFireflyIceObservable *observable;
+
+- (void)setCommand:(uint8_t)code block:(FDFireflyIceCoderCommandBlock)block;
+- (FDFireflyIceCoderCommandBlock)getCommandBlock:(uint8_t)code;
 
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel packet:(NSData *)data;
 

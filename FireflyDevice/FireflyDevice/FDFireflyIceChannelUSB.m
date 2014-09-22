@@ -65,7 +65,7 @@
 
 - (void)usbHidDevice:(FDUSBHIDDevice *)device inputReport:(NSData *)data
 {
-//    FDFireflyDeviceLogDebug(@"usbHidDevice:inputReport: %@", data);
+//    NSLog(@"usbHidDevice:inputReport: %@", data);
     [_detour detourEvent:data];
     if (_detour.state == FDDetourStateSuccess) {
         if ([_delegate respondsToSelector:@selector(fireflyIceChannelPacket:data:)]) {
@@ -83,6 +83,7 @@
 
 - (void)fireflyIceChannelSend:(NSData *)data
 {
+//    NSLog(@"usbHidDevice:setReport: %@", data);
     FDDetourSource *source = [[FDDetourSource alloc] initWithSize:64 data:data];
     NSData *subdata;
     while ((subdata = [source next]) != nil) {
