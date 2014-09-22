@@ -42,6 +42,12 @@
 		923C345E18973CFD0068863D /* FDDetailPowerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 923C345D18973CFD0068863D /* FDDetailPowerViewController.m */; };
 		923DF034194A2A4300B54A13 /* FDDetailSyncViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 923DF033194A2A4300B54A13 /* FDDetailSyncViewController.m */; };
 		9264BDA618CBBA8B00F8CB3D /* libFireflyDevice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9264BD9B18CBBA5500F8CB3D /* libFireflyDevice.a */; };
+		926F7BCC19D0EDE0003124D1 /* sync.png in Resources */ = {isa = PBXBuildFile; fileRef = 926F7BC619D0EDE0003124D1 /* sync.png */; };
+		926F7BCD19D0EDE0003124D1 /* sync@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 926F7BC719D0EDE0003124D1 /* sync@2x.png */; };
+		926F7BCE19D0EDE0003124D1 /* synthesize.png in Resources */ = {isa = PBXBuildFile; fileRef = 926F7BC819D0EDE0003124D1 /* synthesize.png */; };
+		926F7BCF19D0EDE0003124D1 /* synthesize@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 926F7BC919D0EDE0003124D1 /* synthesize@2x.png */; };
+		926F7BD019D0EDE0003124D1 /* timing.png in Resources */ = {isa = PBXBuildFile; fileRef = 926F7BCA19D0EDE0003124D1 /* timing.png */; };
+		926F7BD119D0EDE0003124D1 /* timing@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 926F7BCB19D0EDE0003124D1 /* timing@2x.png */; };
 		92841A8817EDF63D005C0E18 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92841A8717EDF63D005C0E18 /* Foundation.framework */; };
 		92841A8A17EDF63D005C0E18 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92841A8917EDF63D005C0E18 /* CoreGraphics.framework */; };
 		92841A8C17EDF63D005C0E18 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92841A8B17EDF63D005C0E18 /* UIKit.framework */; };
@@ -157,7 +163,7 @@
 		921E694618A83D5F00E90E5B /* time@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "time@2x.png"; sourceTree = "<group>"; };
 		921E695118A84CB300E90E5B /* overview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = overview.png; sourceTree = "<group>"; };
 		921E695218A84CB300E90E5B /* overview@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "overview@2x.png"; sourceTree = "<group>"; };
-		92222FB519D0E0BC00486C77 /* FireflyIce-41.hex */ = {isa = PBXFileReference; explicitFileType = text; fileEncoding = 4; name = "FireflyIce-41.hex"; path = "../../FireflyDevice/FireflyDevice/FireflyIce-41.hex"; sourceTree = "<group>"; };
+		92222FB519D0E0BC00486C77 /* FireflyIce-41.hex */ = {isa = PBXFileReference; explicitFileType = text; fileEncoding = 4; name = "FireflyIce-41.hex"; path = "../../../FireflyDevice/FireflyDevice/FireflyIce-41.hex"; sourceTree = "<group>"; };
 		923C344318972DB20068863D /* FDBatteryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDBatteryView.m; sourceTree = "<group>"; };
 		923C344418972DB20068863D /* FDBatteryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDBatteryView.h; sourceTree = "<group>"; };
 		923C344C189733880068863D /* battery.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = battery.png; sourceTree = "<group>"; };
@@ -173,6 +179,12 @@
 		923DF032194A2A4300B54A13 /* FDDetailSyncViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDDetailSyncViewController.h; sourceTree = "<group>"; };
 		923DF033194A2A4300B54A13 /* FDDetailSyncViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDetailSyncViewController.m; sourceTree = "<group>"; };
 		923DF038194A44E400B54A13 /* FireflyUtility.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = FireflyUtility.entitlements; sourceTree = "<group>"; };
+		926F7BC619D0EDE0003124D1 /* sync.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sync.png; sourceTree = "<group>"; };
+		926F7BC719D0EDE0003124D1 /* sync@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sync@2x.png"; sourceTree = "<group>"; };
+		926F7BC819D0EDE0003124D1 /* synthesize.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = synthesize.png; sourceTree = "<group>"; };
+		926F7BC919D0EDE0003124D1 /* synthesize@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "synthesize@2x.png"; sourceTree = "<group>"; };
+		926F7BCA19D0EDE0003124D1 /* timing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timing.png; sourceTree = "<group>"; };
+		926F7BCB19D0EDE0003124D1 /* timing@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "timing@2x.png"; sourceTree = "<group>"; };
 		92841A8417EDF63D005C0E18 /* FireflyUtility.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FireflyUtility.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		92841A8717EDF63D005C0E18 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		92841A8917EDF63D005C0E18 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -281,6 +293,12 @@
 		921E691B18A838B700E90E5B /* Detail View Icons */ = {
 			isa = PBXGroup;
 			children = (
+				926F7BC619D0EDE0003124D1 /* sync.png */,
+				926F7BC719D0EDE0003124D1 /* sync@2x.png */,
+				926F7BC819D0EDE0003124D1 /* synthesize.png */,
+				926F7BC919D0EDE0003124D1 /* synthesize@2x.png */,
+				926F7BCA19D0EDE0003124D1 /* timing.png */,
+				926F7BCB19D0EDE0003124D1 /* timing@2x.png */,
 				921E695118A84CB300E90E5B /* overview.png */,
 				921E695218A84CB300E90E5B /* overview@2x.png */,
 				921E693D18A83D5F00E90E5B /* dtm.png */,
@@ -314,10 +332,18 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		92841A7B17EDF63D005C0E18 = {
+		926F7BC519D0E5A6003124D1 /* firmware */ = {
 			isa = PBXGroup;
 			children = (
 				92222FB519D0E0BC00486C77 /* FireflyIce-41.hex */,
+				9212D259180B3F2D00576B41 /* FireflyIce.hex */,
+			);
+			name = firmware;
+			sourceTree = "<group>";
+		};
+		92841A7B17EDF63D005C0E18 = {
+			isa = PBXGroup;
+			children = (
 				92841AC617EDF7BB005C0E18 /* FireflyDevice.xcodeproj */,
 				92841A8D17EDF63D005C0E18 /* FireflyUtility */,
 				92841AB217EDF63D005C0E18 /* FireflyUtilityTests */,
@@ -353,8 +379,9 @@
 			isa = PBXGroup;
 			children = (
 				923DF038194A44E400B54A13 /* FireflyUtility.entitlements */,
-				92841A8E17EDF63D005C0E18 /* Supporting Files */,
 				92841AA517EDF63D005C0E18 /* Images.xcassets */,
+				92841A8E17EDF63D005C0E18 /* Supporting Files */,
+				926F7BC519D0E5A6003124D1 /* firmware */,
 				92841A9917EDF63D005C0E18 /* Main_iPhone.storyboard */,
 				92841A9C17EDF63D005C0E18 /* Main_iPad.storyboard */,
 				92841A9617EDF63D005C0E18 /* FDAppDelegate.h */,
@@ -379,7 +406,6 @@
 		92841A8E17EDF63D005C0E18 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				9212D259180B3F2D00576B41 /* FireflyIce.hex */,
 				92841A8F17EDF63D005C0E18 /* FireflyUtility-Info.plist */,
 				92841A9017EDF63D005C0E18 /* InfoPlist.strings */,
 				92841A9317EDF63D005C0E18 /* main.m */,
@@ -627,6 +653,7 @@
 				92222FB619D0E0BC00486C77 /* FireflyIce-41.hex in Resources */,
 				921E694D18A83D5F00E90E5B /* reset.png in Resources */,
 				921E694B18A83D5F00E90E5B /* power.png in Resources */,
+				926F7BD119D0EDE0003124D1 /* timing@2x.png in Resources */,
 				921E695418A84CB300E90E5B /* overview@2x.png in Resources */,
 				923C3454189733880068863D /* battery.png in Resources */,
 				923C3455189733880068863D /* battery@2x.png in Resources */,
@@ -636,6 +663,7 @@
 				921E694E18A83D5F00E90E5B /* reset@2x.png in Resources */,
 				92949D3918A5CAE400FD815F /* FDColorPicker_iPhone.xib in Resources */,
 				921E693B18A83BC100E90E5B /* radio.png in Resources */,
+				926F7BD019D0EDE0003124D1 /* timing.png in Resources */,
 				921E693C18A83BC100E90E5B /* radio@2x.png in Resources */,
 				921E694C18A83D5F00E90E5B /* power@2x.png in Resources */,
 				92841AA617EDF63D005C0E18 /* Images.xcassets in Resources */,
@@ -643,15 +671,19 @@
 				923C3459189733880068863D /* orange_fuel@2x.png in Resources */,
 				923C345B189733880068863D /* red_fuel@2x.png in Resources */,
 				921E693818A83B2200E90E5B /* mode@2x.png in Resources */,
+				926F7BCC19D0EDE0003124D1 /* sync.png in Resources */,
 				92841A9B17EDF63D005C0E18 /* Main_iPhone.storyboard in Resources */,
 				9209193B18B5A02300CB1ECC /* help.png in Resources */,
+				926F7BCF19D0EDE0003124D1 /* synthesize@2x.png in Resources */,
 				9209193C18B5A02300CB1ECC /* help@2x.png in Resources */,
 				923C3458189733880068863D /* orange_fuel.png in Resources */,
 				923C345A189733880068863D /* red_fuel.png in Resources */,
 				921E693418A83A8600E90E5B /* update@2x.png in Resources */,
 				921E694718A83D5F00E90E5B /* dtm.png in Resources */,
+				926F7BCD19D0EDE0003124D1 /* sync@2x.png in Resources */,
 				923C3457189733880068863D /* green_fuel@2x.png in Resources */,
 				921E694818A83D5F00E90E5B /* dtm@2x.png in Resources */,
+				926F7BCE19D0EDE0003124D1 /* synthesize.png in Resources */,
 				921E695318A84CB300E90E5B /* overview.png in Resources */,
 				921E694918A83D5F00E90E5B /* indicators.png in Resources */,
 				921E694A18A83D5F00E90E5B /* indicators@2x.png in Resources */,

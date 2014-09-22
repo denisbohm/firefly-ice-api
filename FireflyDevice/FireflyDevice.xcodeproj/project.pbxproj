@@ -48,6 +48,7 @@
 		9261C35B18AF2E8D00CDB9F2 /* FDBundleManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9261C35918AF2E8D00CDB9F2 /* FDBundleManager.m */; };
 		9261C35C18AF2E8D00CDB9F2 /* FDBundleManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9261C35918AF2E8D00CDB9F2 /* FDBundleManager.m */; };
 		9261C35D18AF2EE900CDB9F2 /* FDBundleManager.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9261C35818AF2E8D00CDB9F2 /* FDBundleManager.h */; };
+		926F7BC419D0E599003124D1 /* FireflyIce-41.hex in Resources */ = {isa = PBXBuildFile; fileRef = 92222FB119D0DD5700486C77 /* FireflyIce-41.hex */; };
 		927F3DB717FA20A200C933DD /* FDFireflyIceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 927F3DB617FA20A200C933DD /* FDFireflyIceManager.m */; };
 		927F3DBC17FA4F0B00C933DD /* FDSyncTask.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 92F863F317F3B4E0000E23AF /* FDSyncTask.h */; };
 		927F3DBD17FA4F0B00C933DD /* FDFireflyIceManager.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 927F3DB517FA20A200C933DD /* FDFireflyIceManager.h */; };
@@ -674,6 +675,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				926F7BC419D0E599003124D1 /* FireflyIce-41.hex in Resources */,
 				92DF1464180B0C9A00A1B849 /* FireflyIce.hex in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
