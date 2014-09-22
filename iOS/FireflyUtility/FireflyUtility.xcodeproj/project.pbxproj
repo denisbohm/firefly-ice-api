@@ -29,6 +29,7 @@
 		921E695018A83D5F00E90E5B /* time@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 921E694618A83D5F00E90E5B /* time@2x.png */; };
 		921E695318A84CB300E90E5B /* overview.png in Resources */ = {isa = PBXBuildFile; fileRef = 921E695118A84CB300E90E5B /* overview.png */; };
 		921E695418A84CB300E90E5B /* overview@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 921E695218A84CB300E90E5B /* overview@2x.png */; };
+		92222FB619D0E0BC00486C77 /* FireflyIce-41.hex in Resources */ = {isa = PBXBuildFile; fileRef = 92222FB519D0E0BC00486C77 /* FireflyIce-41.hex */; };
 		923C344518972DB20068863D /* FDBatteryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 923C344318972DB20068863D /* FDBatteryView.m */; };
 		923C3454189733880068863D /* battery.png in Resources */ = {isa = PBXBuildFile; fileRef = 923C344C189733880068863D /* battery.png */; };
 		923C3455189733880068863D /* battery@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 923C344D189733880068863D /* battery@2x.png */; };
@@ -58,6 +59,8 @@
 		92841AB717EDF63D005C0E18 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 92841AB517EDF63D005C0E18 /* InfoPlist.strings */; };
 		92841AB917EDF63D005C0E18 /* FireflyUtilityTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 92841AB817EDF63D005C0E18 /* FireflyUtilityTests.m */; };
 		92841AD017EDF7CA005C0E18 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92841ACF17EDF7CA005C0E18 /* CoreBluetooth.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		928A3FC919C7E9440014C850 /* FDPickerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 928A3FC819C7E9440014C850 /* FDPickerModel.m */; };
+		928A3FCF19C7EB510014C850 /* FDVersionPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 928A3FCE19C7EB510014C850 /* FDVersionPicker.m */; };
 		928BF64817F2818000370B91 /* FDDetailTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 928BF64717F2818000370B91 /* FDDetailTabBarController.m */; };
 		92949D3918A5CAE400FD815F /* FDColorPicker_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92949D3818A5CAE400FD815F /* FDColorPicker_iPhone.xib */; };
 		92949D4218A5CB9C00FD815F /* FDColorPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92949D4118A5CB9C00FD815F /* FDColorPickerViewController.m */; };
@@ -154,6 +157,7 @@
 		921E694618A83D5F00E90E5B /* time@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "time@2x.png"; sourceTree = "<group>"; };
 		921E695118A84CB300E90E5B /* overview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = overview.png; sourceTree = "<group>"; };
 		921E695218A84CB300E90E5B /* overview@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "overview@2x.png"; sourceTree = "<group>"; };
+		92222FB519D0E0BC00486C77 /* FireflyIce-41.hex */ = {isa = PBXFileReference; explicitFileType = text; fileEncoding = 4; name = "FireflyIce-41.hex"; path = "../../FireflyDevice/FireflyDevice/FireflyIce-41.hex"; sourceTree = "<group>"; };
 		923C344318972DB20068863D /* FDBatteryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDBatteryView.m; sourceTree = "<group>"; };
 		923C344418972DB20068863D /* FDBatteryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDBatteryView.h; sourceTree = "<group>"; };
 		923C344C189733880068863D /* battery.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = battery.png; sourceTree = "<group>"; };
@@ -193,6 +197,10 @@
 		92841AB817EDF63D005C0E18 /* FireflyUtilityTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FireflyUtilityTests.m; sourceTree = "<group>"; };
 		92841AC617EDF7BB005C0E18 /* FireflyDevice.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FireflyDevice.xcodeproj; path = ../../FireflyDevice/FireflyDevice.xcodeproj; sourceTree = "<group>"; };
 		92841ACF17EDF7CA005C0E18 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		928A3FC719C7E9440014C850 /* FDPickerModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDPickerModel.h; sourceTree = "<group>"; };
+		928A3FC819C7E9440014C850 /* FDPickerModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDPickerModel.m; sourceTree = "<group>"; };
+		928A3FCD19C7EB510014C850 /* FDVersionPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDVersionPicker.h; sourceTree = "<group>"; };
+		928A3FCE19C7EB510014C850 /* FDVersionPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDVersionPicker.m; sourceTree = "<group>"; };
 		928BF64617F2818000370B91 /* FDDetailTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDDetailTabBarController.h; sourceTree = "<group>"; };
 		928BF64717F2818000370B91 /* FDDetailTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDetailTabBarController.m; sourceTree = "<group>"; };
 		92949D3818A5CAE400FD815F /* FDColorPicker_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FDColorPicker_iPhone.xib; sourceTree = "<group>"; };
@@ -309,6 +317,7 @@
 		92841A7B17EDF63D005C0E18 = {
 			isa = PBXGroup;
 			children = (
+				92222FB519D0E0BC00486C77 /* FireflyIce-41.hex */,
 				92841AC617EDF7BB005C0E18 /* FireflyDevice.xcodeproj */,
 				92841A8D17EDF63D005C0E18 /* FireflyUtility */,
 				92841AB217EDF63D005C0E18 /* FireflyUtilityTests */,
@@ -452,6 +461,10 @@
 				92ED9CDA196B55AD008182DE /* FDTimingView.m */,
 				92BEA1DE196C6A17009C1DFB /* FDDetailTimingViewController.h */,
 				92BEA1DF196C6A17009C1DFB /* FDDetailTimingViewController.m */,
+				928A3FC719C7E9440014C850 /* FDPickerModel.h */,
+				928A3FC819C7E9440014C850 /* FDPickerModel.m */,
+				928A3FCD19C7EB510014C850 /* FDVersionPicker.h */,
+				928A3FCE19C7EB510014C850 /* FDVersionPicker.m */,
 			);
 			name = "Detail Views";
 			sourceTree = "<group>";
@@ -611,6 +624,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9212D25A180B3F2D00576B41 /* FireflyIce.hex in Resources */,
+				92222FB619D0E0BC00486C77 /* FireflyIce-41.hex in Resources */,
 				921E694D18A83D5F00E90E5B /* reset.png in Resources */,
 				921E694B18A83D5F00E90E5B /* power.png in Resources */,
 				921E695418A84CB300E90E5B /* overview@2x.png in Resources */,
@@ -664,6 +678,7 @@
 			files = (
 				9209194218B5A15C00CB1ECC /* FDHelpController.m in Sources */,
 				929CA42E17F0F30600A4A992 /* FDDetailUpdateViewController.m in Sources */,
+				928A3FC919C7E9440014C850 /* FDPickerModel.m in Sources */,
 				92949D4518A5D7D100FD815F /* FDColorGamutView.m in Sources */,
 				92EAB18718A7F8FA00613447 /* FDDetailTimeViewController.m in Sources */,
 				923C344518972DB20068863D /* FDBatteryView.m in Sources */,
@@ -687,6 +702,7 @@
 				929CA40F17F0AD3400A4A992 /* FDDetailOverviewViewController.m in Sources */,
 				92BEA1E0196C6A17009C1DFB /* FDDetailTimingViewController.m in Sources */,
 				92949D4818A5DBA200FD815F /* FDColorSpectrumView.m in Sources */,
+				928A3FCF19C7EB510014C850 /* FDVersionPicker.m in Sources */,
 				92949D4218A5CB9C00FD815F /* FDColorPickerViewController.m in Sources */,
 				923DF034194A2A4300B54A13 /* FDDetailSyncViewController.m in Sources */,
 				92DF2E4D18A6B6F10084B306 /* FDColorGamutControl.m in Sources */,

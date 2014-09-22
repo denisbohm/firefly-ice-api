@@ -57,8 +57,8 @@
 - (NSString *)description
 {
     NSMutableString *string = [NSMutableString stringWithFormat:@"sector %u hash 0x", _sector];
-    uint8_t *bytes = (uint8_t *)_hash.bytes;
-    for (NSUInteger i = 0; i < _hash.length; ++i) {
+    uint8_t *bytes = (uint8_t *)_hashValue.bytes;
+    for (NSUInteger i = 0; i < _hashValue.length; ++i) {
         [string appendFormat:@"%02x", bytes[i]];
     }
     return string;

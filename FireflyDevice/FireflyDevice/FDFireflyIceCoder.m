@@ -543,7 +543,7 @@
         NSData *hash = [binary getData:HASH_SIZE];
         FDFireflyIceSectorHash *sectorHash = [[FDFireflyIceSectorHash alloc] init];
         sectorHash.sector = sector;
-        sectorHash.hash = hash;
+        sectorHash.hashValue = hash;
         [sectorHashes addObject:sectorHash];
     }
     

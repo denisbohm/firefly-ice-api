@@ -36,7 +36,7 @@
 
 @interface FDFireflyIceSectorHash : NSObject
 @property uint16_t sector;
-@property NSData *hash;
+@property NSData *hashValue;
 @end
 
 @interface FDFireflyIceReset : NSObject

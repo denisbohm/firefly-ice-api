@@ -59,6 +59,21 @@
     return firmwareUpdateTask;
 }
 
++ (NSArray *)loadAllFirmwareVersions:(NSString *)resource
+{
+    NSMutableArray *versions = [NSMutableArray array];
+    NSBundle *mainBundle = [NSBundle mainBundle];
+    NSArray *paths = [mainBundle pathsForResourcesOfType:@"hex" inDirectory:nil];
+    for (NSString *path in paths) {
+        [versions addObject:[FDFirmwareUpdateTask loadFirmwareFromPath:path]];
+    }
+    return [versions sortedArrayUsingComparator: ^(id oa, id ob) {
+        FDIntelHex *a = (FDIntelHex *)oa;
+        FDIntelHex *b = (FDIntelHex *)ob;
+        return [a.properties[@"patch"] compare:b.properties[@"patch"]];
+    }];
+}
+
 + (FDIntelHex *)loadFirmware:(NSString *)resource
 {
     NSBundle *mainBundle = [NSBundle mainBundle];
@@ -70,6 +85,11 @@
     if (path == nil) {
         @throw [NSException exceptionWithName:@"FirmwareUpdateFileNotFound" reason:@"firmware update file not found" userInfo:nil];
     }
+    return [self loadFirmwareFromPath:path];
+}
+
++ (FDIntelHex *)loadFirmwareFromPath:(NSString *)path
+{
     NSString *content = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
     return [FDIntelHex intelHex:content address:0x08000 length:0x40000 - 0x08000];
 }
@@ -89,7 +109,8 @@
 
 + (FDFirmwareUpdateTask *)firmwareUpdateTask:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel resource:(NSString *)resource
 {
-    FDIntelHex *intelHex = [FDFirmwareUpdateTask loadFirmware:resource];
+    NSArray *versions = [FDFirmwareUpdateTask loadAllFirmwareVersions:resource];
+    FDIntelHex *intelHex = versions[0];
     return [FDFirmwareUpdateTask firmwareUpdateTask:fireflyIce channel:channel intelHex:intelHex];
 }
 
@@ -299,7 +320,7 @@
             @throw [NSException exceptionWithName:@"unexpected" reason:@"unexpected" userInfo:nil];
         }
         NSData * hash = [FDCrypto sha1:[_firmware subdataWithRange:NSMakeRange(i * _sectorSize, _sectorSize)]];
-        if (![hash isEqualToData:sectorHash.hash]) {
+        if (![hash isEqualToData:sectorHash.hashValue]) {
             [updateSectors addObject:[NSNumber numberWithUnsignedShort:sectorHash.sector]];
             uint16_t page = sector * _pagesPerSector;
             for (uint16_t i = 0; i < _pagesPerSector; ++i) {
