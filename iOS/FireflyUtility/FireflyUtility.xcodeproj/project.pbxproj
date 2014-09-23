@@ -144,7 +144,7 @@
 		9209193A18B5A02300CB1ECC /* help@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "help@2x.png"; sourceTree = "<group>"; };
 		9209194018B5A15C00CB1ECC /* FDHelpController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDHelpController.h; sourceTree = "<group>"; };
 		9209194118B5A15C00CB1ECC /* FDHelpController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDHelpController.m; sourceTree = "<group>"; };
-		9212D259180B3F2D00576B41 /* FireflyIce.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = FireflyIce.hex; path = ../../../FireflyDevice/FireflyDevice/FireflyIce.hex; sourceTree = "<group>"; };
+		9212D259180B3F2D00576B41 /* FireflyIce.hex */ = {isa = PBXFileReference; explicitFileType = text; fileEncoding = 4; name = FireflyIce.hex; path = ../../../FireflyDevice/FireflyDevice/FireflyIce.hex; sourceTree = "<group>"; };
 		921E693118A83A8600E90E5B /* update.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = update.png; sourceTree = "<group>"; };
 		921E693218A83A8600E90E5B /* update@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "update@2x.png"; sourceTree = "<group>"; };
 		921E693518A83B2200E90E5B /* mode.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mode.png; sourceTree = "<group>"; };
@@ -900,8 +900,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = FireflyUtility/FireflyUtility.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FireflyUtility/FireflyUtility-Prefix.pch";
 				INFOPLIST_FILE = "FireflyUtility/FireflyUtility-Info.plist";

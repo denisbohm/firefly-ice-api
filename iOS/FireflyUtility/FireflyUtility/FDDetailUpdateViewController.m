@@ -61,12 +61,7 @@
     
     [self.controls addObject:_updateButton];
     
-    NSArray *versions = [FDFirmwareUpdateTask loadAllFirmwareVersions:@"FireflyIce"];
-    _versions = [versions sortedArrayUsingComparator: ^(id oa, id ob) {
-        FDIntelHex *a = (FDIntelHex *)oa;
-        FDIntelHex *b = (FDIntelHex *)ob;
-        return [a.properties[@"patch"] compare:b.properties[@"patch"]];
-    }];
+    _versions = [FDFirmwareUpdateTask loadAllFirmwareVersions:@"FireflyIce"];
     _versionIndex = 0;
     [self showCurrentVersion];
 }
