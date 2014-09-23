@@ -11,6 +11,7 @@
 #import "FDMasterViewController.h"
 #import "FDTimingView.h"
 
+#import <FireflyDevice/FDFireflyIceCoder.h>
 #import <FireflyDevice/FDFireflyIceSimpleTask.h>
 #import <FireflyDevice/FDSyncTask.h>
 
@@ -53,6 +54,7 @@
 @property IBOutlet FDTimingView *timingView;
 @property IBOutlet UIButton *syncButton;
 @property IBOutlet UIProgressView *progressView;
+@property IBOutlet UISwitch *recognitionSwitch;
 
 @property FDSensor *alphaSensor;
 @property FDSensor *deltaSensor;
@@ -75,6 +77,7 @@
     [super viewDidLoad];
     
     [self.controls addObject:_syncButton];
+    [self.controls addObject:_recognitionSwitch];
     
     _interval = 0.040;
 }
@@ -85,6 +88,20 @@
 
 - (void)configureView
 {
+    FDFireflyIceCollector *collector = self.device[@"collector"];
+    if (collector.dictionary.count == 0) {
+        [self unconfigureView];
+        return;
+    }
+    
+    NSNumber *number = [collector objectForKey:@"recognition"];
+    BOOL recognition = [number boolValue];
+    _recognitionSwitch.on = recognition;
+}
+
+- (void)fireflyIceCollectorEntry:(FDFireflyIceCollectorEntry *)entry
+{
+    [self configureView];
 }
 
 - (NSInteger)findLastIndex:(NSArray *)samples beforeTime:(NSTimeInterval)time
@@ -331,6 +348,14 @@
     
     [self sensorStartSync:_alphaSensor];
     [self sensorStartSync:_deltaSensor];
+}
+
+- (IBAction)recognitionSwitchChanged:(id)sender
+{
+    BOOL enabled = _recognitionSwitch.on;
+    FDFireflyIce *fireflyIce = self.device[@"fireflyIce"];
+    id<FDFireflyIceChannel> channel = self.device[@"channel"];
+    [fireflyIce.coder sendSetPropertyRecognition:channel recognition:enabled];
 }
 
 @end

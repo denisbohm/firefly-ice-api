@@ -41,6 +41,7 @@
                                                @"fireflyIce:channel:regulator:",
                                                @"fireflyIce:channel:name:",
                                                @"fireflyIce:channel:retained:",
+                                               @"fireflyIce:channel:recognition:",
                           ]];
         _dictionary = [NSMutableDictionary dictionary];
     }
@@ -69,7 +70,8 @@
      FD_CONTROL_PROPERTY_TX_POWER |
      FD_CONTROL_PROPERTY_REGULATOR |
      FD_CONTROL_PROPERTY_NAME |
-     FD_CONTROL_PROPERTY_RETAINED];
+     FD_CONTROL_PROPERTY_RETAINED |
+     FD_CONTROL_PROPERTY_RECOGNITION];
     [self.fireflyIce.coder sendDirectTestModeReport:self.channel];
     
     [self next:@selector(complete)];

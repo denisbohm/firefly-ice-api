@@ -1430,6 +1430,18 @@
                             <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wsQ-bn-8T9">
                                 <rect key="frame" x="20" y="274" width="280" height="2"/>
                             </progressView>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Isn-LI-rFw">
+                                <rect key="frame" x="255" y="316" width="51" height="31"/>
+                                <connections>
+                                    <action selector="recognitionSwitchChanged:" destination="mUM-zT-RbM" eventType="valueChanged" id="ZLU-sb-g7k"/>
+                                </connections>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Event Recognition" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RLc-FM-Alc">
+                                <rect key="frame" x="16" y="321" width="140" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -1437,6 +1449,7 @@
                     <tabBarItem key="tabBarItem" title="Timing" image="timing.png" id="i0K-fC-T0Z"/>
                     <connections>
                         <outlet property="progressView" destination="wsQ-bn-8T9" id="i3a-XC-wxZ"/>
+                        <outlet property="recognitionSwitch" destination="Isn-LI-rFw" id="hzk-ZA-mJ1"/>
                         <outlet property="syncButton" destination="62S-67-2YD" id="7i7-Vb-gwm"/>
                         <outlet property="timingView" destination="KEh-eN-jcZ" id="x9C-eJ-Jdh"/>
                     </connections>

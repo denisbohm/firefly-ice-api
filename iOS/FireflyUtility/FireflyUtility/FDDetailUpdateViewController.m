@@ -83,6 +83,11 @@
     _deviceVersionLabel.text = [NSString stringWithFormat:@"%d.%d.%d", version.major, version.minor, version.patch];
 }
 
+- (void)fireflyIceCollectorEntry:(FDFireflyIceCollectorEntry *)entry
+{
+    [self configureView];
+}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"pickVersion"]) {
