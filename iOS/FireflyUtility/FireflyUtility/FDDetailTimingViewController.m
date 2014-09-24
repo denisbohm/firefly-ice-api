@@ -51,6 +51,8 @@
 
 @interface FDDetailTimingViewController () <FDSyncTaskDelegate>
 
+@property IBOutlet UILabel *alphaLabel;
+@property IBOutlet UILabel *deltaLabel;
 @property IBOutlet FDTimingView *timingView;
 @property IBOutlet UIButton *syncButton;
 @property IBOutlet UIProgressView *progressView;
@@ -191,7 +193,7 @@
     _timingView.maxSampleCount = marginIntervals + deltaIntervals + marginIntervals;
     
     NSTimeInterval duration = deltaSample.time - alphaSample.time;
-    _timingView.duration = [NSString stringWithFormat:@"%0.2f", duration];
+    _timingView.duration = [NSString stringWithFormat:@"%0.2fs", duration];
     
     [_timingView setNeedsDisplay];
 }
@@ -329,19 +331,21 @@
 
 - (IBAction)startSync:(id)sender
 {
-    _alphaSensor = [[FDSensor alloc] init];
-    _alphaSensor.fireflyIce = self.device[@"fireflyIce"];
-    _alphaSensor.channel = self.device[@"channel"];
-    _alphaSensor.hardwareId = _alphaSensor.fireflyIce.name;
+    _deltaSensor = [[FDSensor alloc] init];
+    _deltaSensor.fireflyIce = self.device[@"fireflyIce"];
+    _deltaSensor.channel = self.device[@"channel"];
+    _deltaSensor.hardwareId = _deltaSensor.fireflyIce.name;
+    _deltaLabel.text = _deltaSensor.fireflyIce.name;
     
     UIApplication *application = [UIApplication sharedApplication];
     FDAppDelegate *appDelegate = (FDAppDelegate *)application.delegate;
     FDMasterViewController *masterViewController = appDelegate.masterViewController;
-    NSDictionary *delta = [self getOpenDevice:masterViewController.devices except:self.device];
-    _deltaSensor = [[FDSensor alloc] init];
-    _deltaSensor.fireflyIce = delta[@"fireflyIce"];
-    _deltaSensor.channel = delta[@"channel"];
-    _deltaSensor.hardwareId = _deltaSensor.fireflyIce.name;
+    NSDictionary *alpha = [self getOpenDevice:masterViewController.devices except:self.device];
+    _alphaSensor = [[FDSensor alloc] init];
+    _alphaSensor.fireflyIce = alpha[@"fireflyIce"];
+    _alphaSensor.channel = alpha[@"channel"];
+    _alphaSensor.hardwareId = _alphaSensor.fireflyIce.name;
+    _alphaLabel.text = _alphaSensor.fireflyIce.name;
     
     _progressView.progress = 0.0f;
     _progressView.hidden = NO;

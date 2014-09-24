@@ -1406,14 +1406,14 @@
                                 <rect key="frame" x="20" y="49" width="280" height="150"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Pitcher" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EKd-5m-rhw">
-                                <rect key="frame" x="20" y="20" width="120" height="21"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="a" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EKd-5m-rhw">
+                                <rect key="frame" x="20" y="20" width="280" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Catcher" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="14s-ND-yFz">
-                                <rect key="frame" x="180" y="207" width="120" height="21"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="b" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="14s-ND-yFz">
+                                <rect key="frame" x="20" y="207" width="280" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -1431,13 +1431,13 @@
                                 <rect key="frame" x="20" y="274" width="280" height="2"/>
                             </progressView>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Isn-LI-rFw">
-                                <rect key="frame" x="255" y="316" width="51" height="31"/>
+                                <rect key="frame" x="251" y="316" width="51" height="31"/>
                                 <connections>
                                     <action selector="recognitionSwitchChanged:" destination="mUM-zT-RbM" eventType="valueChanged" id="ZLU-sb-g7k"/>
                                 </connections>
                             </switch>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Event Recognition" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RLc-FM-Alc">
-                                <rect key="frame" x="16" y="321" width="140" height="21"/>
+                                <rect key="frame" x="20" y="321" width="140" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -1448,6 +1448,8 @@
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <tabBarItem key="tabBarItem" title="Timing" image="timing.png" id="i0K-fC-T0Z"/>
                     <connections>
+                        <outlet property="alphaLabel" destination="EKd-5m-rhw" id="HDD-OE-9BL"/>
+                        <outlet property="deltaLabel" destination="14s-ND-yFz" id="IdO-Ct-uqI"/>
                         <outlet property="progressView" destination="wsQ-bn-8T9" id="i3a-XC-wxZ"/>
                         <outlet property="recognitionSwitch" destination="Isn-LI-rFw" id="hzk-ZA-mJ1"/>
                         <outlet property="syncButton" destination="62S-67-2YD" id="7i7-Vb-gwm"/>

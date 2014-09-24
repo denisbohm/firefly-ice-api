@@ -45,7 +45,7 @@
         [_deltaSamples addObject:sample];
     }
     
-    _duration = @"0.84";
+    _duration = @"1.00s";
 }
 
 - (id)initWithFrame:(CGRect)frame
