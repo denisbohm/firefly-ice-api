@@ -363,6 +363,12 @@
 #endif
 }
 
+
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel power:(FDFireflyIcePower *)power
+{
+    NSLog(@"power: %@", power);
+}
+
 - (void)usbHidMonitor:(FDUSBHIDMonitor *)monitor deviceAdded:(FDUSBHIDDevice *)usbHidDevice
 {
     FDFireflyIce *fireflyIce = [[FDFireflyIce alloc] init];
@@ -467,6 +473,13 @@
     [coder sendSetPropertyMode:channel mode:FD_CONTROL_MODE_STORAGE];
 }
 
+- (IBAction)usbGetInfo:(id)sender
+{
+    FDFireflyIceChannelUSB *channel = [self getSelectedUsbDevice];
+    FDFireflyIceCoder *coder = [[FDFireflyIceCoder alloc] init];
+    [coder sendGetProperties:channel properties:FD_CONTROL_PROPERTY_POWER];
+}
+
 - (FDFireflyIceChannelBLE *)getSelectedFireflyDevice
 {
     NSInteger row = _bluetoothTableView.selectedRow;
@@ -531,6 +544,13 @@
     [coder sendReset:channel type:FD_CONTROL_RESET_SYSTEM_REQUEST];
 }
 
+- (IBAction)bluetoothGetInfo:(id)sender
+{
+    FDFireflyIceChannelBLE *channel = [self getSelectedFireflyDevice];
+    FDFireflyIceCoder *coder = [[FDFireflyIceCoder alloc] init];
+    [coder sendGetProperties:channel properties:FD_CONTROL_PROPERTY_POWER];
+}
+
 - (IBAction)update:(id)sender
 {
     FDFireflyIceChannelBLE *channel = [self getSelectedFireflyDevice];
@@ -562,7 +582,7 @@
 
 - (void)centralManagerPoweredOn
 {
-    [_centralManager scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:@"310a0001-1b95-5091-b0bd-b7a681846399"]] options:@{CBCentralManagerScanOptionAllowDuplicatesKey:@YES}];
+    [_centralManager scanForPeripheralsWithServices:@[_serviceUUID] options:@{CBCentralManagerScanOptionAllowDuplicatesKey:@YES}];
 }
 
 - (void)centralManagerDidUpdateState:(CBCentralManager *)central
