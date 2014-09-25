@@ -11,6 +11,7 @@
 #import "FDMasterViewController.h"
 #import "FDTimingView.h"
 
+#import <FireflyDevice/FDFireflyIceCoder.h>
 #import <FireflyDevice/FDFireflyIceSimpleTask.h>
 #import <FireflyDevice/FDSyncTask.h>
 
@@ -50,9 +51,12 @@
 
 @interface FDDetailTimingViewController () <FDSyncTaskDelegate>
 
+@property IBOutlet UILabel *alphaLabel;
+@property IBOutlet UILabel *deltaLabel;
 @property IBOutlet FDTimingView *timingView;
 @property IBOutlet UIButton *syncButton;
 @property IBOutlet UIProgressView *progressView;
+@property IBOutlet UISwitch *recognitionSwitch;
 
 @property FDSensor *alphaSensor;
 @property FDSensor *deltaSensor;
@@ -75,6 +79,7 @@
     [super viewDidLoad];
     
     [self.controls addObject:_syncButton];
+    [self.controls addObject:_recognitionSwitch];
     
     _interval = 0.040;
 }
@@ -85,6 +90,20 @@
 
 - (void)configureView
 {
+    FDFireflyIceCollector *collector = self.device[@"collector"];
+    if (collector.dictionary.count == 0) {
+        [self unconfigureView];
+        return;
+    }
+    
+    NSNumber *number = [collector objectForKey:@"recognition"];
+    BOOL recognition = [number boolValue];
+    _recognitionSwitch.on = recognition;
+}
+
+- (void)fireflyIceCollectorEntry:(FDFireflyIceCollectorEntry *)entry
+{
+    [self configureView];
 }
 
 - (NSInteger)findLastIndex:(NSArray *)samples beforeTime:(NSTimeInterval)time
@@ -174,7 +193,7 @@
     _timingView.maxSampleCount = marginIntervals + deltaIntervals + marginIntervals;
     
     NSTimeInterval duration = deltaSample.time - alphaSample.time;
-    _timingView.duration = [NSString stringWithFormat:@"%0.2f", duration];
+    _timingView.duration = [NSString stringWithFormat:@"%0.2fs", duration];
     
     [_timingView setNeedsDisplay];
 }
@@ -312,25 +331,35 @@
 
 - (IBAction)startSync:(id)sender
 {
-    _alphaSensor = [[FDSensor alloc] init];
-    _alphaSensor.fireflyIce = self.device[@"fireflyIce"];
-    _alphaSensor.channel = self.device[@"channel"];
-    _alphaSensor.hardwareId = _alphaSensor.fireflyIce.name;
+    _deltaSensor = [[FDSensor alloc] init];
+    _deltaSensor.fireflyIce = self.device[@"fireflyIce"];
+    _deltaSensor.channel = self.device[@"channel"];
+    _deltaSensor.hardwareId = _deltaSensor.fireflyIce.name;
+    _deltaLabel.text = _deltaSensor.fireflyIce.name;
     
     UIApplication *application = [UIApplication sharedApplication];
     FDAppDelegate *appDelegate = (FDAppDelegate *)application.delegate;
     FDMasterViewController *masterViewController = appDelegate.masterViewController;
-    NSDictionary *delta = [self getOpenDevice:masterViewController.devices except:self.device];
-    _deltaSensor = [[FDSensor alloc] init];
-    _deltaSensor.fireflyIce = delta[@"fireflyIce"];
-    _deltaSensor.channel = delta[@"channel"];
-    _deltaSensor.hardwareId = _deltaSensor.fireflyIce.name;
+    NSDictionary *alpha = [self getOpenDevice:masterViewController.devices except:self.device];
+    _alphaSensor = [[FDSensor alloc] init];
+    _alphaSensor.fireflyIce = alpha[@"fireflyIce"];
+    _alphaSensor.channel = alpha[@"channel"];
+    _alphaSensor.hardwareId = _alphaSensor.fireflyIce.name;
+    _alphaLabel.text = _alphaSensor.fireflyIce.name;
     
     _progressView.progress = 0.0f;
     _progressView.hidden = NO;
     
     [self sensorStartSync:_alphaSensor];
     [self sensorStartSync:_deltaSensor];
+}
+
+- (IBAction)recognitionSwitchChanged:(id)sender
+{
+    BOOL enabled = _recognitionSwitch.on;
+    FDFireflyIce *fireflyIce = self.device[@"fireflyIce"];
+    id<FDFireflyIceChannel> channel = self.device[@"channel"];
+    [fireflyIce.coder sendSetPropertyRecognition:channel recognition:enabled];
 }
 
 @end

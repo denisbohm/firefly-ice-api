@@ -278,6 +278,13 @@
     [_observable fireflyIce:fireflyIce channel:channel indicate:indicate];
 }
 
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel getPropertyRecognition:(FDBinary *)binary
+{
+    NSNumber *recognition = [NSNumber numberWithBool:[binary getUInt8] != 0];
+    
+    [_observable fireflyIce:fireflyIce channel:channel recognition:recognition];
+}
+
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel getPropertyLogging:(FDBinary *)binary
 {
     FDFireflyIceLogging *logging = [[FDFireflyIceLogging alloc] init];
@@ -364,6 +371,12 @@
     if (properties & FD_CONTROL_PROPERTY_SENSING_COUNT) {
         [self fireflyIce:fireflyIce channel:channel getPropertySensingCount:binary];
     }
+    if (properties & FD_CONTROL_PROPERTY_INDICATE) {
+        [self fireflyIce:fireflyIce channel:channel getPropertyIndicate:binary];
+    }
+    if (properties & FD_CONTROL_PROPERTY_RECOGNITION) {
+        [self fireflyIce:fireflyIce channel:channel getPropertyRecognition:binary];
+    }
 }
 
 - (void)sendSetPropertyTime:(id<FDFireflyIceChannel>)channel time:(NSDate *)time
@@ -438,6 +451,15 @@
     [binary putUInt8:FD_CONTROL_SET_PROPERTIES];
     [binary putUInt32:FD_CONTROL_PROPERTY_INDICATE];
     [binary putUInt8:indicate ? 1 : 0];
+    [channel fireflyIceChannelSend:binary.dataValue];
+}
+
+- (void)sendSetPropertyRecognition:(id<FDFireflyIceChannel>)channel recognition:(BOOL)recognition
+{
+    FDBinary *binary = [[FDBinary alloc] init];
+    [binary putUInt8:FD_CONTROL_SET_PROPERTIES];
+    [binary putUInt32:FD_CONTROL_PROPERTY_RECOGNITION];
+    [binary putUInt8:recognition ? 1 : 0];
     [channel fireflyIceChannelSend:binary.dataValue];
 }
 
@@ -602,7 +624,7 @@
         NSData *hash = [binary getData:HASH_SIZE];
         FDFireflyIceSectorHash *sectorHash = [[FDFireflyIceSectorHash alloc] init];
         sectorHash.sector = sector;
-        sectorHash.hash = hash;
+        sectorHash.hashValue = hash;
         [sectorHashes addObject:sectorHash];
     }
     

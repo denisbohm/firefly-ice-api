@@ -8,6 +8,7 @@
 
 #import "FDDetailUpdateViewController.h"
 #import "FDUpdateView.h"
+#import "FDVersionPicker.h"
 
 #import <FireflyDevice/FDCrypto.h>
 #import <FireflyDevice/FDFireflyIce.h>
@@ -26,7 +27,8 @@
 
 @property IBOutlet UIButton *updateButton;
 
-@property FDIntelHex *intelHex;
+@property NSArray *versions;
+@property NSInteger versionIndex;
 
 @end
 
@@ -42,14 +44,26 @@
     ;
 }
 
+- (NSString *)formatVersion:(FDIntelHex *)intelHex
+{
+    return [NSString stringWithFormat:@"%@.%@.%@ %@", intelHex.properties[@"major"] , intelHex.properties[@"minor"], intelHex.properties[@"patch"], intelHex.properties[@"note"]];
+}
+
+- (void)showCurrentVersion
+{
+    FDIntelHex *intelHex = _versions[_versionIndex];
+    _currentVersionLabel.text = [self formatVersion:intelHex];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     [self.controls addObject:_updateButton];
     
-    _intelHex = [FDFirmwareUpdateTask loadFirmware:@"FireflyIce"];
-    _currentVersionLabel.text = [NSString stringWithFormat:@"v%@.%@.%@", _intelHex.properties[@"major"] , _intelHex.properties[@"minor"], _intelHex.properties[@"patch"]];
+    _versions = [FDFirmwareUpdateTask loadAllFirmwareVersions:@"FireflyIce"];
+    _versionIndex = 0;
+    [self showCurrentVersion];
 }
 
 - (void)unconfigureView
@@ -66,7 +80,33 @@
     }
 
     FDFireflyIceVersion *version = [collector objectForKey:@"version"];
-    _deviceVersionLabel.text = [NSString stringWithFormat:@"v%d.%d.%d", version.major, version.minor, version.patch];
+    _deviceVersionLabel.text = [NSString stringWithFormat:@"%d.%d.%d", version.major, version.minor, version.patch];
+}
+
+- (void)fireflyIceCollectorEntry:(FDFireflyIceCollectorEntry *)entry
+{
+    [self configureView];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"pickVersion"]) {
+        NSMutableArray *versions = [NSMutableArray array];
+        for (FDIntelHex *intelHex in _versions) {
+            [versions addObject:[self formatVersion:intelHex]];
+        }
+             
+        FDVersionPicker *picker = (FDVersionPicker *)segue.destinationViewController;
+        picker.items = versions;
+        picker.selectedItem = versions[0];
+    }
+}
+
+- (IBAction)unwindToUpdate:(UIStoryboardSegue *)unwindSegue
+{
+    FDVersionPicker *picker = (FDVersionPicker *)unwindSegue.sourceViewController;
+    _versionIndex = picker.chosenIndex;
+    [self showCurrentVersion];
 }
 
 - (void)firmwareUpdateTask:(FDFirmwareUpdateTask *)task progress:(float)progress
@@ -89,7 +129,8 @@
     FDFireflyIce *fireflyIce = self.device[@"fireflyIce"];
     id<FDFireflyIceChannel> channel = self.device[@"channel"];
     
-    FDFirmwareUpdateTask *task = [FDFirmwareUpdateTask firmwareUpdateTask:fireflyIce channel:channel intelHex:_intelHex];
+    FDIntelHex *intelHex = _versions[_versionIndex];
+    FDFirmwareUpdateTask *task = [FDFirmwareUpdateTask firmwareUpdateTask:fireflyIce channel:channel intelHex:intelHex];
     task.downgrade = true;
     task.delegate = self;
     _updateView.firmwareUpdateTask = task;

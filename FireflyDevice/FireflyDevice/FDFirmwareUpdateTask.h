@@ -22,9 +22,11 @@
 
 @interface FDFirmwareUpdateTask : FDFireflyIceTaskSteps
 
-+ (FDFirmwareUpdateTask *)firmwareUpdateTask:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel firmware:(NSData *)firmware;
++ (NSArray *)loadAllFirmwareVersions:(NSString *)resource;
 
 + (FDIntelHex *)loadFirmware:(NSString *)resource;
+
++ (FDFirmwareUpdateTask *)firmwareUpdateTask:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel firmware:(NSData *)firmware;
 
 + (FDFirmwareUpdateTask *)firmwareUpdateTask:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel intelHex:(FDIntelHex *)intelHex;
 

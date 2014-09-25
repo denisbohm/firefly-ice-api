@@ -111,7 +111,7 @@
             } break;
             case 2: { // Extended Segment Address Record
                 uint8_t *bytes = (uint8_t *)data.bytes;
-                extendedAddress = ((bytes[0] << 8) | (bytes[1]) << 4);
+                extendedAddress = ((bytes[0] << 8) | bytes[1]) << 4;
             } break;
             case 3: { // Start Segment Address Record
                 // ignore

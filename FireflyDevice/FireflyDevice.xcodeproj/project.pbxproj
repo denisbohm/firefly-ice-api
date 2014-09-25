@@ -48,6 +48,7 @@
 		9261C35B18AF2E8D00CDB9F2 /* FDBundleManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9261C35918AF2E8D00CDB9F2 /* FDBundleManager.m */; };
 		9261C35C18AF2E8D00CDB9F2 /* FDBundleManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9261C35918AF2E8D00CDB9F2 /* FDBundleManager.m */; };
 		9261C35D18AF2EE900CDB9F2 /* FDBundleManager.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9261C35818AF2E8D00CDB9F2 /* FDBundleManager.h */; };
+		926F7BC419D0E599003124D1 /* FireflyIce-41.hex in Resources */ = {isa = PBXBuildFile; fileRef = 92222FB119D0DD5700486C77 /* FireflyIce-41.hex */; };
 		927F3DB717FA20A200C933DD /* FDFireflyIceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 927F3DB617FA20A200C933DD /* FDFireflyIceManager.m */; };
 		927F3DBC17FA4F0B00C933DD /* FDSyncTask.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 92F863F317F3B4E0000E23AF /* FDSyncTask.h */; };
 		927F3DBD17FA4F0B00C933DD /* FDFireflyIceManager.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 927F3DB517FA20A200C933DD /* FDFireflyIceManager.h */; };
@@ -212,6 +213,7 @@
 
 /* Begin PBXFileReference section */
 		921383A1182C43AE00D89159 /* OCMock.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OCMock.framework; path = ../../ocmock/OSX/OCMock.framework; sourceTree = "<group>"; };
+		92222FB119D0DD5700486C77 /* FireflyIce-41.hex */ = {isa = PBXFileReference; explicitFileType = text; fileEncoding = 4; path = "FireflyIce-41.hex"; sourceTree = "<group>"; };
 		922931E818C3D54B007F8514 /* FDHardwareId.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDHardwareId.h; sourceTree = "<group>"; };
 		922931E918C3D54B007F8514 /* FDHardwareId.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDHardwareId.m; sourceTree = "<group>"; };
 		922F06871857BB1A002948C1 /* FDIEEE754Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDIEEE754Tests.m; sourceTree = "<group>"; };
@@ -289,7 +291,7 @@
 		92DF13FA180B047400A1B849 /* FDUSBHIDMonitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDUSBHIDMonitor.h; sourceTree = "<group>"; };
 		92DF13FB180B047400A1B849 /* FDUSBHIDMonitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDUSBHIDMonitor.m; sourceTree = "<group>"; };
 		92DF1444180B092900A1B849 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/IOKit.framework; sourceTree = DEVELOPER_DIR; };
-		92DF1463180B0C9400A1B849 /* FireflyIce.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FireflyIce.hex; sourceTree = "<group>"; };
+		92DF1463180B0C9400A1B849 /* FireflyIce.hex */ = {isa = PBXFileReference; explicitFileType = text; fileEncoding = 4; path = FireflyIce.hex; sourceTree = "<group>"; };
 		92E81154187E06E6002449B2 /* FDFileLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFileLog.h; sourceTree = "<group>"; };
 		92E81155187E06E6002449B2 /* FDFileLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFileLog.m; sourceTree = "<group>"; };
 		92EAA71A1801CD24004DADFC /* FDHelloTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDHelloTask.h; sourceTree = "<group>"; };
@@ -342,6 +344,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		92222FB019D0DC8400486C77 /* firmware */ = {
+			isa = PBXGroup;
+			children = (
+				92DF1463180B0C9400A1B849 /* FireflyIce.hex */,
+				92222FB119D0DD5700486C77 /* FireflyIce-41.hex */,
+			);
+			name = firmware;
+			sourceTree = "<group>";
+		};
 		9261C34618AEE52D00CDB9F2 /* scripts */ = {
 			isa = PBXGroup;
 			children = (
@@ -393,6 +404,7 @@
 			isa = PBXGroup;
 			children = (
 				929EF4BC17EA06580044F6F9 /* Supporting Files */,
+				92222FB019D0DC8400486C77 /* firmware */,
 				929EF4BE17EA06580044F6F9 /* FireflyDevice.h */,
 				929EF4C017EA06580044F6F9 /* FireflyDevice.m */,
 				9259AFFA18663CB30086F634 /* FDFireflyDeviceLogger.h */,
@@ -460,7 +472,6 @@
 			isa = PBXGroup;
 			children = (
 				9261C34818AEE6BF00CDB9F2 /* FireflyDevice-Info.plist */,
-				92DF1463180B0C9400A1B849 /* FireflyIce.hex */,
 				929EF4BD17EA06580044F6F9 /* FireflyDevice-Prefix.pch */,
 			);
 			name = "Supporting Files";
@@ -575,7 +586,7 @@
 			name = FireflyDeviceTests.library;
 			productName = FireflyDeviceTests;
 			productReference = 929EF4C717EA06580044F6F9 /* FireflyDeviceTests.library.octest */;
-			productType = "com.apple.product-type.bundle";
+			productType = "com.apple.product-type.bundle.ocunit-test";
 		};
 		92DF1392180B01AE00A1B849 /* FireflyDevice.framework */ = {
 			isa = PBXNativeTarget;
@@ -664,6 +675,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				926F7BC419D0E599003124D1 /* FireflyIce-41.hex in Resources */,
 				92DF1464180B0C9A00A1B849 /* FireflyIce.hex in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
