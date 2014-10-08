@@ -59,14 +59,28 @@
     return firmwareUpdateTask;
 }
 
-+ (NSArray *)loadAllFirmwareVersions:(NSString *)resource
++ (NSArray *)loadAllFirmwareVersions:(NSString *)resource bundle:(NSBundle *)bundle
 {
     NSMutableArray *versions = [NSMutableArray array];
-    NSBundle *mainBundle = [NSBundle mainBundle];
-    NSArray *paths = [mainBundle pathsForResourcesOfType:@"hex" inDirectory:nil];
+    NSArray *paths = [bundle pathsForResourcesOfType:@"hex" inDirectory:nil];
     for (NSString *path in paths) {
         [versions addObject:[FDFirmwareUpdateTask loadFirmwareFromPath:path]];
     }
+    return versions;
+}
+
++ (NSArray *)loadAllFirmwareVersions:(NSString *)resource
+{
+    NSMutableArray *versions = [NSMutableArray array];
+    
+    NSBundle *frameworkBundle = [NSBundle bundleForClass:[FDFirmwareUpdateTask class]];
+    [versions addObjectsFromArray:[FDFirmwareUpdateTask loadAllFirmwareVersions:resource bundle:frameworkBundle]];
+    
+    NSBundle *mainBundle = [NSBundle mainBundle];
+    if (mainBundle != frameworkBundle) {
+        [versions addObjectsFromArray:[FDFirmwareUpdateTask loadAllFirmwareVersions:resource bundle:mainBundle]];
+    }
+    
     return [versions sortedArrayUsingComparator: ^(id oa, id ob) {
         FDIntelHex *a = (FDIntelHex *)oa;
         FDIntelHex *b = (FDIntelHex *)ob;
