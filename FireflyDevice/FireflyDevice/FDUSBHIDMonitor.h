@@ -22,6 +22,8 @@
 
 @property id<FDUSBHIDDeviceDelegate> delegate;
 
+@property (readonly) NSObject *location;
+
 - (void)open;
 - (void)close;
 

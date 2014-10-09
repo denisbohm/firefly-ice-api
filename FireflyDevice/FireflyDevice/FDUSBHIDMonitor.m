@@ -19,6 +19,7 @@
 @property NSMutableData *inputData;
 @property NSMutableData *outputData;
 @property bool isOpen;
+@property NSNumber *locationID;
 
 @end
 
@@ -68,6 +69,21 @@ void FDUSBHIDDeviceInputReportCallback(void *context, IOReturn result, void *sen
 {
     FDUSBHIDDevice *device = (__bridge FDUSBHIDDevice *)context;
     [device inputReport:[NSData dataWithBytes:report length:reportLength]];
+}
+
+-(NSObject *)location
+{
+    if (_locationID == nil) {
+        CFTypeRef typeRef = IOHIDDeviceGetProperty(_hidDeviceRef, CFSTR(kIOHIDLocationIDKey));
+        if (typeRef && (CFGetTypeID(typeRef) == CFNumberGetTypeID())) {
+            CFNumberRef locationRef = (CFNumberRef)typeRef;
+            long location = 0;
+            if (CFNumberGetValue(locationRef, kCFNumberLongType, &location)) {
+                _locationID = [NSNumber numberWithLong:location];
+            }
+        }
+    }
+    return _locationID;
 }
 
 - (void)open
