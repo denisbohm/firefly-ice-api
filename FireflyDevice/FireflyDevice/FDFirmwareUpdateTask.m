@@ -222,7 +222,11 @@
 
 - (void)checkOutOfDate
 {
-    if ([self isOutOfDate]) {
+    BOOL isFirmwareUpToDate = ![self isOutOfDate];
+    if ([_delegate respondsToSelector:@selector(firmwareUpdateTask:check:)]) {
+        [_delegate firmwareUpdateTask:self check:isFirmwareUpToDate];
+    }
+    if (!isFirmwareUpToDate) {
         FDFireflyDeviceLogInfo(@"firmware %@ is out of date with latest %u.%u.%u (boot loader is %@)", _version, _major, _minor, _patch, _bootVersion);
         [self next:@selector(getSectorHashes)];
     } else {
@@ -356,7 +360,9 @@
 - (void)writeNextPage
 {
     float progress = (_invalidPages.count - _updatePages.count) / (float)_invalidPages.count;
-    [_delegate firmwareUpdateTask:self progress:progress];
+    if ([_delegate respondsToSelector:@selector(firmwareUpdateTask:progress:)]) {
+        [_delegate firmwareUpdateTask:self progress:progress];
+    }
     NSUInteger progressPercent = (NSUInteger)(progress * 100);
     if (_lastProgressPercent != progressPercent) {
         _lastProgressPercent = progressPercent;
@@ -418,7 +424,9 @@
     
     BOOL isFirmwareUpToDate = (_updatePages.count == 0);
     FDFireflyDeviceLogInfo(@"isFirmwareUpToDate = %@, commit %@ result = %u", isFirmwareUpToDate ? @"YES" : @"NO", _updateCommit != nil ? @"YES" : @"NO", _updateCommit.result);
-    [_delegate firmwareUpdateTask:self complete:isFirmwareUpToDate];
+    if ([_delegate respondsToSelector:@selector(firmwareUpdateTask:complete:)]) {
+        [_delegate firmwareUpdateTask:self complete:isFirmwareUpToDate];
+    }
     if (_reset && [self isOutOfDate] && isFirmwareUpToDate && (_updateCommit != nil) && (_updateCommit.result == FD_UPDATE_COMMIT_SUCCESS)) {
         FDFireflyDeviceLogInfo(@"new firmware has been transferred and comitted - restarting device");
         [self.fireflyIce.coder sendReset:self.channel type:FD_CONTROL_RESET_SYSTEM_REQUEST];

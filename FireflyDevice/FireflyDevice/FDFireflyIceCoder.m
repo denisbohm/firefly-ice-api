@@ -107,6 +107,9 @@
 //   - uint16_t offset of key, value bytes
 - (NSData *)dictionaryMap:(NSDictionary *)dictionary
 {
+    if (dictionary == nil) {
+        return nil;
+    }
     FDBinary *map = [[FDBinary alloc] init];
     NSMutableData *content = [NSMutableData data];
     [map putUInt16:dictionary.count];

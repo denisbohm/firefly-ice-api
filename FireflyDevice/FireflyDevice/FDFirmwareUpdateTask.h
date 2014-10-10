@@ -12,6 +12,10 @@
 
 @protocol FDFirmwareUpdateTaskDelegate <NSObject>
 
+@optional
+
+- (void)firmwareUpdateTask:(FDFirmwareUpdateTask *)task check:(BOOL)isFirmwareUpToDate;
+
 - (void)firmwareUpdateTask:(FDFirmwareUpdateTask *)task progress:(float)progress;
 
 - (void)firmwareUpdateTask:(FDFirmwareUpdateTask *)task complete:(BOOL)isFirmwareUpToDate;
