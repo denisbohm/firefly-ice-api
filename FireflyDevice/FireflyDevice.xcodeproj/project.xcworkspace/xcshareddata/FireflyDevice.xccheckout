@@ -10,29 +10,29 @@
 	<string>FireflyDevice</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>3E7F79C4-0063-4B58-9ACB-4DF31CE7EDB4</key>
+		<key>5A131E55697F8004CAC31E4EEC549228502767EB</key>
 		<string>https://github.com/denisbohm/firefly-ice-api.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>FireflyDevice/FireflyDevice.xcodeproj/project.xcworkspace</string>
+	<string>FireflyDevice/FireflyDevice.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>3E7F79C4-0063-4B58-9ACB-4DF31CE7EDB4</key>
+		<key>5A131E55697F8004CAC31E4EEC549228502767EB</key>
 		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/denisbohm/firefly-ice-api.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>3E7F79C4-0063-4B58-9ACB-4DF31CE7EDB4</string>
+	<string>5A131E55697F8004CAC31E4EEC549228502767EB</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>3E7F79C4-0063-4B58-9ACB-4DF31CE7EDB4</string>
+			<string>5A131E55697F8004CAC31E4EEC549228502767EB</string>
 			<key>IDESourceControlWCCName</key>
 			<string>firefly-ice-api</string>
 		</dict>
