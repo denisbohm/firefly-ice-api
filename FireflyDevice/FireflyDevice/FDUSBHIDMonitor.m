@@ -142,7 +142,9 @@ static
 void FDUSBHIDMonitorRemovalCallback(void *context, IOReturn result, void *sender)
 {
     FDUSBHIDDevice *device = (__bridge FDUSBHIDDevice *)context;
-    [device.monitor removal:device];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [device.monitor removal:device];
+    });
 }
 
 - (void)deviceMatching:(IOHIDDeviceRef)hidDeviceRef

@@ -29,7 +29,6 @@
 		92376C3718B8FE0F00A67A0B /* FDFireflyIceChannelMock.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 92376C3118B8FC6200A67A0B /* FDFireflyIceChannelMock.h */; };
 		92376C3818B8FE8500A67A0B /* FDFireflyIceChannelMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 92376C3218B8FC6200A67A0B /* FDFireflyIceChannelMock.m */; };
 		92376C3918B8FE9800A67A0B /* FDFireflyIceChannelMock.h in Headers */ = {isa = PBXBuildFile; fileRef = 92376C3118B8FC6200A67A0B /* FDFireflyIceChannelMock.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		923DE2781913302F00DB442E /* FDSyncTaskTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 923DE2771913302F00DB442E /* FDSyncTaskTests.m */; };
 		923DE2791913323F00DB442E /* FDSyncTaskTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 923DE2771913302F00DB442E /* FDSyncTaskTests.m */; };
 		924948F318207FEB00FA97D5 /* FDFireflyIceSimpleTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 924D016018104C7200EB500A /* FDFireflyIceSimpleTask.m */; };
 		924948F41820809000FA97D5 /* FDFireflyIceSimpleTask.h in Headers */ = {isa = PBXBuildFile; fileRef = 924D015F18104C7200EB500A /* FDFireflyIceSimpleTask.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -60,7 +59,6 @@
 		929EF4BA17EA06580044F6F9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 929EF4B917EA06580044F6F9 /* Foundation.framework */; };
 		929EF4BF17EA06580044F6F9 /* FireflyDevice.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 929EF4BE17EA06580044F6F9 /* FireflyDevice.h */; };
 		929EF4C117EA06580044F6F9 /* FireflyDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 929EF4C017EA06580044F6F9 /* FireflyDevice.m */; };
-		929EF4C917EA06580044F6F9 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 929EF4C817EA06580044F6F9 /* SenTestingKit.framework */; };
 		929EF4CB17EA06580044F6F9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 929EF4CA17EA06580044F6F9 /* UIKit.framework */; };
 		929EF4CC17EA06580044F6F9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 929EF4B917EA06580044F6F9 /* Foundation.framework */; };
 		929EF4CF17EA06580044F6F9 /* libFireflyDevice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 929EF4B617EA06580044F6F9 /* libFireflyDevice.a */; };
@@ -246,8 +244,7 @@
 		929EF4BD17EA06580044F6F9 /* FireflyDevice-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FireflyDevice-Prefix.pch"; sourceTree = "<group>"; };
 		929EF4BE17EA06580044F6F9 /* FireflyDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FireflyDevice.h; sourceTree = "<group>"; };
 		929EF4C017EA06580044F6F9 /* FireflyDevice.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FireflyDevice.m; sourceTree = "<group>"; };
-		929EF4C717EA06580044F6F9 /* FireflyDeviceTests.library.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FireflyDeviceTests.library.octest; sourceTree = BUILT_PRODUCTS_DIR; };
-		929EF4C817EA06580044F6F9 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		929EF4C717EA06580044F6F9 /* FireflyDeviceTests.library.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FireflyDeviceTests.library.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		929EF4CA17EA06580044F6F9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		929EF4D217EA06580044F6F9 /* FireflyDeviceTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FireflyDeviceTests-Info.plist"; sourceTree = "<group>"; };
 		929EF4D417EA06580044F6F9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -313,7 +310,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				929EF4C917EA06580044F6F9 /* SenTestingKit.framework in Frameworks */,
 				929EF4CB17EA06580044F6F9 /* UIKit.framework in Frameworks */,
 				929EF4CC17EA06580044F6F9 /* Foundation.framework in Frameworks */,
 				929EF4CF17EA06580044F6F9 /* libFireflyDevice.a in Frameworks */,
@@ -376,7 +372,7 @@
 			isa = PBXGroup;
 			children = (
 				929EF4B617EA06580044F6F9 /* libFireflyDevice.a */,
-				929EF4C717EA06580044F6F9 /* FireflyDeviceTests.library.octest */,
+				929EF4C717EA06580044F6F9 /* FireflyDeviceTests.library.xctest */,
 				92DF1393180B01AE00A1B849 /* FireflyDevice.framework */,
 				92DF13A8180B01AE00A1B849 /* FireflyDeviceTests.framework.xctest */,
 			);
@@ -391,7 +387,6 @@
 				92DF1444180B092900A1B849 /* IOKit.framework */,
 				92DF13DD180B031700A1B849 /* IOBluetooth.framework */,
 				929EF4B917EA06580044F6F9 /* Foundation.framework */,
-				929EF4C817EA06580044F6F9 /* SenTestingKit.framework */,
 				929EF4CA17EA06580044F6F9 /* UIKit.framework */,
 				92DF1394180B01AE00A1B849 /* Cocoa.framework */,
 				92DF13A9180B01AE00A1B849 /* XCTest.framework */,
@@ -585,8 +580,8 @@
 			);
 			name = FireflyDeviceTests.library;
 			productName = FireflyDeviceTests;
-			productReference = 929EF4C717EA06580044F6F9 /* FireflyDeviceTests.library.octest */;
-			productType = "com.apple.product-type.bundle.ocunit-test";
+			productReference = 929EF4C717EA06580044F6F9 /* FireflyDeviceTests.library.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		92DF1392180B01AE00A1B849 /* FireflyDevice.framework */ = {
 			isa = PBXNativeTarget;
@@ -633,7 +628,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = FD;
-				LastTestingUpgradeCheck = 0510;
+				LastTestingUpgradeCheck = 0610;
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Firefly Design LLC / Denis Bohm";
 				TargetAttributes = {
@@ -774,7 +769,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				923DE2781913302F00DB442E /* FDSyncTaskTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -939,12 +933,12 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
 					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+					"$(inherited)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FireflyDevice/FireflyDevice-Prefix.pch";
 				INFOPLIST_FILE = "FireflyDeviceTests/FireflyDeviceTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
 		};
@@ -954,12 +948,12 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
 					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+					"$(inherited)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FireflyDevice/FireflyDevice-Prefix.pch";
 				INFOPLIST_FILE = "FireflyDeviceTests/FireflyDeviceTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
 		};
