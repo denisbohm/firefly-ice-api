@@ -28,7 +28,6 @@
 @property IOHIDManagerRef hidManagerRef;
 @property NSThread *hidRunLoopThread;
 @property CFRunLoopRef runLoopRef;
-@property BOOL run;
 @property NSMutableArray *devices;
 
 @end
@@ -169,17 +168,16 @@ void FDUSBHIDMonitorDeviceMatchingCallback(void *context, IOReturn result, void 
 
 - (void)start
 {
-    _run = YES;
-    _hidManagerRef = IOHIDManagerCreate(kCFAllocatorDefault, kIOHIDOptionsTypeNone);
     _hidRunLoopThread = [[NSThread alloc] initWithTarget:self selector:@selector(hidRunLoop) object:nil];
     [_hidRunLoopThread start];
 }
 
 - (void)stop
 {
-    _run = NO;
+    [_hidRunLoopThread cancel];
     BOOL done = NO;
-    for (NSUInteger i = 0; i < 100; ++i) {
+    for (NSUInteger i = 0; i < 25; ++i) {
+        [NSThread sleepForTimeInterval:0.1];
         if (!_hidRunLoopThread.isExecuting) {
             done = YES;
             break;
@@ -189,15 +187,13 @@ void FDUSBHIDMonitorDeviceMatchingCallback(void *context, IOReturn result, void 
         FDFireflyDeviceLogWarn(@"usb test thread failed to stop");
     }
     _hidRunLoopThread = nil;
-    IOHIDManagerClose(_hidManagerRef, 0);
-    _hidManagerRef = nil;
-    _runLoopRef = nil;
     _devices = [NSMutableArray array];
 }
 
 - (void)hidRunLoop
 {
     @autoreleasepool {
+        _hidManagerRef = IOHIDManagerCreate(kCFAllocatorDefault, kIOHIDOptionsTypeNone);
         _runLoopRef = CFRunLoopGetCurrent();
         IOHIDManagerScheduleWithRunLoop(_hidManagerRef, _runLoopRef, kCFRunLoopDefaultMode);
         IOReturn ioReturn = IOHIDManagerOpen(_hidManagerRef, 0);
@@ -213,11 +209,16 @@ void FDUSBHIDMonitorDeviceMatchingCallback(void *context, IOReturn result, void 
     }
     
     NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
-    while (_run) {
+    while (![_hidRunLoopThread isCancelled]) {
         @autoreleasepool {
             [runLoop runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
         }
     }
+    
+    IOHIDManagerUnscheduleFromRunLoop(_hidManagerRef, _runLoopRef, kCFRunLoopDefaultMode);
+    _runLoopRef = nil;
+    IOHIDManagerClose(_hidManagerRef, 0);
+    _hidManagerRef = nil;
 }
 
 @end
