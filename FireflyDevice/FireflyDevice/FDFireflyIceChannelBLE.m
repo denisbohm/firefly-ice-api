@@ -241,21 +241,34 @@
     return outputString;
 }
 
+- (void)didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
+{
+//    NSLog(@"didUpdateNotificationStateForCharacteristic");
+    
+    self.status = FDFireflyIceChannelStatusOpen;
+    if ([_delegate respondsToSelector:@selector(fireflyIceChannel:status:)]) {
+        [_delegate fireflyIceChannel:self status:self.status];
+    }
+}
+
+- (void)peripheral:(CBPeripheral *)peripheral didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
+{
+    __FDWeak FDFireflyIceChannelBLE *weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [weakSelf didUpdateNotificationStateForCharacteristic:characteristic error:error];
+    });
+}
+
 - (void)didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error
 {
 //    FDFireflyDeviceLogDebug(@"didDiscoverCharacteristicsForService %@", service.UUID);
     for (CBCharacteristic *characteristic in service.characteristics) {
-        FDFireflyDeviceLogDebug(@"didDiscoverServiceCharacteristic %@", [FDFireflyIceChannelBLE CBUUIDString:characteristic.UUID]);
+//        FDFireflyDeviceLogDebug(@"didDiscoverServiceCharacteristic %@", [FDFireflyIceChannelBLE CBUUIDString:characteristic.UUID]);
         if ([_characteristicUUID isEqual:characteristic.UUID]) {
 //            FDFireflyDeviceLogDebug(@"found characteristic value");
             _characteristic = characteristic;
             
             [_peripheral setNotifyValue:YES forCharacteristic:_characteristic];
-            
-            self.status = FDFireflyIceChannelStatusOpen;
-            if ([_delegate respondsToSelector:@selector(fireflyIceChannel:status:)]) {
-                [_delegate fireflyIceChannel:self status:self.status];
-            }
         }
     }
 }
