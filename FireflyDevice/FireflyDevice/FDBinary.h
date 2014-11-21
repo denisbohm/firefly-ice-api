@@ -22,6 +22,7 @@
 - (NSData *)getData:(NSUInteger)length;
 - (uint8_t)getUInt8;
 - (uint16_t)getUInt16;
+- (uint32_t)getUInt24;
 - (uint32_t)getUInt32;
 - (uint64_t)getUInt64;
 - (float)getFloat16;
@@ -31,6 +32,7 @@
 - (void)putData:(NSData *)data;
 - (void)putUInt8:(uint8_t)value;
 - (void)putUInt16:(uint16_t)value;
+- (void)putUInt24:(uint32_t)value;
 - (void)putUInt32:(uint32_t)value;
 - (void)putUInt64:(uint64_t)value;
 - (void)putFloat16:(float)value;
@@ -39,6 +41,7 @@
 
 + (uint8_t)unpackUInt8:(uint8_t *)buffer;
 + (uint16_t)unpackUInt16:(uint8_t *)buffer;
++ (uint32_t)unpackUInt24:(uint8_t *)buffer;
 + (uint32_t)unpackUInt32:(uint8_t *)buffer;
 + (uint64_t)unpackUInt64:(uint8_t *)buffer;
 + (float)unpackFloat16:(uint8_t *)buffer;
@@ -47,6 +50,7 @@
 
 + (void)packUInt8:(uint8_t *)buffer value:(uint8_t)value;
 + (void)packUInt16:(uint8_t *)buffer value:(uint16_t)value;
++ (void)packUInt24:(uint8_t *)buffer value:(uint32_t)value;
 + (void)packUInt32:(uint8_t *)buffer value:(uint32_t)value;
 + (void)packUInt64:(uint8_t *)buffer value:(uint64_t)value;
 + (void)packFloat16:(uint8_t *)buffer value:(float)value;

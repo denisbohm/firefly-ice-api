@@ -13,12 +13,6 @@
 #import <FireflyDevice/FDFireflyDeviceLogger.h>
 #import <FireflyDevice/FDWeak.h>
 
-#if TARGET_OS_IPHONE
-#import <CoreBluetooth/CoreBluetooth.h>
-#else
-#import <IOBluetooth/IOBluetooth.h>
-#endif
-
 #define _log self.log
 
 @implementation FDFireflyIceChannelBLERSSI
@@ -34,6 +28,23 @@
 + (FDFireflyIceChannelBLERSSI *)RSSI:(float)value
 {
     return [FDFireflyIceChannelBLERSSI RSSI:value date:[NSDate date]];
+}
+
+@end
+
+@implementation FDFireflyIceChannelBLEPeripheralObservable
+
++ (FDFireflyIceChannelBLEPeripheralObservable *)peripheralObservable
+{
+    FDFireflyIceChannelBLEPeripheralObservable *peripheralObservable = [[FDFireflyIceChannelBLEPeripheralObservable alloc] init];
+    return peripheralObservable;
+}
+
+- (id)init
+{
+    if (self = [super init:@protocol(CBPeripheralDelegate)]) {
+    }
+    return self;
 }
 
 @end
@@ -66,9 +77,12 @@
         NSString *s = [baseUUID stringByReplacingCharactersInRange:NSMakeRange(4, 4) withString:@"0002"];
         _characteristicUUID = [CBUUID UUIDWithString:s];
 
+        _peripheralObservable = [FDFireflyIceChannelBLEPeripheralObservable peripheralObservable];
+        [_peripheralObservable addObserver:self];
+
         _centralManager = centralManager;
         _peripheral = peripheral;
-        _peripheral.delegate = self;
+        _peripheral.delegate = _peripheralObservable;
         _detour = [[FDDetour alloc] init];
         _detourSources = [NSMutableArray array];
         
@@ -172,11 +186,13 @@
 
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 {
-    NSData *data = characteristic.value;
-    __FDWeak FDFireflyIceChannelBLE *weakSelf = self;
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [weakSelf didUpdateValueForCharacteristic:data error:error];
-    });
+    if (characteristic == _characteristic) {
+        NSData *data = characteristic.value;
+        __FDWeak FDFireflyIceChannelBLE *weakSelf = self;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf didUpdateValueForCharacteristic:data error:error];
+        });
+    }
 }
 
 - (void)checkWrite
@@ -245,9 +261,11 @@
 {
 //    NSLog(@"didUpdateNotificationStateForCharacteristic");
     
-    self.status = FDFireflyIceChannelStatusOpen;
-    if ([_delegate respondsToSelector:@selector(fireflyIceChannel:status:)]) {
-        [_delegate fireflyIceChannel:self status:self.status];
+    if (characteristic == _characteristic) {
+        self.status = FDFireflyIceChannelStatusOpen;
+        if ([_delegate respondsToSelector:@selector(fireflyIceChannel:status:)]) {
+            [_delegate fireflyIceChannel:self status:self.status];
+        }
     }
 }
 

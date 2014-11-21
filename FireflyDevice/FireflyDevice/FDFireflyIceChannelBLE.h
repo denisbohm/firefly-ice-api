@@ -7,10 +7,19 @@
 //
 
 #import <FireflyDevice/FDFireflyIceChannel.h>
+#import <FireflyDevice/FDObservable.h>
 
-@class CBCentralManager;
-@class CBPeripheral;
-@class CBUUID;
+#if TARGET_OS_IPHONE
+#import <CoreBluetooth/CoreBluetooth.h>
+#else
+#import <IOBluetooth/IOBluetooth.h>
+#endif
+
+@interface FDFireflyIceChannelBLEPeripheralObservable : FDObservable <CBPeripheralDelegate>
+
++ (FDFireflyIceChannelBLEPeripheralObservable *)peripheralObservable;
+
+@end
 
 @interface FDFireflyIceChannelBLERSSI : NSObject
 
@@ -25,6 +34,7 @@
 @interface FDFireflyIceChannelBLE : NSObject <FDFireflyIceChannel>
 
 @property (readonly) CBPeripheral *peripheral;
+@property FDFireflyIceChannelBLEPeripheralObservable *peripheralObservable;
 @property id<FDFireflyIceChannelDelegate> delegate;
 @property FDFireflyIceChannelBLERSSI *RSSI;
 

@@ -28,6 +28,10 @@
     return (buffer[1] << 8) | buffer[0];
 }
 
++ (uint32_t)unpackUInt24:(uint8_t *)buffer {
+    return (buffer[2] << 16) | (buffer[1] << 8) | buffer[0];
+}
+
 + (uint32_t)unpackUInt32:(uint8_t *)buffer {
     return (buffer[3] << 24) | (buffer[2] << 16) | (buffer[1] << 8) | buffer[0];
 }
@@ -67,6 +71,12 @@ typedef union {
 + (void)packUInt16:(uint8_t *)buffer value:(uint16_t)value {
     buffer[0] = value;
     buffer[1] = value >> 8;
+}
+
++ (void)packUInt24:(uint8_t *)buffer value:(uint32_t)value {
+    buffer[0] = value;
+    buffer[1] = value >> 8;
+    buffer[2] = value >> 16;
 }
 
 + (void)packUInt32:(uint8_t *)buffer value:(uint32_t)value {
@@ -159,6 +169,13 @@ typedef union {
     return [FDBinary unpackUInt16:buffer];
 }
 
+- (uint32_t)getUInt24 {
+    [self checkGet:3];
+    uint8_t *buffer = &((uint8_t *)_buffer.bytes)[_getIndex];
+    _getIndex += 3;
+    return [FDBinary unpackUInt24:buffer];
+}
+
 - (uint32_t)getUInt32 {
     [self checkGet:4];
     uint8_t *buffer = &((uint8_t *)_buffer.bytes)[_getIndex];
@@ -204,6 +221,11 @@ typedef union {
 
 - (void)putUInt16:(uint16_t)value {
     uint8_t bytes[] = {value, value >> 8};
+    [_buffer appendBytes:bytes length:sizeof(bytes)];
+}
+
+- (void)putUInt24:(uint32_t)value {
+    uint8_t bytes[] = {value, value >> 8, value >> 16};
     [_buffer appendBytes:bytes length:sizeof(bytes)];
 }
 
