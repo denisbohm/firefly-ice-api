@@ -224,7 +224,11 @@
 #else
     UUIDString = (NSString *)CFBridgingRelease(CFUUIDCreateString(kCFAllocatorDefault, peripheral.UUID));
 #endif
-    return [NSString stringWithFormat:@"%@ %@", advertisementData[CBAdvertisementDataLocalNameKey], UUIDString];
+    NSString *name = advertisementData[CBAdvertisementDataLocalNameKey];
+    if (name == nil) {
+        name = @"anonymous";
+    }
+    return [NSString stringWithFormat:@"%@ %@", name, UUIDString];
 }
 
 - (BOOL)isFireflyIce:(NSArray *)serviceUUIDs
@@ -252,23 +256,25 @@
            advertisementData:(NSDictionary *)advertisementData
                         RSSI:(NSNumber *)RSSI
 {
-    if (![self isFireflyIce:advertisementData[CBAdvertisementDataServiceUUIDsKey]]) {
-        return;
-    }
-    
     NSMutableDictionary *dictionary = [self dictionaryForPeripheral:peripheral];
     if (dictionary != nil) {
         if (advertisementData != nil) {
             NSDictionary *previousAdvertisementData = dictionary[@"advertisementData"];
-            if (![advertisementData isEqualToDictionary:previousAdvertisementData]) {
-                [dictionary setObject:advertisementData forKey:@"advertisementData"];
+            NSMutableDictionary *newAdvertisementData = [NSMutableDictionary dictionaryWithDictionary:previousAdvertisementData];
+            [newAdvertisementData addEntriesFromDictionary:advertisementData];
+            if (![newAdvertisementData isEqualToDictionary:previousAdvertisementData]) {
+                [dictionary setObject:newAdvertisementData forKey:@"advertisementData"];
                 FDFireflyIce *fireflyIce = dictionary[@"fireflyIce"];
-                fireflyIce.name = [self nameForPeripheral:peripheral advertisementData:advertisementData];
+                fireflyIce.name = [self nameForPeripheral:peripheral advertisementData:newAdvertisementData];
                 if ([_delegate respondsToSelector:@selector(fireflyIceManager:advertisementDataHasChanged:)]) {
                     [_delegate fireflyIceManager:self advertisementDataHasChanged:fireflyIce];
                 }
             }
         }
+        return;
+    }
+    
+    if (![self isFireflyIce:advertisementData[CBAdvertisementDataServiceUUIDsKey]]) {
         return;
     }
     
