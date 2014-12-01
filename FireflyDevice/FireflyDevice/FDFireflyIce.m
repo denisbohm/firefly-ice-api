@@ -29,6 +29,12 @@
 
 @end
 
+@implementation FDFireflyIceUpdateBinary
+@end
+
+@implementation FDFireflyIceUpdateMetadata
+@end
+
 @implementation FDFireflyIceHardwareId
 
 - (NSString *)description

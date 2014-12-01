@@ -108,6 +108,32 @@
     return [FDIntelHex intelHex:content address:0x08000 length:0x40000 - 0x08000];
 }
 
++ (NSData *)dataWithHexString:(NSString *)hex
+{
+    if (([hex length] % 2) != 0) {
+        @throw [NSException exceptionWithName:@"FirmwareInvalidHex" reason:@"firmware invalid hex" userInfo:nil];
+    }
+    NSMutableData *data = [NSMutableData data];
+    for (int i = 0; i < hex.length; i += 2) {
+        char buffer[] = {[hex characterAtIndex:i], [hex characterAtIndex:i + 1], '\0'};
+        char byte = strtol(buffer, NULL, 16);
+        [data appendBytes:&byte length:1];
+    }
+    return data;
+}
+
++ (uint32_t)getHexUInt32:(NSString *)hex
+{
+    if (hex) {
+        NSScanner *scanner = [NSScanner scannerWithString:hex];
+        unsigned int value = 0;
+        if ([scanner scanHexInt:&value]) {
+            return value;
+        }
+    }
+    return 0;
+}
+
 + (FDFirmwareUpdateTask *)firmwareUpdateTask:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel intelHex:(FDIntelHex *)intelHex
 {
     FDFirmwareUpdateTask *firmwareUpdateTask = [[FDFirmwareUpdateTask alloc] init];
@@ -117,6 +143,8 @@
     firmwareUpdateTask.major = [intelHex.properties[@"major"] unsignedShortValue];
     firmwareUpdateTask.minor = [intelHex.properties[@"minor"] unsignedShortValue];
     firmwareUpdateTask.patch = [intelHex.properties[@"patch"] unsignedShortValue];
+    firmwareUpdateTask.capabilities = [FDFirmwareUpdateTask getHexUInt32:intelHex.properties[@"capabilities"]];
+    firmwareUpdateTask.gitCommit = [FDFirmwareUpdateTask dataWithHexString:intelHex.properties[@"commit"]];
     
     return firmwareUpdateTask;
 }
@@ -137,6 +165,7 @@
 {
     if (self = [super init]) {
         self.priority = -100;
+        _area = FD_HAL_SYSTEM_AREA_APPLICATION;
         _pageSize = 256;
         _sectorSize = 4096;
         _pagesPerSector = _sectorSize / _pageSize;
@@ -280,7 +309,11 @@
     if (_updateSectors.count == 0) {
         [self commitUpdate];
     } else {
-        [self.fireflyIce.coder sendUpdateEraseSectors:self.channel sectors:_updateSectors];
+        if (_useArea) {
+            [self.fireflyIce.coder sendUpdateEraseSectors:self.channel area:_area sectors:_updateSectors];
+        } else {
+            [self.fireflyIce.coder sendUpdateEraseSectors:self.channel sectors:_updateSectors];
+        }
         [self next:@selector(writeNextPage)];
     }
 }
@@ -292,7 +325,11 @@
         NSRange range = NSMakeRange(0, n);
         NSArray *sectors = [_getSectors subarrayWithRange:range];
         [_getSectors removeObjectsInRange:range];
-        [self.fireflyIce.coder sendUpdateGetSectorHashes:self.channel sectors:sectors];
+        if (_useArea) {
+            [self.fireflyIce.coder sendUpdateGetSectorHashes:self.channel area:_area sectors:sectors];
+        } else {
+            [self.fireflyIce.coder sendUpdateGetSectorHashes:self.channel sectors:sectors];
+        }
     } else {
         if (_updatePages == nil) {
             [self next:@selector(firstSectorHashesCheck)];
@@ -377,7 +414,11 @@
         [_updatePages removeObjectAtIndex:0];
         NSInteger location = page * _pageSize;
         NSData *data = [_firmware subdataWithRange:NSMakeRange(location, _pageSize)];
-        [self.fireflyIce.coder sendUpdateWritePage:self.channel page:page data:data];
+        if (_useArea) {
+            [self.fireflyIce.coder sendUpdateWritePage:self.channel area:_area page:page data:data];
+        } else {
+            [self.fireflyIce.coder sendUpdateWritePage:self.channel area:_area page:page data:data];
+        }
         [self next:@selector(writeNextPage)];
     }
 }
@@ -406,7 +447,11 @@
     NSData *cryptHash = hash;
     NSMutableData *cryptIv = [NSMutableData data];
     cryptIv.length = 16;
-    [self.fireflyIce.coder sendUpdateCommit:self.channel flags:flags length:length hash:hash cryptHash:cryptHash cryptIv:cryptIv];
+    if (_useArea) {
+        [self.fireflyIce.coder sendUpdateCommit:self.channel area:_area flags:flags length:length hash:hash cryptHash:cryptHash cryptIv:cryptIv major:_major minor:_minor patch:_patch capabilities:_capabilities commit:_gitCommit];
+    } else {
+        [self.fireflyIce.coder sendUpdateCommit:self.channel flags:flags length:length hash:hash cryptHash:cryptHash cryptIv:cryptIv];
+    }
 }
 
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel updateCommit:(FDFireflyIceUpdateCommit *)updateCommit

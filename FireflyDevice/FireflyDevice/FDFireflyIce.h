@@ -17,6 +17,20 @@
 @property NSData *gitCommit;
 @end
 
+@interface FDFireflyIceUpdateBinary : NSObject
+@property uint32_t flags;
+@property uint32_t length;
+@property NSData *clearHash;
+@property NSData *cryptHash;
+@property NSData *cryptIV;
+@end
+
+@interface FDFireflyIceUpdateMetadata : NSObject
+@property BOOL valid;
+@property FDFireflyIceUpdateBinary *binary;
+@property FDFireflyIceVersion *revision;
+@end
+
 @interface FDFireflyIceHardwareId : NSObject
 @property uint16_t vendor;
 @property uint16_t product;
@@ -183,6 +197,7 @@ typedef uint8_t fd_lock_identifier_t;
 
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel directTestModeReport:(FDFireflyIceDirectTestModeReport *)directTestModeReport;
 
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel updateMetadata:(FDFireflyIceUpdateMetadata*)metadata;
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel externalHash:(NSData *)externalHash;
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel pageData:(NSData *)pageData;
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel sectorHashes:(NSArray *)sectorHashes;

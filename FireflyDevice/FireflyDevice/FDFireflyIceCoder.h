@@ -45,6 +45,14 @@
 
 #define FD_CONTROL_SENSING_SYNTHESIZE 23
 
+#define FD_CONTROL_UPDATE_AREA_GET_METADATA 24
+#define FD_CONTROL_UPDATE_AREA_GET_EXTERNAL_HASH 25
+#define FD_CONTROL_UPDATE_AREA_GET_SECTOR_HASHES 26
+#define FD_CONTROL_UPDATE_AREA_ERASE_SECTORS 27
+#define FD_CONTROL_UPDATE_AREA_WRITE_PAGE 28
+#define FD_CONTROL_UPDATE_AREA_READ_PAGE 29
+#define FD_CONTROL_UPDATE_AREA_COMMIT 30
+
 #define FD_CONTROL_DIAGNOSTICS_BLE        0x00000001
 #define FD_CONTROL_DIAGNOSTICS_BLE_TIMING 0x00000002
 
@@ -100,6 +108,10 @@
 #define FD_CONTROL_RESET_HARD_FAULT 3
 
 #define FD_CONTROL_MODE_STORAGE 1
+
+#define FD_HAL_SYSTEM_AREA_BOOTLOADER 0
+#define FD_HAL_SYSTEM_AREA_APPLICATION 1
+#define FD_HAL_SYSTEM_AREA_OPERATING_SYSTEM 2
 
 #define FD_UPDATE_METADATA_FLAG_ENCRYPTED 0x00000001
 
@@ -164,6 +176,26 @@ typedef void (^FDFireflyIceCoderCommandBlock)(FDFireflyIce *fireflyIce, id<FDFir
                     hash:(NSData *)hash
                cryptHash:(NSData *)cryptHash
                  cryptIv:(NSData *)cryptIv;
+
+
+- (void)sendUpdateGetMetadata:(id<FDFireflyIceChannel>)channel area:(uint8_t)area;
+- (void)sendUpdateGetExternalHash:(id<FDFireflyIceChannel>)channel area:(uint8_t)area address:(uint32_t)address length:(uint32_t)length;
+- (void)sendUpdateGetSectorHashes:(id<FDFireflyIceChannel>)channel area:(uint8_t)area sectors:(NSArray *)sectors;
+- (void)sendUpdateEraseSectors:(id<FDFireflyIceChannel>)channel area:(uint8_t)area sectors:(NSArray *)sectors;
+- (void)sendUpdateWritePage:(id<FDFireflyIceChannel>)channel area:(uint8_t)area page:(uint16_t)page data:(NSData *)data;
+- (void)sendUpdateReadPage:(id<FDFireflyIceChannel>)channel area:(uint8_t)area page:(uint32_t)page;
+- (void)sendUpdateCommit:(id<FDFireflyIceChannel>)channel
+                    area:(uint8_t)area
+                   flags:(uint32_t)flags
+                  length:(uint32_t)length
+                    hash:(NSData *)hash
+               cryptHash:(NSData *)cryptHash
+                 cryptIv:(NSData *)cryptIv
+                   major:(uint16_t)major
+                   minor:(uint16_t)minor
+                   patch:(uint16_t)patch
+            capabilities:(uint32_t)capabilities
+                  commit:(NSData *)commit;
 
 + (uint16_t)makeDirectTestModePacket:(FDDirectTestModeCommand)command
                            frequency:(uint8_t)frequency

@@ -12,6 +12,8 @@
 #import <FireflyDevice/FDFireflyIceCoder.h>
 
 #define HASH_SIZE 20
+#define COMMIT_SIZE 20
+#define CRYPT_IV_SIZE 16
 
 @interface FDFireflyIceCoder ()
 
@@ -34,11 +36,9 @@
         [self setCommand:FD_CONTROL_GET_PROPERTIES block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, NSData *data) {
             [coder fireflyIce:fireflyIce channel:channel getProperties:data];
         }];
+        
         [self setCommand:FD_CONTROL_UPDATE_COMMIT block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, NSData *data) {
             [coder fireflyIce:fireflyIce channel:channel updateCommit:data];
-        }];
-        [self setCommand:FD_CONTROL_RADIO_DIRECT_TEST_MODE_REPORT block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, NSData *data) {
-            [coder fireflyIce:fireflyIce channel:channel radioDirectTestModeReport:data];
         }];
         [self setCommand:FD_CONTROL_UPDATE_GET_EXTERNAL_HASH block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, NSData *data) {
             [coder fireflyIce:fireflyIce channel:channel updateGetExternalHash:data];
@@ -49,6 +49,10 @@
         [self setCommand:FD_CONTROL_UPDATE_GET_SECTOR_HASHES block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, NSData *data) {
             [coder fireflyIce:fireflyIce channel:channel updateGetSectorHashes:data];
         }];
+        [self setCommand:FD_CONTROL_UPDATE_AREA_GET_METADATA block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, NSData *data) {
+            [coder fireflyIce:fireflyIce channel:channel updateGetMetadata:data];
+        }];
+        
         [self setCommand:FD_CONTROL_LOCK block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, NSData *data) {
             [coder fireflyIce:fireflyIce channel:channel lock:data];
         }];
@@ -57,6 +61,9 @@
         }];
         [self setCommand:FD_CONTROL_DIAGNOSTICS block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, NSData *data) {
             [coder fireflyIce:fireflyIce channel:channel diagnostics:data];
+        }];
+        [self setCommand:FD_CONTROL_RADIO_DIRECT_TEST_MODE_REPORT block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, NSData *data) {
+            [coder fireflyIce:fireflyIce channel:channel radioDirectTestModeReport:data];
         }];
         [self setCommand:0xff block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, NSData *data) {
             [coder fireflyIce:fireflyIce channel:channel sensing:data];
@@ -535,6 +542,101 @@
     [channel fireflyIceChannelSend:binary.dataValue];
 }
 
+- (void)sendUpdateGetMetadata:(id<FDFireflyIceChannel>)channel area:(uint8_t)area
+{
+    FDBinary *binary = [[FDBinary alloc] init];
+    [binary putUInt8:FD_CONTROL_UPDATE_AREA_GET_METADATA];
+    [binary putUInt8:area];
+    [channel fireflyIceChannelSend:binary.dataValue];
+}
+
+- (void)sendUpdateGetExternalHash:(id<FDFireflyIceChannel>)channel area:(uint8_t)area address:(uint32_t)address length:(uint32_t)length
+{
+    FDBinary *binary = [[FDBinary alloc] init];
+    [binary putUInt8:FD_CONTROL_UPDATE_AREA_GET_EXTERNAL_HASH];
+    [binary putUInt8:area];
+    [binary putUInt32:address];
+    [binary putUInt32:length];
+    [channel fireflyIceChannelSend:binary.dataValue];
+}
+
+- (void)sendUpdateGetSectorHashes:(id<FDFireflyIceChannel>)channel area:(uint8_t)area sectors:(NSArray *)sectors
+{
+    FDBinary *binary = [[FDBinary alloc] init];
+    [binary putUInt8:FD_CONTROL_UPDATE_AREA_GET_SECTOR_HASHES];
+    [binary putUInt8:area];
+    [binary putUInt8:sectors.count];
+    for (NSNumber *number in sectors) {
+        uint16_t sector = (uint16_t)[number unsignedShortValue];
+        [binary putUInt16:sector];
+    }
+    [channel fireflyIceChannelSend:binary.dataValue];
+}
+
+- (void)sendUpdateEraseSectors:(id<FDFireflyIceChannel>)channel area:(uint8_t)area sectors:(NSArray *)sectors
+{
+    FDBinary *binary = [[FDBinary alloc] init];
+    [binary putUInt8:FD_CONTROL_UPDATE_AREA_ERASE_SECTORS];
+    [binary putUInt8:area];
+    [binary putUInt8:sectors.count];
+    for (NSNumber *number in sectors) {
+        uint16_t sector = (uint16_t)[number unsignedShortValue];
+        [binary putUInt16:sector];
+    }
+    [channel fireflyIceChannelSend:binary.dataValue];
+}
+
+- (void)sendUpdateWritePage:(id<FDFireflyIceChannel>)channel area:(uint8_t)area page:(uint16_t)page data:(NSData *)data
+{
+    // !!! assert that data.length == page size -denis
+    FDBinary *binary = [[FDBinary alloc] init];
+    [binary putUInt8:FD_CONTROL_UPDATE_AREA_WRITE_PAGE];
+    [binary putUInt8:area];
+    [binary putUInt16:page];
+    [binary putData:data];
+    [channel fireflyIceChannelSend:binary.dataValue];
+}
+
+- (void)sendUpdateReadPage:(id<FDFireflyIceChannel>)channel area:(uint8_t)area page:(uint32_t)page
+{
+    FDBinary *binary = [[FDBinary alloc] init];
+    [binary putUInt8:FD_CONTROL_UPDATE_AREA_READ_PAGE];
+    [binary putUInt8:area];
+    [binary putUInt32:page];
+    [channel fireflyIceChannelSend:binary.dataValue];
+}
+
+- (void)sendUpdateCommit:(id<FDFireflyIceChannel>)channel
+                    area:(uint8_t)area
+                   flags:(uint32_t)flags
+                  length:(uint32_t)length
+                    hash:(NSData *)hash
+               cryptHash:(NSData *)cryptHash
+                 cryptIv:(NSData *)cryptIv
+                   major:(uint16_t)major
+                   minor:(uint16_t)minor
+                   patch:(uint16_t)patch
+            capabilities:(uint32_t)capabilities
+                  commit:(NSData *)commit
+{
+    // !!! assert that data lengths are correct -denis
+    FDBinary *binary = [[FDBinary alloc] init];
+    [binary putUInt8:FD_CONTROL_UPDATE_AREA_COMMIT];
+    [binary putUInt8:area];
+    [binary putUInt32:flags];
+    [binary putUInt32:length];
+    [binary putData:hash]; // 20 bytes
+    [binary putData:cryptHash]; // 20 bytes
+    [binary putData:cryptIv]; // 16 bytes
+    [binary putUInt16:major];
+    [binary putUInt16:minor];
+    [binary putUInt16:patch];
+    [binary putUInt32:capabilities];
+    [binary putData:commit];
+
+    [channel fireflyIceChannelSend:binary.dataValue];
+}
+
 + (uint16_t)makeDirectTestModePacket:(FDDirectTestModeCommand)command
                            frequency:(uint8_t)frequency
                               length:(uint8_t)length
@@ -606,16 +708,6 @@
     [_observable fireflyIce:fireflyIce channel:channel updateCommit:updateCommit];
 }
 
-- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel radioDirectTestModeReport:(NSData *)data
-{
-    FDBinary *binary = [[FDBinary alloc] initWithData:data];
-    uint8_t code __attribute__((unused)) = [binary getUInt8];
-    FDFireflyIceDirectTestModeReport *report = [[FDFireflyIceDirectTestModeReport alloc] init];
-    report.packetCount = [binary getUInt16];
-    
-    [_observable fireflyIce:fireflyIce channel:channel directTestModeReport:report];
-}
-
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel updateGetSectorHashes:(NSData *)data
 {
     FDBinary *binary = [[FDBinary alloc] initWithData:data];
@@ -650,6 +742,38 @@
     NSData *pageData = [binary getData:256];
     
     [_observable fireflyIce:fireflyIce channel:channel pageData:pageData];
+}
+
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel updateGetMetadata:(NSData *)data
+{
+    FDBinary *binary = [[FDBinary alloc] initWithData:data];
+    uint8_t code __attribute__((unused)) = [binary getUInt8];
+    FDFireflyIceUpdateMetadata *updateMetadata = [[FDFireflyIceUpdateMetadata alloc] init];
+    updateMetadata.valid = [binary getUInt8] != 0;
+    updateMetadata.binary = [[FDFireflyIceUpdateBinary alloc] init];
+    updateMetadata.binary.flags = [binary getUInt32];
+    updateMetadata.binary.length = [binary getUInt32];
+    updateMetadata.binary.clearHash = [binary getData:HASH_SIZE];
+    updateMetadata.binary.cryptHash = [binary getData:HASH_SIZE];
+    updateMetadata.binary.cryptIV = [binary getData:CRYPT_IV_SIZE];
+    updateMetadata.revision = [[FDFireflyIceVersion alloc] init];
+    updateMetadata.revision.major = [binary getUInt16];
+    updateMetadata.revision.minor = [binary getUInt16];
+    updateMetadata.revision.patch = [binary getUInt16];
+    updateMetadata.revision.capabilities = [binary getUInt32];
+    updateMetadata.revision.gitCommit = [binary getData:COMMIT_SIZE];
+
+    [_observable fireflyIce:fireflyIce channel:channel updateMetadata:updateMetadata];
+}
+
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel radioDirectTestModeReport:(NSData *)data
+{
+    FDBinary *binary = [[FDBinary alloc] initWithData:data];
+    uint8_t code __attribute__((unused)) = [binary getUInt8];
+    FDFireflyIceDirectTestModeReport *report = [[FDFireflyIceDirectTestModeReport alloc] init];
+    report.packetCount = [binary getUInt16];
+    
+    [_observable fireflyIce:fireflyIce channel:channel directTestModeReport:report];
 }
 
 static
