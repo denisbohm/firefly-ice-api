@@ -118,7 +118,7 @@
             } break;
             case 4: { // Extended Linear Address Record
                 uint8_t *bytes = (uint8_t *)data.bytes;
-                extendedAddress = ((bytes[0] << 24) | (bytes[1]) << 16);
+                extendedAddress = (bytes[0] << 24) | (bytes[1] << 16);
             } break;
             case 5: { // Start Linear Address Record
                 // ignore
