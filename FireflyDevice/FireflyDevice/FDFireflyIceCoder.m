@@ -49,8 +49,8 @@
         [self setCommand:FD_CONTROL_UPDATE_GET_SECTOR_HASHES block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, NSData *data) {
             [coder fireflyIce:fireflyIce channel:channel updateGetSectorHashes:data];
         }];
-        [self setCommand:FD_CONTROL_UPDATE_AREA_GET_METADATA block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, NSData *data) {
-            [coder fireflyIce:fireflyIce channel:channel updateGetMetadata:data];
+        [self setCommand:FD_CONTROL_UPDATE_AREA_GET_VERSION block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, NSData *data) {
+            [coder fireflyIce:fireflyIce channel:channel updateGetVersion:data];
         }];
         
         [self setCommand:FD_CONTROL_LOCK block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, NSData *data) {
@@ -542,10 +542,10 @@
     [channel fireflyIceChannelSend:binary.dataValue];
 }
 
-- (void)sendUpdateGetMetadata:(id<FDFireflyIceChannel>)channel area:(uint8_t)area
+- (void)sendUpdateGetVersion:(id<FDFireflyIceChannel>)channel area:(uint8_t)area
 {
     FDBinary *binary = [[FDBinary alloc] init];
-    [binary putUInt8:FD_CONTROL_UPDATE_AREA_GET_METADATA];
+    [binary putUInt8:FD_CONTROL_UPDATE_AREA_GET_VERSION];
     [binary putUInt8:area];
     [channel fireflyIceChannelSend:binary.dataValue];
 }
@@ -744,26 +744,39 @@
     [_observable fireflyIce:fireflyIce channel:channel pageData:pageData];
 }
 
-- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel updateGetMetadata:(NSData *)data
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel updateGetVersion:(NSData *)data
 {
     FDBinary *binary = [[FDBinary alloc] initWithData:data];
     uint8_t code __attribute__((unused)) = [binary getUInt8];
-    FDFireflyIceUpdateMetadata *updateMetadata = [[FDFireflyIceUpdateMetadata alloc] init];
-    updateMetadata.valid = [binary getUInt8] != 0;
-    updateMetadata.binary = [[FDFireflyIceUpdateBinary alloc] init];
-    updateMetadata.binary.flags = [binary getUInt32];
-    updateMetadata.binary.length = [binary getUInt32];
-    updateMetadata.binary.clearHash = [binary getData:HASH_SIZE];
-    updateMetadata.binary.cryptHash = [binary getData:HASH_SIZE];
-    updateMetadata.binary.cryptIV = [binary getData:CRYPT_IV_SIZE];
-    updateMetadata.revision = [[FDFireflyIceVersion alloc] init];
-    updateMetadata.revision.major = [binary getUInt16];
-    updateMetadata.revision.minor = [binary getUInt16];
-    updateMetadata.revision.patch = [binary getUInt16];
-    updateMetadata.revision.capabilities = [binary getUInt32];
-    updateMetadata.revision.gitCommit = [binary getData:COMMIT_SIZE];
-
-    [_observable fireflyIce:fireflyIce channel:channel updateMetadata:updateMetadata];
+    FDFireflyIceUpdateVersion *version = [[FDFireflyIceUpdateVersion alloc] init];
+    uint32_t flags = [binary getUInt32];
+    if (flags & FD_CONTROL_UPDATE_AREA_GET_VERSION_FLAG_REVISION) {
+        FDFireflyIceVersion *revision = [[FDFireflyIceVersion alloc] init];
+        revision.major = [binary getUInt16];
+        revision.minor = [binary getUInt16];
+        revision.patch = [binary getUInt16];
+        revision.capabilities = [binary getUInt32];
+        revision.gitCommit = [binary getData:COMMIT_SIZE];
+        version.revision = revision;
+    }
+    if (flags & FD_CONTROL_UPDATE_AREA_GET_VERSION_FLAG_METADATA) {
+        FDFireflyIceUpdateMetadata *metadata = [[FDFireflyIceUpdateMetadata alloc] init];
+        metadata.binary = [[FDFireflyIceUpdateBinary alloc] init];
+        metadata.binary.flags = [binary getUInt32];
+        metadata.binary.length = [binary getUInt32];
+        metadata.binary.clearHash = [binary getData:HASH_SIZE];
+        metadata.binary.cryptHash = [binary getData:HASH_SIZE];
+        metadata.binary.cryptIV = [binary getData:CRYPT_IV_SIZE];
+        metadata.revision = [[FDFireflyIceVersion alloc] init];
+        metadata.revision.major = [binary getUInt16];
+        metadata.revision.minor = [binary getUInt16];
+        metadata.revision.patch = [binary getUInt16];
+        metadata.revision.capabilities = [binary getUInt32];
+        metadata.revision.gitCommit = [binary getData:COMMIT_SIZE];
+        version.metadata = metadata;
+    }
+    
+    [_observable fireflyIce:fireflyIce channel:channel updateVersion:version];
 }
 
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel radioDirectTestModeReport:(NSData *)data

@@ -35,6 +35,9 @@
 @implementation FDFireflyIceUpdateMetadata
 @end
 
+@implementation FDFireflyIceUpdateVersion
+@end
+
 @implementation FDFireflyIceHardwareId
 
 - (NSString *)description

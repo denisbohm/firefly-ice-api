@@ -26,9 +26,13 @@
 @end
 
 @interface FDFireflyIceUpdateMetadata : NSObject
-@property BOOL valid;
 @property FDFireflyIceUpdateBinary *binary;
 @property FDFireflyIceVersion *revision;
+@end
+
+@interface FDFireflyIceUpdateVersion : NSObject
+@property FDFireflyIceVersion *revision;
+@property FDFireflyIceUpdateMetadata *metadata;
 @end
 
 @interface FDFireflyIceHardwareId : NSObject
@@ -197,7 +201,7 @@ typedef uint8_t fd_lock_identifier_t;
 
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel directTestModeReport:(FDFireflyIceDirectTestModeReport *)directTestModeReport;
 
-- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel updateMetadata:(FDFireflyIceUpdateMetadata*)metadata;
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel updateVersion:(FDFireflyIceUpdateVersion*)version;
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel externalHash:(NSData *)externalHash;
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel pageData:(NSData *)pageData;
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel sectorHashes:(NSArray *)sectorHashes;

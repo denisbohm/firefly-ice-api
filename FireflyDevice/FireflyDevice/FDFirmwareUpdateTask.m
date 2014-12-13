@@ -22,7 +22,6 @@
 @interface FDFirmwareUpdateTask () <FDFireflyIceObserver>
 
 @property FDFireflyIceVersion *version;
-@property FDFireflyIceVersion *bootVersion;
 @property FDFireflyIceLock *lock;
 
 // sector and page size for external flash memory
@@ -208,9 +207,9 @@
     _version = version;
 }
 
-- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel bootVersion:(FDFireflyIceVersion *)bootVersion
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel updateVersion:(FDFireflyIceUpdateVersion*)version
 {
-    _bootVersion = bootVersion;
+    _version = version.revision;
 }
 
 - (void)begin
@@ -256,10 +255,10 @@
         [_delegate firmwareUpdateTask:self check:isFirmwareUpToDate];
     }
     if (!isFirmwareUpToDate) {
-        FDFireflyDeviceLogInfo(@"FD010401", @"firmware %@ is out of date with latest %u.%u.%u (boot loader is %@)", _version, _major, _minor, _patch, _bootVersion);
+        FDFireflyDeviceLogInfo(@"FD010401", @"firmware %@ is out of date with latest %u.%u.%u", _version, _major, _minor, _patch);
         [self next:@selector(getSectorHashes)];
     } else {
-        FDFireflyDeviceLogInfo(@"FD010402", @"firmware %@ is up to date with latest %u.%u.%u (boot loader is %@)", _version, _major, _minor, _patch, _bootVersion);
+        FDFireflyDeviceLogInfo(@"FD010402", @"firmware %@ is up to date with latest %u.%u.%u", _version, _major, _minor, _patch);
         [self complete];
     }
 }
@@ -282,8 +281,8 @@
 
 - (void)checkVersion
 {
-    if (_version.capabilities & FD_CONTROL_CAPABILITY_BOOT_VERSION) {
-        [self.fireflyIce.coder sendGetProperties:self.channel properties:FD_CONTROL_PROPERTY_BOOT_VERSION];
+    if (_useArea && (_version.capabilities & FD_CONTROL_CAPABILITY_UPDATE_AREA)) {
+        [self.fireflyIce.coder sendUpdateGetVersion:self.channel area:_area];
         [self next:@selector(checkVersions)];
     } else {
         [self checkVersions];
