@@ -22,6 +22,7 @@
 @interface FDFirmwareUpdateTask () <FDFireflyIceObserver>
 
 @property FDFireflyIceVersion *version;
+@property FDFireflyIceVersion *updateVersion;
 @property FDFireflyIceLock *lock;
 
 // sector and page size for external flash memory
@@ -205,11 +206,12 @@
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel version:(FDFireflyIceVersion *)version
 {
     _version = version;
+    _updateVersion = version;
 }
 
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel updateVersion:(FDFireflyIceUpdateVersion*)version
 {
-    _version = version.revision;
+    _updateVersion = version.revision;
 }
 
 - (void)begin
@@ -224,25 +226,25 @@
 - (BOOL)isOutOfDate
 {
     if (_downgrade) {
-        return (_version.major != _major) || (_version.minor != _minor) || (_version.patch != _patch);
+        return (_updateVersion.major != _major) || (_updateVersion.minor != _minor) || (_updateVersion.patch != _patch);
     }
     
-    if (_version.major < _major) {
+    if (_updateVersion.major < _major) {
         return YES;
     }
-    if (_version.major > _major) {
+    if (_updateVersion.major > _major) {
         return NO;
     }
-    if (_version.minor < _minor) {
+    if (_updateVersion.minor < _minor) {
         return YES;
     }
-    if (_version.minor > _minor) {
+    if (_updateVersion.minor > _minor) {
         return NO;
     }
-    if (_version.patch < _patch) {
+    if (_updateVersion.patch < _patch) {
         return YES;
     }
-    if (_version.patch > _patch) {
+    if (_updateVersion.patch > _patch) {
         return NO;
     }
     return NO;
@@ -255,10 +257,10 @@
         [_delegate firmwareUpdateTask:self check:isFirmwareUpToDate];
     }
     if (!isFirmwareUpToDate) {
-        FDFireflyDeviceLogInfo(@"FD010401", @"firmware %@ is out of date with latest %u.%u.%u", _version, _major, _minor, _patch);
+        FDFireflyDeviceLogInfo(@"FD010401", @"firmware %@ is out of date with latest %u.%u.%u", _updateVersion, _major, _minor, _patch);
         [self next:@selector(getSectorHashes)];
     } else {
-        FDFireflyDeviceLogInfo(@"FD010402", @"firmware %@ is up to date with latest %u.%u.%u", _version, _major, _minor, _patch);
+        FDFireflyDeviceLogInfo(@"FD010402", @"firmware %@ is up to date with latest %u.%u.%u", _updateVersion, _major, _minor, _patch);
         [self complete];
     }
 }
