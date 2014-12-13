@@ -10,11 +10,11 @@
 
 #include <stdarg.h>
 
-#define FDFireflyDeviceLogError(f, ...) [FDFireflyDeviceLogger log:_log file:__FILE__ line:__LINE__ class:[self class] method:NSStringFromSelector(_cmd) format:f, ##__VA_ARGS__]
-#define FDFireflyDeviceLogWarn(f, ...) [FDFireflyDeviceLogger log:_log file:__FILE__ line:__LINE__ class:[self class] method:NSStringFromSelector(_cmd) format:f, ##__VA_ARGS__]
-#define FDFireflyDeviceLogInfo(f, ...) [FDFireflyDeviceLogger log:_log file:__FILE__ line:__LINE__ class:[self class] method:NSStringFromSelector(_cmd) format:f, ##__VA_ARGS__]
-#define FDFireflyDeviceLogDebug(f, ...) [FDFireflyDeviceLogger log:_log file:__FILE__ line:__LINE__ class:[self class] method:NSStringFromSelector(_cmd) format:f, ##__VA_ARGS__]
-#define FDFireflyDeviceLogVerbose(f, ...) [FDFireflyDeviceLogger log:_log file:__FILE__ line:__LINE__ class:[self class] method:NSStringFromSelector(_cmd) format:f, ##__VA_ARGS__]
+#define FDFireflyDeviceLogError(t, f, ...) [FDFireflyDeviceLogger log:_log file:__FILE__ line:__LINE__ class:[self class] method:NSStringFromSelector(_cmd) tag:t format:f, ##__VA_ARGS__]
+#define FDFireflyDeviceLogWarn(t, f, ...) [FDFireflyDeviceLogger log:_log file:__FILE__ line:__LINE__ class:[self class] method:NSStringFromSelector(_cmd) tag:t format:f, ##__VA_ARGS__]
+#define FDFireflyDeviceLogInfo(t, f, ...) [FDFireflyDeviceLogger log:_log file:__FILE__ line:__LINE__ class:[self class] method:NSStringFromSelector(_cmd) tag:t format:f, ##__VA_ARGS__]
+#define FDFireflyDeviceLogDebug(t, f, ...) [FDFireflyDeviceLogger log:_log file:__FILE__ line:__LINE__ class:[self class] method:NSStringFromSelector(_cmd) tag:t format:f, ##__VA_ARGS__]
+#define FDFireflyDeviceLogVerbose(t, f, ...) [FDFireflyDeviceLogger log:_log file:__FILE__ line:__LINE__ class:[self class] method:NSStringFromSelector(_cmd) tag:t format:f, ##__VA_ARGS__]
 
 @protocol FDFireflyDeviceLog <NSObject>
 
@@ -27,6 +27,6 @@
 + (void)setLog:(id<FDFireflyDeviceLog>)log;
 + (id<FDFireflyDeviceLog>)log;
 
-+ (void)log:(id<FDFireflyDeviceLog>)log file:(char *)file line:(NSUInteger)line class:(Class)class method:(NSString *)method format:(NSString *)format, ...;
++ (void)log:(id<FDFireflyDeviceLog>)log file:(char *)file line:(NSUInteger)line class:(Class)class method:(NSString *)method tag:(NSString *)tag format:(NSString *)format, ...;
 
 @end

@@ -24,7 +24,7 @@ static id<FDFireflyDeviceLog> fireflyDeviceLogger;
     return fireflyDeviceLogger;
 }
 
-+ (void)log:(id<FDFireflyDeviceLog>)log file:(char *)file line:(NSUInteger)line class:(Class)class method:(NSString *)method format:(NSString *)format, ...
++ (void)log:(id<FDFireflyDeviceLog>)log file:(char *)file line:(NSUInteger)line class:(Class)class method:(NSString *)method tag:(NSString *)tag format:(NSString *)format, ...
 {
     char *short_file = strrchr(file, '/');
     if (short_file != NULL) {
@@ -35,6 +35,7 @@ static id<FDFireflyDeviceLog> fireflyDeviceLogger;
     va_start(args, format);
     NSString *message = [[NSString alloc] initWithFormat:format arguments:args];
     va_end(args);
+    message = [NSString stringWithFormat:@"%@: %@", tag, message];
     
     if (log == nil) {
         log = fireflyDeviceLogger;

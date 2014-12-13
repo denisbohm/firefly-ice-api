@@ -328,7 +328,7 @@
     @try {
         [_coder fireflyIce:self channel:channel packet:data];
     } @catch (NSException *e) {
-        FDFireflyDeviceLogWarn(@"unexpected exception %@\n%@", e, [e callStackSymbols]);
+        FDFireflyDeviceLogWarn(@"FD010201", @"unexpected exception %@\n%@", e, [e callStackSymbols]);
     }
 }
 

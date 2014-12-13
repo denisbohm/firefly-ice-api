@@ -76,7 +76,7 @@
     FDBinary *binary = [[FDBinary alloc] initWithData:data];
     uint32_t invocationId = [binary getUInt32];
     if (invocationId != _invocationId) {
-        FDFireflyDeviceLogWarn(@"unexpected ping 0x%08x (expected 0x%08x %@ %@)", invocationId, _invocationId, NSStringFromClass([self class]), NSStringFromSelector(_invocation.selector));
+        FDFireflyDeviceLogWarn(@"FD010301", @"unexpected ping 0x%08x (expected 0x%08x %@ %@)", invocationId, _invocationId, NSStringFromClass([self class]), NSStringFromSelector(_invocation.selector));
         return;
     }
     

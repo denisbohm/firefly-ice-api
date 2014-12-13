@@ -184,7 +184,7 @@ void FDUSBHIDMonitorDeviceMatchingCallback(void *context, IOReturn result, void 
         }
     }
     if (!done) {
-        FDFireflyDeviceLogWarn(@"usb test thread failed to stop");
+        FDFireflyDeviceLogWarn(@"FD010801", @"usb test thread failed to stop");
     }
     _hidRunLoopThread = nil;
     _devices = [NSMutableArray array];

@@ -256,10 +256,10 @@
         [_delegate firmwareUpdateTask:self check:isFirmwareUpToDate];
     }
     if (!isFirmwareUpToDate) {
-        FDFireflyDeviceLogInfo(@"firmware %@ is out of date with latest %u.%u.%u (boot loader is %@)", _version, _major, _minor, _patch, _bootVersion);
+        FDFireflyDeviceLogInfo(@"FD010401", @"firmware %@ is out of date with latest %u.%u.%u (boot loader is %@)", _version, _major, _minor, _patch, _bootVersion);
         [self next:@selector(getSectorHashes)];
     } else {
-        FDFireflyDeviceLogInfo(@"firmware %@ is up to date with latest %u.%u.%u (boot loader is %@)", _version, _major, _minor, _patch, _bootVersion);
+        FDFireflyDeviceLogInfo(@"FD010402", @"firmware %@ is up to date with latest %u.%u.%u (boot loader is %@)", _version, _major, _minor, _patch, _bootVersion);
         [self complete];
     }
 }
@@ -272,10 +272,10 @@
 - (void)checkLock
 {
     if ((_lock.identifier == fd_lock_identifier_update) && [self.channel.name isEqualToString:_lock.ownerName]) {
-        FDFireflyDeviceLogDebug(@"acquired update lock");
+        FDFireflyDeviceLogDebug(@"FD010403", @"acquired update lock");
         [self checkOutOfDate];
     } else {
-        FDFireflyDeviceLogDebug(@"update could not acquire lock");
+        FDFireflyDeviceLogDebug(@"FD010404", @"update could not acquire lock");
         [self complete];
     }
 }
@@ -391,7 +391,7 @@
         return;
     }
     
-    FDFireflyDeviceLogInfo(@"updating pages %@", _updatePages);
+    FDFireflyDeviceLogInfo(@"FD010405", @"updating pages %@", _updatePages);
 }
 
 - (void)writeNextPage
@@ -403,7 +403,7 @@
     NSUInteger progressPercent = (NSUInteger)(progress * 100);
     if (_lastProgressPercent != progressPercent) {
         _lastProgressPercent = progressPercent;
-        FDFireflyDeviceLogInfo(@"firmware update progress %lu%%", (unsigned long) (unsigned long)progressPercent);
+        FDFireflyDeviceLogInfo(@"FD010406", @"firmware update progress %lu%%", (unsigned long) (unsigned long)progressPercent);
     }
     
     if (_updatePages.count == 0) {
@@ -440,7 +440,7 @@
         return;
     }
     
-    FDFireflyDeviceLogInfo(@"sending update commit");
+    FDFireflyDeviceLogInfo(@"FD010407", @"sending update commit");
     uint32_t flags = 0;
     uint32_t length = (uint32_t)_firmware.length;
     NSData *hash = [FDCrypto sha1:_firmware];
@@ -463,17 +463,17 @@
 - (void)complete
 {
     if (_version.capabilities & FD_CONTROL_CAPABILITY_LOCK) {
-        FDFireflyDeviceLogDebug(@"released update lock");
+        FDFireflyDeviceLogDebug(@"FD010408", @"released update lock");
         [self.fireflyIce.coder sendLock:self.channel identifier:fd_lock_identifier_update operation:fd_lock_operation_release];
     }
     
     BOOL isFirmwareUpToDate = (_updatePages.count == 0);
-    FDFireflyDeviceLogInfo(@"isFirmwareUpToDate = %@, commit %@ result = %u", isFirmwareUpToDate ? @"YES" : @"NO", _updateCommit != nil ? @"YES" : @"NO", _updateCommit.result);
+    FDFireflyDeviceLogInfo(@"FD010409", @"isFirmwareUpToDate = %@, commit %@ result = %u", isFirmwareUpToDate ? @"YES" : @"NO", _updateCommit != nil ? @"YES" : @"NO", _updateCommit.result);
     if ([_delegate respondsToSelector:@selector(firmwareUpdateTask:complete:)]) {
         [_delegate firmwareUpdateTask:self complete:isFirmwareUpToDate];
     }
     if (_reset && [self isOutOfDate] && isFirmwareUpToDate && (_updateCommit != nil) && (_updateCommit.result == FD_UPDATE_COMMIT_SUCCESS)) {
-        FDFireflyDeviceLogInfo(@"new firmware has been transferred and comitted - restarting device");
+        FDFireflyDeviceLogInfo(@"FD010410", @"new firmware has been transferred and comitted - restarting device");
         [self.fireflyIce.coder sendReset:self.channel type:FD_CONTROL_RESET_SYSTEM_REQUEST];
     }
     [self done];

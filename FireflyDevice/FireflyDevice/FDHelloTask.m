@@ -97,7 +97,7 @@
     
     if ((version == nil) || (hardwareId == nil)) {
         NSString *description = NSLocalizedString(@"Incomplete information received on initial communication with the device", @"");
-        FDFireflyDeviceLogInfo(description);
+        FDFireflyDeviceLogInfo(@"FD010501", description);
         [self.channel close];
         NSDictionary *userInfo = @{
                                    NSLocalizedDescriptionKey: description,
@@ -134,17 +134,17 @@
 {
     NSDate *date = [self date];
     if (date != nil) {
-        FDFireflyDeviceLogInfo(@"setting the time");
+        FDFireflyDeviceLogInfo(@"FD010502", @"setting the time");
         [self.fireflyIce.coder sendSetPropertyTime:self.channel time:date];
     }
 }
 
 - (void)checkTime
 {
-    FDFireflyDeviceLogInfo(@"hello (hardware %@) (firmware %@)", self.fireflyIce.hardwareId, self.fireflyIce.version);
+    FDFireflyDeviceLogInfo(@"FD010503", @"hello (hardware %@) (firmware %@)", self.fireflyIce.hardwareId, self.fireflyIce.version);
     
     if (_time == nil) {
-        FDFireflyDeviceLogInfo(@"time not set for hw %@ fw %@ (last reset %@)", self.fireflyIce.hardwareId, self.fireflyIce.version, _reset);
+        FDFireflyDeviceLogInfo(@"FD010504", @"time not set for hw %@ fw %@ (last reset %@)", self.fireflyIce.hardwareId, self.fireflyIce.version, _reset);
         if (_setTimeEnabled) {
             [self setTime];
         }
@@ -153,12 +153,12 @@
         if (date != nil) {
             NSTimeInterval offset = [_time timeIntervalSinceDate:date];
             if (fabs(offset) > _setTimeTolerance) {
-                FDFireflyDeviceLogInfo(@"time is off by %0.3f seconds for hw %@ fw %@ (last reset %@)", offset, self.fireflyIce.hardwareId, self.fireflyIce.version, _reset);
+                FDFireflyDeviceLogInfo(@"FD010505", @"time is off by %0.3f seconds for hw %@ fw %@ (last reset %@)", offset, self.fireflyIce.hardwareId, self.fireflyIce.version, _reset);
                 if (_setTimeEnabled) {
                     [self setTime];
                 }
             } else {
-//                FDFireflyDeviceLogDebug(@"time is off by %0.3f seconds for hw %@ fw %@", offset, self.fireflyIce.hardwareId, self.fireflyIce.version);
+//                FDFireflyDeviceLogDebug(@"FD010506", @"time is off by %0.3f seconds for hw %@ fw %@", offset, self.fireflyIce.hardwareId, self.fireflyIce.version);
             }
         }
     }

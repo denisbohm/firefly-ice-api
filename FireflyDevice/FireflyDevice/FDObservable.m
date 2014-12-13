@@ -73,7 +73,7 @@
             @try {
                 [invocation invokeWithTarget:observer];
             } @catch (NSException *e) {
-                FDFireflyDeviceLogWarn(@"unexpected exception during observer invocation: %@", e);
+                FDFireflyDeviceLogWarn(@"FD010601", @"unexpected exception during observer invocation: %@", e);
             }
         }
     }

@@ -128,15 +128,15 @@
     NSInteger pending = _syncAheadItems.count + _syncUploadItems.count;
     if (pending < limit) {
         if (!_isSyncDataPending) {
-            FDFireflyDeviceLogInfo(@"requesting sync data with offset %u", pending);
+            FDFireflyDeviceLogInfo(@"FD010701", @"requesting sync data with offset %u", pending);
             [_fireflyIce.coder sendSyncStart:_channel offset:(uint32_t)pending];
             [self startTimer];
             _isSyncDataPending = YES;
         } else {
-            FDFireflyDeviceLogInfo(@"waiting for pending sync data before starting new sync data request");
+            FDFireflyDeviceLogInfo(@"FD010702", @"waiting for pending sync data before starting new sync data request");
         }
     } else {
-        FDFireflyDeviceLogInfo(@"waiting for upload complete to sync data with offset %u", pending);
+        FDFireflyDeviceLogInfo(@"FD010703", @"waiting for upload complete to sync data with offset %u", pending);
     }
 }
 
@@ -165,7 +165,7 @@
     if ((lock.identifier == fd_lock_identifier_sync) && [_channel.name isEqualToString:lock.ownerName]) {
         [self beginSync];
     } else {
-        FDFireflyDeviceLogInfo([NSString stringWithFormat:@"sync could not acquire lock (owned by %@)", lock.ownerName]);
+        FDFireflyDeviceLogInfo(@"FD010704", [NSString stringWithFormat:@"sync could not acquire lock (owned by %@)", lock.ownerName]);
         [_fireflyIce.executor fail:self error:[NSError errorWithDomain:FDSyncTaskErrorDomain code:FDSyncTaskErrorCodeCouldNotAcquireLock userInfo:@{NSLocalizedDescriptionKey:[NSString stringWithFormat:NSLocalizedString(@"sync task could not acquire lock (owned by %@)", @""), lock.ownerName]}]];
     }
 }
@@ -213,25 +213,25 @@
 
 - (void)executorTaskStarted:(FDExecutor *)executor
 {
-    FDFireflyDeviceLogInfo(@"%@ task started", NSStringFromClass([self class]));
+    FDFireflyDeviceLogInfo(@"FD010705", @"%@ task started", NSStringFromClass([self class]));
     [self activate:executor];
 }
 
 - (void)executorTaskSuspended:(FDExecutor *)executor
 {
-    FDFireflyDeviceLogInfo(@"%@ task suspended", NSStringFromClass([self class]));
+    FDFireflyDeviceLogInfo(@"FD010706", @"%@ task suspended", NSStringFromClass([self class]));
     [self deactivate:executor];
 }
 
 - (void)executorTaskResumed:(FDExecutor *)executor
 {
-    FDFireflyDeviceLogInfo(@"%@ task resumed", NSStringFromClass([self class]));
+    FDFireflyDeviceLogInfo(@"FD010707", @"%@ task resumed", NSStringFromClass([self class]));
     [self activate:executor];
 }
 
 - (void)executorTaskCompleted:(FDExecutor *)executor
 {
-    FDFireflyDeviceLogInfo(@"%@ task completed", NSStringFromClass([self class]));
+    FDFireflyDeviceLogInfo(@"FD010708", @"%@ task completed", NSStringFromClass([self class]));
     [self deactivate:executor];
     
     [self scheduleNextAppointment];
@@ -247,7 +247,7 @@
 
 - (void)executorTaskFailed:(FDExecutor *)executor error:(NSError *)error
 {
-    FDFireflyDeviceLogInfo(@"%@ task failed with error %@", NSStringFromClass([self class]), error);
+    FDFireflyDeviceLogInfo(@"FD010709", @"%@ task failed with error %@", NSStringFromClass([self class]), error);
     
     if ([error.domain isEqualToString:@"FDDetour"] && error.code == 0) {
         // !!! flush out and start sync again...
@@ -263,13 +263,13 @@
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel site:(NSString *)site
 {
     _site = site;
-    FDFireflyDeviceLogInfo(@"device site %@", _site);
+    FDFireflyDeviceLogInfo(@"FD010710", @"device site %@", _site);
 }
 
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel storage:(FDFireflyIceStorage *)storage
 {
     _storage = storage;
-    FDFireflyDeviceLogInfo(@"storage %@", _storage);
+    FDFireflyDeviceLogInfo(@"FD010711", @"storage %@", _storage);
     _initialBacklog = _storage.pageCount;
     _currentBacklog = _storage.pageCount;
 }
@@ -280,7 +280,7 @@
     if (_initialBacklog > 0) {
         progress = (_initialBacklog - _currentBacklog) / (float)_initialBacklog;
     }
-    FDFireflyDeviceLogInfo(@"sync task progress %f", progress);
+    FDFireflyDeviceLogInfo(@"FD010712", @"sync task progress %f", progress);
     if ([_delegate respondsToSelector:@selector(syncTask:progress:)]) {
         [_delegate syncTask:self progress:progress];
     }
@@ -301,7 +301,7 @@
     [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
     NSString *date = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:time]];
     NSString *message = [[NSString alloc] initWithData:[binary getRemainingData] encoding:NSUTF8StringEncoding];
-    FDFireflyDeviceLogInfo(@"device message %@ %@ %@", hardwareId, date, message);
+    FDFireflyDeviceLogInfo(@"FD010713", @"device message %@ %@ %@", hardwareId, date, message);
 }
 
 - (NSArray *)getUploadItems
@@ -339,14 +339,14 @@
 {
     if ([binary getRemainingLength] < 6) {
         // invalid record
-        FDFireflyDeviceLogWarn(@"invalid VMA record");
+        FDFireflyDeviceLogWarn(@"FD010714", @"invalid VMA record");
         [_channel fireflyIceChannelSend:responseData];
         return;
     }
     NSTimeInterval time = [binary getUInt32]; // 4-byte time
     uint16_t interval = [binary getUInt16];
     NSUInteger n = [binary getRemainingLength] / floatBytes; // 4 bytes == sizeof(float32), 2 bytes == sizeof(float16)
-    FDFireflyDeviceLogInfo(@"sync VMAs: %lu values", (unsigned long)n);
+    FDFireflyDeviceLogInfo(@"FD010715", @"sync VMAs: %lu values", (unsigned long)n);
     NSMutableArray *vmas = [NSMutableArray array];
     for (NSUInteger i = 0; i < n; ++i) {
         float value = (floatBytes == 2) ? [binary getFloat16] : [binary getFloat32];
@@ -355,7 +355,7 @@
     
     NSDate *start = [NSDate dateWithTimeIntervalSince1970:time + interval];
     NSDate *end = [NSDate dateWithTimeIntervalSince1970:time + interval + vmas.count * interval];
-    FDFireflyDeviceLogInfo(@"got syncData %@ - %@ %@", [_dateFormatter stringFromDate:start], [_dateFormatter stringFromDate:end], responseData);
+    FDFireflyDeviceLogInfo(@"FD010716", @"got syncData %@ - %@ %@", [_dateFormatter stringFromDate:start], [_dateFormatter stringFromDate:end], responseData);
 
     NSDate *lastDataDate = [NSDate dateWithTimeIntervalSince1970:time + (n - 1) * interval];
     if ((_lastDataDate == nil) || ([lastDataDate compare:_lastDataDate] == NSOrderedDescending)) {
@@ -393,13 +393,13 @@
 {
     if ([binary getRemainingLength] < 10) {
         // invalid record
-        FDFireflyDeviceLogWarn(@"invalid ACC record");
+        FDFireflyDeviceLogWarn(@"FD010717", @"invalid ACC record");
         return;
     }
     NSTimeInterval time = [binary getTime64];
     uint16_t interval = [binary getUInt16];
     NSUInteger n = [binary getRemainingLength] / 4;
-    FDFireflyDeviceLogInfo(@"sync ACC: %lu values", (unsigned long)n);
+    FDFireflyDeviceLogInfo(@"FD010718", @"sync ACC: %lu values", (unsigned long)n);
     NSMutableArray *accs = [NSMutableArray array];
     for (NSUInteger i = 0; i < n; ++i) {
         uint32_t xyz = [binary getUInt32];
@@ -451,7 +451,7 @@
 
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel syncData:(NSData *)data
 {
-    FDFireflyDeviceLogInfo(@"sync data for %@", _site);
+    FDFireflyDeviceLogInfo(@"FD010719", @"sync data for %@", _site);
     
     [self cancelTimer];
     [_fireflyIce.executor feedWatchdog:self];
@@ -463,7 +463,7 @@
     uint16_t length = [binary getUInt16];
     uint16_t hash = [binary getUInt16];
     uint32_t type = [binary getUInt32];
-    FDFireflyDeviceLogInfo(@"syncData: page=%08x length=%u hash=0x%04x type=0x%08x", page, length, hash, type);
+    FDFireflyDeviceLogInfo(@"FD010720", @"syncData: page=%08x length=%u hash=0x%04x type=0x%08x", page, length, hash, type);
     
     // No sync data left? If so wait for uploads to complete or finish up now if there aren't any open uploads.
     if (page == 0xfffffffe) {
@@ -507,7 +507,7 @@
             break;
         default:
             // !!! unknown type - ack to discard it so more records will be synced
-            FDFireflyDeviceLogInfo(@"discarding record: unknown sync record type 0x%08x data %@", type, responseData);
+            FDFireflyDeviceLogInfo(@"FD010721", @"discarding record: unknown sync record type 0x%08x data %@", type, responseData);
             [channel fireflyIceChannelSend:responseData];
             break;
     }
@@ -534,7 +534,7 @@
             for (FDSyncTaskItem *item in _syncUploadItems) {
                 NSDate *start = [NSDate dateWithTimeIntervalSince1970:item.time + item.interval];
                 NSDate *end = [NSDate dateWithTimeIntervalSince1970:item.time + item.interval + item.vmas.count * item.interval];
-                FDFireflyDeviceLogInfo(@"sending syncData response %@ - %@ %@", [_dateFormatter stringFromDate:start], [_dateFormatter stringFromDate:end], item.responseData);
+                FDFireflyDeviceLogInfo(@"FD010722", @"sending syncData response %@ - %@ %@", [_dateFormatter stringFromDate:start], [_dateFormatter stringFromDate:end], item.responseData);
                 [_channel fireflyIceChannelSend:item.responseData];
             }
             _syncUploadItems = nil;

@@ -146,7 +146,7 @@
     
     NSTimeInterval duration = -[_currentFeedTime timeIntervalSinceNow];
     if (duration > _currentTask.timeout) {
-        FDFireflyDeviceLogInfo(@"executor task timeout");
+        FDFireflyDeviceLogInfo(@"FD010101", @"executor task timeout");
         NSDictionary *userInfo = @{NSLocalizedDescriptionKey: NSLocalizedString(@"executor task timed out", @"")};
         [self fail:_currentTask error:[NSError errorWithDomain:FDExecutorErrorDomain code:FDExecutorErrorCodeTimeout userInfo:userInfo]];
     }
@@ -160,7 +160,7 @@
 
 - (void)taskException:(NSException *)exception
 {
-    FDFireflyDeviceLogWarn(@"task exception %@", exception);
+    FDFireflyDeviceLogWarn(@"FD010102", @"task exception %@", exception);
 }
 
 - (void)schedule
@@ -227,7 +227,7 @@
     if (_currentTask == task) {
         _currentFeedTime = [NSDate date];
     } else {
-        FDFireflyDeviceLogWarn(@"expected current task to feed watchdog...");
+        FDFireflyDeviceLogWarn(@"FD010103", @"expected current task to feed watchdog...");
     }
 }
 
@@ -246,7 +246,7 @@
         }
         [self schedule];
     } else {
-        FDFireflyDeviceLogWarn(@"expected current task to be complete...");
+        FDFireflyDeviceLogWarn(@"FD010104", @"expected current task to be complete...");
     }
 }
 
