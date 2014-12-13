@@ -417,7 +417,7 @@
         if (_useArea) {
             [self.fireflyIce.coder sendUpdateWritePage:self.channel area:_area page:page data:data];
         } else {
-            [self.fireflyIce.coder sendUpdateWritePage:self.channel area:_area page:page data:data];
+            [self.fireflyIce.coder sendUpdateWritePage:self.channel page:page data:data];
         }
         [self next:@selector(writeNextPage)];
     }
