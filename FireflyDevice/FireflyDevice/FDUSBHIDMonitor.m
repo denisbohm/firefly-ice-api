@@ -28,7 +28,7 @@
 @property IOHIDManagerRef hidManagerRef;
 @property NSThread *hidRunLoopThread;
 @property CFRunLoopRef runLoopRef;
-@property NSMutableArray *devices;
+@property NSMutableArray *hidDevices;
 
 @end
 
@@ -121,9 +121,14 @@ void FDUSBHIDDeviceInputReportCallback(void *context, IOReturn result, void *sen
 - (id)init
 {
     if (self = [super init]) {
-        _devices = [NSMutableArray array];
+        _hidDevices = [NSMutableArray array];
     }
     return self;
+}
+
+- (NSArray *)devices
+{
+    return [NSArray arrayWithArray:_hidDevices];
 }
 
 - (void)removal:(FDUSBHIDDevice *)device
@@ -131,7 +136,7 @@ void FDUSBHIDDeviceInputReportCallback(void *context, IOReturn result, void *sen
     [device close];
     IOHIDDeviceRegisterRemovalCallback(device.hidDeviceRef, NULL, (__bridge void *)device);
     
-    [_devices removeObject:device];
+    [_hidDevices removeObject:device];
     [_delegate usbHidMonitor:self deviceRemoved:device];
     CFRelease(device.hidDeviceRef);
     device.hidDeviceRef = 0;
@@ -152,7 +157,7 @@ void FDUSBHIDMonitorRemovalCallback(void *context, IOReturn result, void *sender
     device.monitor = self;
     device.hidDeviceRef = hidDeviceRef;
     CFRetain(hidDeviceRef);
-    [_devices addObject:device];
+    [_hidDevices addObject:device];
     
     IOHIDDeviceRegisterRemovalCallback(hidDeviceRef, FDUSBHIDMonitorRemovalCallback, (__bridge void*)device);
     
@@ -187,7 +192,7 @@ void FDUSBHIDMonitorDeviceMatchingCallback(void *context, IOReturn result, void 
         FDFireflyDeviceLogWarn(@"FD010801", @"usb test thread failed to stop");
     }
     _hidRunLoopThread = nil;
-    _devices = [NSMutableArray array];
+    _hidDevices = [NSMutableArray array];
 }
 
 - (void)hidRunLoop

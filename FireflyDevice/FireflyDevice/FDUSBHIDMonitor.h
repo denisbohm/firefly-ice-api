@@ -47,6 +47,8 @@
 
 @property id<FDUSBHIDMonitorDelegate> delegate;
 
+@property (readonly) NSArray *devices;
+
 - (void)start;
 - (void)stop;
 
