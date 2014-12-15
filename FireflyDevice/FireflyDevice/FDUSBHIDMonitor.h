@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import <IOKit/hid/IOHIDManager.h>
+
 @protocol FDFireflyDeviceLog;
 @class FDUSBHIDDevice;
 @class FDUSBHIDMonitor;
@@ -22,6 +24,7 @@
 
 @property id<FDUSBHIDDeviceDelegate> delegate;
 
+@property (readonly) IOHIDDeviceRef deviceRef;
 @property (readonly) NSObject *location;
 
 - (void)open;
@@ -33,8 +36,24 @@
 
 @protocol FDUSBHIDMonitorDelegate <NSObject>
 
-- (void)usbHidMonitor:(FDUSBHIDMonitor *)monitor deviceAdded:(FDUSBHIDDevice *)usbHidDevice;
+- (void)usbHidMonitor:(FDUSBHIDMonitor *)monitor deviceAdded:(FDUSBHIDDevice *)device;
 - (void)usbHidMonitor:(FDUSBHIDMonitor *)monitor deviceRemoved:(FDUSBHIDDevice *)device;
+
+@end
+
+@protocol FDUSBHIDMonitorMatcher <NSObject>
+
+- (BOOL)matches:(IOHIDDeviceRef)deviceRef;
+
+@end
+
+@interface FDUSBHIDMonitorMatcherVidPid : NSObject<FDUSBHIDMonitorMatcher>
+
++ (FDUSBHIDMonitorMatcherVidPid *)matcher:(NSString *)name vid:(uint16_t)vid pid:(uint16_t)pid;
+
+@property NSString *name;
+@property uint16_t vid;
+@property uint16_t pid;
 
 @end
 
@@ -42,6 +61,7 @@
 
 @property id<FDFireflyDeviceLog> log;
 
+@property NSArray *matchers;
 @property UInt16 vendor;
 @property UInt16 product;
 
@@ -51,5 +71,7 @@
 
 - (void)start;
 - (void)stop;
+
+- (FDUSBHIDDevice *)deviceWithLocation:(NSObject *)location;
 
 @end

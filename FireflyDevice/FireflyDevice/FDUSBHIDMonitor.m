@@ -12,6 +12,29 @@
 
 #import <IOKit/hid/IOHIDManager.h>
 
+static long get_long_property(IOHIDDeviceRef device, CFStringRef key)
+{
+    CFTypeRef ref = IOHIDDeviceGetProperty(device, key);
+    if (ref) {
+        if (CFGetTypeID(ref) == CFNumberGetTypeID()) {
+            long value;
+            CFNumberGetValue((CFNumberRef) ref, kCFNumberSInt32Type, &value);
+            return value;
+        }
+    }
+    return 0;
+}
+
+static unsigned short get_vendor_id(IOHIDDeviceRef device)
+{
+    return get_long_property(device, CFSTR(kIOHIDVendorIDKey));
+}
+
+static unsigned short get_product_id(IOHIDDeviceRef device)
+{
+    return get_long_property(device, CFSTR(kIOHIDProductIDKey));
+}
+
 @interface FDUSBHIDDevice ()
 
 @property (FDWeak) FDUSBHIDMonitor *monitor;
@@ -43,6 +66,11 @@
         [_outputData setLength:64];
     }
     return self;
+}
+
+- (IOHIDDeviceRef)deviceRef
+{
+    return _hidDeviceRef;
 }
 
 - (void)setReport:(NSData *)data
@@ -116,6 +144,24 @@ void FDUSBHIDDeviceInputReportCallback(void *context, IOReturn result, void *sen
 
 @end
 
+@implementation FDUSBHIDMonitorMatcherVidPid
+
++ (FDUSBHIDMonitorMatcherVidPid *)matcher:(NSString *)name vid:(uint16_t)vid pid:(uint16_t)pid
+{
+    FDUSBHIDMonitorMatcherVidPid *matcher = [[FDUSBHIDMonitorMatcherVidPid alloc] init];
+    matcher.name = name;
+    matcher.vid = vid;
+    matcher.pid = pid;
+    return matcher;
+}
+
+- (BOOL)matches:(IOHIDDeviceRef)deviceRef
+{
+    return (get_vendor_id(deviceRef) == self.vid) && (get_product_id(deviceRef) == self.pid);
+}
+
+@end
+
 @implementation FDUSBHIDMonitor
 
 - (id)init
@@ -151,8 +197,22 @@ void FDUSBHIDMonitorRemovalCallback(void *context, IOReturn result, void *sender
     });
 }
 
+- (BOOL)matches:(IOHIDDeviceRef)deviceRef
+{
+    for (id<FDUSBHIDMonitorMatcher> matcher in self.matchers) {
+        if ([matcher matches:deviceRef]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 - (void)deviceMatching:(IOHIDDeviceRef)hidDeviceRef
 {
+    if ((self.matchers != nil) && ![self matches:hidDeviceRef]) {
+        return;
+    }
+    
     FDUSBHIDDevice *device = [[FDUSBHIDDevice alloc] init];
     device.monitor = self;
     device.hidDeviceRef = hidDeviceRef;
@@ -195,6 +255,16 @@ void FDUSBHIDMonitorDeviceMatchingCallback(void *context, IOReturn result, void 
     _hidDevices = [NSMutableArray array];
 }
 
+- (FDUSBHIDDevice *)deviceWithLocation:(NSObject *)location
+{
+    for (FDUSBHIDDevice *device in _hidDevices) {
+        if ([device.location isEqualTo:location]) {
+            return device;
+        }
+    }
+    return nil;
+}
+
 - (void)hidRunLoop
 {
     @autoreleasepool {
@@ -205,11 +275,13 @@ void FDUSBHIDMonitorDeviceMatchingCallback(void *context, IOReturn result, void 
         if (ioReturn != kIOReturnSuccess) {
             
         }
-        NSString *vendorKey = [NSString stringWithCString:kIOHIDVendorIDKey encoding:NSUTF8StringEncoding];
-        NSString *productKey = [NSString stringWithCString:kIOHIDProductIDKey encoding:NSUTF8StringEncoding];
-        NSNumber *vendor = [NSNumber numberWithInt:_vendor];
-        NSNumber *product = [NSNumber numberWithInt:_product];
-        IOHIDManagerSetDeviceMatchingMultiple(_hidManagerRef, (__bridge CFArrayRef)@[@{vendorKey: vendor, productKey: product}]);
+        if (self.matchers == nil) {
+            NSString *vendorKey = [NSString stringWithCString:kIOHIDVendorIDKey encoding:NSUTF8StringEncoding];
+            NSString *productKey = [NSString stringWithCString:kIOHIDProductIDKey encoding:NSUTF8StringEncoding];
+            NSNumber *vendor = [NSNumber numberWithInt:_vendor];
+            NSNumber *product = [NSNumber numberWithInt:_product];
+            IOHIDManagerSetDeviceMatchingMultiple(_hidManagerRef, (__bridge CFArrayRef)@[@{vendorKey: vendor, productKey: product}]);
+        }
         IOHIDManagerRegisterDeviceMatchingCallback(_hidManagerRef, FDUSBHIDMonitorDeviceMatchingCallback, (__bridge void *)self);
     }
     
