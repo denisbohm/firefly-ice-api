@@ -281,6 +281,8 @@ void FDUSBHIDMonitorDeviceMatchingCallback(void *context, IOReturn result, void 
             NSNumber *vendor = [NSNumber numberWithInt:_vendor];
             NSNumber *product = [NSNumber numberWithInt:_product];
             IOHIDManagerSetDeviceMatchingMultiple(_hidManagerRef, (__bridge CFArrayRef)@[@{vendorKey: vendor, productKey: product}]);
+        } else {
+            IOHIDManagerSetDeviceMatchingMultiple(_hidManagerRef, NULL);
         }
         IOHIDManagerRegisterDeviceMatchingCallback(_hidManagerRef, FDUSBHIDMonitorDeviceMatchingCallback, (__bridge void *)self);
     }
