@@ -17,6 +17,15 @@
 
 @implementation FDFireflyIceVersion
 
+- (BOOL)isEqual:(id)object
+{
+    if (![object isKindOfClass:[FDFireflyIceVersion class]]) {
+        return NO;
+    }
+    FDFireflyIceVersion *o = (FDFireflyIceVersion *)object;
+    return (self.major == o.major) && (self.minor == o.minor) && (self.patch == o.patch);
+}
+
 - (NSString *)description
 {
     NSMutableString *s = [NSMutableString stringWithFormat:@"version %u.%u.%u, capabilities 0x%08x, git commit ", _major, _minor, _patch, _capabilities];
