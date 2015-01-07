@@ -17,6 +17,11 @@
 @property NSData *gitCommit;
 @end
 
+@interface FDFireflyIceHardwareVersion : NSObject
+@property uint16_t major;
+@property uint16_t minor;
+@end
+
 @interface FDFireflyIceUpdateBinary : NSObject
 @property uint32_t flags;
 @property uint32_t length;
@@ -179,6 +184,7 @@ typedef uint8_t fd_lock_identifier_t;
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel ping:(NSData *)data;
 
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel version:(FDFireflyIceVersion *)version;
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel hardwareVersion:(FDFireflyIceHardwareVersion *)version;
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel hardwareId:(FDFireflyIceHardwareId *)hardwareId;
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel bootVersion:(FDFireflyIceVersion *)version;
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel debugLock:(NSNumber *)debugLock;

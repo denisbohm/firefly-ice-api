@@ -38,6 +38,24 @@
 
 @end
 
+@implementation FDFireflyIceHardwareVersion
+
+- (BOOL)isEqual:(id)object
+{
+    if (![object isKindOfClass:[FDFireflyIceVersion class]]) {
+        return NO;
+    }
+    FDFireflyIceVersion *o = (FDFireflyIceVersion *)object;
+    return (self.major == o.major) && (self.minor == o.minor);
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"version %u.%u", _major, _minor];
+}
+
+@end
+
 @implementation FDFireflyIceUpdateBinary
 @end
 
