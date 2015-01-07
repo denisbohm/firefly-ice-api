@@ -5770,4 +5770,4 @@
 :10E85C0001000000006CDC0200800000842100201C
 :040000030000823542
 :00000001FF
-#! {"major":1, "minor":0, "patch":50, "note":"beta", "address":"0x08000", "length":"0x38000"}
+#! {"major":1, "minor":0, "patch":49, "note":"beta", "address":"0x08000", "length":"0x38000"}
