@@ -989,6 +989,8 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_LDFLAGS = (
 					"-weak_framework",
+					CoreBluetooth,
+					"-weak_framework",
 					IOBluetooth,
 					"-weak_framework",
 					Foundation,
@@ -1029,6 +1031,8 @@
 				INSTALL_PATH = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_LDFLAGS = (
+					"-weak_framework",
+					CoreBluetooth,
 					"-weak_framework",
 					IOBluetooth,
 					"-weak_framework",
