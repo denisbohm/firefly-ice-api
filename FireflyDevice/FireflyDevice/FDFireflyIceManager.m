@@ -80,6 +80,9 @@
 
 - (void)deactivate
 {
+    [_centralManager stopScan];
+    _centralManager.delegate = nil;
+    _centralManager = nil;
 }
 
 - (void)setActive:(BOOL)active
@@ -258,6 +261,13 @@
 {
     NSMutableDictionary *dictionary = [self dictionaryForPeripheral:peripheral];
     if (dictionary != nil) {
+        FDFireflyIce *fireflyIce = dictionary[@"fireflyIce"];
+        FDFireflyIceChannelBLE *channel = (FDFireflyIceChannelBLE *)fireflyIce.channels[@"BLE"];
+        channel.RSSI = [FDFireflyIceChannelBLERSSI RSSI:[RSSI floatValue]];
+        if ([_delegate respondsToSelector:@selector(fireflyIceManager:advertisement:)]) {
+            [_delegate fireflyIceManager:self advertisement:fireflyIce];
+        }
+        
         if (advertisementData != nil) {
             NSDictionary *previousAdvertisementData = dictionary[@"advertisementData"];
             NSMutableDictionary *newAdvertisementData = [NSMutableDictionary dictionaryWithDictionary:previousAdvertisementData];
