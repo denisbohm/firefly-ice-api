@@ -140,7 +140,16 @@
 {
     FDFireflyIce *fireflyIce = helloTask.fireflyIce;
     id<FDFireflyIceChannel> channel = helloTask.channel;
-    [fireflyIce.executor execute:[FDFirmwareUpdateTask firmwareUpdateTask:fireflyIce channel:channel]];
+    
+    FDFirmwareUpdateTask *firmwareUpdateTask = nil;
+    if ([_delegate respondsToSelector:@selector(fireflyIceManager:firmwareUpdateTask:)]) {
+        firmwareUpdateTask = [_delegate fireflyIceManager:self firmwareUpdateTask:fireflyIce];
+    } else {
+        firmwareUpdateTask = [FDFirmwareUpdateTask firmwareUpdateTask:fireflyIce channel:channel];
+    }
+    if (firmwareUpdateTask != nil) {
+        [fireflyIce.executor execute:firmwareUpdateTask];
+    }
     
     if ([_delegate respondsToSelector:@selector(fireflyIceManager:identified:)]) {
         [_delegate fireflyIceManager:self identified:fireflyIce];

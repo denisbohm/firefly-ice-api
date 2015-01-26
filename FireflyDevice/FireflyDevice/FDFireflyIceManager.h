@@ -18,6 +18,7 @@
 #endif
 
 @class FDFireflyIceManager;
+@class FDFirmwareUpdateTask;
 
 @protocol FDFireflyIceManagerDelegate <NSObject>
 
@@ -32,6 +33,8 @@
 - (void)fireflyIceManager:(FDFireflyIceManager *)manager closedBLE:(FDFireflyIce *)fireflyIce;
 
 - (void)fireflyIceManager:(FDFireflyIceManager *)manager identified:(FDFireflyIce *)fireflyIce;
+
+- (FDFirmwareUpdateTask *)fireflyIceManager:(FDFireflyIceManager *)manager firmwareUpdateTask:(FDFireflyIce *)fireflyIce;
 
 @end
 
