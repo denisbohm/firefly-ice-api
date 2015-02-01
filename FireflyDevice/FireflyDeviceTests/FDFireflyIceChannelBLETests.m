@@ -50,7 +50,7 @@
 
 - (void)testOptionalDelegateMethods
 {
-    FDFireflyIceChannelBLE *channel = [[FDFireflyIceChannelBLE alloc] initWithCentralManager:nil withPeripheral:nil withServiceUUID:nil];
+    FDFireflyIceChannelBLE *channel = [[FDFireflyIceChannelBLE alloc] initWithCentralManager:nil withPeripheral:nil withServiceUUID:[CBUUID UUIDWithString:@"310a0001-1b95-5091-b0bd-b7a681846399"]];
 
     NilFireflyIceChannelDelegate *delegate = [[NilFireflyIceChannelDelegate alloc] init];
     channel.delegate = delegate;
