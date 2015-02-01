@@ -80,6 +80,9 @@
 
 - (void)deactivate
 {
+    [_centralManager stopScan];
+    _centralManager.delegate = nil;
+    _centralManager = nil;
 }
 
 - (void)setActive:(BOOL)active
@@ -137,7 +140,16 @@
 {
     FDFireflyIce *fireflyIce = helloTask.fireflyIce;
     id<FDFireflyIceChannel> channel = helloTask.channel;
-    [fireflyIce.executor execute:[FDFirmwareUpdateTask firmwareUpdateTask:fireflyIce channel:channel]];
+    
+    FDFirmwareUpdateTask *firmwareUpdateTask = nil;
+    if ([_delegate respondsToSelector:@selector(fireflyIceManager:firmwareUpdateTask:)]) {
+        firmwareUpdateTask = [_delegate fireflyIceManager:self firmwareUpdateTask:fireflyIce];
+    } else {
+        firmwareUpdateTask = [FDFirmwareUpdateTask firmwareUpdateTask:fireflyIce channel:channel];
+    }
+    if (firmwareUpdateTask != nil) {
+        [fireflyIce.executor execute:firmwareUpdateTask];
+    }
     
     if ([_delegate respondsToSelector:@selector(fireflyIceManager:identified:)]) {
         [_delegate fireflyIceManager:self identified:fireflyIce];
@@ -258,6 +270,13 @@
 {
     NSMutableDictionary *dictionary = [self dictionaryForPeripheral:peripheral];
     if (dictionary != nil) {
+        FDFireflyIce *fireflyIce = dictionary[@"fireflyIce"];
+        FDFireflyIceChannelBLE *channel = (FDFireflyIceChannelBLE *)fireflyIce.channels[@"BLE"];
+        channel.RSSI = [FDFireflyIceChannelBLERSSI RSSI:[RSSI floatValue]];
+        if ([_delegate respondsToSelector:@selector(fireflyIceManager:advertisement:)]) {
+            [_delegate fireflyIceManager:self advertisement:fireflyIce];
+        }
+        
         if (advertisementData != nil) {
             NSDictionary *previousAdvertisementData = dictionary[@"advertisementData"];
             NSMutableDictionary *newAdvertisementData = [NSMutableDictionary dictionaryWithDictionary:previousAdvertisementData];

@@ -53,6 +53,10 @@
 #define FD_CONTROL_UPDATE_AREA_READ_PAGE 29
 #define FD_CONTROL_UPDATE_AREA_COMMIT 30
 
+#define FD_CONTROL_RTC 31
+
+#define FD_CONTROL_HARDWARE 32
+
 #define FD_CONTROL_DIAGNOSTICS_BLE        0x00000001
 #define FD_CONTROL_DIAGNOSTICS_BLE_TIMING 0x00000002
 
@@ -65,6 +69,15 @@
 
 #define FD_CONTROL_UPDATE_AREA_GET_VERSION_FLAG_REVISION 0x00000001
 #define FD_CONTROL_UPDATE_AREA_GET_VERSION_FLAG_METADATA 0x00000002
+
+#define FD_CONTROL_RTC_FLAG_GET_TIME       0x00000001
+#define FD_CONTROL_RTC_FLAG_SET_TIME       0x00000002
+#define FD_CONTROL_RTC_FLAG_GET_UTC_OFFSET 0x00000004
+#define FD_CONTROL_RTC_FLAG_SET_UTC_OFFSET 0x00000008
+
+#define FD_CONTROL_HARDWARE_FLAG_GET_UNIQUE 0x00000001
+#define FD_CONTROL_HARDWARE_FLAG_GET_USB    0x00000002
+#define FD_CONTROL_HARDWARE_FLAG_GET_BLE    0x00000004
 
 #define FD_CONTROL_CAPABILITY_LOCK             0x00000001
 #define FD_CONTROL_CAPABILITY_BOOT_VERSION     0x00000002
@@ -82,6 +95,8 @@
 #define FD_CONTROL_CAPABILITY_RECOGNITION      0x00000800
 #define FD_CONTROL_CAPABILITY_HARDWARE_VERSION 0x00001000
 #define FD_CONTROL_CAPABILITY_UPDATE_AREA      0x00002000
+#define FD_CONTROL_CAPABILITY_RTC              0x00004000
+#define FD_CONTROL_CAPABILITY_HARDWARE         0x00004000
 
 // property bits for get/set property commands
 #define FD_CONTROL_PROPERTY_VERSION          0x00000001
@@ -158,7 +173,7 @@ typedef void (^FDFireflyIceCoderCommandBlock)(FDFireflyIce *fireflyIce, id<FDFir
 - (void)sendPing:(id<FDFireflyIceChannel>)channel data:(NSData *)data;
 
 - (void)sendGetProperties:(id<FDFireflyIceChannel>)channel properties:(uint32_t)properties;
-- (void)sendSetPropertyTime:(id<FDFireflyIceChannel>)channel time:(NSDate *)time;
+- (void)sendSetPropertyTime:(id<FDFireflyIceChannel>)channel time:(NSDate *)time; // deprecated
 - (void)sendSetPropertyMode:(id<FDFireflyIceChannel>)channel mode:(uint8_t)mode;
 - (void)sendSetPropertyTxPower:(id<FDFireflyIceChannel>)channel level:(uint8_t)level;
 - (void)sendSetPropertyLogging:(id<FDFireflyIceChannel>)channel storage:(BOOL)storage;
@@ -167,6 +182,11 @@ typedef void (^FDFireflyIceCoderCommandBlock)(FDFireflyIce *fireflyIce, id<FDFir
 - (void)sendSetPropertySensingCount:(id<FDFireflyIceChannel>)channel count:(uint32_t)count;
 - (void)sendSetPropertyIndicate:(id<FDFireflyIceChannel>)channel indicate:(BOOL)indicate;
 - (void)sendSetPropertyRecognition:(id<FDFireflyIceChannel>)channel recognition:(BOOL)recognition;
+
+- (void)sendSetRTC:(id<FDFireflyIceChannel>)channel date:(NSDate *)date timeZone:(NSTimeZone *)timeZone;
+- (void)sendGetRTC:(id<FDFireflyIceChannel>)channel;
+
+- (void)sendGetHardware:(id<FDFireflyIceChannel>)channel flags:(uint32_t)flags;
 
 - (void)sendProvision:(id<FDFireflyIceChannel>)channel dictionary:(NSDictionary *)dictionary options:(uint32_t)options;
 - (void)sendReset:(id<FDFireflyIceChannel>)channel type:(uint8_t)type;

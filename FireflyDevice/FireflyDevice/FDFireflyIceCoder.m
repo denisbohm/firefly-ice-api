@@ -37,6 +37,14 @@
             [coder fireflyIce:fireflyIce channel:channel getProperties:data];
         }];
         
+        [self setCommand:FD_CONTROL_RTC block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, NSData *data) {
+            [coder fireflyIce:fireflyIce channel:channel rtc:data];
+        }];
+        
+        [self setCommand:FD_CONTROL_HARDWARE block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, NSData *data) {
+            [coder fireflyIce:fireflyIce channel:channel hardware:data];
+        }];
+        
         [self setCommand:FD_CONTROL_UPDATE_COMMIT block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, NSData *data) {
             [coder fireflyIce:fireflyIce channel:channel updateCommit:data];
         }];
@@ -485,6 +493,34 @@
     [channel fireflyIceChannelSend:binary.dataValue];
 }
 
+- (void)sendSetRTC:(id<FDFireflyIceChannel>)channel date:(NSDate *)date timeZone:(NSTimeZone *)timeZone
+{
+    FDBinary *binary = [[FDBinary alloc] init];
+    [binary putUInt8:FD_CONTROL_RTC];
+    [binary putUInt32:FD_CONTROL_RTC_FLAG_SET_TIME | FD_CONTROL_RTC_FLAG_SET_UTC_OFFSET];
+    NSTimeInterval time = [date timeIntervalSince1970];
+    [binary putTime64:time];
+    int32_t utc_offset = (int32_t)timeZone.secondsFromGMT;
+    [binary putUInt32:utc_offset];
+    [channel fireflyIceChannelSend:binary.dataValue];
+}
+
+- (void)sendGetRTC:(id<FDFireflyIceChannel>)channel
+{
+    FDBinary *binary = [[FDBinary alloc] init];
+    [binary putUInt8:FD_CONTROL_RTC];
+    [binary putUInt32:FD_CONTROL_RTC_FLAG_GET_TIME | FD_CONTROL_RTC_FLAG_GET_UTC_OFFSET];
+    [channel fireflyIceChannelSend:binary.dataValue];
+}
+
+- (void)sendGetHardware:(id<FDFireflyIceChannel>)channel flags:(uint32_t)flags
+{
+    FDBinary *binary = [[FDBinary alloc] init];
+    [binary putUInt8:FD_CONTROL_HARDWARE];
+    [binary putUInt32:flags];
+    [channel fireflyIceChannelSend:binary.dataValue];
+}
+
 - (void)sendUpdateGetExternalHash:(id<FDFireflyIceChannel>)channel address:(uint32_t)address length:(uint32_t)length
 {
     FDBinary *binary = [[FDBinary alloc] init];
@@ -708,6 +744,50 @@
 - (void)sendDirectTestModeEnd:(id<FDFireflyIceChannel>)channel
 {
     [self sendDirectTestModeEnter:channel packet:[FDFireflyIceCoder makeDirectTestModePacket:FDDirectTestModeCommandTestEnd frequency:0 length:0 type:0] duration:0];
+}
+
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel rtc:(NSData *)data
+{
+    FDBinary *binary = [[FDBinary alloc] initWithData:data];
+    uint8_t code __attribute__((unused)) = [binary getUInt8];
+    uint32_t flags = [binary getUInt32];
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+    if (flags & FD_CONTROL_RTC_FLAG_GET_TIME) {
+        NSTimeInterval time = [binary getTime64];
+        dictionary[@"date"] = [NSDate dateWithTimeIntervalSince1970:time];
+    }
+    if (flags & FD_CONTROL_RTC_FLAG_GET_UTC_OFFSET) {
+        uint32_t utcOffset = [binary getUInt32];
+        dictionary[@"timeZone"] = [NSTimeZone timeZoneForSecondsFromGMT:utcOffset];
+    }
+    
+    [_observable fireflyIce:fireflyIce channel:channel rtc:dictionary];
+}
+
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel hardware:(NSData *)data
+{
+    FDBinary *binary = [[FDBinary alloc] initWithData:data];
+    uint8_t code __attribute__((unused)) = [binary getUInt8];
+    uint32_t flags = [binary getUInt32];
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+    if (flags & FD_CONTROL_HARDWARE_FLAG_GET_UNIQUE) {
+        uint8_t length = [binary getUInt8];
+        NSData *unique = [binary getData:length];
+        dictionary[@"unique"] = unique;
+    }
+    if (flags & FD_CONTROL_HARDWARE_FLAG_GET_USB) {
+        uint16_t vendor = [binary getUInt16];
+        uint16_t product = [binary getUInt16];
+        dictionary[@"USB vendor id"] = [NSNumber numberWithInteger:vendor];
+        dictionary[@"USB product id"] = [NSNumber numberWithInteger:product];
+    }
+    if (flags & FD_CONTROL_HARDWARE_FLAG_GET_BLE) {
+        uint8_t length = [binary getUInt8];
+        NSData *primaryServiceUUID = [binary getData:length];
+        dictionary[@"BLE primaryServiceUUID"] = primaryServiceUUID;
+    }
+    
+    [_observable fireflyIce:fireflyIce channel:channel hardware:dictionary];
 }
 
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel updateCommit:(NSData *)data

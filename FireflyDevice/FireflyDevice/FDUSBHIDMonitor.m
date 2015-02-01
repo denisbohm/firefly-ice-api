@@ -119,11 +119,14 @@ void FDUSBHIDDeviceInputReportCallback(void *context, IOReturn result, void *sen
         return;
     }
     
+    // !!! It appears that the HID manager does the open and scheduling. -denis
+    /*
     IOReturn ioReturn = IOHIDDeviceOpen(_hidDeviceRef, kIOHIDOptionsTypeSeizeDevice);
     if (ioReturn != kIOReturnSuccess) {
         
     }
     IOHIDDeviceScheduleWithRunLoop(_hidDeviceRef, _monitor.runLoopRef, kCFRunLoopDefaultMode);
+     */
     IOHIDDeviceRegisterInputReportCallback(_hidDeviceRef, (uint8_t *)_inputData.bytes, _inputData.length, FDUSBHIDDeviceInputReportCallback, (__bridge void *)self);
     
     _isOpen = true;
@@ -135,9 +138,11 @@ void FDUSBHIDDeviceInputReportCallback(void *context, IOReturn result, void *sen
         return;
     }
     
-    IOHIDDeviceUnscheduleFromRunLoop(_hidDeviceRef, _monitor.runLoopRef, kCFRunLoopDefaultMode);
+    // !!! It appears that the HID manager does the open and scheduling. -denis
+    // !!! If we close and unregister we (sometimes) won't get removal callbacks, etc... -denis
+//    IOHIDDeviceClose(_hidDeviceRef, kIOHIDOptionsTypeNone);
     IOHIDDeviceRegisterInputReportCallback(_hidDeviceRef, NULL, 0, NULL, (__bridge void *)self);
-    IOHIDDeviceClose(_hidDeviceRef, kIOHIDOptionsTypeNone);
+//    IOHIDDeviceUnscheduleFromRunLoop(_hidDeviceRef, _monitor.runLoopRef, kCFRunLoopDefaultMode);
     
     _isOpen = false;
 }
