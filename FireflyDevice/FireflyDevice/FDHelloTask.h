@@ -26,6 +26,7 @@ enum {
 @optional
 
 - (NSDate *)helloTaskDate;
+- (NSTimeZone *)helloTaskTimeZone;
 
 @end
 

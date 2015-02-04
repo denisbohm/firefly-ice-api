@@ -130,12 +130,24 @@
     return [NSDate date];
 }
 
+- (NSTimeZone *)timeZone
+{
+    if ([_delegate respondsToSelector:@selector(helloTaskTimeZone)]) {
+        return [_delegate helloTaskTimeZone];
+    }
+    return [NSTimeZone defaultTimeZone];
+}
+
 - (void)setTime
 {
     NSDate *date = [self date];
     if (date != nil) {
         FDFireflyDeviceLogInfo(@"FD010502", @"setting the time");
-        [self.fireflyIce.coder sendSetPropertyTime:self.channel time:date];
+        if ((self.fireflyIce.version.capabilities & FD_CONTROL_CAPABILITY_RTC) && ([self timeZone] != nil)) {
+            [self.fireflyIce.coder sendSetRTC:self.channel date:date timeZone:[self timeZone]];
+        } else {
+            [self.fireflyIce.coder sendSetPropertyTime:self.channel time:date];
+        }
     }
 }
 
@@ -149,7 +161,7 @@
             [self setTime];
         }
     } else {
-        NSDate * date = [self date];
+        NSDate *date = [self date];
         if (date != nil) {
             NSTimeInterval offset = [_time timeIntervalSinceDate:date];
             if (fabs(offset) > _setTimeTolerance) {
