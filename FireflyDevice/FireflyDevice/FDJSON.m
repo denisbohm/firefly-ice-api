@@ -235,7 +235,7 @@
         id<FDJSONSerializable> serializable = object;
         [serializable serialize:self];
     } else {
-        @throw [NSException exceptionWithName:@"ObjectIsNotSerializable" reason:[NSString stringWithFormat:@"object is not serializable: %@", [[object class] className]] userInfo:nil];
+        @throw [NSException exceptionWithName:@"ObjectIsNotSerializable" reason:[NSString stringWithFormat:@"object is not serializable: %@", NSStringFromClass([object class])] userInfo:nil];
     }
 }
 
