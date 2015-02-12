@@ -36,12 +36,14 @@ FOUNDATION_EXPORT const unsigned char FireflyDeviceVersionString[];
 #import <FireflyDevice/FDFireflyIceSimpleTask.h>
 #import <FireflyDevice/FDFireflyIceTaskSteps.h>
 #import <FireflyDevice/FDFirmwareUpdateTask.h>
+#import <FireflyDevice/FDGZIP.h>
 #import <FireflyDevice/FDHardwareId.h>
 #import <FireflyDevice/FDHelloTask.h>
 #import <FireflyDevice/FDIEEE754.h>
 #import <FireflyDevice/FDIntelHex.h>
 #import <FireflyDevice/FDJSON.h>
 #import <FireflyDevice/FDObservable.h>
+#import <FireflyDevice/FDPullTask.h>
 #import <FireflyDevice/FDSyncTask.h>
 #import <FireflyDevice/FDUSBHIDMonitor.h>
 #import <FireflyDevice/FDWeak.h>
