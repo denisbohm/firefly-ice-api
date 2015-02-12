@@ -139,12 +139,21 @@
     FDFirmwareUpdateTask *firmwareUpdateTask = [[FDFirmwareUpdateTask alloc] init];
     firmwareUpdateTask.fireflyIce = fireflyIce;
     firmwareUpdateTask.channel = channel;
-    firmwareUpdateTask.firmware = intelHex.data;
+
     firmwareUpdateTask.major = [intelHex.properties[@"major"] unsignedShortValue];
     firmwareUpdateTask.minor = [intelHex.properties[@"minor"] unsignedShortValue];
     firmwareUpdateTask.patch = [intelHex.properties[@"patch"] unsignedShortValue];
     firmwareUpdateTask.capabilities = [FDFirmwareUpdateTask getHexUInt32:intelHex.properties[@"capabilities"]];
     firmwareUpdateTask.gitCommit = [FDFirmwareUpdateTask dataWithHexString:intelHex.properties[@"commit"]];
+    
+    firmwareUpdateTask.firmware = intelHex.data;
+    if ([intelHex.properties[@"encrypted"] boolValue]) {
+        firmwareUpdateTask.commitFlags = FD_UPDATE_METADATA_FLAG_ENCRYPTED;
+        firmwareUpdateTask.commitLength = [intelHex.properties[@"length"] unsignedShortValue];
+        firmwareUpdateTask.commitHash = [FDFirmwareUpdateTask dataWithHexString:intelHex.properties[@"hash"]];
+        firmwareUpdateTask.commitCryptIv = [FDFirmwareUpdateTask dataWithHexString:intelHex.properties[@"cryptIV"]];
+        firmwareUpdateTask.commitCryptHash = [FDFirmwareUpdateTask dataWithHexString:intelHex.properties[@"cryptHash"]];
+    }
     
     return firmwareUpdateTask;
 }
@@ -165,12 +174,17 @@
 {
     if (self = [super init]) {
         self.priority = -100;
-        _area = FD_HAL_SYSTEM_AREA_APPLICATION;
         _pageSize = 256;
         _sectorSize = 4096;
         _pagesPerSector = _sectorSize / _pageSize;
+        
         _commit = YES;
         _reset = YES;
+        
+        _area = FD_HAL_SYSTEM_AREA_APPLICATION;
+
+        _commitFlags = 0;
+        _commitCryptIv = [NSMutableData dataWithLength:20];
     }
     return self;
 }
@@ -187,6 +201,10 @@
     length = ((length + _sectorSize - 1) / _sectorSize) * _sectorSize;
     firmware.length = length;
     _firmware = firmware;
+    
+    _commitLength = (uint32_t)_firmware.length;
+    _commitHash = [FDCrypto sha1:_firmware];
+    _commitCryptHash = _commitHash;
 }
 
 - (void)executorTaskStarted:(FDExecutor *)executor
@@ -442,16 +460,10 @@
     }
     
     FDFireflyDeviceLogInfo(@"FD010407", @"sending update commit");
-    uint32_t flags = 0;
-    uint32_t length = (uint32_t)_firmware.length;
-    NSData *hash = [FDCrypto sha1:_firmware];
-    NSData *cryptHash = hash;
-    NSMutableData *cryptIv = [NSMutableData data];
-    cryptIv.length = 16;
     if (_useArea) {
-        [self.fireflyIce.coder sendUpdateCommit:self.channel area:_area flags:flags length:length hash:hash cryptHash:cryptHash cryptIv:cryptIv major:_major minor:_minor patch:_patch capabilities:_capabilities commit:_gitCommit];
+        [self.fireflyIce.coder sendUpdateCommit:self.channel area:_area flags:_commitFlags length:_commitLength hash:_commitHash cryptHash:_commitCryptHash cryptIv:_commitCryptIv major:_major minor:_minor patch:_patch capabilities:_capabilities commit:_gitCommit];
     } else {
-        [self.fireflyIce.coder sendUpdateCommit:self.channel flags:flags length:length hash:hash cryptHash:cryptHash cryptIv:cryptIv];
+        [self.fireflyIce.coder sendUpdateCommit:self.channel flags:_commitFlags length:_commitLength hash:_commitHash cryptHash:_commitCryptHash cryptIv:_commitCryptIv];
     }
 }
 

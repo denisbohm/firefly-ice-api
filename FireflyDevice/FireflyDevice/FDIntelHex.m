@@ -128,4 +128,50 @@
     _data = firmware;
 }
 
+- (void)addRecord:(NSMutableString *)content address:(uint32_t)address type:(uint8_t)type data:(NSData *)data
+{
+    uint8_t count = data.length;
+    uint8_t checksum = count;
+    uint8_t ah = address >> 8;
+    checksum += ah;
+    uint8_t al = address;
+    checksum += al;
+    [content appendFormat:@":%02x%02x%02x%02x", count, ah, al, type];
+    uint8_t *bytes = (uint8_t *)data.bytes;
+    for (NSUInteger i = 0; i < data.length; ++i) {
+        uint8_t byte = bytes[i];
+        [content appendFormat:@"%02x", byte];
+        checksum += byte;
+    }
+    checksum = ~checksum + 1;
+    [content appendFormat:@"%02x\n", checksum];
+}
+
+- (NSString *)format
+{
+    NSMutableString *content = [NSMutableString string];
+    
+    [content appendFormat:@"#! %@\n", [[NSString alloc] initWithData:[FDJSONSerializer serialize:self.properties] encoding:NSUTF8StringEncoding]];
+    
+    uint32_t addressHighWord = 0;
+    uint32_t address = [self getHexProperty:@"address" fallback:0];
+    for (NSUInteger i = 0; i < self.data.length; i += 16) {
+        if ((address & ~0xffff) != addressHighWord) {
+            uint8_t addressBytes[] = {address >> 24, address >> 16};
+            [self addRecord:content address:0 type:2 data:[NSData dataWithBytes:addressBytes length:sizeof(addressBytes)]];
+            addressHighWord = address & ~0xffff;
+            
+        }
+        NSUInteger length = self.data.length - i;
+        if (length > 16) {
+            length = 16;
+        }
+        NSData *subdata = [self.data subdataWithRange:NSMakeRange(i, length)];
+        [self addRecord:content address:address & 0xffff type:0 data:subdata];
+        address += 16;
+    }
+    
+    return content;
+}
+
 @end

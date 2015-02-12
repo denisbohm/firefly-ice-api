@@ -12,6 +12,9 @@
 
 + (NSData *)sha1:(NSData *)data;
 
+// AES-128 CBC
++ (NSData *)encrypt:(NSData *)key iv:(NSData *)iv data:(NSData *)data;
+
 // AES-128 hash (result is last 20 bytes of encoding the data)
 + (NSData *)hash:(NSData *)key iv:(NSData *)iv data:(NSData *)data;
 + (NSData *)hash:(NSData *)data;

@@ -38,18 +38,27 @@
 
 + (FDFirmwareUpdateTask *)firmwareUpdateTask:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel;
 
-@property BOOL useArea;
-@property uint8_t area;
-// firmware must start at firmware address and be a multiple of the page size (ex: 2048)
-@property NSData *firmware;
 @property BOOL downgrade;
 @property BOOL commit;
 @property BOOL reset;
+
+@property BOOL useArea;
+@property uint8_t area;
+
 @property uint16_t major;
 @property uint16_t minor;
 @property uint16_t patch;
 @property uint32_t capabilities;
 @property NSData *gitCommit;
+
+@property uint32_t commitFlags;
+@property uint32_t commitLength;
+@property NSData *commitHash;
+@property NSData *commitCryptHash;
+@property NSData *commitCryptIv;
+
+// firmware must start at firmware address and be a multiple of the page size (ex: 2048)
+@property NSData *firmware;
 
 @property id<FDFirmwareUpdateTaskDelegate> delegate;
 

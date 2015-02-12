@@ -13,6 +13,8 @@
 + (FDIntelHex *)intelHex:(NSString *)hex address:(uint32_t)address length:(uint32_t)length;
 + (NSData *)parse:(NSString *)hex address:(uint32_t)address length:(uint32_t)length;
 
+- (NSString *)format;
+
 @property NSData *data;
 @property NSMutableDictionary *properties;
 

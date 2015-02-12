@@ -21,23 +21,28 @@
     return digest;
 }
 
-+ (NSData *)hash:(NSData *)key iv:(NSData *)iv data:(NSData *)data
++ (NSData *)encrypt:(NSData *)key iv:(NSData *)iv data:(NSData *)data
 {
-    NSMutableData *out = [NSMutableData data];
-    out.length = data.length;
+    NSMutableData *out = [NSMutableData dataWithLength:data.length];
     size_t numBytesEncrypted = 0;
     CCCryptorStatus cryptStatus = CCCrypt(kCCEncrypt,
                                           kCCAlgorithmAES128, 0,
                                           key.bytes, kCCKeySizeAES128,
                                           iv.bytes,
                                           data.bytes, data.length,
-                                          (void *)out.bytes, out.length,
+                                          out.mutableBytes, out.length,
                                           &numBytesEncrypted);
     if (cryptStatus != kCCSuccess) {
         @throw [NSException exceptionWithName:@"CCCryptError"
                                        reason:@"CCCrypt error"
                                      userInfo:nil];
     }
+    return out;
+}
+
++ (NSData *)hash:(NSData *)key iv:(NSData *)iv data:(NSData *)data
+{
+    NSData *out = [FDCrypto encrypt:key iv:iv data:data];
     return [out subdataWithRange:NSMakeRange(out.length - 20, 20)];
 }
 
