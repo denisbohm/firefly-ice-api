@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Firefly Design LLC / Denis Bohm. All rights reserved.
 //
 
-#import <FireflyDevice/FDJSON.h>
+#import "FDJSON.h"
 
 @interface FDJSONSerializerContext : NSObject
 @property NSInteger count;
@@ -63,14 +63,6 @@
     [self value:value];
 }
 
-- (void)objectNumberUInt32:(uint32_t)value key:(NSString *)key
-{
-    [self next];
-    [self string:key];
-    [self.string appendString:@":"];
-    [self numberUInt32:value];
-}
-
 - (void)objectNumber:(double)value key:(NSString *)key
 {
     [self next];
@@ -103,12 +95,6 @@
 {
     [self next];
     [self value:value];
-}
-
-- (void)arrayNumberUInt32:(uint32_t)value
-{
-    [self next];
-    [self numberUInt32:value];
 }
 
 - (void)arrayNumber:(double)value
@@ -171,12 +157,12 @@
 
 - (void)number:(double)value
 {
-    [self.string appendFormat:@"%f", value];
-}
-
-- (void)numberUInt32:(uint32_t)value
-{
-    [self.string appendFormat:@"%u", value];
+    int32_t valueUInt32 = (int32_t)value;
+    if (value == valueUInt32) {
+        [self.string appendFormat:@"%d", valueUInt32];
+    } else {
+        [self.string appendFormat:@"%f", value];
+    }
 }
 
 - (void)boolean:(BOOL)value

@@ -6,8 +6,9 @@
 //  Copyright (c) 2013-2014 Firefly Design LLC / Denis Bohm. All rights reserved.
 //
 
-#import <FireflyDevice/FDIntelHex.h>
-#import <FireflyDevice/FDJSON.h>
+#import "FDIntelHex.h"
+
+#import "FDJSON.h"
 
 @implementation FDIntelHex
 
@@ -43,6 +44,10 @@
 - (uint32_t)getHexProperty:(NSString *)key fallback:(uint32_t)fallback
 {
     NSObject *object = [_properties valueForKey:key];
+    if ([object isKindOfClass:[NSNumber class]]) {
+        NSNumber *number = (NSNumber *)object;
+        return [number intValue];
+    }
     if (object) {
         NSScanner *scanner = [NSScanner scannerWithString:(NSString *)object];
         unsigned int value = 0;
@@ -136,6 +141,7 @@
     checksum += ah;
     uint8_t al = address;
     checksum += al;
+    checksum += type;
     [content appendFormat:@":%02x%02x%02x%02x", count, ah, al, type];
     uint8_t *bytes = (uint8_t *)data.bytes;
     for (NSUInteger i = 0; i < data.length; ++i) {

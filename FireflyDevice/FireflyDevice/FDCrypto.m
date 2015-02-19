@@ -6,7 +6,7 @@
 //  Copyright (c) 2013-2014 Firefly Design LLC / Denis Bohm. All rights reserved.
 //
 
-#import <FireflyDevice/FDCrypto.h>
+#import "FDCrypto.h"
 
 #include <CommonCrypto/CommonCryptor.h>
 #include <CommonCrypto/CommonDigest.h>
