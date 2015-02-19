@@ -149,7 +149,7 @@
     firmwareUpdateTask.firmware = intelHex.data;
     if ([intelHex.properties[@"encrypted"] boolValue]) {
         firmwareUpdateTask.commitFlags = FD_UPDATE_METADATA_FLAG_ENCRYPTED;
-        firmwareUpdateTask.commitLength = [intelHex.properties[@"length"] unsignedShortValue];
+        firmwareUpdateTask.commitLength = [FDFirmwareUpdateTask getHexUInt32:intelHex.properties[@"length"]];
         firmwareUpdateTask.commitHash = [FDFirmwareUpdateTask dataWithHexString:intelHex.properties[@"hash"]];
         firmwareUpdateTask.commitCryptIv = [FDFirmwareUpdateTask dataWithHexString:intelHex.properties[@"cryptIV"]];
         firmwareUpdateTask.commitCryptHash = [FDFirmwareUpdateTask dataWithHexString:intelHex.properties[@"cryptHash"]];
@@ -481,9 +481,10 @@
     }
     
     BOOL isFirmwareUpToDate = (_updatePages.count == 0);
-    FDFireflyDeviceLogInfo(@"FD010409", @"isFirmwareUpToDate = %@, commit %@ result = %u", isFirmwareUpToDate ? @"YES" : @"NO", _updateCommit != nil ? @"YES" : @"NO", _updateCommit.result);
+    BOOL success = isFirmwareUpToDate && (!_commit || ((_updateCommit != nil) && (_updateCommit.result == FD_UPDATE_COMMIT_SUCCESS)));
+    FDFireflyDeviceLogInfo(@"FD010409", @"success = %@, isFirmwareUpToDate = %@, commit %@ result = %u", success ? @"YES" : @"NO", isFirmwareUpToDate ? @"YES" : @"NO", _updateCommit != nil ? @"YES" : @"NO", _updateCommit.result);
     if ([_delegate respondsToSelector:@selector(firmwareUpdateTask:complete:)]) {
-        [_delegate firmwareUpdateTask:self complete:isFirmwareUpToDate];
+        [_delegate firmwareUpdateTask:self complete:success];
     }
     if (_reset && [self isOutOfDate] && isFirmwareUpToDate && (_updateCommit != nil) && (_updateCommit.result == FD_UPDATE_COMMIT_SUCCESS)) {
         FDFireflyDeviceLogInfo(@"FD010410", @"new firmware has been transferred and comitted - restarting device");
