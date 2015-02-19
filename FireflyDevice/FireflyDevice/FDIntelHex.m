@@ -164,9 +164,8 @@
     for (NSUInteger i = 0; i < self.data.length; i += 16) {
         if ((address & ~0xffff) != addressHighWord) {
             uint8_t addressBytes[] = {address >> 24, address >> 16};
-            [self addRecord:content address:0 type:2 data:[NSData dataWithBytes:addressBytes length:sizeof(addressBytes)]];
+            [self addRecord:content address:0 type:4 data:[NSData dataWithBytes:addressBytes length:sizeof(addressBytes)]];
             addressHighWord = address & ~0xffff;
-            
         }
         NSUInteger length = self.data.length - i;
         if (length > 16) {
