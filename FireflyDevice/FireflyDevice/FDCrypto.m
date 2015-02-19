@@ -16,8 +16,8 @@
 + (NSData *)sha1:(NSData *)data
 {
     NSMutableData *digest = [NSMutableData data];
-    digest.length = 20;
-    CC_SHA1([data bytes], (CC_LONG)[data length], (uint8_t *)digest.bytes);
+    digest.length = CC_SHA1_DIGEST_LENGTH;
+    CC_SHA1(data.bytes, (CC_LONG)data.length, digest.mutableBytes);
     return digest;
 }
 
