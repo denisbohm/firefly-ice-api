@@ -15,10 +15,9 @@
 
 + (NSData *)sha1:(NSData *)data
 {
-    NSMutableData *digest = [NSMutableData data];
-    digest.length = CC_SHA1_DIGEST_LENGTH;
-    CC_SHA1(data.bytes, (CC_LONG)data.length, digest.mutableBytes);
-    return digest;
+    uint8_t digest[CC_SHA1_DIGEST_LENGTH];
+    CC_SHA1(data.bytes, (CC_LONG)data.length, digest);
+    return [NSData dataWithBytes:digest length:sizeof(digest)];
 }
 
 + (NSData *)encrypt:(NSData *)key iv:(NSData *)iv data:(NSData *)data

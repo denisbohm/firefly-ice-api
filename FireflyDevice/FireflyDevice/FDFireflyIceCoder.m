@@ -667,7 +667,15 @@
             capabilities:(uint32_t)capabilities
                   commit:(NSData *)commit
 {
-    // !!! assert that data lengths are correct -denis
+    if (hash.length != 20) {
+        @throw [NSException exceptionWithName:@"InvalidHashLength" reason:@"invalid hash length" userInfo:nil];
+    }
+    if (cryptHash.length != 20) {
+        @throw [NSException exceptionWithName:@"InvalidCryptHashLength" reason:@"invalid crypt hash length" userInfo:nil];
+    }
+    if (cryptIv.length != 16) {
+        @throw [NSException exceptionWithName:@"InvalidCryptIVLength" reason:@"invalid crypt IV length" userInfo:nil];
+    }
     FDBinary *binary = [[FDBinary alloc] init];
     [binary putUInt8:FD_CONTROL_UPDATE_AREA_COMMIT];
     [binary putUInt8:area];

@@ -327,6 +327,7 @@
     [_syncAheadItems removeAllObjects];
     _syncUploadItems = nil;
     _isSyncDataPending = NO;
+    _lastPage = 0xfffffff0; // 0xfffffffe == no more data, 0xffffffff == ram data, low numbers are actual page numbers
     [self startSync];
 }
 
