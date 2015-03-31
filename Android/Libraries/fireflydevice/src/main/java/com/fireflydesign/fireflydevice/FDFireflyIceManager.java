@@ -13,11 +13,6 @@ import android.bluetooth.le.ScanResult;
 
 import android.os.ParcelUuid;
 
-/*
-        bluetoothManager = (BluetoothManager) activity.getSystemService(Context.BLUETOOTH_SERVICE);
-        BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
-*/
-
 public class FDFireflyIceManager {
 
     public interface Delegate {
@@ -30,7 +25,7 @@ public class FDFireflyIceManager {
 
     ScanCallback scanCallback;
 
-    public void FDFireflyIceManager(BluetoothAdapter bluetoothAdapter, UUID serviceUUID, Delegate delegate) {
+    public FDFireflyIceManager(BluetoothAdapter bluetoothAdapter, UUID serviceUUID, Delegate delegate) {
         this.bluetoothAdapter = bluetoothAdapter;
         this.serviceUUID = serviceUUID;
         this.delegate = delegate;
