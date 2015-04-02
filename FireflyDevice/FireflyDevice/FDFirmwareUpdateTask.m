@@ -184,7 +184,7 @@
         _area = FD_HAL_SYSTEM_AREA_APPLICATION;
 
         _commitFlags = 0;
-        _commitCryptIv = [NSMutableData dataWithLength:20];
+        _commitCryptIv = [NSMutableData dataWithLength:16];
     }
     return self;
 }
