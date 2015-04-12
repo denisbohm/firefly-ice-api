@@ -21,6 +21,12 @@ public class FDTimer {
     boolean enabled;
     FDTimer.Delegate invocation;
 
+    protected FDTimer(FDTimer.Delegate invocation, double timeout, FDTimer.Type type) {
+        this.invocation = invocation;
+        this.timeout = timeout;
+        this.type = type;
+    }
+
     public void setInvocation(FDTimer.Delegate invocation) {
         this.invocation = invocation;
     }

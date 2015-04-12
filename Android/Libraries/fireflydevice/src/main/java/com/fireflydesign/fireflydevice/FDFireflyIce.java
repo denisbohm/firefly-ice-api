@@ -26,7 +26,7 @@ public class FDFireflyIce implements FDFireflyIceChannel.Delegate {
 
     public FDFireflyIce() {
         channels = new HashMap<String, FDFireflyIceChannel>();
-        observable = new FDFireflyIceObservable();
+        observable = FDFireflyIceObservableInvocationHandler.newFireflyIceObservable();
         coder = new FDFireflyIceCoder(observable);
         executor = new FDExecutor();
         name = "anonymous";

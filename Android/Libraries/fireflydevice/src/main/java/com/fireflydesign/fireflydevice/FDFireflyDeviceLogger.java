@@ -8,6 +8,8 @@
 
 package com.fireflydesign.fireflydevice;
 
+import android.util.Log;
+
 public class FDFireflyDeviceLogger {
 
     public static void error(FDFireflyDeviceLog log, String format, Object ... arguments) {
@@ -61,6 +63,7 @@ public class FDFireflyDeviceLogger {
 			log.log(file, line, method, message);
 		} else {
 			String s = FDString.format("%s:%lu %s %s\n", file, line, method, message);
+            Log.d("Logger", s);
 			System.out.println(s);
 		}
 	}

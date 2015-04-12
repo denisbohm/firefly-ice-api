@@ -14,6 +14,7 @@ import java.util.GregorianCalendar;
 public class FDString {
 
     public static String format(String fmt, Object ... arguments) {
+        // !!! unimplemented -denis
         return fmt;
     }
 
