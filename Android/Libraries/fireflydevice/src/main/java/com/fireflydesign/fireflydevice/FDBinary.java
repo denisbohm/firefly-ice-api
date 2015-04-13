@@ -42,6 +42,17 @@ public class FDBinary {
         }
     }
 
+    public static String toHexString(byte[] array) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < array.length; ++i) {
+            if (i > 0) {
+                builder.append(", ");
+            }
+            builder.append(String.format("%02x", array[i]));
+        }
+        return builder.toString();
+    }
+
     public static String toString(byte[] bytes) {
         try {
             return new String(bytes, "UTF-8");

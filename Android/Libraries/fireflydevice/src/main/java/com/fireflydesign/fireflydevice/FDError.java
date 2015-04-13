@@ -32,7 +32,7 @@ public class FDError {
 
 	public String description() {
 		String s = userInfo.get(FDLocalizedDescriptionKey);
-		return FDString.format("%s %u %s", domain, code, s);
+		return FDString.format("%s %d %s", domain, code, s);
 	}
 
     public String domain;

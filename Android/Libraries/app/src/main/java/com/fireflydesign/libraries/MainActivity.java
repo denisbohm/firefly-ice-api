@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.fireflydesign.fireflydevice.FDDetour;
 import com.fireflydesign.fireflydevice.FDError;
+import com.fireflydesign.fireflydevice.FDFireflyDeviceLogger;
 import com.fireflydesign.fireflydevice.FDFireflyIce;
 import com.fireflydesign.fireflydevice.FDFireflyIceChannel;
 import com.fireflydesign.fireflydevice.FDFireflyIceChannelBLE;
@@ -132,6 +133,7 @@ public class MainActivity extends Activity implements FDFireflyIceManager.Delega
     @Override
     public void fireflyIceStatus(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceChannel.Status status) {
         if (status == FDFireflyIceChannel.Status.Open) {
+            FDFireflyDeviceLogger.info(null, "executing hello task");
             fireflyIce.executor.execute(new FDHelloTask(fireflyIce, channel, null));
         }
     }

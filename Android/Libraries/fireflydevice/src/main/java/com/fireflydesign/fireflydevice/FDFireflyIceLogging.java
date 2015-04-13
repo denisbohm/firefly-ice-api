@@ -9,10 +9,10 @@ public class FDFireflyIceLogging {
     public String description() {
         String s = "logging";
         if ((flags & FDFireflyIceCoder.FD_CONTROL_LOGGING_STATE) != 0) {
-            s += FDString.format(" storage=%", (state & FDFireflyIceCoder.FD_CONTROL_LOGGING_STORAGE) != 0 ? "YES" : "NO");
+            s += FDString.format(" storage=%s", (state & FDFireflyIceCoder.FD_CONTROL_LOGGING_STORAGE) != 0 ? "YES" : "NO");
         }
         if ((flags & FDFireflyIceCoder.FD_CONTROL_LOGGING_COUNT) != 0) {
-            s += FDString.format(" count=%u", count);
+            s += FDString.format(" count=%d", count);
         }
         return s;
     }

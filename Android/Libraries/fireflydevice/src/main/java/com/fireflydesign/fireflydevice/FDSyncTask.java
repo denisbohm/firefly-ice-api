@@ -200,7 +200,7 @@ public class FDSyncTask extends FDExecutor.Task implements FDFireflyIceObserver 
 		int pending = _syncAheadItems.size() + _syncUploadItems.size();
 		if (pending < limit) {
 			if (!_isSyncDataPending) {
-				FDFireflyDeviceLogger.info(log, "requesting sync data with offset %u", pending);
+				FDFireflyDeviceLogger.info(log, "requesting sync data with offset %d", pending);
 				fireflyIce.coder.sendSyncStart(channel, pending);
 				startTimer();
 				_isSyncDataPending = true;
@@ -208,7 +208,7 @@ public class FDSyncTask extends FDExecutor.Task implements FDFireflyIceObserver 
 				FDFireflyDeviceLogger.info(log, "waiting for pending sync data before starting new sync data request");
 			}
 		} else {
-			FDFireflyDeviceLogger.info(log, "waiting for upload complete to sync data with offset %u", pending);
+			FDFireflyDeviceLogger.info(log, "waiting for upload complete to sync data with offset %d", pending);
 		}
 	}
 
@@ -569,7 +569,7 @@ public class FDSyncTask extends FDExecutor.Task implements FDFireflyIceObserver 
 		short length = binary.getUInt16();
 		short hash = binary.getUInt16();
 		int type = binary.getUInt32();
-		FDFireflyDeviceLogger.info(log, "syncData: page=%u length=%u hash=0x%04x type=0x%08x", page, length, hash, type);
+		FDFireflyDeviceLogger.info(log, "syncData: page=%d length=%d hash=0x%04x type=0x%08x", page, length, hash, type);
 
 		// No sync data left? If so wait for uploads to complete or finish up now if there aren't any open uploads.
 		if (page == 0xfffffffe) {
