@@ -14,9 +14,27 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.fireflydesign.fireflydevice.FDDetour;
+import com.fireflydesign.fireflydevice.FDError;
 import com.fireflydesign.fireflydevice.FDFireflyIce;
+import com.fireflydesign.fireflydevice.FDFireflyIceChannel;
 import com.fireflydesign.fireflydevice.FDFireflyIceChannelBLE;
+import com.fireflydesign.fireflydevice.FDFireflyIceDiagnostics;
+import com.fireflydesign.fireflydevice.FDFireflyIceDirectTestModeReport;
+import com.fireflydesign.fireflydevice.FDFireflyIceHardwareId;
+import com.fireflydesign.fireflydevice.FDFireflyIceLock;
+import com.fireflydesign.fireflydevice.FDFireflyIceLogging;
 import com.fireflydesign.fireflydevice.FDFireflyIceManager;
+import com.fireflydesign.fireflydevice.FDFireflyIceObserver;
+import com.fireflydesign.fireflydevice.FDFireflyIcePower;
+import com.fireflydesign.fireflydevice.FDFireflyIceReset;
+import com.fireflydesign.fireflydevice.FDFireflyIceRetained;
+import com.fireflydesign.fireflydevice.FDFireflyIceSectorHash;
+import com.fireflydesign.fireflydevice.FDFireflyIceSensing;
+import com.fireflydesign.fireflydevice.FDFireflyIceStorage;
+import com.fireflydesign.fireflydevice.FDFireflyIceUpdateCommit;
+import com.fireflydesign.fireflydevice.FDFireflyIceVersion;
+import com.fireflydesign.fireflydevice.FDHelloTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class MainActivity extends Activity implements FDFireflyIceManager.Delegate {
+public class MainActivity extends Activity implements FDFireflyIceManager.Delegate, FDFireflyIceObserver {
 
     FDFireflyIceManager fireflyIceManager;
     Map<String, Map<String, Object>> discovered;
@@ -59,7 +77,8 @@ public class MainActivity extends Activity implements FDFireflyIceManager.Delega
         }
 
         FDFireflyIce fireflyIce = new FDFireflyIce();
-        FDFireflyIceChannelBLE channel = new FDFireflyIceChannelBLE(this, bluetoothDevice);
+        fireflyIce.observable.addObserver(this);
+        FDFireflyIceChannelBLE channel = new FDFireflyIceChannelBLE(this, "310a0001-1b95-5091-b0bd-b7a681846399", bluetoothDevice);
         fireflyIce.addChannel(channel, "BLE");
 
         map = new HashMap();
@@ -109,4 +128,137 @@ public class MainActivity extends Activity implements FDFireflyIceManager.Delega
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void fireflyIceStatus(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceChannel.Status status) {
+        if (status == FDFireflyIceChannel.Status.Open) {
+            fireflyIce.executor.execute(new FDHelloTask(fireflyIce, channel, null));
+        }
+    }
+
+    @Override
+    public void fireflyIceDetourError(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDDetour detour, FDError error) {
+
+    }
+
+    @Override
+    public void fireflyIcePing(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, byte[] data) {
+
+    }
+
+    @Override
+    public void fireflyIceVersion(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceVersion version) {
+
+    }
+
+    @Override
+    public void fireflyIceHardwareId(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceHardwareId hardwareId) {
+
+    }
+
+    @Override
+    public void fireflyIceBootVersion(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceVersion bootVersion) {
+
+    }
+
+    @Override
+    public void fireflyIceDebugLock(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, boolean debugLock) {
+
+    }
+
+    @Override
+    public void fireflyIceTime(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, double time) {
+
+    }
+
+    @Override
+    public void fireflyIcePower(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIcePower power) {
+
+    }
+
+    @Override
+    public void fireflyIceSite(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, String site) {
+
+    }
+
+    @Override
+    public void fireflyIceReset(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceReset reset) {
+
+    }
+
+    @Override
+    public void fireflyIceStorage(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceStorage storage) {
+
+    }
+
+    @Override
+    public void fireflyIceMode(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, int mode) {
+
+    }
+
+    @Override
+    public void fireflyIceTxPower(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, int txPower) {
+
+    }
+
+    @Override
+    public void fireflyIceLock(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceLock lock) {
+
+    }
+
+    @Override
+    public void fireflyIceLogging(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceLogging logging) {
+
+    }
+
+    @Override
+    public void fireflyIceName(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, String name) {
+
+    }
+
+    @Override
+    public void fireflyIceDiagnostics(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceDiagnostics diagnostics) {
+
+    }
+
+    @Override
+    public void fireflyIceRetained(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceRetained retained) {
+
+    }
+
+    @Override
+    public void fireflyIceDirectTestModeReport(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceDirectTestModeReport directTestModeReport) {
+
+    }
+
+    @Override
+    public void fireflyIceExternalHash(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, byte[] externalHash) {
+
+    }
+
+    @Override
+    public void fireflyIcePageData(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, byte[] pageData) {
+
+    }
+
+    @Override
+    public void fireflyIceSectorHashes(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceSectorHash[] sectorHashes) {
+
+    }
+
+    @Override
+    public void fireflyIceUpdateCommit(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceUpdateCommit updateCommit) {
+
+    }
+
+    @Override
+    public void fireflyIceSensing(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceSensing sensing) {
+
+    }
+
+    @Override
+    public void fireflyIceSync(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, byte[] syncData) {
+
+    }
+
 }

@@ -42,10 +42,12 @@ public class FDFireflyIce implements FDFireflyIceChannel.Delegate {
 	}
 
 	public void removeChannel(String type)  {
-		channels.remove(type);
+		FDFireflyIceChannel channel = channels.remove(type);
+        channel.setDelegate(null);
 	}
 
 	public void fireflyIceChannelStatus(FDFireflyIceChannel channel, FDFireflyIceChannel.Status status) {
+        observable.fireflyIceStatus(this, channel, status);
 		executor.setRun(status == FDFireflyIceChannel.Status.Open);
 	}
 

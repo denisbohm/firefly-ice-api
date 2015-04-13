@@ -3,6 +3,7 @@ package com.fireflydesign.fireflydevice;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,6 +19,10 @@ class FDFireflyIceObservableInvocationHandler implements InvocationHandler {
             new Class[]{FDFireflyIceObservable.class},
             new FDFireflyIceObservableInvocationHandler()
         );
+    }
+
+    FDFireflyIceObservableInvocationHandler() {
+        observers = new ArrayList<FDFireflyIceObserver>();
     }
 
     public void addObserver(FDFireflyIceObserver observer) {

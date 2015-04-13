@@ -59,7 +59,10 @@ public class FDExecutor {
     FDTimer timer;
 
     public FDExecutor() {
-		timeoutCheckInterval = 5;
+        tasks = new ArrayList<Task>();
+        appointmentTasks = new ArrayList<Task>();
+
+        timeoutCheckInterval = 5;
         timerFactory = new FDTimerFactory();
 		run = false;
 		currentFeedTime = 0;

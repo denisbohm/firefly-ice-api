@@ -11,6 +11,7 @@ package com.fireflydesign.fireflydevice;
 import android.app.Activity;
 
 import java.util.List;
+import java.util.UUID;
 
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
@@ -28,16 +29,20 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
     FDFireflyIceChannel.Status status;
 
     Activity activity;
+    UUID bluetoothGattCharacteristicUUID;
+    BluetoothDevice bluetoothDevice;
 
     BluetoothGattCallback bluetoothGattCallback;
-    BluetoothDevice bluetoothDevice;
     BluetoothGatt bluetoothGatt;
     BluetoothGattCharacteristic bluetoothGattCharacteristic;
 
-    public FDFireflyIceChannelBLE(Activity activity, BluetoothDevice bluetoothDevice) {
+    public FDFireflyIceChannelBLE(Activity activity, String bluetoothGattServiceUUIDString, BluetoothDevice bluetoothDevice) {
         this.detour = new FDDetour();
 
         this.activity = activity;
+        StringBuffer bluetoothGattCharacteristicUUIDString = new StringBuffer(bluetoothGattServiceUUIDString);
+        bluetoothGattCharacteristicUUIDString.replace(4, 8, "0002");
+        this.bluetoothGattCharacteristicUUID = UUID.fromString(bluetoothGattCharacteristicUUIDString.toString());
         this.bluetoothDevice = bluetoothDevice;
 
         bluetoothGattCallback = new BluetoothGattCallback() {
@@ -56,19 +61,7 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
 
             @Override
             public void onServicesDiscovered(final BluetoothGatt gatt, final int status) {
-                List<BluetoothGattService> services = bluetoothGatt.getServices();
-                for (BluetoothGattService service : services) {
-                    List<BluetoothGattCharacteristic> characteristics = service.getCharacteristics();
-                    for (BluetoothGattCharacteristic characteristic : characteristics) {
-                        for (BluetoothGattDescriptor descriptor : characteristic.getDescriptors()) {
-                            //find descriptor UUID that matches Client Characteristic Configuration (0x2902)
-                            // and then call setValue on that descriptor
-                            bluetoothGattCharacteristic = characteristic;
-                            descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-                            bluetoothGatt.writeDescriptor(descriptor);
-                        }
-                    }
-                }
+                servicesDiscovered();
             }
         };
     }
@@ -104,11 +97,6 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
 		}
 
         bluetoothGatt = bluetoothDevice.connectGatt(activity, false, bluetoothGattCallback);
-
-		status = FDFireflyIceChannel.Status.Open;
-		if (delegate != null) {
-			delegate.fireflyIceChannelStatus(this, status);
-		}
 	}
 
 	public void close() {
@@ -121,6 +109,28 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
 			delegate.fireflyIceChannelStatus(this, status);
 		}
 	}
+
+    void servicesDiscovered() {
+        List<BluetoothGattService> services = bluetoothGatt.getServices();
+        for (BluetoothGattService service : services) {
+            List<BluetoothGattCharacteristic> characteristics = service.getCharacteristics();
+            for (BluetoothGattCharacteristic characteristic : characteristics) {
+                UUID uuid = characteristic.getUuid();
+                if (uuid.equals(bluetoothGattCharacteristicUUID)) {
+                    bluetoothGattCharacteristic = characteristic;
+                    bluetoothGatt.setCharacteristicNotification(bluetoothGattCharacteristic, true);
+                    break;
+                }
+            }
+        }
+
+        if (bluetoothGattCharacteristic != null) {
+            this.status = FDFireflyIceChannel.Status.Open;
+            if (delegate != null) {
+                delegate.fireflyIceChannelStatus(this, status);
+            }
+        }
+    }
 
 	public void fireflyIceChannelSend(byte[] data) {
 		FDDetourSource source = new FDDetourSource(20, FDBinary.toList(data));

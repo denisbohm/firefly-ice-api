@@ -59,7 +59,6 @@ public class FDFireflyIceManager {
 
     void scanDiscovery(ScanResult result) {
         ScanRecord record = result.getScanRecord();
-        String name = record.getDeviceName();
         List<ParcelUuid> parcelUuids = record.getServiceUuids();
         if (parcelUuids != null) {
             for (ParcelUuid parcelUuid : parcelUuids) {

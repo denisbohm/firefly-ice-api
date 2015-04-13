@@ -56,10 +56,13 @@ public class FDFireflyIceTaskSteps extends FDExecutor.Task implements FDFireflyI
             try {
                 Method method = clazz.getDeclaredMethod(name);
                 next(method);
+                return;
+            } catch (NoSuchMethodException e) {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
+        throw new RuntimeException("FDFireflyIceTaskSteps:next no such method " + name);
     }
 
     void done() {

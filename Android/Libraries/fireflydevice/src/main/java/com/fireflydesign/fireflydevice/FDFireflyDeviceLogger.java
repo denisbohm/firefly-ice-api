@@ -56,14 +56,15 @@ public class FDFireflyDeviceLogger {
 			file = file.substring(index + 1);
 		}
 
+        String s = FDString.format("%s:%lu %s %s\n", file, line, method, message);
+        Log.d("Logger", s);
+
 		if (log == null) {
 			log = fireflyDeviceLogger;
 		}
 		if (log != null) {
 			log.log(file, line, method, message);
 		} else {
-			String s = FDString.format("%s:%lu %s %s\n", file, line, method, message);
-            Log.d("Logger", s);
 			System.out.println(s);
 		}
 	}
