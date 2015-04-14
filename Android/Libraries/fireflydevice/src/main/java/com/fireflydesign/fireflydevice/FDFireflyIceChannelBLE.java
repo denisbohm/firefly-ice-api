@@ -64,7 +64,16 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
             public void onCharacteristicWrite(final BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic, final int status) {
                 activity.runOnUiThread(new Runnable() {
                     public void run() {
-                        characteristicWrite(gatt, characteristic, status);
+                        writeComplete(gatt, status);
+                    }
+                });
+            }
+
+            @Override
+            public void onDescriptorWrite(final BluetoothGatt gatt, final BluetoothGattDescriptor descriptor, final int status) {
+                activity.runOnUiThread(new Runnable() {
+                    public void run() {
+                        writeComplete(gatt, status);
                     }
                 });
             }
@@ -168,6 +177,7 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
                     BluetoothGattDescriptor descriptor = characteristic.getDescriptor(clientCharacteristicConfigurationUuid);
                     descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
                     bluetoothGatt.writeDescriptor(descriptor);
+                    writePending = true;
                     break;
                 }
             }
@@ -225,8 +235,8 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
         }
     }
 
-    void characteristicWrite(final BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic, final int status) {
-        FDFireflyDeviceLogger.debug(log, "didWriteValueForCharacteristic %d", status);
+    void writeComplete(final BluetoothGatt gatt, final int status) {
+        FDFireflyDeviceLogger.debug(log, "writeComplete %d", status);
         writePending = false;
         checkWrite();
     }
