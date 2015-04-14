@@ -43,7 +43,8 @@ public class FDFireflyDeviceLogger {
 	}
 
 	static void add(FDFireflyDeviceLog log, String format, Object ... arguments) {
-        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        Thread thread = Thread.currentThread();
+        StackTraceElement[] stackTrace = thread.getStackTrace();
         StackTraceElement caller = stackTrace[2];
         String file = caller.getFileName();
         int line = caller.getLineNumber();
@@ -63,7 +64,7 @@ public class FDFireflyDeviceLogger {
 		if (log != null) {
 			log.log(file, line, method, message);
 		} else {
-            String s = FDString.format("%s:%d %s %s\n", file, line, method, message);
+            String s = FDString.format("%s %s:%d %s %s\n", thread.getName(), file, line, method, message);
             Log.i("Logger", s);
 		}
 	}

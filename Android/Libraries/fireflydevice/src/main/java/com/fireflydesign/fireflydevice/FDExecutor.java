@@ -8,6 +8,8 @@
 
 package com.fireflydesign.fireflydevice;
 
+import android.app.Activity;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -58,12 +60,12 @@ public class FDExecutor {
     double currentFeedTime;
     FDTimer timer;
 
-    public FDExecutor() {
+    public FDExecutor(Activity activity) {
         tasks = new ArrayList<Task>();
         appointmentTasks = new ArrayList<Task>();
 
         timeoutCheckInterval = 5;
-        timerFactory = new FDTimerFactory();
+        timerFactory = new FDTimerFactory(activity);
 		run = false;
 		currentFeedTime = 0;
 	}

@@ -110,7 +110,7 @@ public class FDFireflyIceTaskSteps extends FDExecutor.Task implements FDFireflyI
 		FDBinary binary = new FDBinary(FDBinary.toList(data));
 		int invocationId = binary.getUInt32();
 		if (this.invocationId != invocationId) {
-			FDFireflyDeviceLogger.warn(log, "unexpected ping 0x%08x (expected 0x%08x)", invocationId, invocationId);
+			FDFireflyDeviceLogger.warn(log, "unexpected ping 0x%08x (expected 0x%08x)", invocationId, this.invocationId);
 			return;
 		}
 

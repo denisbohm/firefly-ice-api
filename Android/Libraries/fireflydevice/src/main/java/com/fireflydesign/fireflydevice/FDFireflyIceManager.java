@@ -3,6 +3,7 @@ package com.fireflydesign.fireflydevice;
 import java.util.List;
 import java.util.UUID;
 
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 
@@ -19,26 +20,34 @@ public class FDFireflyIceManager {
         void discovered(FDFireflyIceManager manager, BluetoothDevice device);
     }
 
+    Activity activity;
     BluetoothAdapter bluetoothAdapter;
     UUID serviceUUID;
     Delegate delegate;
 
     ScanCallback scanCallback;
 
-    public FDFireflyIceManager(BluetoothAdapter bluetoothAdapter, UUID serviceUUID, Delegate delegate) {
+    public FDFireflyIceManager(final Activity activity, BluetoothAdapter bluetoothAdapter, UUID serviceUUID, Delegate delegate) {
+        this.activity = activity;
         this.bluetoothAdapter = bluetoothAdapter;
         this.serviceUUID = serviceUUID;
         this.delegate = delegate;
 
         scanCallback = new ScanCallback() {
 
-            public void onScanResult(int callbackType, ScanResult result) {
-                scanDiscovery(result);
+            public void onScanResult(final int callbackType, final ScanResult result) {
+                activity.runOnUiThread(
+                        new Runnable() {
+                            public void run() {
+                                scanResult(result);
+                            }
+                        }
+                );
             }
 
             public void onBatchScanResults(List<ScanResult> results) {
                 for (ScanResult result : results) {
-                    scanDiscovery(result);
+                    onScanResult(0, result);
                 }
             }
 
@@ -57,7 +66,7 @@ public class FDFireflyIceManager {
         }
     }
 
-    void scanDiscovery(ScanResult result) {
+    void scanResult(ScanResult result) {
         ScanRecord record = result.getScanRecord();
         List<ParcelUuid> parcelUuids = record.getServiceUuids();
         if (parcelUuids != null) {

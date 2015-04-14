@@ -66,11 +66,11 @@ public class FDBinary {
 	}
 
     public static short unpackUInt16(List<Byte> buffer) {
-		return (short)((buffer.get(1) << 8) | buffer.get(0));
+		return (short)(((buffer.get(1) & 0xff) << 8) | (buffer.get(0) & 0xff));
 	}
 
     public static int unpackUInt32(List<Byte> buffer) {
-		return (buffer.get(3) << 24) | (buffer.get(2) << 16) | (buffer.get(1) << 8) | buffer.get(0);
+		return ((buffer.get(3) & 0xff) << 24) | ((buffer.get(2) & 0xff) << 16) | ((buffer.get(1) & 0xff) << 8) | (buffer.get(0) & 0xff);
 	}
 
     public static long unpackUInt64(List<Byte> buffer) {

@@ -36,6 +36,7 @@ import com.fireflydesign.fireflydevice.FDFireflyIceStorage;
 import com.fireflydesign.fireflydevice.FDFireflyIceUpdateCommit;
 import com.fireflydesign.fireflydevice.FDFireflyIceVersion;
 import com.fireflydesign.fireflydevice.FDHelloTask;
+import com.fireflydesign.fireflydevice.FDTimerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,7 +65,7 @@ public class MainActivity extends Activity implements FDFireflyIceManager.Delega
         BluetoothManager bluetoothManager = (BluetoothManager)getSystemService(Context.BLUETOOTH_SERVICE);
         BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
         if (bluetoothAdapter != null) {
-            fireflyIceManager = new FDFireflyIceManager(bluetoothAdapter, serviceUUID, this);
+            fireflyIceManager = new FDFireflyIceManager(this, bluetoothAdapter, serviceUUID, this);
         } else {
             TextView statusTextView = (TextView)findViewById(R.id.statusTextView);
             statusTextView.setText("Bluetooth is not available!");
@@ -77,7 +78,7 @@ public class MainActivity extends Activity implements FDFireflyIceManager.Delega
             return;
         }
 
-        FDFireflyIce fireflyIce = new FDFireflyIce();
+        FDFireflyIce fireflyIce = new FDFireflyIce(this);
         fireflyIce.observable.addObserver(this);
         FDFireflyIceChannelBLE channel = new FDFireflyIceChannelBLE(this, "310a0001-1b95-5091-b0bd-b7a681846399", bluetoothDevice);
         fireflyIce.addChannel(channel, "BLE");
@@ -99,6 +100,7 @@ public class MainActivity extends Activity implements FDFireflyIceManager.Delega
     }
 
     public void onConnectButtonClicked(View view) {
+        FDFireflyDeviceLogger.debug(null, "opening firefly device");
         ListView listView = (ListView)findViewById(R.id.listView);
         int position = listView.getCheckedItemPosition();
         String address = listViewItems.get(position);
