@@ -15,6 +15,7 @@
 @property NSUInteger index;
 @property uint8_t sequenceNumber;
 
+
 @end
 
 @implementation FDDetourSource
@@ -35,9 +36,22 @@
 - (NSData *)next
 {
     if (_index >= _data.length) {
+        if (_endDate == nil) {
+            _endDate = [NSDate date];
+            
+            NSUInteger rate = 0;
+            NSTimeInterval duration = [_endDate timeIntervalSinceDate:_startDate];
+            if (duration > 0.0) {
+                rate = (NSUInteger)(_data.length / duration);
+            }
+            NSLog(@"detour source success: %lu B (%lu B/s)", (unsigned long)_data.length, (unsigned long)rate);
+        }
         return nil;
     }
     
+    if (_startDate == nil) {
+        _startDate = [NSDate date];
+    }
     NSUInteger n = _data.length - _index;
     if (n > (_size - 1)) {
         n = _size - 1;

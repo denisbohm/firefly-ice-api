@@ -14,4 +14,7 @@
 
 - (NSData *)next;
 
+@property(readonly) NSDate *startDate;
+@property(readonly) NSDate *endDate;
+
 @end

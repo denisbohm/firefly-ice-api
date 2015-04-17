@@ -55,13 +55,16 @@
 
 @property CBUUID *serviceUUID;
 @property CBUUID *characteristicUUID;
+@property CBUUID *characteristicNoResponseUUID;
 
 @property CBCentralManager *centralManager;
 @property CBPeripheral *peripheral;
 @property CBCharacteristic *characteristic;
+@property CBCharacteristic *characteristicNoResponse;
 @property FDDetour *detour;
 @property NSMutableArray *detourSources;
-@property BOOL writePending;
+@property NSUInteger writePending;
+@property NSUInteger writePendingLimit;
 
 @end
 
@@ -74,8 +77,8 @@
     if (self = [super init]) {
         _serviceUUID = serviceUUID;
         NSString *baseUUID = [FDFireflyIceChannelBLE CBUUIDString:serviceUUID];
-        NSString *s = [baseUUID stringByReplacingCharactersInRange:NSMakeRange(4, 4) withString:@"0002"];
-        _characteristicUUID = [CBUUID UUIDWithString:s];
+        _characteristicUUID = [CBUUID UUIDWithString:[baseUUID stringByReplacingCharactersInRange:NSMakeRange(4, 4) withString:@"0002"]];
+        _characteristicNoResponseUUID = [CBUUID UUIDWithString:[baseUUID stringByReplacingCharactersInRange:NSMakeRange(4, 4) withString:@"0003"]];
 
         _peripheralObservable = [FDFireflyIceChannelBLEPeripheralObservable peripheralObservable];
         [_peripheralObservable addObserver:self];
@@ -97,6 +100,8 @@
                 _status = FDFireflyIceChannelStatusClosed;
             
         }
+        
+        _writePendingLimit = 1;
     }
     return self;
 }
@@ -120,9 +125,11 @@
         [_peripheral setNotifyValue:NO forCharacteristic:_characteristic];
     }
     _characteristic = nil;
+    _characteristicNoResponse = nil;
     [_detour clear];
     [_detourSources removeAllObjects];
-    _writePending = NO;
+    _writePending = 0;
+    _writePendingLimit = 1;
 }
 
 - (void)close
@@ -154,7 +161,7 @@
 - (void)didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 {
 //    FDFireflyDeviceLogDebug(@"didWriteValueForCharacteristic %@", error);
-    _writePending = NO;
+    _writePending = 0;
     [self checkWrite];
 }
 
@@ -197,15 +204,19 @@
 
 - (void)checkWrite
 {
-    while (_detourSources.count > 0) {
+    while ((_writePending < _writePendingLimit) && (_detourSources.count > 0)) {
         FDDetourSource *detourSource = [_detourSources objectAtIndex:0];
         NSData *subdata = [detourSource next];
         if (subdata != nil) {
-            [_peripheral writeValue:subdata forCharacteristic:_characteristic type:CBCharacteristicWriteWithResponse];
-            _writePending = YES;
-            break;
+            ++_writePending;
+            if (_writePending < _writePendingLimit) {
+                [_peripheral writeValue:subdata forCharacteristic:_characteristicNoResponse type:CBCharacteristicWriteWithoutResponse];
+            } else {
+                [_peripheral writeValue:subdata forCharacteristic:_characteristic type:CBCharacteristicWriteWithResponse];
+            }
+        } else {
+            [_detourSources removeObjectAtIndex:0];
         }
-        [_detourSources removeObjectAtIndex:0];
     }
 }
 
@@ -283,11 +294,18 @@
     for (CBCharacteristic *characteristic in service.characteristics) {
 //        FDFireflyDeviceLogDebug(@"didDiscoverServiceCharacteristic %@", [FDFireflyIceChannelBLE CBUUIDString:characteristic.UUID]);
         if ([_characteristicUUID isEqual:characteristic.UUID]) {
-//            FDFireflyDeviceLogDebug(@"found characteristic value");
+//            FDFireflyDeviceLogDebug(@"found characteristic");
             _characteristic = characteristic;
             
             [_peripheral setNotifyValue:YES forCharacteristic:_characteristic];
+        } else
+        if ([_characteristicNoResponseUUID isEqual:characteristic.UUID]) {
+            NSLog(@"found characteristic no response");
+            _characteristicNoResponse = characteristic;
         }
+    }
+    if ((_characteristic != nil) && (_characteristicNoResponse != nil)) {
+        _writePendingLimit = 12;
     }
 }
 

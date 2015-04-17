@@ -356,6 +356,8 @@
     [self cancelTimer];
     [_fireflyIce.executor feedWatchdog:self];
     
+    self.totalBytesReceived += data.length;
+    
     FDBinary *binary = [[FDBinary alloc] initWithData:data];
     NSData *product __unused = [binary getData:8];
     NSData *unique __unused = [binary getData:8];

@@ -85,6 +85,7 @@ enum {
 @property NSMutableDictionary *decoderByType;
 @property id<FDPullTaskUpload> upload;
 @property NSUInteger pullAheadLimit;
+@property NSUInteger totalBytesReceived;
 
 @property BOOL reschedule;
 

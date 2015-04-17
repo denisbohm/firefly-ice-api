@@ -26,6 +26,8 @@ enum {
 @property(readonly) FDDetourState state;
 @property(readonly) NSData *data;
 @property(readonly) NSError *error;
+@property(readonly) NSDate *startDate;
+@property(readonly) NSDate *endDate;
 
 - (id)init;
 - (void)clear;

@@ -59,8 +59,15 @@
     }
     [_buffer appendData:data];
     if (_buffer.length >= _length) {
+        _endDate = [NSDate date];
         _state = FDDetourStateSuccess;
-//        FDFireflyDeviceLogInfo(@"detour success: %d %ld %@", _length, (unsigned long)_buffer.length, _buffer);
+        
+        NSUInteger rate = 0;
+        NSTimeInterval duration = [_endDate timeIntervalSinceDate:_startDate];
+        if (duration > 0.0) {
+            rate = (NSUInteger)(_buffer.length / duration);
+        }
+        NSLog(@"detour success: %lu B (%lu B/s)", (unsigned long)_buffer.length, (unsigned long)rate);
     } else {
         ++_sequenceNumber;
     }
@@ -71,6 +78,7 @@
         [self detourError:@"data.length < 2"];
         return;
     }
+    _startDate = [NSDate date];
     FDBinary *binary = [[FDBinary alloc] initWithData:data];
     _state = FDDetourStateIntermediate;
     _length = [binary getUInt16];
