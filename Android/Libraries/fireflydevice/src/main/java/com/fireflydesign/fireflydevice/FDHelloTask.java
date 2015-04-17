@@ -143,10 +143,10 @@ public class FDHelloTask extends FDFireflyIceTaskSteps {
 			if (time != 0) {
 				double offset = time - this.time;
 				if (Math.abs(offset) > maxOffset) {
-					FDFireflyDeviceLogger.info(log, "time is off by %0.3f seconds for hw %s fw %s (last reset %s)", offset, hardwareIdDescription, versionDescription, resetDescription);
+					FDFireflyDeviceLogger.info(log, "time is off by %.3f seconds for hw %s fw %s (last reset %s)", offset, hardwareIdDescription, versionDescription, resetDescription);
 					setTime();
 				} else {
-					//            FDFireflyDeviceLogDebug(@"time is off by %0.3f seconds for hw %@ fw %@", offset, self.fireflyIce.hardwareId, self.fireflyIce.version);
+					//            FDFireflyDeviceLogDebug(@"time is off by %.3f seconds for hw %s fw %s", offset, self.fireflyIce.hardwareId, self.fireflyIce.version);
 				}
 			}
 		}

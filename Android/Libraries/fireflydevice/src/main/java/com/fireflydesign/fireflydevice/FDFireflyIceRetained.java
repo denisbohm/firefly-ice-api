@@ -6,7 +6,7 @@ public class FDFireflyIceRetained {
     public byte[] data;
 
     public String description() {
-        return FDString.format("retained %@", retained ? "YES" : "NO");
+        return FDString.format("retained %s", retained ? "YES" : "NO");
     }
 
 }

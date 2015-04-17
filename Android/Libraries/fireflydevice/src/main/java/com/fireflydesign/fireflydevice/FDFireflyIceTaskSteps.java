@@ -36,14 +36,14 @@ public class FDFireflyIceTaskSteps extends FDExecutor.Task implements FDFireflyI
 	}
 
     void next(Method invocation) {
-        //    FDFireflyDeviceLogDebug(@"queing next step %@", NSStringFromSelector(selector));
+        //    FDFireflyDeviceLogDebug(@"queing next step %s", NSStringFromSelector(selector));
 
         fireflyIce.executor.feedWatchdog(this);
 
         this.invocation = invocation;
         invocationId = random.nextInt();
 
-        //    FDFireflyDeviceLogDebug(@"setup ping 0x%08x %@ %@", invocationId, NSStringFromClass([self class]), NSStringFromSelector(_invocation.selector));
+        //    FDFireflyDeviceLogDebug(@"setup ping 0x%08x %s %s", invocationId, NSStringFromClass([self class]), NSStringFromSelector(_invocation.selector));
 
         FDBinary binary = new FDBinary();
         binary.putUInt32(invocationId);
@@ -56,10 +56,13 @@ public class FDFireflyIceTaskSteps extends FDExecutor.Task implements FDFireflyI
             try {
                 Method method = clazz.getDeclaredMethod(name);
                 next(method);
+                return;
+            } catch (NoSuchMethodException e) {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
+        throw new RuntimeException("FDFireflyIceTaskSteps:next no such method " + name);
     }
 
     void done() {
@@ -68,27 +71,27 @@ public class FDFireflyIceTaskSteps extends FDExecutor.Task implements FDFireflyI
     }
 
     public void executorTaskStarted(FDExecutor executor) {
-		//    FDFireflyDeviceLogDebug(@"%@ task started", NSStringFromClass([self class]));
+		//    FDFireflyDeviceLogDebug(@"%s task started", NSStringFromClass([self class]));
 		fireflyIce.observable.addObserver(this);
 	}
 
     public void executorTaskSuspended(FDExecutor executor) {
-		//    FDFireflyDeviceLogDebug(@"%@ task suspended", NSStringFromClass([self class]));
+		//    FDFireflyDeviceLogDebug(@"%s task suspended", NSStringFromClass([self class]));
 		fireflyIce.observable.removeObserver(this);
 	}
 
     public void executorTaskResumed(FDExecutor executor) {
-		//    FDFireflyDeviceLogDebug(@"%@ task resumed", NSStringFromClass([self class]));
+		//    FDFireflyDeviceLogDebug(@"%s task resumed", NSStringFromClass([self class]));
 		fireflyIce.observable.addObserver(this);
 	}
 
     public void executorTaskCompleted(FDExecutor executor) {
-		//    FDFireflyDeviceLogDebug(@"%@ task completed", NSStringFromClass([self class]));
+		//    FDFireflyDeviceLogDebug(@"%s task completed", NSStringFromClass([self class]));
 		fireflyIce.observable.removeObserver(this);
 	}
 
     public void executorTaskFailed(FDExecutor executor, FDError error) {
-		//    FDFireflyDeviceLogDebug(@"%@ task failed with error %@", NSStringFromClass([self class]), error);
+		//    FDFireflyDeviceLogDebug(@"%s task failed with error %s", NSStringFromClass([self class]), error);
 		fireflyIce.observable.removeObserver(this);
 	}
 
@@ -107,12 +110,12 @@ public class FDFireflyIceTaskSteps extends FDExecutor.Task implements FDFireflyI
 		FDBinary binary = new FDBinary(FDBinary.toList(data));
 		int invocationId = binary.getUInt32();
 		if (this.invocationId != invocationId) {
-			FDFireflyDeviceLogger.warn(log, "unexpected ping 0x%08x (expected 0x%08x)", invocationId, invocationId);
+			FDFireflyDeviceLogger.warn(log, "unexpected ping 0x%08x (expected 0x%08x)", invocationId, this.invocationId);
 			return;
 		}
 
 		if (invocation != null) {
-			//        FDFireflyDeviceLogDebug(@"invoking step %@", NSStringFromSelector(_invocation.selector));
+			//        FDFireflyDeviceLogDebug(@"invoking step %s", NSStringFromSelector(_invocation.selector));
             Method invocation = this.invocation;
 			this.invocation = null;
             try {

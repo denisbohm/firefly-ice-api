@@ -8,6 +8,8 @@
 
 package com.fireflydesign.fireflydevice;
 
+import android.app.Activity;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,11 +26,11 @@ public class FDFireflyIce implements FDFireflyIceChannel.Delegate {
     public FDFireflyIceHardwareId hardwareId;
     public FDFireflyIceVersion bootVersion;
 
-    public FDFireflyIce() {
+    public FDFireflyIce(Activity activity) {
         channels = new HashMap<String, FDFireflyIceChannel>();
-        observable = new FDFireflyIceObservable();
+        observable = FDFireflyIceObservableInvocationHandler.newFireflyIceObservable();
         coder = new FDFireflyIceCoder(observable);
-        executor = new FDExecutor();
+        executor = new FDExecutor(activity);
         name = "anonymous";
     }
 
@@ -42,10 +44,12 @@ public class FDFireflyIce implements FDFireflyIceChannel.Delegate {
 	}
 
 	public void removeChannel(String type)  {
-		channels.remove(type);
+		FDFireflyIceChannel channel = channels.remove(type);
+        channel.setDelegate(null);
 	}
 
 	public void fireflyIceChannelStatus(FDFireflyIceChannel channel, FDFireflyIceChannel.Status status) {
+        observable.fireflyIceStatus(this, channel, status);
 		executor.setRun(status == FDFireflyIceChannel.Status.Open);
 	}
 

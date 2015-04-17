@@ -179,11 +179,11 @@ public class FDFirmwareUpdateTask extends FDFireflyIceTaskSteps {
 			bootVersionDescription = _bootVersion.description();
 		}
 		if (isOutOfDate()) {
-			FDFireflyDeviceLogger.info(log, "firmware %s is out of date with latest %u.%u.%u (boot loader is %s)", versionDescription, major, minor, patch, bootVersionDescription);
+			FDFireflyDeviceLogger.info(log, "firmware %s is out of date with latest %d.%d.%d (boot loader is %s)", versionDescription, major, minor, patch, bootVersionDescription);
 			next("getSectorHashes");
 		}
 		else {
-			FDFireflyDeviceLogger.info(log, "firmware %s is up to date with latest %u.%u.%u (boot loader is %s)", versionDescription, major, minor, patch, bootVersionDescription);
+			FDFireflyDeviceLogger.info(log, "firmware %s is up to date with latest %d.%d.%d (boot loader is %s)", versionDescription, major, minor, patch, bootVersionDescription);
 			complete();
 		}
 	}
@@ -307,7 +307,7 @@ public class FDFirmwareUpdateTask extends FDFireflyIceTaskSteps {
 			return;
 		}
 
-		//	FDFireflyDeviceLogInfo("updating pages %@", _updatePages);
+		//	FDFireflyDeviceLogInfo("updating pages %s", _updatePages);
 		FDFireflyDeviceLogger.info(log, "updating %d pages", _updatePages.size());
 	}
 
@@ -375,7 +375,7 @@ public class FDFirmwareUpdateTask extends FDFireflyIceTaskSteps {
 		if (_updateCommit != null) {
 			result = _updateCommit.result;
 		}
-		FDFireflyDeviceLogger.info(log, "isFirmwareUpToDate = %s, commit %s result = %u", isFirmwareUpToDate ? "YES" : "NO", _updateCommit != null ? "YES" : "NO", result);
+		FDFireflyDeviceLogger.info(log, "isFirmwareUpToDate = %s, commit %s result = %d", isFirmwareUpToDate ? "YES" : "NO", _updateCommit != null ? "YES" : "NO", result);
 		if (delegate != null) {
 			delegate.firmwareUpdateTaskComplete(this, isFirmwareUpToDate);
 		}

@@ -6,7 +6,7 @@ public class FDFireflyIceSectorHash {
     public byte[] hash;
 
     public String description() {
-        String s = FDString.format("sector %u hash 0x", sector);
+        String s = FDString.format("sector %d hash 0x", sector);
         for (byte b : hash) {
             s += FDString.format("%02x", b);
         }

@@ -629,7 +629,7 @@ public class FDFireflyIceCoder {
 			short connectionInterval = binary.getUInt16();
             short slaveLatency = binary.getUInt16();
             short supervisionTimeout = binary.getUInt16();
-// !!!			FDFireflyDeviceLogInfo("BLE timing: %u %u %u", connectionInterval, slaveLatency, supervisionTimeout);
+// !!!			FDFireflyDeviceLogInfo("BLE timing: %d %d %d", connectionInterval, slaveLatency, supervisionTimeout);
 		}
 		diagnostics.values = values.toArray(new FDFireflyIceDiagnosticsBLE[0]);
 		observable.fireflyIceDiagnostics(fireflyIce, channel, diagnostics);

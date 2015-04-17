@@ -42,6 +42,17 @@ public class FDBinary {
         }
     }
 
+    public static String toHexString(byte[] array) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < array.length; ++i) {
+            if (i > 0) {
+                builder.append(", ");
+            }
+            builder.append(String.format("%02x", array[i]));
+        }
+        return builder.toString();
+    }
+
     public static String toString(byte[] bytes) {
         try {
             return new String(bytes, "UTF-8");
@@ -55,11 +66,11 @@ public class FDBinary {
 	}
 
     public static short unpackUInt16(List<Byte> buffer) {
-		return (short)((buffer.get(1) << 8) | buffer.get(0));
+		return (short)(((buffer.get(1) & 0xff) << 8) | (buffer.get(0) & 0xff));
 	}
 
     public static int unpackUInt32(List<Byte> buffer) {
-		return (buffer.get(3) << 24) | (buffer.get(2) << 16) | (buffer.get(1) << 8) | buffer.get(0);
+		return ((buffer.get(3) & 0xff) << 24) | ((buffer.get(2) & 0xff) << 16) | ((buffer.get(1) & 0xff) << 8) | (buffer.get(0) & 0xff);
 	}
 
     public static long unpackUInt64(List<Byte> buffer) {

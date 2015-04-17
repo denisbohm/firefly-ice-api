@@ -20,21 +20,21 @@ public class FDFireflyIceDiagnosticsBLE {
 
     public String description() {
         String s = "BLE(";
-        s += FDString.format(" version=%u", version);
-        s += FDString.format(" systemSteps=%u", systemSteps);
-        s += FDString.format(" dataSteps=%u", dataSteps);
-        s += FDString.format(" systemCredits=%u", systemCredits);
-        s += FDString.format(" dataCredits=%u", dataCredits);
-        s += FDString.format(" txPower=%u", txPower);
-        s += FDString.format(" operatingMode=%u", operatingMode);
-        s += FDString.format(" idle=%", idle ? "YES" : "NO");
-        s += FDString.format(" dtm=%", dtm ? "YES" : "NO");
+        s += FDString.format(" version=%d", version);
+        s += FDString.format(" systemSteps=%d", systemSteps);
+        s += FDString.format(" dataSteps=%d", dataSteps);
+        s += FDString.format(" systemCredits=%d", systemCredits);
+        s += FDString.format(" dataCredits=%d", dataCredits);
+        s += FDString.format(" txPower=%d", txPower);
+        s += FDString.format(" operatingMode=%d", operatingMode);
+        s += FDString.format(" idle=%s", idle ? "YES" : "NO");
+        s += FDString.format(" dtm=%s", dtm ? "YES" : "NO");
         s += FDString.format(" did=%02x", did);
-        s += FDString.format(" disconnectAction=%u", disconnectAction);
-        s += FDString.format(" pipesOpen=%016llx", pipesOpen);
-        s += FDString.format(" dtmRequest=%u", dtmRequest);
-        s += FDString.format(" dtmData=%u", dtmData);
-        s += FDString.format(" bufferCount=%u", bufferCount);
+        s += FDString.format(" disconnectAction=%d", disconnectAction);
+        s += FDString.format(" pipesOpen=%016x", pipesOpen);
+        s += FDString.format(" dtmRequest=%d", dtmRequest);
+        s += FDString.format(" dtmData=%d", dtmData);
+        s += FDString.format(" bufferCount=%d", bufferCount);
         s += ")";
         return s;
     }

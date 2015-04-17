@@ -8,6 +8,8 @@
 
 package com.fireflydesign.fireflydevice;
 
+import android.util.Log;
+
 public class FDFireflyDeviceLogger {
 
     public static void error(FDFireflyDeviceLog log, String format, Object ... arguments) {
@@ -41,7 +43,8 @@ public class FDFireflyDeviceLogger {
 	}
 
 	static void add(FDFireflyDeviceLog log, String format, Object ... arguments) {
-        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        Thread thread = Thread.currentThread();
+        StackTraceElement[] stackTrace = thread.getStackTrace();
         StackTraceElement caller = stackTrace[2];
         String file = caller.getFileName();
         int line = caller.getLineNumber();
@@ -54,14 +57,15 @@ public class FDFireflyDeviceLogger {
 			file = file.substring(index + 1);
 		}
 
+
 		if (log == null) {
 			log = fireflyDeviceLogger;
 		}
 		if (log != null) {
 			log.log(file, line, method, message);
 		} else {
-			String s = FDString.format("%s:%lu %s %s\n", file, line, method, message);
-			System.out.println(s);
+            String s = FDString.format("%s %s:%d %s %s\n", thread.getName(), file, line, method, message);
+            Log.i("Logger", s);
 		}
 	}
 

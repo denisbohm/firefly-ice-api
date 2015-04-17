@@ -9,7 +9,7 @@ public class FDFireflyIceHardwareId {
     public byte[] unique;
 
     public String description() {
-        String s = FDString.format("vendor 0x%04x, product 0x%04x, version %u.%u unique ", vendor, product, major, minor);
+        String s = FDString.format("vendor 0x%04x, product 0x%04x, version %d.%d unique ", vendor, product, major, minor);
         for (byte b : unique) {
             s += FDString.format("%02x", b);
         }

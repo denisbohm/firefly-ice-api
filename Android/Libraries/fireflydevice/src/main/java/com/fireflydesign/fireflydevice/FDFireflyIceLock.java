@@ -59,7 +59,7 @@ public class FDFireflyIceLock {
     }
 
     String description() {
-        return FDString.format("lock identifier %@ operation %@ owner %", identifierName(), operationName(), ownerName());
+        return FDString.format("lock identifier %s operation %s owner %s", identifierName(), operationName(), ownerName());
     }
 
 }
