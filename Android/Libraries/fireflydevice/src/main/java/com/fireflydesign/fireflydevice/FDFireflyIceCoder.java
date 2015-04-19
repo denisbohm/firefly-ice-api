@@ -357,7 +357,7 @@ public class FDFireflyIceCoder {
 		}
 	}
 
-	void sendSetPropertyTime(FDFireflyIceChannel channel, double time) {
+	public void sendSetPropertyTime(FDFireflyIceChannel channel, double time) {
 		FDBinary binary = new FDBinary();
 		binary.putUInt8(FD_CONTROL_SET_PROPERTIES);
 		binary.putUInt32(FD_CONTROL_PROPERTY_RTC);
@@ -365,7 +365,7 @@ public class FDFireflyIceCoder {
 		channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
 	}
 
-	void sendSetPropertyMode(FDFireflyIceChannel channel, byte mode) {
+    public void sendSetPropertyMode(FDFireflyIceChannel channel, byte mode) {
         FDBinary binary = new FDBinary();
 		binary.putUInt8(FD_CONTROL_SET_PROPERTIES);
 		binary.putUInt32(FD_CONTROL_PROPERTY_MODE);
@@ -373,7 +373,7 @@ public class FDFireflyIceCoder {
 		channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
 	}
 
-	void sendSetPropertyTxPower(FDFireflyIceChannel channel, byte txPower) {
+    public void sendSetPropertyTxPower(FDFireflyIceChannel channel, byte txPower) {
         FDBinary binary = new FDBinary();
 		binary.putUInt8(FD_CONTROL_SET_PROPERTIES);
 		binary.putUInt32(FD_CONTROL_PROPERTY_TX_POWER);
@@ -381,7 +381,7 @@ public class FDFireflyIceCoder {
 		channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
 	}
 
-	void sendSetPropertyLogging(FDFireflyIceChannel channel, boolean storage) {
+    public void sendSetPropertyLogging(FDFireflyIceChannel channel, boolean storage) {
         FDBinary binary = new FDBinary();
 		binary.putUInt8(FD_CONTROL_SET_PROPERTIES);
 		binary.putUInt32(FD_CONTROL_PROPERTY_LOGGING);
@@ -390,7 +390,7 @@ public class FDFireflyIceCoder {
 		channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
 	}
 
-	void sendSetPropertyName(FDFireflyIceChannel channel, String name) {
+    public void sendSetPropertyName(FDFireflyIceChannel channel, String name) {
         FDBinary binary = new FDBinary();
         binary.putUInt8(FD_CONTROL_SET_PROPERTIES);
         binary.putUInt32(FD_CONTROL_PROPERTY_NAME);
@@ -398,7 +398,7 @@ public class FDFireflyIceCoder {
         channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
 	}
 
-	void sendUpdateGetExternalHash(FDFireflyIceChannel channel, int address, int length) {
+    public void sendUpdateGetExternalHash(FDFireflyIceChannel channel, int address, int length) {
         FDBinary binary = new FDBinary();
 		binary.putUInt8(FD_CONTROL_UPDATE_GET_EXTERNAL_HASH);
 		binary.putUInt32(address);
@@ -406,14 +406,14 @@ public class FDFireflyIceCoder {
 		channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
 	}
 
-	void sendUpdateReadPage(FDFireflyIceChannel channel, int page) {
+    public void sendUpdateReadPage(FDFireflyIceChannel channel, int page) {
         FDBinary binary = new FDBinary();
 		binary.putUInt8(FD_CONTROL_UPDATE_READ_PAGE);
 		binary.putUInt32(page);
 		channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
 	}
 
-	void sendUpdateGetSectorHashes(FDFireflyIceChannel channel, List<Short> sectors) {
+    public void sendUpdateGetSectorHashes(FDFireflyIceChannel channel, List<Short> sectors) {
         FDBinary binary = new FDBinary();
 		binary.putUInt8(FD_CONTROL_UPDATE_GET_SECTOR_HASHES);
 		binary.putUInt8((byte)sectors.size());
@@ -423,7 +423,7 @@ public class FDFireflyIceCoder {
 		channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
 	}
 
-	void sendUpdateEraseSectors(FDFireflyIceChannel channel, List<Short> sectors) {
+    public void sendUpdateEraseSectors(FDFireflyIceChannel channel, List<Short> sectors) {
         FDBinary binary = new FDBinary();
 		binary.putUInt8(FD_CONTROL_UPDATE_ERASE_SECTORS);
 		binary.putUInt8((byte)sectors.size());
@@ -433,7 +433,7 @@ public class FDFireflyIceCoder {
 		channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
 	}
 
-	void sendUpdateWritePage(FDFireflyIceChannel channel, short page, byte[] data) {
+    public void sendUpdateWritePage(FDFireflyIceChannel channel, short page, byte[] data) {
 		// !!! assert that data.length == page size -denis
         FDBinary binary = new FDBinary();
 		binary.putUInt8(FD_CONTROL_UPDATE_WRITE_PAGE);
@@ -442,7 +442,7 @@ public class FDFireflyIceCoder {
 		channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
 	}
 
-	void sendUpdateCommit(FDFireflyIceChannel channel, int flags, int length, byte[] hash, byte[] cryptHash, byte[] cryptIv) {
+    public void sendUpdateCommit(FDFireflyIceChannel channel, int flags, int length, byte[] hash, byte[] cryptHash, byte[] cryptIv) {
 		// !!! assert that data lengths are correct -denis
         FDBinary binary = new FDBinary();
 		binary.putUInt8(FD_CONTROL_UPDATE_COMMIT);
@@ -454,11 +454,11 @@ public class FDFireflyIceCoder {
 		channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
 	}
 
-	short makeDirectTestModePacket(FDDirectTestModeCommand command, int frequency, int length, FDDirectTestModePacketType type) {
+    public static short makeDirectTestModePacket(FDDirectTestModeCommand command, int frequency, int length, FDDirectTestModePacketType type) {
 		return (short)((command.ordinal() << 14) | ((frequency & 0x3f) << 8) | ((length & 0x3f) << 2) | type.ordinal());
 	}
 
-	void sendDirectTestModeEnter(FDFireflyIceChannel channel, short packet, double duration) {
+    public void sendDirectTestModeEnter(FDFireflyIceChannel channel, short packet, double duration) {
         FDBinary binary = new FDBinary();
 		binary.putUInt8(FD_CONTROL_RADIO_DIRECT_TEST_MODE_ENTER);
 		binary.putUInt16(packet);
@@ -466,31 +466,31 @@ public class FDFireflyIceCoder {
 		channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
 	}
 
-	void sendDirectTestModeExit(FDFireflyIceChannel channel) {
+    public void sendDirectTestModeExit(FDFireflyIceChannel channel) {
         FDBinary binary = new FDBinary();
 		binary.putUInt8(FD_CONTROL_RADIO_DIRECT_TEST_MODE_EXIT);
 		channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
 	}
 
-	void sendDirectTestModeReport(FDFireflyIceChannel channel) {
+    public void sendDirectTestModeReport(FDFireflyIceChannel channel) {
         FDBinary binary = new FDBinary();
 		binary.putUInt8(FD_CONTROL_RADIO_DIRECT_TEST_MODE_REPORT);
 		channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
 	}
 
-	void sendDirectTestModeReset(FDFireflyIceChannel channel) {
+    public void sendDirectTestModeReset(FDFireflyIceChannel channel) {
 		sendDirectTestModeEnter(channel, makeDirectTestModePacket(FDDirectTestModeCommand.Reset, 0, 0, FDDirectTestModePacketType.PRBS9), 0);
 	}
 
-	void sendDirectTestModeReceiverTest(FDFireflyIceChannel channel, byte frequency, byte length, FDDirectTestModePacketType type, double duration) {
+    public void sendDirectTestModeReceiverTest(FDFireflyIceChannel channel, byte frequency, byte length, FDDirectTestModePacketType type, double duration) {
 		sendDirectTestModeEnter(channel, makeDirectTestModePacket(FDDirectTestModeCommand.ReceiverTest, frequency, length, type), duration);
 	}
 
-	void sendDirectTestModeTransmitterTest(FDFireflyIceChannel channel, byte frequency, byte length, FDDirectTestModePacketType type, double duration) {
+    public void sendDirectTestModeTransmitterTest(FDFireflyIceChannel channel, byte frequency, byte length, FDDirectTestModePacketType type, double duration) {
 		sendDirectTestModeEnter(channel, makeDirectTestModePacket(FDDirectTestModeCommand.TransmitterTest, frequency, length, type), duration);
 	}
 
-	void sendDirectTestModeEnd(FDFireflyIceChannel channel) {
+    public void sendDirectTestModeEnd(FDFireflyIceChannel channel) {
 		sendDirectTestModeEnter(channel, makeDirectTestModePacket(FDDirectTestModeCommand.TestEnd, 0, 0, FDDirectTestModePacketType.PRBS9), 0);
 	}
 
@@ -541,7 +541,7 @@ public class FDFireflyIceCoder {
 		binary.putUInt8((byte)color);
 	}
 
-	void sendLEDOverride(FDFireflyIceChannel channel, byte usbOrange, byte usbGreen, byte d0, byte d1, byte d2, byte d3, byte d4, double duration) {
+    public void sendLEDOverride(FDFireflyIceChannel channel, byte usbOrange, byte usbGreen, byte d0, byte d1, byte d2, byte d3, byte d4, double duration) {
 		FDBinary binary = new FDBinary();
 		binary.putUInt8(FD_CONTROL_LED_OVERRIDE);
 
@@ -557,7 +557,7 @@ public class FDFireflyIceCoder {
 		channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
 	}
 
-	void sendIdentify(FDFireflyIceChannel channel, double duration) {
+    public void sendIdentify(FDFireflyIceChannel channel, double duration) {
 		FDBinary binary = new FDBinary();
 		binary.putUInt8(FD_CONTROL_IDENTIFY);
 		binary.putUInt8((byte)1);
@@ -566,7 +566,7 @@ public class FDFireflyIceCoder {
 		channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
 	}
 
-	void sendLock(FDFireflyIceChannel channel, FDFireflyIceLock.Identifier identifier, FDFireflyIceLock.Operation operation) {
+    public void sendLock(FDFireflyIceChannel channel, FDFireflyIceLock.Identifier identifier, FDFireflyIceLock.Operation operation) {
 		FDBinary binary = new FDBinary();
 		binary.putUInt8(FD_CONTROL_LOCK);
 		binary.putUInt8((byte)identifier.ordinal());
@@ -575,14 +575,14 @@ public class FDFireflyIceCoder {
 		channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
 	}
 
-	void sendSyncStart(FDFireflyIceChannel channel) {
+    public void sendSyncStart(FDFireflyIceChannel channel) {
 		FDBinary binary = new FDBinary();
 		binary.putUInt8(FD_CONTROL_SYNC_START);
 
 		channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
 	}
 
-	void sendSyncStart(FDFireflyIceChannel channel, int offset) {
+    public void sendSyncStart(FDFireflyIceChannel channel, int offset) {
 		FDBinary binary = new FDBinary();
 		binary.putUInt8(FD_CONTROL_SYNC_START);
 		binary.putUInt32(FD_CONTROL_SYNC_AHEAD);
@@ -591,7 +591,7 @@ public class FDFireflyIceCoder {
 		channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
 	}
 
-	void sendDiagnostics(FDFireflyIceChannel channel, int flags) {
+    public void sendDiagnostics(FDFireflyIceChannel channel, int flags) {
 		FDBinary binary = new FDBinary();
 		binary.putUInt8(FD_CONTROL_DIAGNOSTICS);
 		binary.putUInt32(flags);

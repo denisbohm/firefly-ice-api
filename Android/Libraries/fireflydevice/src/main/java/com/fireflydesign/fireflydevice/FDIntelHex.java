@@ -64,9 +64,7 @@ public class FDIntelHex {
                         for (Iterator<String> i = object.keys(); i.hasNext(); ) {
                             String key = i.next();
                             Object value = object.get(key);
-                            if (value instanceof String) {
-                                properties.put(key, (String)value);
-                            }
+                            properties.put(key, value.toString());
                         }
                     } catch (JSONException e) {
                         throw new RuntimeException(e);

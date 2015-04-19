@@ -18,15 +18,27 @@ public class FDFireflyIceLock {
 
         public String name() {
             if (code == None.code) {
-                return "none";
+                return "None";
             }
             if (code == BLE.code) {
-                return "ble";
+                return "BLE";
             }
             if (code == USB.code) {
-                return "usb";
+                return "USB";
             }
             return Integer.toString(code, 16);
+        }
+
+        public int hashCode() {
+            return code;
+        }
+
+        public boolean equals(Object object) {
+            if (!(object instanceof Owner)) {
+                return false;
+            }
+            Owner owner = (Owner)object;
+            return owner.code == code;
         }
 
     }

@@ -21,10 +21,10 @@
         android:layout_height="wrap_content"
         android:text="Connect to Selected Firefly Ice Device"
         android:id="@+id/connectButton"
-        android:layout_above="@+id/statusTextView"
+        android:onClick="onConnectButtonClicked"
+        android:layout_above="@+id/button"
         android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:onClick="onConnectButtonClicked" />
+        android:layout_alignEnd="@+id/button" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -33,8 +33,7 @@
         android:text="Ready..."
         android:id="@+id/statusTextView"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentStart="true" />
 
     <ListView
         android:layout_width="wrap_content"
@@ -46,5 +45,44 @@
         android:divider="#7ffffffb"
         android:dividerHeight="1dp"
         android:choiceMode="singleChoice" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Disconnect From Selected Firefly Ice Device"
+        android:id="@+id/button"
+        android:layout_above="@+id/button2"
+        android:layout_alignParentStart="true"
+        android:onClick="onDisconnectButtonClicked" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Update Firmware"
+        android:id="@+id/button2"
+        android:layout_above="@+id/button3"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="onFirmwareUpdateButtonClicked" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Illuminate LEDs"
+        android:id="@+id/button3"
+        android:layout_above="@+id/statusTextView"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="onIlluminateClicked" />
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_below="@+id/button3"
+        android:layout_alignParentEnd="true"
+        android:max="100"
+        android:minWidth="100dp" />
 
 </RelativeLayout>

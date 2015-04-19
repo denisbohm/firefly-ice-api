@@ -16,7 +16,7 @@ public class FDFireflyIceSimpleTask extends FDFireflyIceTaskSteps {
 
     Delegate delegate;
 
-	FDFireflyIceSimpleTask(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, Delegate delegate) {
+	public FDFireflyIceSimpleTask(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, Delegate delegate) {
 		super(fireflyIce, channel);
 		this.delegate = delegate;
 	}

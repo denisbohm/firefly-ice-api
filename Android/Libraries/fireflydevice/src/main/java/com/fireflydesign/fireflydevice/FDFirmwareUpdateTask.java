@@ -8,6 +8,9 @@
 
 package com.fireflydesign.fireflydevice;
 
+import android.content.res.Resources;
+
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,8 +65,12 @@ public class FDFirmwareUpdateTask extends FDFireflyIceTaskSteps {
 		return firmwareUpdateTask;
 	}
 
-	public static FDIntelHex loadFirmware(String resource) {
-        String content = new Scanner(FDFirmwareUpdateTask.class.getResourceAsStream(resource + ".hex"), "UTF-8").useDelimiter("\\A").next();
+	public static FDIntelHex loadFirmware(Resources resources, int id) {
+        InputStream inputStream = resources.openRawResource(id);
+        if (inputStream == null) {
+            throw new RuntimeException(" firmware update file not found with resource id " + id);
+        }
+        String content = new Scanner(inputStream, "UTF-8").useDelimiter("\\A").next();
 		return FDIntelHex.intelHex(content, 0x08000, 0x40000 - 0x08000);
 	}
 
@@ -76,13 +83,13 @@ public class FDFirmwareUpdateTask extends FDFireflyIceTaskSteps {
 		return firmwareUpdateTask;
 	}
 
-    public static FDFirmwareUpdateTask firmwareUpdateTask(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, String resource) {
-		FDIntelHex intelHex = loadFirmware(resource);
+    public static FDFirmwareUpdateTask firmwareUpdateTask(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, Resources resources, int id) {
+		FDIntelHex intelHex = loadFirmware(resources, id);
 		return firmwareUpdateTask(fireflyIce, channel, intelHex);
 	}
 
-	public static FDFirmwareUpdateTask firmwareUpdateTask(FDFireflyIce fireflyIce, FDFireflyIceChannel channel) {
-		return firmwareUpdateTask(fireflyIce, channel, "FireflyIce");
+	public static FDFirmwareUpdateTask firmwareUpdateTask(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, Resources resources) {
+		return firmwareUpdateTask(fireflyIce, channel, resources, R.raw.fireflyice);
 	}
 
 	public FDFirmwareUpdateTask(FDFireflyIce fireflyIce, FDFireflyIceChannel channel) {
@@ -103,7 +110,12 @@ public class FDFirmwareUpdateTask extends FDFireflyIceTaskSteps {
 		_pagesPerSector = _sectorSize / _pageSize;
 
 		_lastProgressPercent = 0;
-	}
+
+        _updateSectors = new ArrayList<Short>();
+        _updatePages = new ArrayList<Short>();
+        _getSectors = new ArrayList<Short>();
+        _sectorHashes = new ArrayList<FDFireflyIceSectorHash>();
+    }
 
 	public byte[] getFirmware() {
 		return _firmware;
