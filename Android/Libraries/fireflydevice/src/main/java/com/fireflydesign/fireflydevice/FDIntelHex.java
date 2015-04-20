@@ -85,7 +85,6 @@ public class FDIntelHex {
 				byte b = (byte)hex(line, 2);
 				data.add(b);
 			}
-			byte ignore = 0;
             byte finalCrc = (byte)(256 - crc);
 			byte checksum = (byte)hex(line, 2);
 			if (checksum != finalCrc) {
@@ -99,7 +98,7 @@ public class FDIntelHex {
                         firmware.add(Byte.MAX_VALUE);
                     }
                     for (int i = 0; i < data.size(); ++i) {
-                        firmware.set(dataAddress, data.get(i));
+                        firmware.set(dataAddress + i, data.get(i));
                     }
 			    } break;
 			    case 1: { // End Of File Record

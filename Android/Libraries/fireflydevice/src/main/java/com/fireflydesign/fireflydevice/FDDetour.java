@@ -100,7 +100,7 @@ public class FDDetour {
 		}
 		else
 		if (eventSequenceNumber != sequenceNumber) {
-			detourError(FDString.format("out of sequence found %u but expected %u", eventSequenceNumber, sequenceNumber));
+			detourError(FDString.format("out of sequence found %d but expected %d", eventSequenceNumber, sequenceNumber));
 		} else {
 			detourContinue(binary.getRemainingData());
 		}

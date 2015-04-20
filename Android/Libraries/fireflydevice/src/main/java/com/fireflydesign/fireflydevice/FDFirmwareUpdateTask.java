@@ -111,8 +111,12 @@ public class FDFirmwareUpdateTask extends FDFireflyIceTaskSteps {
 
 		_lastProgressPercent = 0;
 
+        _usedSectors = new ArrayList<Short>();
+        _invalidSectors = new ArrayList<Short>();
+        _invalidPages = new ArrayList<Short>();
+
         _updateSectors = new ArrayList<Short>();
-        _updatePages = new ArrayList<Short>();
+
         _getSectors = new ArrayList<Short>();
         _sectorHashes = new ArrayList<FDFireflyIceSectorHash>();
     }
@@ -152,7 +156,7 @@ public class FDFirmwareUpdateTask extends FDFireflyIceTaskSteps {
 
 	void begin() {
 		_updateSectors.clear();
-		_updatePages.clear();
+		_updatePages = null;
 
 		fireflyIce.coder.sendGetProperties(channel, FDFireflyIceCoder.FD_CONTROL_PROPERTY_VERSION);
 		next("checkVersion");
@@ -237,8 +241,10 @@ public class FDFirmwareUpdateTask extends FDFireflyIceTaskSteps {
 
 	void firstSectorHashesCheck() {
 		checkSectorHashes();
-		_invalidSectors = _updateSectors;
-		_invalidPages = _updatePages;
+		_invalidSectors.clear();
+        _invalidSectors.addAll(_updateSectors);
+		_invalidPages.clear();
+        _invalidPages.addAll(_updatePages);
 
 		if (_updateSectors.size() == 0) {
 			commitUpdate();
@@ -258,7 +264,7 @@ public class FDFirmwareUpdateTask extends FDFireflyIceTaskSteps {
             }
 			fireflyIce.coder.sendUpdateGetSectorHashes(channel, sectors);
 		} else {
-			if (_updatePages.size() == 0) {
+			if (_updatePages == null) {
 				next("firstSectorHashesCheck");
 			} else {
 				next("verify");
@@ -274,14 +280,15 @@ public class FDFirmwareUpdateTask extends FDFireflyIceTaskSteps {
 		for (int i = 0; i < sectorCount; ++i) {
 			_getSectors.add((short) i);
 		}
-		_usedSectors = _getSectors;
+		_usedSectors.clear();
+        _usedSectors.addAll(_getSectors);
 
 		getSomeSectors();
 	}
 
 	public void fireflyIceSectorHashes(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceSectorHash[] sectorHashes) {
-        for (FDFireflyIceSectorHash sectorHashe : sectorHashes) {
-            _sectorHashes.add(sectorHashe);
+        for (FDFireflyIceSectorHash sectorHash : sectorHashes) {
+            _sectorHashes.add(sectorHash);
         }
 
 		getSomeSectors();
@@ -289,7 +296,7 @@ public class FDFirmwareUpdateTask extends FDFireflyIceTaskSteps {
 
 	void checkSectorHashes() {
 		_updateSectors.clear();
-		_updatePages.clear();
+		_updatePages = new ArrayList<Short>();
 
 		List<Short> updateSectors = new ArrayList<Short>();
         List<Short> updatePages = new ArrayList<Short>();
@@ -303,7 +310,7 @@ public class FDFirmwareUpdateTask extends FDFireflyIceTaskSteps {
 			int begin = i * _sectorSize;
 			byte[] subdata = Arrays.copyOfRange(_firmware, begin, begin + _sectorSize);
 			byte[] hash = FDCrypto.sha1(subdata);
-			if (hash != sectorHash.hash) {
+			if (!Arrays.equals(hash, sectorHash.hash)) {
 				updateSectors.add(sectorHash.sector);
 				int page = sector * _pagesPerSector;
 				for (int j = 0; j < _pagesPerSector; ++j) {
@@ -312,8 +319,9 @@ public class FDFirmwareUpdateTask extends FDFireflyIceTaskSteps {
 			}
 		}
 
-		_updateSectors = updateSectors;
-		_updatePages = updatePages;
+		_updateSectors.clear();
+        _updateSectors.addAll(updateSectors);
+        _updatePages.addAll(updatePages);
 
 		if (updateSectors.size() == 0) {
 			return;

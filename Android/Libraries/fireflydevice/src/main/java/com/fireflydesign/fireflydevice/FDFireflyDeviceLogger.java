@@ -45,10 +45,10 @@ public class FDFireflyDeviceLogger {
 	static void add(FDFireflyDeviceLog log, String format, Object ... arguments) {
         Thread thread = Thread.currentThread();
         StackTraceElement[] stackTrace = thread.getStackTrace();
-        StackTraceElement caller = stackTrace[2];
+        StackTraceElement caller = stackTrace[4];
         String file = caller.getFileName();
         int line = caller.getLineNumber();
-        String method = caller.getClassName() + "." + caller.getMethodName();
+        String method = /* caller.getClassName() + "." + */ caller.getMethodName();
 
 		String message = FDString.format(format, arguments);
 
@@ -56,7 +56,6 @@ public class FDFireflyDeviceLogger {
 		if (index >= 0) {
 			file = file.substring(index + 1);
 		}
-
 
 		if (log == null) {
 			log = fireflyDeviceLogger;

@@ -153,6 +153,7 @@ public class MainActivity extends Activity implements FDFireflyIceManager.Delega
         FDFireflyIceChannel channel = fireflyIce.channels.get("BLE");
         FDFirmwareUpdateTask task = FDFirmwareUpdateTask.firmwareUpdateTask(fireflyIce, channel, getResources());
         task.delegate = this;
+        task.downgrade = true;
         fireflyIce.executor.execute(task);
     }
 

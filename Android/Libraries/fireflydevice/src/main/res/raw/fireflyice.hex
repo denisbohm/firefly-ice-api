@@ -5565,4 +5565,4 @@
 :04DB8400501C002011
 :040000030000822D4A
 :00000001FF
-#! {"major":1, "minor":0, "patch":41, "note":"release", "address":"0x08000", "length":"0x38000"}
+#! {"major":1, "minor":0, "patch":42, "note":"release", "address":"0x08000", "length":"0x38000"}
