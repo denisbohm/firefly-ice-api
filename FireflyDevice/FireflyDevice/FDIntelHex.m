@@ -10,6 +10,23 @@
 
 #import "FDJSON.h"
 
+@implementation FDIntelHexChunk
+
++ (FDIntelHexChunk *)chunk:(uint32_t)address data:(NSData *)data
+{
+    FDIntelHexChunk *chunk = [[FDIntelHexChunk alloc] init];
+    chunk.address = address;
+    chunk.data = data;
+    return chunk;
+}
+
++ (FDIntelHexChunk *)chunk:(uint32_t)address bytes:(uint8_t *)bytes length:(uint32_t)length
+{
+    return [FDIntelHexChunk chunk:address data:[NSData dataWithBytes:bytes length:length]];
+}
+
+@end
+
 @implementation FDIntelHex
 
 + (FDIntelHex *)intelHex:(NSString *)hex address:(uint32_t)address length:(uint32_t)length
@@ -58,6 +75,13 @@
     return fallback;
 }
 
+#define FDIntelHexTypeDataRecord                   0
+#define FDIntelHexTypeEndOfFileRecord              1
+#define FDIntelHexTypeExtendedSegmentAddressRecord 2
+#define FDIntelHexTypeStartSegmentAddressRecord    3
+#define FDIntelHexTypeExtendedLinearAddressRecord  4
+#define FDIntelHexTypeStartLinearAddressRecord     5
+
 - (void)read:(NSString *)content address:(uint32_t)address length:(uint32_t)length
 {
     _properties = [NSMutableDictionary dictionary];
@@ -99,7 +123,7 @@
             @throw [NSException exceptionWithName:@"checksum mismatch" reason:@"checksum mismatch" userInfo:nil];
         }
         switch (recordType) {
-            case 0: { // Data Record
+            case FDIntelHexTypeDataRecord: {
                 uint32_t targetAddress = extendedAddress + recordAddress;
                 if (targetAddress >= address) {
                     uint32_t dataAddress = targetAddress - address;
@@ -111,21 +135,21 @@
                     memcpy(&bytes[dataAddress], data.bytes, data.length);
                 }
             } break;
-            case 1: { // End Of File Record
+            case FDIntelHexTypeEndOfFileRecord: {
                 done = true;
             } break;
-            case 2: { // Extended Segment Address Record
+            case FDIntelHexTypeExtendedSegmentAddressRecord: {
                 uint8_t *bytes = (uint8_t *)data.bytes;
                 extendedAddress = ((bytes[0] << 8) | bytes[1]) << 4;
             } break;
-            case 3: { // Start Segment Address Record
+            case FDIntelHexTypeStartSegmentAddressRecord: {
                 // ignore
             } break;
-            case 4: { // Extended Linear Address Record
+            case FDIntelHexTypeExtendedLinearAddressRecord: {
                 uint8_t *bytes = (uint8_t *)data.bytes;
                 extendedAddress = (bytes[0] << 24) | (bytes[1] << 16);
             } break;
-            case 5: { // Start Linear Address Record
+            case FDIntelHexTypeStartLinearAddressRecord: {
                 // ignore
             } break;
         }
@@ -133,7 +157,7 @@
     _data = firmware;
 }
 
-- (void)addRecord:(NSMutableString *)content address:(uint32_t)address type:(uint8_t)type data:(NSData *)data
++ (void)addRecord:(NSMutableString *)content address:(uint32_t)address type:(uint8_t)type data:(NSData *)data
 {
     uint8_t count = data.length;
     uint8_t checksum = count;
@@ -153,30 +177,48 @@
     [content appendFormat:@"%02x\n", checksum];
 }
 
-- (NSString *)format
++ (void)addDataRecords:(NSMutableString *)content address:(uint32_t)address data:(NSData *)data
 {
-    NSMutableString *content = [NSMutableString string];
-    
-    [content appendFormat:@"#! %@\n", [[NSString alloc] initWithData:[FDJSONSerializer serialize:self.properties] encoding:NSUTF8StringEncoding]];
-    
     uint32_t addressHighWord = 0;
-    uint32_t address = [self getHexProperty:@"address" fallback:0];
-    for (NSUInteger i = 0; i < self.data.length; i += 16) {
+    for (NSUInteger i = 0; i < data.length; i += 16) {
         if ((address & ~0xffff) != addressHighWord) {
             uint8_t addressBytes[] = {address >> 24, address >> 16};
             [self addRecord:content address:0 type:4 data:[NSData dataWithBytes:addressBytes length:sizeof(addressBytes)]];
             addressHighWord = address & ~0xffff;
         }
-        NSUInteger length = self.data.length - i;
+        NSUInteger length = data.length - i;
         if (length > 16) {
             length = 16;
         }
-        NSData *subdata = [self.data subdataWithRange:NSMakeRange(i, length)];
+        NSData *subdata = [data subdataWithRange:NSMakeRange(i, length)];
         [self addRecord:content address:address & 0xffff type:0 data:subdata];
         address += 16;
     }
+}
+
+- (NSString *)format:(NSArray *)chunks comment:(BOOL)comment
+{
+    NSMutableString *content = [NSMutableString string];
+    
+    if (comment) {
+        [content appendFormat:@"#! %@\n", [[NSString alloc] initWithData:[FDJSONSerializer serialize:self.properties] encoding:NSUTF8StringEncoding]];
+    }
+    
+    uint32_t address = [self getHexProperty:@"address" fallback:0];
+    [FDIntelHex addDataRecords:content address:address data:self.data];
+    
+    for (FDIntelHexChunk *chunk in chunks) {
+        [FDIntelHex addDataRecords:content address:chunk.address data:chunk.data];
+    }
+    
+    [FDIntelHex addRecord:content address:0 type:FDIntelHexTypeEndOfFileRecord data:[NSData data]];
     
     return content;
+}
+
+- (NSString *)format
+{
+    return [self format:[NSArray array] comment:YES];
 }
 
 @end
