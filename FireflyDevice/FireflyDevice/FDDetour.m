@@ -67,7 +67,7 @@
         if (duration > 0.0) {
             rate = (NSUInteger)(_buffer.length / duration);
         }
-        NSLog(@"detour success: %lu B (%lu B/s)", (unsigned long)_buffer.length, (unsigned long)rate);
+//        NSLog(@"detour success: %lu B (%lu B/s)", (unsigned long)_buffer.length, (unsigned long)rate);
     } else {
         ++_sequenceNumber;
     }

@@ -44,7 +44,7 @@
             if (duration > 0.0) {
                 rate = (NSUInteger)(_data.length / duration);
             }
-            NSLog(@"detour source success: %lu B (%lu B/s)", (unsigned long)_data.length, (unsigned long)rate);
+//            NSLog(@"detour source success: %lu B (%lu B/s)", (unsigned long)_data.length, (unsigned long)rate);
         }
         return nil;
     }
