@@ -177,21 +177,20 @@
     [content appendFormat:@"%02x\n", checksum];
 }
 
-+ (void)addDataRecords:(NSMutableString *)content address:(uint32_t)address data:(NSData *)data
++ (void)addDataRecords:(NSMutableString *)content address:(uint32_t)address data:(NSData *)data addressHighWord:(uint32_t *)addressHighWord
 {
-    uint32_t addressHighWord = 0;
     for (NSUInteger i = 0; i < data.length; i += 16) {
-        if ((address & ~0xffff) != addressHighWord) {
+        if ((address & ~0xffff) != *addressHighWord) {
             uint8_t addressBytes[] = {address >> 24, address >> 16};
-            [self addRecord:content address:0 type:4 data:[NSData dataWithBytes:addressBytes length:sizeof(addressBytes)]];
-            addressHighWord = address & ~0xffff;
+            [self addRecord:content address:0 type:FDIntelHexTypeExtendedLinearAddressRecord data:[NSData dataWithBytes:addressBytes length:sizeof(addressBytes)]];
+            *addressHighWord = address & ~0xffff;
         }
         NSUInteger length = data.length - i;
         if (length > 16) {
             length = 16;
         }
         NSData *subdata = [data subdataWithRange:NSMakeRange(i, length)];
-        [self addRecord:content address:address & 0xffff type:0 data:subdata];
+        [self addRecord:content address:address & 0xffff type:FDIntelHexTypeDataRecord data:subdata];
         address += 16;
     }
 }
@@ -205,10 +204,10 @@
     }
     
     uint32_t address = [self getHexProperty:@"address" fallback:0];
-    [FDIntelHex addDataRecords:content address:address data:self.data];
-    
+    uint32_t addressHighWord = 0;
+    [FDIntelHex addDataRecords:content address:address data:self.data addressHighWord:&addressHighWord];
     for (FDIntelHexChunk *chunk in chunks) {
-        [FDIntelHex addDataRecords:content address:chunk.address data:chunk.data];
+        [FDIntelHex addDataRecords:content address:chunk.address data:chunk.data addressHighWord:&addressHighWord];
     }
     
     [FDIntelHex addRecord:content address:0 type:FDIntelHexTypeEndOfFileRecord data:[NSData data]];
