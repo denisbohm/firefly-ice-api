@@ -393,7 +393,7 @@
         if (sectorHash.sector != sector) {
             @throw [NSException exceptionWithName:@"unexpected" reason:@"unexpected" userInfo:nil];
         }
-        NSData * hash = [FDCrypto sha1:[_firmware subdataWithRange:NSMakeRange(i * _sectorSize, _sectorSize)]];
+        NSData *hash = [FDCrypto sha1:[_firmware subdataWithRange:NSMakeRange(i * _sectorSize, _sectorSize)]];
         if (![hash isEqualToData:sectorHash.hashValue]) {
             [updateSectors addObject:[NSNumber numberWithUnsignedShort:sectorHash.sector]];
             uint16_t page = sector * _pagesPerSector;

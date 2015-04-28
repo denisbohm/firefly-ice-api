@@ -52,7 +52,7 @@ public class FDDetour {
 		Map<String, String> userInfo = new HashMap<String, String>();
         userInfo.put(FDError.FDLocalizedDescriptionKey, "Out of sequence data when communicating with the device");
         userInfo.put(FDError.FDLocalizedRecoveryOptionsErrorKey, "Make sure the device stays in close range");
-        userInfo.put("com.fireflydesign.device.detail", FDString.format("detour error %s: state %d, length %d, sequence %d, data %d", reason, state, length, sequenceNumber, buffer.size()));
+        userInfo.put("com.fireflydesign.device.detail", FDString.format("detour error %s: state %d, length %d, sequence %d, data %d", reason, state.ordinal(), length, sequenceNumber, buffer.size()));
 		error = FDError.error(FDDetourErrorDomain, FDDetourError.CodeOutOfSequence.ordinal(), userInfo);
 		state = State.Error;
 	}

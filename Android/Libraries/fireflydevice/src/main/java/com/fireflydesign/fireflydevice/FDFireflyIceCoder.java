@@ -49,6 +49,14 @@ public class FDFireflyIceCoder {
 
     public static final byte FD_CONTROL_DIAGNOSTICS = 22;
 
+    public static final byte FD_CONTROL_UPDATE_AREA_GET_VERSION = 24;
+    public static final byte FD_CONTROL_UPDATE_AREA_GET_EXTERNAL_HASH = 25;
+    public static final byte FD_CONTROL_UPDATE_AREA_GET_SECTOR_HASHES = 26;
+    public static final byte FD_CONTROL_UPDATE_AREA_ERASE_SECTORS = 27;
+    public static final byte FD_CONTROL_UPDATE_AREA_WRITE_PAGE = 28;
+    public static final byte FD_CONTROL_UPDATE_AREA_READ_PAGE = 29;
+    public static final byte FD_CONTROL_UPDATE_AREA_COMMIT = 30;
+
     public static final int FD_CONTROL_DIAGNOSTICS_BLE        = 0x00000001;
     public static final int FD_CONTROL_DIAGNOSTICS_BLE_TIMING = 0x00000002;
 
@@ -398,24 +406,27 @@ public class FDFireflyIceCoder {
         channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
 	}
 
-    public void sendUpdateGetExternalHash(FDFireflyIceChannel channel, int address, int length) {
+    public void sendUpdateGetExternalHash(FDFireflyIceChannel channel, byte area, int address, int length) {
         FDBinary binary = new FDBinary();
-		binary.putUInt8(FD_CONTROL_UPDATE_GET_EXTERNAL_HASH);
+		binary.putUInt8(FD_CONTROL_UPDATE_AREA_GET_EXTERNAL_HASH);
+        binary.putUInt8(area);
 		binary.putUInt32(address);
 		binary.putUInt32(length);
 		channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
 	}
 
-    public void sendUpdateReadPage(FDFireflyIceChannel channel, int page) {
+    public void sendUpdateReadPage(FDFireflyIceChannel channel, byte area, int page) {
         FDBinary binary = new FDBinary();
-		binary.putUInt8(FD_CONTROL_UPDATE_READ_PAGE);
+		binary.putUInt8(FD_CONTROL_UPDATE_AREA_READ_PAGE);
+        binary.putUInt8(area);
 		binary.putUInt32(page);
 		channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
 	}
 
-    public void sendUpdateGetSectorHashes(FDFireflyIceChannel channel, List<Short> sectors) {
+    public void sendUpdateGetSectorHashes(FDFireflyIceChannel channel, byte area, List<Short> sectors) {
         FDBinary binary = new FDBinary();
-		binary.putUInt8(FD_CONTROL_UPDATE_GET_SECTOR_HASHES);
+		binary.putUInt8(FD_CONTROL_UPDATE_AREA_GET_SECTOR_HASHES);
+        binary.putUInt8(area);
 		binary.putUInt8((byte)sectors.size());
 		for (Short sector : sectors) {
 			binary.putUInt16(sector);
@@ -423,9 +434,10 @@ public class FDFireflyIceCoder {
 		channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
 	}
 
-    public void sendUpdateEraseSectors(FDFireflyIceChannel channel, List<Short> sectors) {
+    public void sendUpdateEraseSectors(FDFireflyIceChannel channel, byte area, List<Short> sectors) {
         FDBinary binary = new FDBinary();
-		binary.putUInt8(FD_CONTROL_UPDATE_ERASE_SECTORS);
+		binary.putUInt8(FD_CONTROL_UPDATE_AREA_ERASE_SECTORS);
+        binary.putUInt8(area);
 		binary.putUInt8((byte)sectors.size());
 		for (Short sector : sectors) {
 			binary.putUInt16(sector);
@@ -433,24 +445,31 @@ public class FDFireflyIceCoder {
 		channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
 	}
 
-    public void sendUpdateWritePage(FDFireflyIceChannel channel, short page, byte[] data) {
+    public void sendUpdateWritePage(FDFireflyIceChannel channel, byte area, short page, byte[] data) {
 		// !!! assert that data.length == page size -denis
         FDBinary binary = new FDBinary();
-		binary.putUInt8(FD_CONTROL_UPDATE_WRITE_PAGE);
+		binary.putUInt8(FD_CONTROL_UPDATE_AREA_WRITE_PAGE);
+        binary.putUInt8(area);
 		binary.putUInt16(page);
 		binary.putData(data);
 		channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
 	}
 
-    public void sendUpdateCommit(FDFireflyIceChannel channel, int flags, int length, byte[] hash, byte[] cryptHash, byte[] cryptIv) {
+    public void sendUpdateCommit(FDFireflyIceChannel channel, byte area, int flags, int length, byte[] hash, byte[] cryptHash, byte[] cryptIv, short major, short minor, short patch, int capabilities, byte[] commit) {
 		// !!! assert that data lengths are correct -denis
         FDBinary binary = new FDBinary();
-		binary.putUInt8(FD_CONTROL_UPDATE_COMMIT);
+		binary.putUInt8(FD_CONTROL_UPDATE_AREA_COMMIT);
+        binary.putUInt8(area);
 		binary.putUInt32(flags);
 		binary.putUInt32(length);
 		binary.putData(hash); // 20 bytes
 		binary.putData(cryptHash); // 20 bytes
 		binary.putData(cryptIv); // 16 bytes
+        binary.putUInt16(major);
+        binary.putUInt16(minor);
+        binary.putUInt16(patch);
+        binary.putUInt32(capabilities);
+        binary.putData(commit); // 20 bytes
 		channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
 	}
 

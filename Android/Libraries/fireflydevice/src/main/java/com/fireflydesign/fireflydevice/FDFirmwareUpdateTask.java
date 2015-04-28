@@ -29,6 +29,9 @@ public class FDFirmwareUpdateTask extends FDFireflyIceTaskSteps {
     public short major;
     public short minor;
     public short patch;
+    public int capabilities;
+    public byte[] commitHash;
+    public byte area;
     
     public Delegate delegate;
     public FDFireflyDeviceLog log;
@@ -74,12 +77,23 @@ public class FDFirmwareUpdateTask extends FDFireflyIceTaskSteps {
 		return FDIntelHex.intelHex(content, 0x08000, 0x40000 - 0x08000);
 	}
 
+    static byte[] parseBytes(String string) {
+        // !!! implement -denis
+        return new byte[20];
+    }
+
     public static FDFirmwareUpdateTask firmwareUpdateTask(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDIntelHex intelHex) {
 		FDFirmwareUpdateTask firmwareUpdateTask = new FDFirmwareUpdateTask(fireflyIce, channel);
 		firmwareUpdateTask.setFirmware(intelHex.data);
 		firmwareUpdateTask.major = Short.parseShort(intelHex.properties.get("major"));
 		firmwareUpdateTask.minor = Short.parseShort(intelHex.properties.get("minor"));
-		firmwareUpdateTask.patch = Short.parseShort(intelHex.properties.get("patch"));
+        firmwareUpdateTask.patch = Short.parseShort(intelHex.properties.get("patch"));
+        if (intelHex.properties.containsKey("capabilities")) {
+            firmwareUpdateTask.capabilities = Short.parseShort(intelHex.properties.get("capabilities"));
+        }
+        if (intelHex.properties.containsKey("commit")) {
+            firmwareUpdateTask.commitHash = parseBytes(intelHex.properties.get("commit"));
+        }
 		return firmwareUpdateTask;
 	}
 
@@ -104,6 +118,9 @@ public class FDFirmwareUpdateTask extends FDFireflyIceTaskSteps {
 		major = 0;
 		minor = 0;
 		patch = 0;
+        capabilities = 0;
+        commitHash = new byte[20];
+        area = 1; // application area
 
 		_pageSize = 256;
 		_sectorSize = 4096;
@@ -249,7 +266,7 @@ public class FDFirmwareUpdateTask extends FDFireflyIceTaskSteps {
 		if (_updateSectors.size() == 0) {
 			commitUpdate();
 		} else {
-			fireflyIce.coder.sendUpdateEraseSectors(channel, _updateSectors);
+			fireflyIce.coder.sendUpdateEraseSectors(channel, area, _updateSectors);
 			next("writeNextPage");
 		}
 	}
@@ -262,7 +279,7 @@ public class FDFirmwareUpdateTask extends FDFireflyIceTaskSteps {
                 sectors.add(_getSectors.get(0));
                 _getSectors.remove(0);
             }
-			fireflyIce.coder.sendUpdateGetSectorHashes(channel, sectors);
+			fireflyIce.coder.sendUpdateGetSectorHashes(channel, area, sectors);
 		} else {
 			if (_updatePages == null) {
 				next("firstSectorHashesCheck");
@@ -350,7 +367,7 @@ public class FDFirmwareUpdateTask extends FDFireflyIceTaskSteps {
 			_updatePages.remove(0);
 			int location = page * _pageSize;
             byte[] data = Arrays.copyOfRange(_firmware, location, location + _pageSize);
-			fireflyIce.coder.sendUpdateWritePage(channel, page, data);
+			fireflyIce.coder.sendUpdateWritePage(channel, area, page, data);
 			next("writeNextPage");
 		}
 	}
@@ -376,7 +393,7 @@ public class FDFirmwareUpdateTask extends FDFireflyIceTaskSteps {
 		byte[] hash = FDCrypto.sha1(_firmware);
 		byte[] cryptHash = hash;
 		byte[] cryptIv = new byte[16];
-		fireflyIce.coder.sendUpdateCommit(channel, flags, length, hash, cryptHash, cryptIv);
+		fireflyIce.coder.sendUpdateCommit(channel, area, flags, length, hash, cryptHash, cryptIv, major, minor, patch, capabilities, commitHash);
 	}
 
 	public void fireflyIceUpdateCommit(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceUpdateCommit updateCommit) {
@@ -390,7 +407,7 @@ public class FDFirmwareUpdateTask extends FDFireflyIceTaskSteps {
 			fireflyIce.coder.sendLock(channel, FDFireflyIceLock.Identifier.Update, FDFireflyIceLock.Operation.Release);
 		}
 
-		boolean isFirmwareUpToDate = (_updatePages.size() == 0);
+		boolean isFirmwareUpToDate = (_updatePages == null) || (_updatePages.size() == 0);
 		int result = 0;
 		if (_updateCommit != null) {
 			result = _updateCommit.result;
