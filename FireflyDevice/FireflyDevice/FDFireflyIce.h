@@ -95,30 +95,30 @@
 void fd_lock_initialize(void);
 
 enum {
-    fd_lock_owner_none = 0,
-    fd_lock_owner_ble = FD_LOCK_OWNER_ENCODE('B', 'L', 'E', ' '),
-    fd_lock_owner_usb = FD_LOCK_OWNER_ENCODE('U', 'S', 'B', ' '),
+    FDLockOwnerNone = 0,
+    FDLockOwnerBle = FD_LOCK_OWNER_ENCODE('B', 'L', 'E', ' '),
+    FDLockOwnerUsb = FD_LOCK_OWNER_ENCODE('U', 'S', 'B', ' '),
 };
-typedef uint32_t fd_lock_owner_t;
+typedef uint32_t FDLockOwner;
 
 enum {
-    fd_lock_operation_none,
-    fd_lock_operation_acquire,
-    fd_lock_operation_release,
+    FDLockOperationNone,
+    FDLockOperationAcquire,
+    FDLockOperationRelease,
 };
-typedef uint8_t fd_lock_operation_t;
+typedef uint8_t FDLockOperation;
 
 enum {
-    fd_lock_identifier_sync,
-    fd_lock_identifier_update,
+    FDLockIdentifierSync,
+    FDLockIdentifierUpdate,
 };
-typedef uint8_t fd_lock_identifier_t;
+typedef uint8_t FDLockIdentifier;
 
 @interface FDFireflyIceLock : NSObject
 
-@property fd_lock_identifier_t identifier;
-@property fd_lock_operation_t operation;
-@property fd_lock_owner_t owner;
+@property FDLockIdentifier identifier;
+@property FDLockOperation operation;
+@property FDLockOwner owner;
 
 @property(readonly) NSString *identifierName;
 @property(readonly) NSString *operationName;

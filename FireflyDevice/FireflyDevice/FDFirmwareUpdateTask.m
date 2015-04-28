@@ -290,7 +290,7 @@
 
 - (void)checkLock
 {
-    if ((_lock.identifier == fd_lock_identifier_update) && [self.channel.name isEqualToString:_lock.ownerName]) {
+    if ((_lock.identifier == FDLockIdentifierUpdate) && [self.channel.name isEqualToString:_lock.ownerName]) {
         FDFireflyDeviceLogDebug(@"FD010403", @"acquired update lock");
         [self checkOutOfDate];
     } else {
@@ -312,7 +312,7 @@
 - (void)checkVersions
 {
     if (_version.capabilities & FD_CONTROL_CAPABILITY_LOCK) {
-        [self.fireflyIce.coder sendLock:self.channel identifier:fd_lock_identifier_update operation:fd_lock_operation_acquire];
+        [self.fireflyIce.coder sendLock:self.channel identifier:FDLockIdentifierUpdate operation:FDLockOperationAcquire];
         [self next:@selector(checkLock)];
     } else {
         [self checkOutOfDate];
@@ -477,7 +477,7 @@
 {
     if (_version.capabilities & FD_CONTROL_CAPABILITY_LOCK) {
         FDFireflyDeviceLogDebug(@"FD010408", @"released update lock");
-        [self.fireflyIce.coder sendLock:self.channel identifier:fd_lock_identifier_update operation:fd_lock_operation_release];
+        [self.fireflyIce.coder sendLock:self.channel identifier:FDLockIdentifierUpdate operation:FDLockOperationRelease];
     }
     
     BOOL isFirmwareUpToDate = (_updatePages.count == 0);

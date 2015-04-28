@@ -141,7 +141,7 @@
 {
     _version = version;
     if (_version.capabilities & FD_CONTROL_CAPABILITY_LOCK) {
-        [_fireflyIce.coder sendLock:_channel identifier:fd_lock_identifier_sync operation:fd_lock_operation_acquire];
+        [_fireflyIce.coder sendLock:_channel identifier:FDLockIdentifierSync operation:FDLockOperationAcquire];
     } else {
         [self beginSync];
     }
@@ -149,7 +149,7 @@
 
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel lock:(FDFireflyIceLock *)lock
 {
-    if ((lock.identifier == fd_lock_identifier_sync) && [_channel.name isEqualToString:lock.ownerName]) {
+    if ((lock.identifier == FDLockIdentifierSync) && [_channel.name isEqualToString:lock.ownerName]) {
         [self beginSync];
     } else {
         FDFireflyDeviceLogInfo(@"FD010704", [NSString stringWithFormat:@"sync could not acquire lock (owned by %@)", lock.ownerName]);
@@ -312,7 +312,7 @@
 - (void)onComplete
 {
     if (_version.capabilities & FD_CONTROL_CAPABILITY_LOCK) {
-        [_fireflyIce.coder sendLock:_channel identifier:fd_lock_identifier_sync operation:fd_lock_operation_release];
+        [_fireflyIce.coder sendLock:_channel identifier:FDLockIdentifierSync operation:FDLockOperationRelease];
     }
     [_fireflyIce.executor complete:self];
     if ([_delegate respondsToSelector:@selector(pullTaskComplete:)]) {

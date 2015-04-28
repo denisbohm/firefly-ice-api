@@ -477,9 +477,9 @@ FD_CONTROL_PROPERTY_RETAINED)
 
 - (void)lock:(FDBinary *)binary
 {
-    fd_lock_identifier_t identifier = [binary getUInt8];
-    fd_lock_operation_t operation = [binary getUInt8];
-    fd_lock_owner_t lock_owner = fd_lock_owner_ble;
+    FDLockIdentifier identifier = [binary getUInt8];
+    FDLockOperation operation = [binary getUInt8];
+    FDLockOwner lock_owner = FDLockOwnerBle;
     
     FDBinary *binaryOut = [self sendStart:FD_CONTROL_LOCK];
     [binaryOut putUInt8:identifier];

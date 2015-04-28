@@ -258,7 +258,7 @@ typedef void (^FDFireflyIceCoderCommandBlock)(FDFireflyIce *fireflyIce, id<FDFir
 
 - (void)sendIdentify:(id<FDFireflyIceChannel>)channel duration:(NSTimeInterval)duration;
 
-- (void)sendLock:(id<FDFireflyIceChannel>)channel identifier:(fd_lock_identifier_t)identifier operation:(fd_lock_operation_t)operation;
+- (void)sendLock:(id<FDFireflyIceChannel>)channel identifier:(FDLockIdentifier)identifier operation:(FDLockOperation)operation;
 
 - (void)sendSyncStart:(id<FDFireflyIceChannel>)channel;
 - (void)sendSyncStart:(id<FDFireflyIceChannel>)channel offset:(uint32_t)offset;

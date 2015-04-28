@@ -163,9 +163,9 @@
 - (NSString *)identifierName
 {
     switch (_identifier) {
-        case fd_lock_identifier_sync:
+        case FDLockIdentifierSync:
             return @"sync";
-        case fd_lock_identifier_update:
+        case FDLockIdentifierUpdate:
             return @"update";
         default:
             break;
@@ -176,11 +176,11 @@
 - (NSString *)operationName
 {
     switch (_operation) {
-        case fd_lock_operation_none:
+        case FDLockOperationNone:
             return @"none";
-        case fd_lock_operation_acquire:
+        case FDLockOperationAcquire:
             return @"acquire";
-        case fd_lock_operation_release:
+        case FDLockOperationRelease:
             return @"release";
         default:
             break;
