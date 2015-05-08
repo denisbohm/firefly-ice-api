@@ -45,4 +45,5 @@ FOUNDATION_EXPORT const unsigned char FireflyDeviceVersionString[];
 #import <FireflyDevice/FDObservable.h>
 #import <FireflyDevice/FDPullTask.h>
 #import <FireflyDevice/FDSyncTask.h>
+#import <FireflyDevice/FDVMADecoder.h>
 #import <FireflyDevice/FDWeak.h>
