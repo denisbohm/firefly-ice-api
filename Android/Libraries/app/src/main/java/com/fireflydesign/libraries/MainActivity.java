@@ -39,6 +39,9 @@ import com.fireflydesign.fireflydevice.FDFireflyIceUpdateCommit;
 import com.fireflydesign.fireflydevice.FDFireflyIceVersion;
 import com.fireflydesign.fireflydevice.FDFirmwareUpdateTask;
 import com.fireflydesign.fireflydevice.FDHelloTask;
+import com.fireflydesign.fireflydevice.FDPullTask;
+import com.fireflydesign.fireflydevice.FDTimerFactory;
+import com.fireflydesign.fireflydevice.FDVMADecoder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,7 +49,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class MainActivity extends Activity implements FDFireflyIceManager.Delegate, FDFireflyIceObserver, FDFirmwareUpdateTask.Delegate {
+public class MainActivity extends Activity implements FDFireflyIceManager.Delegate, FDFireflyIceObserver, FDFirmwareUpdateTask.Delegate, FDPullTask.Delegate {
 
     FDFireflyIceManager fireflyIceManager;
     Map<String, Map<String, Object>> discovered;
@@ -159,11 +162,55 @@ public class MainActivity extends Activity implements FDFireflyIceManager.Delega
 
     public void firmwareUpdateTaskProgress(FDFirmwareUpdateTask task, float progress) {
         ProgressBar progressBar = (ProgressBar)findViewById(R.id.progressBar);
-        progressBar.setProgress((int)(progress * 100));
+        progressBar.setProgress((int) (progress * 100));
     }
 
     public void firmwareUpdateTaskComplete(FDFirmwareUpdateTask task, boolean isFirmwareUpToDate) {
+        FDFireflyDeviceLogger.info(null, "firmware update task complete");
+    }
 
+    public void onPullButtonClicked(View view) {
+        if (fireflyIce == null) {
+            return;
+        }
+
+        FDFireflyDeviceLogger.debug(null, "pulling records from firefly device");
+        FDFireflyIceChannel channel = fireflyIce.channels.get("BLE");
+        FDPullTask task = FDPullTask.pullTask(fireflyIce, channel, this, "test");
+        task.timerFactory = new FDTimerFactory(this);
+        task.decoderByType.put(FDPullTask.FD_STORAGE_TYPE('F', 'D', 'V', '2'), new FDVMADecoder());
+        fireflyIce.executor.execute(task);
+    }
+
+    // Called when the pull task becomes active.
+    public void pullTaskActive(FDPullTask pullTask) {
+        FDFireflyDeviceLogger.info(null, "pull task active");
+    }
+
+    // Called when there is an error uploading.
+    public void pullTaskError(FDPullTask pullTask, FDError error) {
+        FDFireflyDeviceLogger.info(null, "pull task error");
+    }
+
+    // Called when there is no uploader.
+    public void pullTaskItems(FDPullTask pullTask, List<Object> items) {
+        FDFireflyDeviceLogger.info(null, "pull task items");
+    }
+
+    // Called after each successful upload.
+    public void pullTaskProgress(FDPullTask pullTask, float progress) {
+        ProgressBar progressBar = (ProgressBar)findViewById(R.id.progressBar);
+        progressBar.setProgress((int) (progress * 100));
+    }
+
+    // Called when all the data has been read from the device and sent to the upload service.
+    public void pullTaskComplete(FDPullTask pullTask) {
+        FDFireflyDeviceLogger.info(null, "pull task complete");
+    }
+
+    // Called when the pull task becomes inactive.
+    public void pullTaskInactive(FDPullTask pullTask) {
+        FDFireflyDeviceLogger.info(null, "pull task inactive");
     }
 
     @Override
@@ -198,7 +245,7 @@ public class MainActivity extends Activity implements FDFireflyIceManager.Delega
 
     @Override
     public void fireflyIceDetourError(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDDetour detour, FDError error) {
-
+        FDFireflyDeviceLogger.info(null, "detour error");
     }
 
     @Override

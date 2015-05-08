@@ -34,21 +34,21 @@ public class FDPullTask extends FDExecutor.Task implements FDFireflyIceObserver,
         Object value;
     }
 
-    public interface FDPullTaskDecoder {
+    public interface Decoder {
 
         Object decode(int type, byte[] data, byte[] responseData);
 
     }
 
-    public final static String FDPullTaskErrorDomain = "com.fireflydesign.device.FDPullTask";
+    public final static String ErrorDomain = "com.fireflydesign.device.FDPullTask";
 
-    public enum FDPullTaskErrorCode {
+    public enum ErrorCode {
         Cancelling,
         Exception,
         CouldNotAcquireLock
     }
 
-    public interface FDPullTaskDelegate {
+    public interface Delegate {
 
         // Called when the pull task becomes active.
         void pullTaskActive(FDPullTask pullTask);
@@ -71,12 +71,11 @@ public class FDPullTask extends FDExecutor.Task implements FDFireflyIceObserver,
     }
 
     public FDFireflyDeviceLog log;
-    public String hardwareId;
     public FDFireflyIce fireflyIce;
     public FDFireflyIceChannel channel;
-    public FDPullTaskDelegate delegate;
+    public Delegate delegate;
     public String identifier;
-    public Map<String, FDPullTaskDecoder> decoderByType;
+    public Map<Integer, Decoder> decoderByType;
     public FDPullTaskUpload upload;
     public int pullAheadLimit;
     public int totalBytesReceived;
@@ -90,9 +89,8 @@ public class FDPullTask extends FDExecutor.Task implements FDFireflyIceObserver,
     
     public FDTimerFactory timerFactory;
 
-    public FDPullTask pullTask(String hardwareId, FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDPullTaskDelegate delegate, String identifier) {
+    public static FDPullTask pullTask(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, Delegate delegate, String identifier) {
         FDPullTask pullTask = new FDPullTask();
-        pullTask.hardwareId = hardwareId;
         pullTask.fireflyIce = fireflyIce;
         pullTask.channel = channel;
         pullTask.delegate = delegate;
@@ -124,7 +122,7 @@ public class FDPullTask extends FDExecutor.Task implements FDFireflyIceObserver,
         maxWait = 3600;
         wait = minWait;
         pullAheadLimit = 8;
-        decoderByType = new HashMap<String, FDPullTaskDecoder>();
+        decoderByType = new HashMap<Integer, Decoder>();
     }
 
     void startTimer() {
@@ -138,8 +136,10 @@ public class FDPullTask extends FDExecutor.Task implements FDFireflyIceObserver,
     }
 
     void cancelTimer() {
-        timer.setEnabled(false);
-        timer = null;
+        if (timer != null) {
+            timer.setEnabled(false);
+            timer = null;
+        }
     }
 
     void startSync() {
@@ -147,10 +147,13 @@ public class FDPullTask extends FDExecutor.Task implements FDFireflyIceObserver,
         if ((version.capabilities & FDFireflyIceCoder.FD_CONTROL_CAPABILITY_SYNC_AHEAD) != 0) {
             limit = pullAheadLimit;
         }
-        int pending = syncAheadItems.size() + syncUploadItems.size();
+        int pending = syncAheadItems.size();
+        if (syncUploadItems != null) {
+            pending += syncUploadItems.size();
+        }
         if (pending < limit) {
             if (!isSyncDataPending) {
-                FDFireflyDeviceLogger.info(log, "requesting sync data with offset %u", pending);
+                FDFireflyDeviceLogger.info(log, "requesting sync data with offset %d", pending);
                 fireflyIce.coder.sendSyncStart(channel, pending);
                 startTimer();
                 isSyncDataPending = true;
@@ -158,7 +161,7 @@ public class FDPullTask extends FDExecutor.Task implements FDFireflyIceObserver,
                 FDFireflyDeviceLogger.info(log, "waiting for pending sync data before starting new sync data request");
             }
         } else {
-            FDFireflyDeviceLogger.info(log, "waiting for upload complete to sync data with offset %u", pending);
+            FDFireflyDeviceLogger.info(log, "waiting for upload complete to sync data with offset %d", pending);
         }
     }
 
@@ -281,7 +284,7 @@ public class FDPullTask extends FDExecutor.Task implements FDFireflyIceObserver,
             userInfo.put(FDError.FDLocalizedDescriptionKey, "sync task could not acquire lock");
             userInfo.put(FDError.FDLocalizedRecoveryOptionsErrorKey, "Make sure the device is only connected to by one client");
             userInfo.put("com.fireflydesign.device.detail", FDString.format("sync task could not acquire lock (owned by %s)", lock.ownerName()));
-            fireflyIce.executor.fail(this, FDError.error(FDPullTaskErrorDomain, FDPullTaskErrorCode.CouldNotAcquireLock.ordinal(), userInfo));
+            fireflyIce.executor.fail(this, FDError.error(ErrorDomain, ErrorCode.CouldNotAcquireLock.ordinal(), userInfo));
         }
     }
 
@@ -293,7 +296,7 @@ public class FDPullTask extends FDExecutor.Task implements FDFireflyIceObserver,
             delegate.pullTaskActive(this);
         }
 
-        if (upload.isConnectionOpen()) {
+        if ((upload != null) && upload.isConnectionOpen()) {
             executor.complete(this);
         } else {
             fireflyIce.coder.sendGetProperties(channel, FDFireflyIceCoder.FD_CONTROL_PROPERTY_VERSION);
@@ -303,8 +306,8 @@ public class FDPullTask extends FDExecutor.Task implements FDFireflyIceObserver,
     void deactivate(FDExecutor executor) {
         cancelTimer();
 
-        if (upload.isConnectionOpen()) {
-            upload.cancel(FDError.error(FDPullTaskErrorDomain, FDPullTaskErrorCode.Cancelling.ordinal(), "sync task deactivated: canceling upload"));
+        if ((upload != null) && upload.isConnectionOpen()) {
+            upload.cancel(FDError.error(ErrorDomain, ErrorCode.Cancelling.ordinal(), "sync task deactivated: canceling upload"));
         }
 
         isActive = false;
@@ -407,7 +410,7 @@ public class FDPullTask extends FDExecutor.Task implements FDFireflyIceObserver,
     }
 
     void checkUpload() {
-        if (!upload.isConnectionOpen()) {
+        if ((upload == null) || !upload.isConnectionOpen()) {
             int backlog = currentBacklog;
             if (backlog > syncAheadItems.size()) {
                 backlog -= syncAheadItems.size();
@@ -450,7 +453,9 @@ public class FDPullTask extends FDExecutor.Task implements FDFireflyIceObserver,
 
     void resync() {
         FDFireflyDeviceLogger.info(log, "initiating a resync");
-        upload.cancel(null);
+        if (upload != null) {
+            upload.cancel(null);
+        }
         syncAheadItems.clear();
         syncUploadItems = null;
         isSyncDataPending = false;
@@ -491,12 +496,12 @@ public class FDPullTask extends FDExecutor.Task implements FDFireflyIceObserver,
         short length = binary.getUInt16();
         short hash = binary.getUInt16();
         int type = binary.getUInt32();
-        FDFireflyDeviceLogger.info(log, "syncData: page=%08x length=%u hash=0x%04x type=0x%08x", page, length, hash, type);
+        FDFireflyDeviceLogger.info(log, "syncData: page=%08x length=%d hash=0x%04x type=0x%08x", page, length, hash, type);
 
         // No sync data left? If so wait for uploads to complete or finish up now if there aren't any open uploads.
         if (page == 0xfffffffe) {
             complete = true;
-            if (!upload.isConnectionOpen()) {
+            if ((upload == null) || !upload.isConnectionOpen()) {
                 onComplete();
             }
             return;
@@ -520,7 +525,7 @@ public class FDPullTask extends FDExecutor.Task implements FDFireflyIceObserver,
         byte[] responseData = FDBinary.toByteArray(response.dataValue());
 
         Integer typeKey = type;
-        FDPullTaskDecoder decoder = decoderByType.get(typeKey);
+        Decoder decoder = decoderByType.get(typeKey);
         if (decoder != null) {
             try {
                 Object value = decoder.decode(type, FDBinary.toByteArray(binary.getRemainingData()), responseData);
@@ -528,12 +533,12 @@ public class FDPullTask extends FDExecutor.Task implements FDFireflyIceObserver,
                     addSyncAheadItem(responseData, value);
                 }
             } catch (Exception e) {
-                FDFireflyDeviceLogger.info(log, "discarding record: invalid sync record (%@) type 0x%08x data %@", e.getMessage(), type, responseData);
+                FDFireflyDeviceLogger.info(log, "discarding record: invalid sync record (%s) type 0x%08x data %s", e.getMessage(), type, FDBinary.toString(responseData));
                 channel.fireflyIceChannelSend(responseData);
             }
         } else {
             // !!! unknown type - ack to discard it so more records will be synced
-            FDFireflyDeviceLogger.info(log, "discarding record: unknown sync record type 0x%08x data %@", type, responseData);
+            FDFireflyDeviceLogger.info(log, "discarding record: unknown sync record type 0x%08x data %s", type, FDBinary.toString(responseData));
             channel.fireflyIceChannelSend(responseData);
         }
 
@@ -557,7 +562,7 @@ public class FDPullTask extends FDExecutor.Task implements FDFireflyIceObserver,
 
             try {
                 for (Item item : syncUploadItems) {
-                    FDFireflyDeviceLogger.info(log, "sending syncData response %@ %@", item.value, item.responseData);
+                    FDFireflyDeviceLogger.info(log, "sending syncData response %s %s", item.value.toString(), FDBinary.toString(item.responseData));
                     channel.fireflyIceChannelSend(item.responseData);
                 }
                 syncUploadItems = null;
@@ -576,7 +581,7 @@ public class FDPullTask extends FDExecutor.Task implements FDFireflyIceObserver,
             } catch (Exception e) {
                 // !!! channel could be closed when the upload finishes (a subsequent channel close will
                 // stop all the running tasks)
-                error = FDError.error(FDPullTaskErrorDomain, FDPullTaskErrorCode.Exception.ordinal(), "sync task exception");
+                error = FDError.error(ErrorDomain, ErrorCode.Exception.ordinal(), "sync task exception");
             }
         }
         if (error != null) {
