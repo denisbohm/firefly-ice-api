@@ -932,7 +932,7 @@ void putColor(FDBinary *binary, uint32_t color) {
     [channel fireflyIceChannelSend:binary.dataValue];
 }
 
-- (void)sendLock:(id<FDFireflyIceChannel>)channel identifier:(fd_lock_identifier_t)identifier operation:(fd_lock_operation_t)operation
+- (void)sendLock:(id<FDFireflyIceChannel>)channel identifier:(FDLockIdentifier)identifier operation:(FDLockOperation)operation
 {
     FDBinary *binary = [[FDBinary alloc] init];
     [binary putUInt8:FD_CONTROL_LOCK];
