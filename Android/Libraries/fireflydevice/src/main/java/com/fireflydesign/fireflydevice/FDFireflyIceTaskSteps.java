@@ -14,10 +14,10 @@ import java.util.Random;
 
 public class FDFireflyIceTaskSteps extends FDExecutor.Task implements FDFireflyIceObserver {
 
-    FDFireflyIce fireflyIce;
-    FDFireflyIceChannel channel;
+    public FDFireflyIce fireflyIce;
+    public FDFireflyIceChannel channel;
 
-    FDFireflyDeviceLog log;
+    public FDFireflyDeviceLog log;
 
     Random random;
     Method invocation;
@@ -35,6 +35,10 @@ public class FDFireflyIceTaskSteps extends FDExecutor.Task implements FDFireflyI
 		invocationId = 0;
 	}
 
+    public FDFireflyIceTaskSteps() {
+        this(null, null);
+    }
+
     void next(Method invocation) {
         //    FDFireflyDeviceLogDebug(@"queing next step %s", NSStringFromSelector(selector));
 
@@ -51,7 +55,7 @@ public class FDFireflyIceTaskSteps extends FDExecutor.Task implements FDFireflyI
         fireflyIce.coder.sendPing(channel, data);
     }
 
-    void next(String name) {
+    public void next(String name) {
         for (Class clazz = getClass(); clazz != null; clazz = clazz.getSuperclass()) {
             try {
                 Method method = clazz.getDeclaredMethod(name);
@@ -65,7 +69,7 @@ public class FDFireflyIceTaskSteps extends FDExecutor.Task implements FDFireflyI
         throw new RuntimeException("FDFireflyIceTaskSteps:next no such method " + name);
     }
 
-    void done() {
+    public void done() {
         //    FDFireflyDeviceLogDebug(@"task done");
         fireflyIce.executor.complete(this);
     }
