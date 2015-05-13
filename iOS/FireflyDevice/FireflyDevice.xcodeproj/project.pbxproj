@@ -444,7 +444,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\n\nDEVICE_PATH=\"${OBJROOT}/UninstalledProducts/${TARGET_NAME}.framework\"\nSIMULATOR_PATH=\"${SYMROOT}/../../../../Products/Debug-iphonesimulator/${TARGET_NAME}.framework\"\nARCHIVE_PATH=\"${SRCROOT}/../Frameworks\"\nif [ \"${CONFIGURATION}\" = \"Release\" ]; then\nif [ -d \"${DEVICE_PATH}\" ]; then\nif [ -d \"${SIMULATOR_PATH}\" ]; then\nrm -rf \"${ARCHIVE_PATH}/${TARGET_NAME}.framework\"\nmkdir -p \"${ARCHIVE_PATH}\"\ncp -r \"${DEVICE_PATH}\" \"${ARCHIVE_PATH}\"\nlipo -create \"${DEVICE_PATH}/${TARGET_NAME}\" \"${SIMULATOR_PATH}/${TARGET_NAME}\" -output \"${ARCHIVE_PATH}/${TARGET_NAME}.framework/${TARGET_NAME}\"\nfi\nfi\nfi\nexit 0;";
+			shellScript = "set -e\n\nDEVICE_PATH=\"${OBJROOT}/UninstalledProducts/${TARGET_NAME}.framework\"\nSIMULATOR_PATH=\"${SYMROOT}/../../../../Products/Debug-iphonesimulator/${TARGET_NAME}.framework\"\nARCHIVE_PATH=\"${SRCROOT}/../Frameworks\"\nif [ \"${CONFIGURATION}\" = \"Release\" ]; then\n    if [ -d \"${DEVICE_PATH}\" ]; then\n        rm -rf \"${ARCHIVE_PATH}/${TARGET_NAME}.framework\"\n        mkdir -p \"${ARCHIVE_PATH}\"\n        cp -r \"${DEVICE_PATH}\" \"${ARCHIVE_PATH}\"\n        if [ -d \"${SIMULATOR_PATH}\" ]; then\n            lipo -create \"${DEVICE_PATH}/${TARGET_NAME}\" \"${SIMULATOR_PATH}/${TARGET_NAME}\" -output \"${ARCHIVE_PATH}/${TARGET_NAME}.framework/${TARGET_NAME}\"\n        fi\n    fi\nfi\nexit 0;";
 		};
 /* End PBXShellScriptBuildPhase section */
 
