@@ -78,20 +78,26 @@ public class FDFireflyIceCoder {
     public static final int FD_CONTROL_CAPABILITY_RETAINED     = 0x00000040;
 
         // property bits for get/set property commands
-    public static final int FD_CONTROL_PROPERTY_VERSION      = 0x00000001;
-    public static final int FD_CONTROL_PROPERTY_HARDWARE_ID  = 0x00000002;
-    public static final int FD_CONTROL_PROPERTY_DEBUG_LOCK   = 0x00000004;
-    public static final int FD_CONTROL_PROPERTY_RTC          = 0x00000008;
-    public static final int FD_CONTROL_PROPERTY_POWER        = 0x00000010;
-    public static final int FD_CONTROL_PROPERTY_SITE         = 0x00000020;
-    public static final int FD_CONTROL_PROPERTY_RESET        = 0x00000040;
-    public static final int FD_CONTROL_PROPERTY_STORAGE      = 0x00000080;
-    public static final int FD_CONTROL_PROPERTY_MODE         = 0x00000100;
-    public static final int FD_CONTROL_PROPERTY_TX_POWER     = 0x00000200;
-    public static final int FD_CONTROL_PROPERTY_BOOT_VERSION = 0x00000400;
-    public static final int FD_CONTROL_PROPERTY_LOGGING      = 0x00000800;
-    public static final int FD_CONTROL_PROPERTY_NAME         = 0x00001000;
-    public static final int FD_CONTROL_PROPERTY_RETAINED     = 0x00002000;
+    public static final int FD_CONTROL_PROPERTY_VERSION          = 0x00000001;
+    public static final int FD_CONTROL_PROPERTY_HARDWARE_ID      = 0x00000002;
+    public static final int FD_CONTROL_PROPERTY_DEBUG_LOCK       = 0x00000004;
+    public static final int FD_CONTROL_PROPERTY_RTC              = 0x00000008;
+    public static final int FD_CONTROL_PROPERTY_POWER            = 0x00000010;
+    public static final int FD_CONTROL_PROPERTY_SITE             = 0x00000020;
+    public static final int FD_CONTROL_PROPERTY_RESET            = 0x00000040;
+    public static final int FD_CONTROL_PROPERTY_STORAGE          = 0x00000080;
+    public static final int FD_CONTROL_PROPERTY_MODE             = 0x00000100;
+    public static final int FD_CONTROL_PROPERTY_TX_POWER         = 0x00000200;
+    public static final int FD_CONTROL_PROPERTY_BOOT_VERSION     = 0x00000400;
+    public static final int FD_CONTROL_PROPERTY_LOGGING          = 0x00000800;
+    public static final int FD_CONTROL_PROPERTY_NAME             = 0x00001000;
+    public static final int FD_CONTROL_PROPERTY_RETAINED         = 0x00002000;
+	public static final int FD_CONTROL_PROPERTY_ADC_VDD          = 0x00004000;
+	public static final int FD_CONTROL_PROPERTY_REGULATOR        = 0x00008000;
+	public static final int FD_CONTROL_PROPERTY_SENSING_COUNT    = 0x00010000;
+	public static final int FD_CONTROL_PROPERTY_INDICATE         = 0x00020000;
+	public static final int FD_CONTROL_PROPERTY_RECOGNITION      = 0x00040000;
+	public static final int FD_CONTROL_PROPERTY_HARDWARE_VERSION = 0x00080000;
 
     public static final int FD_CONTROL_PROVISION_OPTION_DEBUG_LOCK = 0x00000001;
     public static final int FD_CONTROL_PROVISION_OPTION_RESET      = 0x00000002;
@@ -406,7 +412,15 @@ public class FDFireflyIceCoder {
         channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
 	}
 
-    public void sendUpdateGetExternalHash(FDFireflyIceChannel channel, byte area, int address, int length) {
+	public void sendSetPropertyIndicate(FDFireflyIceChannel channel, boolean indicate) {
+		FDBinary binary = new FDBinary();
+		binary.putUInt8(FD_CONTROL_SET_PROPERTIES);
+		binary.putUInt32(FD_CONTROL_PROPERTY_INDICATE);
+		binary.putUInt8(indicate ? (byte)1 : (byte)0);
+		channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
+	}
+
+	public void sendUpdateGetExternalHash(FDFireflyIceChannel channel, byte area, int address, int length) {
         FDBinary binary = new FDBinary();
 		binary.putUInt8(FD_CONTROL_UPDATE_AREA_GET_EXTERNAL_HASH);
         binary.putUInt8(area);

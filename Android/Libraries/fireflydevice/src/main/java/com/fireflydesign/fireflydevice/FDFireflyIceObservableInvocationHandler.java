@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by denis on 4/11/15.
  */
-class FDFireflyIceObservableInvocationHandler implements InvocationHandler {
+public class FDFireflyIceObservableInvocationHandler implements InvocationHandler {
 
     List<FDFireflyIceObserver> observers;
 
