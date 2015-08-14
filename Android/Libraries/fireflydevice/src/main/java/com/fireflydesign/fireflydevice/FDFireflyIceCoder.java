@@ -108,6 +108,10 @@ public class FDFireflyIceCoder {
 
     public static final int FD_CONTROL_MODE_STORAGE = 1;
 
+	public static final int FD_HAL_SYSTEM_AREA_BOOTLOADER = 0;
+	public static final int FD_HAL_SYSTEM_AREA_APPLICATION = 1;
+	public static final int FD_HAL_SYSTEM_AREA_OPERATING_SYSTEM = 2;
+
     public static final int FD_UPDATE_METADATA_FLAG_ENCRYPTED = 0x00000001;
 
     public static final int FD_UPDATE_COMMIT_SUCCESS = 0;
