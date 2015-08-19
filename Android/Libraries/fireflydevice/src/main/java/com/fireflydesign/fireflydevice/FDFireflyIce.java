@@ -18,7 +18,7 @@ public class FDFireflyIce implements FDFireflyIceChannel.Delegate {
     public FDFireflyDeviceLog log;
     public FDFireflyIceCoder coder;
     public FDExecutor executor;
-    public FDFireflyIceObservable observable;
+    public FDObservable observable;
     public Map<String, FDFireflyIceChannel> channels;
     public String name;
 
@@ -28,7 +28,8 @@ public class FDFireflyIce implements FDFireflyIceChannel.Delegate {
 
     public FDFireflyIce(Activity activity) {
         channels = new HashMap<String, FDFireflyIceChannel>();
-        observable = FDFireflyIceObservableInvocationHandler.newFireflyIceObservable();
+		observable = new FDObservable();
+		observable.addObserverInterface(FDFireflyIceObserver.class);
         coder = new FDFireflyIceCoder(observable);
         executor = new FDExecutor(activity);
         name = "anonymous";
@@ -49,7 +50,7 @@ public class FDFireflyIce implements FDFireflyIceChannel.Delegate {
 	}
 
 	public void fireflyIceChannelStatus(FDFireflyIceChannel channel, FDFireflyIceChannel.Status status) {
-        observable.fireflyIceStatus(this, channel, status);
+        observable.as(FDFireflyIceObserver.class).fireflyIceStatus(this, channel, status);
 		executor.setRun(status == FDFireflyIceChannel.Status.Open);
 	}
 
@@ -62,7 +63,7 @@ public class FDFireflyIce implements FDFireflyIceChannel.Delegate {
 	}
 
 	public void fireflyIceChannelDetourError(FDFireflyIceChannel channel, FDDetour detour, FDError error) {
-		observable.fireflyIceDetourError(this, channel, detour, error);
+		observable.as(FDFireflyIceObserver.class).fireflyIceDetourError(this, channel, detour, error);
 	}
 
 }

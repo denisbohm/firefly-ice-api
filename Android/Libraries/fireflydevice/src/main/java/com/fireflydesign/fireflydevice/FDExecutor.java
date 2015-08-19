@@ -23,10 +23,10 @@ public class FDExecutor {
 
     public abstract static class Task {
 
-        double timeout;
-        int priority;
-        boolean isSuspended;
-        double appointment;
+        public double timeout;
+		public int priority;
+		public boolean isSuspended;
+		public double appointment;
 
         public Task() {
             timeout = 10;
@@ -43,7 +43,7 @@ public class FDExecutor {
         
     }
 
-    enum FDExecutorErrorCode {
+	public enum FDExecutorErrorCode {
         Abort,
         Cancel,
         Timeout,

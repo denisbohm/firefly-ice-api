@@ -69,9 +69,13 @@ public class FDBinary {
 		return (short)(((buffer.get(1) & 0xff) << 8) | (buffer.get(0) & 0xff));
 	}
 
+    public static int unpackUInt24(List<Byte> buffer) {
+        return ((buffer.get(2) & 0xff) << 16) | ((buffer.get(1) & 0xff) << 8) | (buffer.get(0) & 0xff);
+    }
+
     public static int unpackUInt32(List<Byte> buffer) {
-		return ((buffer.get(3) & 0xff) << 24) | ((buffer.get(2) & 0xff) << 16) | ((buffer.get(1) & 0xff) << 8) | (buffer.get(0) & 0xff);
-	}
+        return ((buffer.get(3) & 0xff) << 24) | ((buffer.get(2) & 0xff) << 16) | ((buffer.get(1) & 0xff) << 8) | (buffer.get(0) & 0xff);
+    }
 
     public static long unpackUInt64(List<Byte> buffer) {
 		long lo = unpackUInt32(buffer);
@@ -104,12 +108,18 @@ public class FDBinary {
 		buffer.set(1, (byte)(value >> 8));
 	}
 
+    public static void packUInt24(List<Byte> buffer, int value) {
+        buffer.set(0, (byte)(value));
+        buffer.set(1, (byte)(value >> 8));
+        buffer.set(2, (byte)(value >> 16));
+    }
+
     public static void packUInt32(List<Byte> buffer, int value) {
-		buffer.set(0, (byte)(value));
-		buffer.set(1, (byte)(value >> 8));
-		buffer.set(2, (byte)(value >> 16));
-		buffer.set(3, (byte)(value >> 24));
-	}
+        buffer.set(0, (byte)(value));
+        buffer.set(1, (byte)(value >> 8));
+        buffer.set(2, (byte)(value >> 16));
+        buffer.set(3, (byte)(value >> 24));
+    }
 
     public static void packUInt64(List<Byte> buffer, long value) {
 	    packUInt32(buffer, (int) value);
@@ -209,12 +219,19 @@ public class FDBinary {
 		return unpackUInt16(p);
 	}
 
+    public int getUInt24() {
+        checkGet(3);
+        List<Byte> p = buffer.subList(getIndex, getIndex + 3);
+        getIndex += 3;
+        return unpackUInt24(p);
+    }
+
     public int getUInt32() {
-		checkGet(4);
-		List<Byte> p = buffer.subList(getIndex, getIndex + 4);
-		getIndex += 4;
-		return unpackUInt32(p);
-	}
+        checkGet(4);
+        List<Byte> p = buffer.subList(getIndex, getIndex + 4);
+        getIndex += 4;
+        return unpackUInt32(p);
+    }
 
     public long getUInt64() {
 		checkGet(8);
@@ -274,10 +291,15 @@ public class FDBinary {
         buffer.addAll(Arrays.asList(bytes));
 	}
 
-    public void putUInt32(int value) {
-		Byte bytes[] = { (byte)(value), (byte)(value >> 8), (byte)(value >> 16), (byte)(value >> 24) };
+    public void putUInt24(int value) {
+        Byte bytes[] = { (byte)(value), (byte)(value >> 8), (byte)(value >> 16) };
         buffer.addAll(Arrays.asList(bytes));
-	}
+    }
+
+    public void putUInt32(int value) {
+        Byte bytes[] = { (byte)(value), (byte)(value >> 8), (byte)(value >> 16), (byte)(value >> 24) };
+        buffer.addAll(Arrays.asList(bytes));
+    }
 
     public void putUInt64(long value) {
 		Byte bytes[] = { (byte)(value), (byte)(value >> 8), (byte)(value >> 16), (byte)(value >> 24), (byte)(value >> 32), (byte)(value >> 40), (byte)(value >> 48), (byte)(value >> 56) };

@@ -54,23 +54,23 @@ public class FDFireflyIceLock {
         Update,
     }
 
-    Identifier identifier;
-    Operation operation;
-    Owner owner;
+    public Identifier identifier;
+    public Operation operation;
+    public Owner owner;
 
-    String identifierName() {
+    public String identifierName() {
         return identifier.name();
     }
 
-    String operationName() {
+    public String operationName() {
         return operation.name();
     }
 
-    String ownerName() {
+    public String ownerName() {
         return owner.name();
     }
 
-    String description() {
+    public String description() {
         return FDString.format("lock identifier %s operation %s owner %s", identifierName(), operationName(), ownerName());
     }
 
