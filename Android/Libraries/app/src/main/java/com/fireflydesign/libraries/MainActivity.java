@@ -62,9 +62,9 @@ public class MainActivity extends Activity implements FDFireflyIceManager.Delega
         setContentView(R.layout.activity_main);
 
         discovered = new HashMap<>();
-        listViewItems = new ArrayList<String>();
+        listViewItems = new ArrayList<>();
         ListView listView = (ListView)findViewById(R.id.listView);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, listViewItems);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, listViewItems);
         listView.setAdapter(adapter);
 
         UUID serviceUUID = UUID.fromString("310a0001-1b95-5091-b0bd-b7a681846399"); // Firefly Ice
@@ -79,7 +79,7 @@ public class MainActivity extends Activity implements FDFireflyIceManager.Delega
     }
 
     public void discovered(FDFireflyIceManager manager, BluetoothDevice bluetoothDevice) {
-        Map map = discovered.get(bluetoothDevice.getAddress());
+        Map<String, Object> map = discovered.get(bluetoothDevice.getAddress());
         if (map != null) {
             return;
         }
@@ -89,7 +89,7 @@ public class MainActivity extends Activity implements FDFireflyIceManager.Delega
         FDFireflyIceChannelBLE channel = new FDFireflyIceChannelBLE(this, "310a0001-1b95-5091-b0bd-b7a681846399", bluetoothDevice);
         fireflyIce.addChannel(channel, "BLE");
 
-        map = new HashMap();
+        map = new HashMap<>();
         map.put("bluetoothDevice", bluetoothDevice);
         map.put("fireflyIce", fireflyIce);
         discovered.put(bluetoothDevice.getAddress(), map);
