@@ -12,24 +12,40 @@ import android.util.Log;
 
 public class FDFireflyDeviceLogger {
 
+    public enum Level {
+        Error, Warn, Info, Debug, Verbose
+    }
+
+    public static Level level = Level.Info;
+
     public static void error(FDFireflyDeviceLog log, String format, Object ... arguments) {
-        add(log, format, arguments);
+        if (level.ordinal() >= Level.Error.ordinal()) {
+            add(log, format, arguments);
+        }
     }
 
     public static void warn(FDFireflyDeviceLog log, String format, Object ... arguments) {
-        add(log, format, arguments);
+        if (level.ordinal() >= Level.Warn.ordinal()) {
+            add(log, format, arguments);
+        }
     }
 
     public static void info(FDFireflyDeviceLog log, String format, Object ... arguments) {
-        add(log, format, arguments);
+        if (level.ordinal() >= Level.Info.ordinal()) {
+            add(log, format, arguments);
+        }
     }
 
     public static void debug(FDFireflyDeviceLog log, String format, Object ... arguments) {
-        add(log, format, arguments);
+        if (level.ordinal() >= Level.Debug.ordinal()) {
+            add(log, format, arguments);
+        }
     }
 
     public static void verbose(FDFireflyDeviceLog log, String format, Object ... arguments) {
-        add(log, format, arguments);
+        if (level.ordinal() >= Level.Verbose.ordinal()) {
+            add(log, format, arguments);
+        }
     }
 
     static FDFireflyDeviceLog fireflyDeviceLogger;
