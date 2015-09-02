@@ -220,7 +220,6 @@ public class FDFireflyIceCoder {
 	}
 
 	void dispatchPing(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDBinary binary) {
-		byte code = binary.getUInt8();
 		int length = binary.getUInt16();
 		byte[] pingData = FDBinary.toByteArray(binary.getData(length));
 
@@ -771,7 +770,7 @@ public class FDFireflyIceCoder {
 	public void fireflyIceChannelPacket(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, byte[] data) {
 		FDBinary binary = new FDBinary(data);
 		byte code = binary.getUInt8();
-		Command command = commandByCode.get(new Byte[code]);
+		Command command = commandByCode.get(new Byte(code));
 		if (command != null) {
 			command.execute(fireflyIce, channel, binary);
 		}
