@@ -99,7 +99,7 @@ public class FDHelloTask extends FDFireflyIceTaskSteps {
     void checkVersion() {
 		if ((version == null) || (hardwareId == null)) {
 			String description = "Incomplete information received on initial communication with the device";
-			FDFireflyDeviceLogger.info(log, description);
+			FDFireflyDeviceLogger.info(log, "FD010501", description);
 			channel.close();
 			Map<String, String> userInfo = new HashMap<String, String>();
 			userInfo.put(FDError.FDLocalizedDescriptionKey, description);
@@ -124,7 +124,7 @@ public class FDHelloTask extends FDFireflyIceTaskSteps {
 	void setTime() {
 		double time = (delegate != null) ? delegate.helloTaskDate() : FDTime.time();
 		if (time != 0) {
-			FDFireflyDeviceLogger.info(log, "setting the time");
+			FDFireflyDeviceLogger.info(log, "FD010502", "setting the time");
 			fireflyIce.coder.sendSetPropertyTime(channel, time);
 		}
 	}
@@ -133,20 +133,20 @@ public class FDHelloTask extends FDFireflyIceTaskSteps {
 		String hardwareIdDescription = fireflyIce.hardwareId.description();
 		String versionDescription = fireflyIce.version.description();
 		String resetDescription = reset.description();
-		FDFireflyDeviceLogger.info(log, "hello (hardware %s) (firmware %s)", hardwareIdDescription, versionDescription);
+		FDFireflyDeviceLogger.info(log, "FD010503", "hello (hardware %s) (firmware %s)", hardwareIdDescription, versionDescription);
 
 		if (time == 0) {
-			FDFireflyDeviceLogger.info(log, "time not set for hw %s fw %s (last reset %s)", hardwareIdDescription, versionDescription, resetDescription);
+			FDFireflyDeviceLogger.info(log, "FD010504", "time not set for hw %s fw %s (last reset %s)", hardwareIdDescription, versionDescription, resetDescription);
 			setTime();
 		} else {
 			double time = (delegate != null) ? delegate.helloTaskDate() : FDTime.time();
 			if (time != 0) {
 				double offset = time - this.time;
 				if (Math.abs(offset) > maxOffset) {
-					FDFireflyDeviceLogger.info(log, "time is off by %.3f seconds for hw %s fw %s (last reset %s)", offset, hardwareIdDescription, versionDescription, resetDescription);
+					FDFireflyDeviceLogger.info(log, "FD010505", "time is off by %.3f seconds for hw %s fw %s (last reset %s)", offset, hardwareIdDescription, versionDescription, resetDescription);
 					setTime();
 				} else {
-					//            FDFireflyDeviceLogDebug(@"time is off by %.3f seconds for hw %s fw %s", offset, self.fireflyIce.hardwareId, self.fireflyIce.version);
+					//            FDFireflyDeviceLogDebug("FD010506", "time is off by %.3f seconds for hw %s fw %s", offset, self.fireflyIce.hardwareId, self.fireflyIce.version);
 				}
 			}
 		}

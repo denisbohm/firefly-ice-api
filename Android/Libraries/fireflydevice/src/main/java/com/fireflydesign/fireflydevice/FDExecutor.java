@@ -177,7 +177,7 @@ public class FDExecutor {
 
 		double duration = FDTime.time() - currentFeedTime;
 		if (duration > currentTask.timeout) {
-			FDFireflyDeviceLogger.info(log, "executor task timeout");
+			FDFireflyDeviceLogger.info(log, "FD010101", "executor task timeout");
 			Map<String, String> userInfo = new HashMap<String, String>();
             userInfo.put(FDError.FDLocalizedDescriptionKey, "executor task timed out");
 			fail(currentTask, FDError.error(FDExecutorErrorDomain, FDExecutorErrorCode.Timeout.ordinal(), userInfo));
@@ -190,7 +190,7 @@ public class FDExecutor {
 	}
 
 	void taskException(Exception e) {
-		FDFireflyDeviceLogger.warn(log, "task exception %s", e.toString());
+		FDFireflyDeviceLogger.warn(log, "FD010102", "task exception %s", e.toString());
 	}
 
 	void schedule() {
@@ -250,7 +250,7 @@ public class FDExecutor {
 		if (currentTask == task) {
 			currentFeedTime = FDTime.time();
 		} else {
-			FDFireflyDeviceLogger.warn(log, "expected current task to feed watchdog...");
+			FDFireflyDeviceLogger.warn(log, "FD010103", "expected current task to feed watchdog...");
 		}
 	}
 
@@ -268,7 +268,7 @@ public class FDExecutor {
 			}
 			schedule();
 		} else {
-			FDFireflyDeviceLogger.warn(log, "expected current task to be complete...");
+			FDFireflyDeviceLogger.warn(log, "FD010104", "expected current task to be complete...");
 		}
 	}
 

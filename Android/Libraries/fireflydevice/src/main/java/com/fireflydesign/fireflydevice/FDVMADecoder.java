@@ -13,7 +13,7 @@ public class FDVMADecoder implements FDPullTask.Decoder {
         double time = binary.getUInt32(); // 4-byte time
         int interval = binary.getUInt16();
         int n = binary.getRemainingLength() / 2; // 2 bytes == sizeof(float16)
-        FDFireflyDeviceLogger.info(null, "sync VMAs: %d values", n);
+        FDFireflyDeviceLogger.info(null, "FD010715", "sync VMAs: %d values", n);
         List<Double> vmas = new ArrayList<Double>();
         for (int i = 0; i < n; ++i) {
             double value = binary.getFloat16();

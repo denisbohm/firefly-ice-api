@@ -58,7 +58,7 @@ public class FDFireflyIce implements FDFireflyIceChannel.Delegate {
 		try {
 			coder.fireflyIceChannelPacket(this, channel, data);
 		} catch (Exception e) {
-//			FDFireflyDeviceLogWarn("unexpected exception %s", e.what().c_str());
+			FDFireflyDeviceLogger.warn(null, "FD010201", "unexpected exception " + e.getMessage());
 		}
 	}
 

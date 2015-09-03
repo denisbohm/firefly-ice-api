@@ -114,7 +114,7 @@ public class FDFireflyIceTaskSteps extends FDExecutor.Task implements FDFireflyI
 		FDBinary binary = new FDBinary(FDBinary.toList(data));
 		int invocationId = binary.getUInt32();
 		if (this.invocationId != invocationId) {
-			FDFireflyDeviceLogger.warn(log, "unexpected ping 0x%08x (expected 0x%08x)", invocationId, this.invocationId);
+			FDFireflyDeviceLogger.warn(log, "FD010301", "unexpected ping 0x%08x (expected 0x%08x)", invocationId, this.invocationId);
 			return;
 		}
 
@@ -125,7 +125,7 @@ public class FDFireflyIceTaskSteps extends FDExecutor.Task implements FDFireflyI
             try {
                 invocation.invoke(this);
             } catch (Exception e) {
-                FDFireflyDeviceLogger.warn(log, "unexpected exception %s", e.toString());
+                FDFireflyDeviceLogger.warn(log, "FD010302", "unexpected exception %s", e.toString());
             }
 		} else {
 			//        FDFireflyDeviceLogDebug(@"all steps completed");

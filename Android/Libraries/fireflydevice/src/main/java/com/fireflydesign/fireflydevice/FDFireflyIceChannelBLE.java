@@ -123,7 +123,7 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
 	}
 
 	public void open() {
-        FDFireflyDeviceLogger.debug(log, "opening firefly");
+        FDFireflyDeviceLogger.debug(log, "FD010901", "opening firefly");
 		status = FDFireflyIceChannel.Status.Opening;
 		if (delegate != null) {
 			delegate.fireflyIceChannelStatus(this, status);
@@ -133,7 +133,7 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
 	}
 
     void shutdown() {
-        FDFireflyDeviceLogger.debug(log, "closed firefly");
+        FDFireflyDeviceLogger.debug(log, "FD010902", "closed firefly");
         status = FDFireflyIceChannel.Status.Closed;
 
         if (bluetoothGatt != null) {
@@ -160,14 +160,14 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
 	}
 
     void servicesDiscovered(final BluetoothGatt gatt, final int status) {
-        FDFireflyDeviceLogger.debug(log, "found firefly service");
+        FDFireflyDeviceLogger.debug(log, "FD010903", "found firefly service");
         List<BluetoothGattService> services = bluetoothGatt.getServices();
         for (BluetoothGattService service : services) {
             List<BluetoothGattCharacteristic> characteristics = service.getCharacteristics();
             for (BluetoothGattCharacteristic characteristic : characteristics) {
                 UUID uuid = characteristic.getUuid();
                 if (uuid.equals(bluetoothGattCharacteristicUUID)) {
-                    FDFireflyDeviceLogger.debug(log, "found firefly service characteristic");
+                    FDFireflyDeviceLogger.debug(log, "FD010904", "found firefly service characteristic");
 
                     bluetoothGattCharacteristic = characteristic;
                     bluetoothGatt.setCharacteristicNotification(bluetoothGattCharacteristic, true);
@@ -193,17 +193,17 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
 
     void connectionStateChange(final BluetoothGatt gatt, final int status, final int newState) {
         if (newState == BluetoothProfile.STATE_CONNECTED) {
-            FDFireflyDeviceLogger.debug(log, "connected to firefly");
+            FDFireflyDeviceLogger.debug(log, "FD010905", "connected to firefly");
             bluetoothGatt.discoverServices();
         } else
         if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-            FDFireflyDeviceLogger.debug(log, "disconnected from firefly");
+            FDFireflyDeviceLogger.debug(log, "FD010906", "disconnected from firefly");
             shutdown();
         }
     }
 
     void checkWrite() {
-        FDFireflyDeviceLogger.debug(log, "check write");
+        FDFireflyDeviceLogger.debug(log, "FD010907", "check write");
         if (writePending) {
             return;
         }
@@ -220,6 +220,7 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
                 boolean canWriteCharacteristic = bluetoothGatt.writeCharacteristic(bluetoothGattCharacteristic);
                 FDFireflyDeviceLogger.debug(
                         log,
+                        "FD010908",
                         "FDFireflyIceChannelBLE:fireflyIceChannelSend:subdata %s, set=%s, write=%s",
                         FDBinary.toHexString(FDBinary.toByteArray(subdata)),
                         canSetValue ? "YES" : "NO",
@@ -236,7 +237,7 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
     }
 
     void writeComplete(final BluetoothGatt gatt, final int status) {
-        FDFireflyDeviceLogger.debug(log, "writeComplete %d", status);
+        FDFireflyDeviceLogger.debug(log, "FD010909", "writeComplete %d", status);
         writePending = false;
         checkWrite();
     }
@@ -247,7 +248,7 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
 	}
 
 	public void characteristicChanged(final BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic, final byte[] data) {
-		FDFireflyDeviceLogger.debug(log, "FDFireflyIceChannelBLE:characteristicValueChange %s", FDBinary.toHexString(data));
+		FDFireflyDeviceLogger.debug(log, "FD010910", "FDFireflyIceChannelBLE:characteristicValueChange %s", FDBinary.toHexString(data));
 		detour.detourEvent(FDBinary.toList(data));
 		if (detour.state == FDDetour.State.Success) {
 			if (delegate != null) {

@@ -68,6 +68,7 @@ public class FDObservable {
     }
 
     public void except(Exception e) {
+        FDFireflyDeviceLogger.warn(null, "FD010601", "unexpected exception during observer invocation: %s", e.getMessage());
     }
 
 }

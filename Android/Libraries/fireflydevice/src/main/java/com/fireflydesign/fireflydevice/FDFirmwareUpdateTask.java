@@ -212,11 +212,11 @@ public class FDFirmwareUpdateTask extends FDFireflyIceTaskSteps {
 			bootVersionDescription = _bootVersion.description();
 		}
 		if (isOutOfDate()) {
-			FDFireflyDeviceLogger.info(log, "firmware %s is out of date with latest %d.%d.%d (boot loader is %s)", versionDescription, major, minor, patch, bootVersionDescription);
+			FDFireflyDeviceLogger.info(log, "FD010401", "firmware %s is out of date with latest %d.%d.%d (boot loader is %s)", versionDescription, major, minor, patch, bootVersionDescription);
 			next("getSectorHashes");
 		}
 		else {
-			FDFireflyDeviceLogger.info(log, "firmware %s is up to date with latest %d.%d.%d (boot loader is %s)", versionDescription, major, minor, patch, bootVersionDescription);
+			FDFireflyDeviceLogger.info(log, "FD010402", "firmware %s is up to date with latest %d.%d.%d (boot loader is %s)", versionDescription, major, minor, patch, bootVersionDescription);
 			complete();
 		}
 	}
@@ -227,10 +227,10 @@ public class FDFirmwareUpdateTask extends FDFireflyIceTaskSteps {
 
 	void checkLock() {
 		if ((_lock.identifier == FDFireflyIceLock.Identifier.Update) && channel.getName().equals(_lock.ownerName())) {
-			FDFireflyDeviceLogger.debug(log, "acquired update lock");
+			FDFireflyDeviceLogger.debug(log, "FD010403", "acquired update lock");
 			checkOutOfDate();
 		} else {
-			FDFireflyDeviceLogger.debug(log, "update could not acquire lock");
+			FDFireflyDeviceLogger.debug(log, "FD010404", "update could not acquire lock");
 			complete();
 		}
 	}
@@ -345,7 +345,7 @@ public class FDFirmwareUpdateTask extends FDFireflyIceTaskSteps {
 		}
 
 		//	FDFireflyDeviceLogInfo("updating pages %s", _updatePages);
-		FDFireflyDeviceLogger.info(log, "updating %d pages", _updatePages.size());
+		FDFireflyDeviceLogger.info(log, "FD010405", "updating %d pages", _updatePages.size());
 	}
 
 	void writeNextPage() {
@@ -356,7 +356,7 @@ public class FDFirmwareUpdateTask extends FDFireflyIceTaskSteps {
 		int progressPercent = (int)(progress * 100);
 		if (_lastProgressPercent != progressPercent) {
 			_lastProgressPercent = progressPercent;
-			FDFireflyDeviceLogger.info(log, "firmware update progress %d%%", progressPercent);
+			FDFireflyDeviceLogger.info(log, "FD010406", "firmware update progress %d%%", progressPercent);
 		}
 
 		if (_updatePages.size() == 0) {
@@ -387,7 +387,7 @@ public class FDFirmwareUpdateTask extends FDFireflyIceTaskSteps {
 			return;
 		}
 
-		FDFireflyDeviceLogger.info(log, "sending update commit");
+		FDFireflyDeviceLogger.info(log, "FD010407", "sending update commit");
 		int flags = 0;
 		int length = _firmware.length;
 		byte[] hash = FDCrypto.sha1(_firmware);
@@ -403,7 +403,7 @@ public class FDFirmwareUpdateTask extends FDFireflyIceTaskSteps {
 
 	void complete() {
 		if ((_version.capabilities & FDFireflyIceCoder.FD_CONTROL_CAPABILITY_LOCK) != 0) {
-			FDFireflyDeviceLogger.debug(log, "released update lock");
+			FDFireflyDeviceLogger.debug(log, "FD010408", "released update lock");
 			fireflyIce.coder.sendLock(channel, FDFireflyIceLock.Identifier.Update, FDFireflyIceLock.Operation.Release);
 		}
 
@@ -412,12 +412,12 @@ public class FDFirmwareUpdateTask extends FDFireflyIceTaskSteps {
 		if (_updateCommit != null) {
 			result = _updateCommit.result;
 		}
-		FDFireflyDeviceLogger.info(log, "isFirmwareUpToDate = %s, commit %s result = %d", isFirmwareUpToDate ? "YES" : "NO", _updateCommit != null ? "YES" : "NO", result);
+		FDFireflyDeviceLogger.info(log, "FD010409", "isFirmwareUpToDate = %s, commit %s result = %d", isFirmwareUpToDate ? "YES" : "NO", _updateCommit != null ? "YES" : "NO", result);
 		if (delegate != null) {
 			delegate.firmwareUpdateTaskComplete(this, isFirmwareUpToDate);
 		}
 		if (reset && isOutOfDate() && isFirmwareUpToDate && (_updateCommit != null) && (_updateCommit.result == FDFireflyIceCoder.FD_UPDATE_COMMIT_SUCCESS)) {
-			FDFireflyDeviceLogger.info(log, "new firmware has been transferred and comitted - restarting device");
+			FDFireflyDeviceLogger.info(log, "FD010410", "new firmware has been transferred and comitted - restarting device");
 			fireflyIce.coder.sendReset(channel, FDFireflyIceCoder.FD_CONTROL_RESET_SYSTEM_REQUEST);
 		}
 		done();

@@ -18,33 +18,33 @@ public class FDFireflyDeviceLogger {
 
     public static Level level = Level.Info;
 
-    public static void error(FDFireflyDeviceLog log, String format, Object ... arguments) {
+    public static void error(FDFireflyDeviceLog log, String key, String format, Object ... arguments) {
         if (level.ordinal() >= Level.Error.ordinal()) {
-            add(log, format, arguments);
+            add(log, key, format, arguments);
         }
     }
 
-    public static void warn(FDFireflyDeviceLog log, String format, Object ... arguments) {
+    public static void warn(FDFireflyDeviceLog log, String key, String format, Object ... arguments) {
         if (level.ordinal() >= Level.Warn.ordinal()) {
-            add(log, format, arguments);
+            add(log, key, format, arguments);
         }
     }
 
-    public static void info(FDFireflyDeviceLog log, String format, Object ... arguments) {
+    public static void info(FDFireflyDeviceLog log, String key, String format, Object ... arguments) {
         if (level.ordinal() >= Level.Info.ordinal()) {
-            add(log, format, arguments);
+            add(log, key, format, arguments);
         }
     }
 
-    public static void debug(FDFireflyDeviceLog log, String format, Object ... arguments) {
+    public static void debug(FDFireflyDeviceLog log, String key, String format, Object ... arguments) {
         if (level.ordinal() >= Level.Debug.ordinal()) {
-            add(log, format, arguments);
+            add(log, key, format, arguments);
         }
     }
 
-    public static void verbose(FDFireflyDeviceLog log, String format, Object ... arguments) {
+    public static void verbose(FDFireflyDeviceLog log, String key, String format, Object ... arguments) {
         if (level.ordinal() >= Level.Verbose.ordinal()) {
-            add(log, format, arguments);
+            add(log, key, format, arguments);
         }
     }
 
@@ -58,7 +58,7 @@ public class FDFireflyDeviceLogger {
 		return fireflyDeviceLogger;
 	}
 
-	static void add(FDFireflyDeviceLog log, String format, Object ... arguments) {
+	static void add(FDFireflyDeviceLog log, String key, String format, Object ... arguments) {
         Thread thread = Thread.currentThread();
         StackTraceElement[] stackTrace = thread.getStackTrace();
         StackTraceElement caller = stackTrace[4];
@@ -79,7 +79,7 @@ public class FDFireflyDeviceLogger {
 		if (log != null) {
 			log.log(file, line, method, message);
 		} else {
-            String s = FDString.format("%s %s:%d %s %s\n", thread.getName(), file, line, method, message);
+            String s = FDString.format("%s %s:%d %s %s %s\n", thread.getName(), file, line, method, key, message);
             Log.i("Logger", s);
 		}
 	}

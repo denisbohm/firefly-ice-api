@@ -160,7 +160,7 @@ public class FDSyncTask extends FDExecutor.Task implements FDFireflyIceObserver 
 
 	void timerFired() {
 		try {
-			FDFireflyDeviceLogger.info(log, "timeout waiting for sync data response");
+			FDFireflyDeviceLogger.info(log, "FD010723", "timeout waiting for sync data response");
 			resync();
 		} catch (Exception e) {
 			FDError error = FDError.error(FDSyncTaskErrorDomain, FDSyncTaskErrorCode.Exception.ordinal(), "sync task exception");
@@ -200,15 +200,15 @@ public class FDSyncTask extends FDExecutor.Task implements FDFireflyIceObserver 
 		int pending = _syncAheadItems.size() + _syncUploadItems.size();
 		if (pending < limit) {
 			if (!_isSyncDataPending) {
-				FDFireflyDeviceLogger.info(log, "requesting sync data with offset %d", pending);
+				FDFireflyDeviceLogger.info(log, "FD010701", "requesting sync data with offset %d", pending);
 				fireflyIce.coder.sendSyncStart(channel, pending);
 				startTimer();
 				_isSyncDataPending = true;
 			} else {
-				FDFireflyDeviceLogger.info(log, "waiting for pending sync data before starting new sync data request");
+				FDFireflyDeviceLogger.info(log, "FD010702", "waiting for pending sync data before starting new sync data request");
 			}
 		} else {
-			FDFireflyDeviceLogger.info(log, "waiting for upload complete to sync data with offset %d", pending);
+			FDFireflyDeviceLogger.info(log, "FD010703", "waiting for upload complete to sync data with offset %d", pending);
 		}
 	}
 
@@ -259,7 +259,7 @@ public class FDSyncTask extends FDExecutor.Task implements FDFireflyIceObserver 
 		if ((lock.identifier == FDFireflyIceLock.Identifier.Sync) && channel.getName().equals(lock.ownerName())) {
 			beginSync();
 		} else {
-			FDFireflyDeviceLogger.info(log, "sync could not acquire lock");
+			FDFireflyDeviceLogger.info(log, "FD010704", "sync could not acquire lock");
 			fireflyIce.executor.complete(this);
 		}
 	}
@@ -353,22 +353,22 @@ public class FDSyncTask extends FDExecutor.Task implements FDFireflyIceObserver 
 	}
 
 	public void executorTaskStarted(FDExecutor executor) {
-		FDFireflyDeviceLogger.info(log, "task started");
+		FDFireflyDeviceLogger.info(log, "FD010705", "task started");
 		activate(executor);
 	}
 
     public void executorTaskSuspended(FDExecutor executor) {
-		FDFireflyDeviceLogger.info(log, "task suspended");
+		FDFireflyDeviceLogger.info(log, "FD010706", "task suspended");
 		deactivate(executor);
 	}
 
     public void executorTaskResumed(FDExecutor executor) {
-		FDFireflyDeviceLogger.info(log, "task resumed");
+		FDFireflyDeviceLogger.info(log, "FD010707", "task resumed");
 		activate(executor);
 	}
 
     public void executorTaskCompleted(FDExecutor executor) {
-		FDFireflyDeviceLogger.info(log, "task completed");
+		FDFireflyDeviceLogger.info(log, "FD010708", "task completed");
 		deactivate(executor);
 
 		scheduleNextAppointment();
@@ -382,7 +382,7 @@ public class FDSyncTask extends FDExecutor.Task implements FDFireflyIceObserver 
 	}
 
 	public void executorTaskFailed(FDExecutor executor, FDError error) {
-		FDFireflyDeviceLogger.info(log, "task failed with error %s", error.description());
+		FDFireflyDeviceLogger.info(log, "FD010709", "task failed with error %s", error.description());
 
 		if (error.domain.equals("FDDetour") && (error.code == 0)) {
 			// !!! flush out and start sync again...
@@ -397,7 +397,7 @@ public class FDSyncTask extends FDExecutor.Task implements FDFireflyIceObserver 
 
 	public void fireflyIceSite(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, String site) {
 		_site = site;
-		FDFireflyDeviceLogger.info(log, "device site %s", _site);
+		FDFireflyDeviceLogger.info(log, "FD010710", "device site %s", _site);
 	}
 
     @Override
@@ -407,7 +407,7 @@ public class FDSyncTask extends FDExecutor.Task implements FDFireflyIceObserver 
 
     public void fireflyIceStorage(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceStorage storage) {
 		_storage = storage;
-		FDFireflyDeviceLogger.info(log, "storage %s", _storage.description());
+		FDFireflyDeviceLogger.info(log, "FD010711", "storage %s", _storage.description());
 		_initialBacklog = _storage.pageCount;
 		_currentBacklog = _storage.pageCount;
 	}
@@ -427,7 +427,7 @@ public class FDSyncTask extends FDExecutor.Task implements FDFireflyIceObserver 
 		if (_initialBacklog > 0) {
 			progress = (_initialBacklog - _currentBacklog) / (float)_initialBacklog;
 		}
-		FDFireflyDeviceLogger.info(log, "sync task progress %f", progress);
+		FDFireflyDeviceLogger.info(log, "FD010712", "sync task progress %f", progress);
 		if (delegate != null) {
 			delegate.syncTaskProgress(this, progress);
 		}
@@ -446,7 +446,7 @@ public class FDSyncTask extends FDExecutor.Task implements FDFireflyIceObserver 
 		String date = FDString.formatDateTime(time);
 		byte[] bytes = binary.getRemainingDataArray();
 		String message = FDBinary.toString(bytes);
-		FDFireflyDeviceLogger.info(log, "device message %s %s %s", hardwareId, date, message);
+		FDFireflyDeviceLogger.info(log, "FD010713", "device message %s %s %s", hardwareId, date, message);
 	}
 
 	List<FDSyncTaskUploadItem> getUploadItems() {
@@ -482,7 +482,7 @@ public class FDSyncTask extends FDExecutor.Task implements FDFireflyIceObserver 
 		double time = binary.getUInt32(); // 4-byte time
 		int interval = binary.getUInt16();
 		int n = binary.getRemainingLength() / floatBytes; // 4 bytes == sizeof(float32)
-		FDFireflyDeviceLogger.info(log, "sync VMAs: %d values", n);
+		FDFireflyDeviceLogger.info(log, "FD010715", "sync VMAs: %d values", n);
 		double[] vmas = new double[n];
 		for (int i = 0; i < n; ++i) {
 			double value = (floatBytes == 2) ? binary.getFloat16() : binary.getFloat32();
@@ -558,7 +558,7 @@ public class FDSyncTask extends FDExecutor.Task implements FDFireflyIceObserver 
 	}
 
 	public void fireflyIceSync(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, byte[] data) {
-		FDFireflyDeviceLogger.info(log, "sync data for %s", _site);
+		FDFireflyDeviceLogger.info(log, "FD010724", "sync data for %s", _site);
 
 		fireflyIce.executor.feedWatchdog(this);
 
@@ -569,7 +569,7 @@ public class FDSyncTask extends FDExecutor.Task implements FDFireflyIceObserver 
 		short length = binary.getUInt16();
 		short hash = binary.getUInt16();
 		int type = binary.getUInt32();
-		FDFireflyDeviceLogger.info(log, "syncData: page=%d length=%d hash=0x%04x type=0x%08x", page, length, hash, type);
+		FDFireflyDeviceLogger.info(log, "FD010716", "syncData: page=%d length=%d hash=0x%04x type=0x%08x", page, length, hash, type);
 
 		// No sync data left? If so wait for uploads to complete or finish up now if there aren't any open uploads.
 		if (page == 0xfffffffe) {
@@ -606,7 +606,7 @@ public class FDSyncTask extends FDExecutor.Task implements FDFireflyIceObserver 
             channel.fireflyIceChannelSend(responseData);
         } else {
 			// !!! unknown type - ack to discard it so more records will be synced
-			FDFireflyDeviceLogger.info(log, "discarding record: unknown sync record type 0x%08x data", type);
+			FDFireflyDeviceLogger.info(log, "FD010721", "discarding record: unknown sync record type 0x%08x data", type);
 			channel.fireflyIceChannelSend(responseData);
 		}
 
@@ -630,7 +630,7 @@ public class FDSyncTask extends FDExecutor.Task implements FDFireflyIceObserver 
 
 			try {
 				for (FDSyncTaskUploadItem item : _syncUploadItems) {
-					FDFireflyDeviceLogger.info(log, "sending syncData response");
+					FDFireflyDeviceLogger.info(log, "FD010722", "sending syncData response");
 					channel.fireflyIceChannelSend(item.responseData);
 				}
 				_syncUploadItems.clear();
