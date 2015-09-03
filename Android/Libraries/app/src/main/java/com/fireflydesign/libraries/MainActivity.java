@@ -110,7 +110,7 @@ public class MainActivity extends Activity implements FDFireflyIceManager.Delega
             return;
         }
 
-        FDFireflyDeviceLogger.debug(null, "opening firefly device");
+        FDFireflyDeviceLogger.debug(null, "FD020001", "opening firefly device");
         ListView listView = (ListView)findViewById(R.id.listView);
         int position = listView.getCheckedItemPosition();
         String address = listViewItems.get(position);
@@ -125,7 +125,7 @@ public class MainActivity extends Activity implements FDFireflyIceManager.Delega
             return;
         }
 
-        FDFireflyDeviceLogger.debug(null, "closing firefly device");
+        FDFireflyDeviceLogger.debug(null, "FD020002", "closing firefly device");
         for (FDFireflyIceChannel channel : fireflyIce.channels.values()) {
             channel.close();
         }
@@ -137,7 +137,7 @@ public class MainActivity extends Activity implements FDFireflyIceManager.Delega
             return;
         }
 
-        FDFireflyDeviceLogger.debug(null, "illuminating firefly device");
+        FDFireflyDeviceLogger.debug(null, "FD020003", "illuminating firefly device");
         final FDFireflyIceChannel channel = fireflyIce.channels.get("BLE");
         FDFireflyIceSimpleTask task = new FDFireflyIceSimpleTask(fireflyIce, channel, new FDFireflyIceSimpleTask.Delegate() {
             public void run() {
@@ -152,7 +152,7 @@ public class MainActivity extends Activity implements FDFireflyIceManager.Delega
             return;
         }
 
-        FDFireflyDeviceLogger.debug(null, "updating firefly device");
+        FDFireflyDeviceLogger.debug(null, "FD020004", "updating firefly device");
         FDFireflyIceChannel channel = fireflyIce.channels.get("BLE");
         FDFirmwareUpdateTask task = FDFirmwareUpdateTask.firmwareUpdateTask(fireflyIce, channel, getResources());
         task.delegate = this;
@@ -166,7 +166,7 @@ public class MainActivity extends Activity implements FDFireflyIceManager.Delega
     }
 
     public void firmwareUpdateTaskComplete(FDFirmwareUpdateTask task, boolean isFirmwareUpToDate) {
-        FDFireflyDeviceLogger.info(null, "firmware update task complete");
+        FDFireflyDeviceLogger.info(null, "FD020005", "firmware update task complete");
     }
 
     public void onPullButtonClicked(View view) {
@@ -174,7 +174,7 @@ public class MainActivity extends Activity implements FDFireflyIceManager.Delega
             return;
         }
 
-        FDFireflyDeviceLogger.debug(null, "pulling records from firefly device");
+        FDFireflyDeviceLogger.debug(null, "FD020006", "pulling records from firefly device");
         FDFireflyIceChannel channel = fireflyIce.channels.get("BLE");
         FDPullTask task = FDPullTask.pullTask(fireflyIce, channel, this, "test");
         task.timerFactory = new FDTimerFactory(this);
@@ -184,17 +184,17 @@ public class MainActivity extends Activity implements FDFireflyIceManager.Delega
 
     // Called when the pull task becomes active.
     public void pullTaskActive(FDPullTask pullTask) {
-        FDFireflyDeviceLogger.info(null, "pull task active");
+        FDFireflyDeviceLogger.info(null, "FD020007", "pull task active");
     }
 
     // Called when there is an error uploading.
     public void pullTaskError(FDPullTask pullTask, FDError error) {
-        FDFireflyDeviceLogger.info(null, "pull task error");
+        FDFireflyDeviceLogger.info(null, "FD020008", "pull task error");
     }
 
     // Called when there is no uploader.
     public void pullTaskItems(FDPullTask pullTask, List<Object> items) {
-        FDFireflyDeviceLogger.info(null, "pull task items");
+        FDFireflyDeviceLogger.info(null, "FD020009", "pull task items");
     }
 
     // Called after each successful upload.
@@ -205,12 +205,12 @@ public class MainActivity extends Activity implements FDFireflyIceManager.Delega
 
     // Called when all the data has been read from the device and sent to the upload service.
     public void pullTaskComplete(FDPullTask pullTask) {
-        FDFireflyDeviceLogger.info(null, "pull task complete");
+        FDFireflyDeviceLogger.info(null, "FD020010", "pull task complete");
     }
 
     // Called when the pull task becomes inactive.
     public void pullTaskInactive(FDPullTask pullTask) {
-        FDFireflyDeviceLogger.info(null, "pull task inactive");
+        FDFireflyDeviceLogger.info(null, "FD020011", "pull task inactive");
     }
 
     @Override
@@ -238,14 +238,14 @@ public class MainActivity extends Activity implements FDFireflyIceManager.Delega
     @Override
     public void fireflyIceStatus(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceChannel.Status status) {
         if (status == FDFireflyIceChannel.Status.Open) {
-            FDFireflyDeviceLogger.info(null, "executing hello task");
+            FDFireflyDeviceLogger.info(null, "FD020012", "executing hello task");
             fireflyIce.executor.execute(new FDHelloTask(fireflyIce, channel, null));
         }
     }
 
     @Override
     public void fireflyIceDetourError(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDDetour detour, FDError error) {
-        FDFireflyDeviceLogger.info(null, "detour error");
+        FDFireflyDeviceLogger.info(null, "FD020013", "detour error");
     }
 
     @Override
