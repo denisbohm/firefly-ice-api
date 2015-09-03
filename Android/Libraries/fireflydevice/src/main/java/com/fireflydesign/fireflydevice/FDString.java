@@ -14,7 +14,14 @@ import java.util.GregorianCalendar;
 public class FDString {
 
     public static String format(String fmt, Object ... arguments) {
-        return String.format(fmt, arguments);
+        if (arguments.length == 0) {
+            return fmt;
+        }
+        try {
+            return String.format(fmt, arguments);
+        } catch (Exception e) {
+            return fmt;
+        }
     }
 
     public static String formatDateTime(double time) {
