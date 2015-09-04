@@ -86,8 +86,6 @@ public class FDPullTask extends FDExecutor.Task implements FDFireflyIceObserver,
     public int currentBacklog;
 
     public FDError error;
-    
-    public FDTimerFactory timerFactory;
 
     public static FDPullTask pullTask(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, Delegate delegate, String identifier) {
         FDPullTask pullTask = new FDPullTask();

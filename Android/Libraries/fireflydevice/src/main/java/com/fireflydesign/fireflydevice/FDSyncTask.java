@@ -11,7 +11,7 @@
  * So the procedure is to read data from the device and queue it up.  When the
  * uploader becomes available, all the queued up data is posted.  When the post
  * completes then the queued up syncs are all acked to the device.
- 
+
  * The amount of look ahead when reading data from the device needs to be limited
  * so that we don't overflow sending back acks in a single transfer.
  */
@@ -59,19 +59,19 @@ public class FDSyncTask extends FDExecutor.Task implements FDFireflyIceObserver 
     public interface FDSyncTaskDelegate {
         // Called when the sync task becomes active.
         void syncTaskActive(FDSyncTask syncTask);
-    
+
         // Called if there is no upload object.
         void syncTaskVMAs(FDSyncTask syncTask, String site, String hardwareId, double time, double interval, double[] vmas, int backlog);
-    
+
         // Called when there is an error uploading.
         void syncTaskError(FDSyncTask syncTask, FDError error);
-    
+
         // Called after each successful upload.
         void syncTaskProgress(FDSyncTask syncTask, float progress);
-    
+
         // Called when all the data has been read from the device and synced to the web service.
         void syncTaskComplete(FDSyncTask syncTask);
-    
+
         // Called when the sync task becomes inactive.
         void syncTaskInactive(FDSyncTask syncTask);
     }
@@ -85,7 +85,6 @@ public class FDSyncTask extends FDExecutor.Task implements FDFireflyIceObserver 
     public FDSyncTaskUpload upload;
     public boolean reschedule;
 
-    FDTimerFactory _timerFactory;
     FDFireflyIceVersion _version;
     String _site;
     FDFireflyIceStorage _storage;
@@ -108,9 +107,8 @@ public class FDSyncTask extends FDExecutor.Task implements FDFireflyIceObserver 
     double _minWait;
     double _maxWait;
 
-    public static FDSyncTask newSyncTask(String hardwareId, FDTimerFactory timerFactory, FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDSyncTaskDelegate delegate, String identifier) {
+    public static FDSyncTask newSyncTask(String hardwareId, FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDSyncTaskDelegate delegate, String identifier) {
 		FDSyncTask syncTask = new FDSyncTask();
-		syncTask._timerFactory = timerFactory;
 		syncTask.hardwareId = hardwareId;
 		syncTask.fireflyIce = fireflyIce;
 		syncTask.channel = channel;
@@ -146,7 +144,7 @@ public class FDSyncTask extends FDExecutor.Task implements FDFireflyIceObserver 
 	void startTimer() {
 		cancelTimer();
 
-		_timer = _timerFactory.makeTimer(
+		_timer = fireflyIce.executor.timerFactory.makeTimer(
             new FDTimer.Delegate() {
                 public void timerFired() {
                     timerFired();
