@@ -15,28 +15,18 @@ import android.bluetooth.le.ScanResult;
 import android.os.ParcelUuid;
 
 public class FDFireflyIceManager {
-    private enum DelegateType { DEVICE, RESULT }
-
-    public interface AbstractDelegate {
-    }
-
-    public interface Delegate extends AbstractDelegate {
-        void discovered(FDFireflyIceManager manager, BluetoothDevice device);
-    }
-
-    public interface ResultDelegate extends AbstractDelegate {
+    public interface Delegate {
         void discovered(FDFireflyIceManager manager, ScanResult result);
     }
 
     Activity activity;
     BluetoothAdapter bluetoothAdapter;
     UUID serviceUUID;
-    DelegateType delegateType;
-    AbstractDelegate delegate;
+    Delegate delegate;
 
     ScanCallback scanCallback;
 
-    public FDFireflyIceManager(final Activity activity, BluetoothAdapter bluetoothAdapter, UUID serviceUUID, AbstractDelegate delegate) {
+    public FDFireflyIceManager(final Activity activity, BluetoothAdapter bluetoothAdapter, UUID serviceUUID, Delegate delegate) {
         this.activity = activity;
         this.bluetoothAdapter = bluetoothAdapter;
         this.serviceUUID = serviceUUID;
@@ -66,16 +56,6 @@ public class FDFireflyIceManager {
         };
     }
 
-    public FDFireflyIceManager(final Activity activity, BluetoothAdapter bluetoothAdapter, UUID serviceUUID, Delegate delegate) {
-        this(activity, bluetoothAdapter, serviceUUID, (AbstractDelegate) delegate);
-        this.delegateType = DelegateType.DEVICE;
-    }
-
-    public FDFireflyIceManager(final Activity activity, BluetoothAdapter bluetoothAdapter, UUID serviceUUID, ResultDelegate delegate) {
-        this(activity, bluetoothAdapter, serviceUUID, (AbstractDelegate) delegate);
-        this.delegateType = DelegateType.RESULT;
-    }
-
     public void setDiscovery(boolean discover) {
         BluetoothLeScanner bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
         if (discover) {
@@ -100,16 +80,6 @@ public class FDFireflyIceManager {
     }
 
     void discovered(ScanResult result) {
-        switch (this.delegateType) {
-            case DEVICE:
-                ((Delegate) delegate).discovered(this, result.getDevice());
-                break;
-
-            case RESULT:
-                ((ResultDelegate) delegate).discovered(this, result);
-
-            default:
-                break;
-        }
+        delegate.discovered(this, result);
     }
 }
