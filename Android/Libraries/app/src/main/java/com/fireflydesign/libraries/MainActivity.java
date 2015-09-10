@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
+import android.bluetooth.le.ScanResult;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
@@ -42,7 +43,6 @@ import com.fireflydesign.fireflydevice.FDFireflyIceVersion;
 import com.fireflydesign.fireflydevice.FDFirmwareUpdateTask;
 import com.fireflydesign.fireflydevice.FDHelloTask;
 import com.fireflydesign.fireflydevice.FDPullTask;
-import com.fireflydesign.fireflydevice.FDTimerFactory;
 import com.fireflydesign.fireflydevice.FDVMADecoder;
 
 import java.util.ArrayList;
@@ -80,7 +80,8 @@ public class MainActivity extends Activity implements FDFireflyIceManager.Delega
         }
     }
 
-    public void discovered(FDFireflyIceManager manager, BluetoothDevice bluetoothDevice) {
+    public void discovered(FDFireflyIceManager manager, ScanResult scanResult) {
+        BluetoothDevice bluetoothDevice = scanResult.getDevice();
         Map<String, Object> map = discovered.get(bluetoothDevice.getAddress());
         if (map != null) {
             return;
@@ -179,7 +180,6 @@ public class MainActivity extends Activity implements FDFireflyIceManager.Delega
         FDFireflyDeviceLogger.debug(null, "FD020006", "pulling records from firefly device");
         FDFireflyIceChannel channel = fireflyIce.channels.get("BLE");
         FDPullTask task = FDPullTask.pullTask(fireflyIce, channel, this, "test");
-        task.timerFactory = new FDTimerFactory(this);
         task.decoderByType.put(FDPullTask.FD_STORAGE_TYPE('F', 'D', 'V', '2'), new FDVMADecoder());
         fireflyIce.executor.execute(task);
     }
@@ -262,7 +262,7 @@ public class MainActivity extends Activity implements FDFireflyIceManager.Delega
 
     @Override
     public void fireflyIceHardwareVersion(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceHardwareVersion version) {
-        
+
     }
 
     @Override
