@@ -10,6 +10,7 @@ package com.fireflydesign.fireflydevice;
 
 import java.lang.reflect.Method;
 
+import java.util.Map;
 import java.util.Random;
 
 public class FDFireflyIceTaskSteps extends FDExecutor.Task implements FDFireflyIceObserver {
@@ -138,6 +139,11 @@ public class FDFireflyIceTaskSteps extends FDExecutor.Task implements FDFireflyI
     }
 
     @Override
+    public void fireflyIceHardwareVersion(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceHardwareVersion version) {
+
+    }
+
+    @Override
     public void fireflyIceHardwareId(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceHardwareId hardwareId) {
     }
 
@@ -151,6 +157,16 @@ public class FDFireflyIceTaskSteps extends FDExecutor.Task implements FDFireflyI
 
     @Override
     public void fireflyIceTime(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, double time) {
+    }
+
+    @Override
+    public void fireflyIceRTC(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, Map<String, Object> rtc) {
+
+    }
+
+    @Override
+    public void fireflyIceHardware(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, Map<String, Object> hardware) {
+
     }
 
     @Override
@@ -178,6 +194,26 @@ public class FDFireflyIceTaskSteps extends FDExecutor.Task implements FDFireflyI
     }
 
     @Override
+    public void fireflyIceRegulator(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, Byte regulator) {
+
+    }
+
+    @Override
+    public void fireflyIceSensingCount(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, Number sensingCount) {
+
+    }
+
+    @Override
+    public void fireflyIceIndicate(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, Boolean indicate) {
+
+    }
+
+    @Override
+    public void fireflyIceRecognition(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, Boolean recognition) {
+
+    }
+
+    @Override
     public void fireflyIceLock(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceLock lock) {
     }
 
@@ -199,6 +235,11 @@ public class FDFireflyIceTaskSteps extends FDExecutor.Task implements FDFireflyI
 
     @Override
     public void fireflyIceDirectTestModeReport(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceDirectTestModeReport directTestModeReport) {
+    }
+
+    @Override
+    public void fireflyIceUpdateVersion(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceUpdateVersion version) {
+
     }
 
     @Override

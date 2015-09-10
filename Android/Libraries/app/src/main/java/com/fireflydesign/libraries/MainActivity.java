@@ -24,6 +24,7 @@ import com.fireflydesign.fireflydevice.FDFireflyIceChannelBLE;
 import com.fireflydesign.fireflydevice.FDFireflyIceDiagnostics;
 import com.fireflydesign.fireflydevice.FDFireflyIceDirectTestModeReport;
 import com.fireflydesign.fireflydevice.FDFireflyIceHardwareId;
+import com.fireflydesign.fireflydevice.FDFireflyIceHardwareVersion;
 import com.fireflydesign.fireflydevice.FDFireflyIceLock;
 import com.fireflydesign.fireflydevice.FDFireflyIceLogging;
 import com.fireflydesign.fireflydevice.FDFireflyIceManager;
@@ -36,6 +37,7 @@ import com.fireflydesign.fireflydevice.FDFireflyIceSensing;
 import com.fireflydesign.fireflydevice.FDFireflyIceSimpleTask;
 import com.fireflydesign.fireflydevice.FDFireflyIceStorage;
 import com.fireflydesign.fireflydevice.FDFireflyIceUpdateCommit;
+import com.fireflydesign.fireflydevice.FDFireflyIceUpdateVersion;
 import com.fireflydesign.fireflydevice.FDFireflyIceVersion;
 import com.fireflydesign.fireflydevice.FDFirmwareUpdateTask;
 import com.fireflydesign.fireflydevice.FDHelloTask;
@@ -259,6 +261,11 @@ public class MainActivity extends Activity implements FDFireflyIceManager.Delega
     }
 
     @Override
+    public void fireflyIceHardwareVersion(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceHardwareVersion version) {
+        
+    }
+
+    @Override
     public void fireflyIceHardwareId(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceHardwareId hardwareId) {
 
     }
@@ -275,6 +282,16 @@ public class MainActivity extends Activity implements FDFireflyIceManager.Delega
 
     @Override
     public void fireflyIceTime(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, double time) {
+
+    }
+
+    @Override
+    public void fireflyIceRTC(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, Map<String, Object> rtc) {
+
+    }
+
+    @Override
+    public void fireflyIceHardware(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, Map<String, Object> hardware) {
 
     }
 
@@ -309,6 +326,26 @@ public class MainActivity extends Activity implements FDFireflyIceManager.Delega
     }
 
     @Override
+    public void fireflyIceRegulator(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, Byte regulator) {
+
+    }
+
+    @Override
+    public void fireflyIceSensingCount(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, Number sensingCount) {
+
+    }
+
+    @Override
+    public void fireflyIceIndicate(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, Boolean indicate) {
+
+    }
+
+    @Override
+    public void fireflyIceRecognition(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, Boolean recognition) {
+
+    }
+
+    @Override
     public void fireflyIceLock(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceLock lock) {
 
     }
@@ -335,6 +372,11 @@ public class MainActivity extends Activity implements FDFireflyIceManager.Delega
 
     @Override
     public void fireflyIceDirectTestModeReport(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceDirectTestModeReport directTestModeReport) {
+
+    }
+
+    @Override
+    public void fireflyIceUpdateVersion(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceUpdateVersion version) {
 
     }
 

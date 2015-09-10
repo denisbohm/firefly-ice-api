@@ -20,6 +20,7 @@ package com.fireflydesign.fireflydevice;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class FDSyncTask extends FDExecutor.Task implements FDFireflyIceObserver {
 
@@ -230,7 +231,12 @@ public class FDSyncTask extends FDExecutor.Task implements FDFireflyIceObserver 
 		}
 	}
 
-    @Override
+	@Override
+	public void fireflyIceHardwareVersion(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceHardwareVersion version) {
+
+	}
+
+	@Override
     public void fireflyIceHardwareId(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceHardwareId hardwareId) {
 
     }
@@ -250,7 +256,17 @@ public class FDSyncTask extends FDExecutor.Task implements FDFireflyIceObserver 
 
     }
 
-    @Override
+	@Override
+	public void fireflyIceRTC(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, Map<String, Object> rtc) {
+
+	}
+
+	@Override
+	public void fireflyIceHardware(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, Map<String, Object> hardware) {
+
+	}
+
+	@Override
     public void fireflyIcePower(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIcePower power) {
 
     }
@@ -289,7 +305,12 @@ public class FDSyncTask extends FDExecutor.Task implements FDFireflyIceObserver 
 
     }
 
-    @Override
+	@Override
+	public void fireflyIceUpdateVersion(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceUpdateVersion version) {
+
+	}
+
+	@Override
     public void fireflyIceExternalHash(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, byte[] externalHash) {
 
     }
@@ -422,7 +443,27 @@ public class FDSyncTask extends FDExecutor.Task implements FDFireflyIceObserver 
 
     }
 
-    void notifyProgress() {
+	@Override
+	public void fireflyIceRegulator(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, Byte regulator) {
+
+	}
+
+	@Override
+	public void fireflyIceSensingCount(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, Number sensingCount) {
+
+	}
+
+	@Override
+	public void fireflyIceIndicate(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, Boolean indicate) {
+
+	}
+
+	@Override
+	public void fireflyIceRecognition(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, Boolean recognition) {
+
+	}
+
+	void notifyProgress() {
 		float progress = 1.0f;
 		if (_initialBacklog > 0) {
 			progress = (_initialBacklog - _currentBacklog) / (float)_initialBacklog;
