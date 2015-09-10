@@ -15,9 +15,8 @@ import android.bluetooth.le.ScanResult;
 import android.os.ParcelUuid;
 
 public class FDFireflyIceManager {
-
     public interface Delegate {
-        void discovered(FDFireflyIceManager manager, BluetoothDevice device);
+        void discovered(FDFireflyIceManager manager, ScanResult result);
     }
 
     Activity activity;
@@ -73,15 +72,14 @@ public class FDFireflyIceManager {
             for (ParcelUuid parcelUuid : parcelUuids) {
                 UUID uuid = parcelUuid.getUuid();
                 if (uuid.equals(serviceUUID)) {
-                    discovered(result.getDevice());
+                    discovered(result);
                     break;
                 }
             }
         }
     }
 
-    void discovered(BluetoothDevice device) {
-        delegate.discovered(this, device);
+    void discovered(ScanResult result) {
+        delegate.discovered(this, result);
     }
-
 }

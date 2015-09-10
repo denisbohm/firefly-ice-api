@@ -86,8 +86,6 @@ public class FDPullTask extends FDExecutor.Task implements FDFireflyIceObserver,
     public int currentBacklog;
 
     public FDError error;
-    
-    public FDTimerFactory timerFactory;
 
     public static FDPullTask pullTask(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, Delegate delegate, String identifier) {
         FDPullTask pullTask = new FDPullTask();
@@ -127,7 +125,7 @@ public class FDPullTask extends FDExecutor.Task implements FDFireflyIceObserver,
 
     void startTimer() {
         cancelTimer();
-        timer = timerFactory.makeTimer(new FDTimer.Delegate() { public void timerFired() { timeout(); } }, 2.0 , FDTimer.Type.OneShot);
+        timer = fireflyIce.executor.timerFactory.makeTimer(new FDTimer.Delegate() { public void timerFired() { timeout(); } }, 2.0 , FDTimer.Type.OneShot);
     }
 
     void timeout() {
