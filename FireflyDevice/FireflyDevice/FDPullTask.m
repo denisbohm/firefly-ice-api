@@ -407,7 +407,7 @@
         }
     } else {
         // !!! unknown type - ack to discard it so more records will be synced
-        FDFireflyDeviceLogInfo(@"FD010721", @"discarding record: unknown sync record type 0x%08x data %@", type, responseData);
+        FDFireflyDeviceLogInfo(@"FD010724", @"discarding record: unknown sync record type 0x%08x data %@", type, responseData);
         [channel fireflyIceChannelSend:responseData];
     }
     

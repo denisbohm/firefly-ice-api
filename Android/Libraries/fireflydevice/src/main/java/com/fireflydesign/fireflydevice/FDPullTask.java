@@ -576,7 +576,7 @@ public class FDPullTask extends FDExecutor.Task implements FDFireflyIceObserver,
             }
         } else {
             // !!! unknown type - ack to discard it so more records will be synced
-            FDFireflyDeviceLogger.info(log, "FD010721", "discarding record: unknown sync record type 0x%08x data %s", type, FDBinary.toString(responseData));
+            FDFireflyDeviceLogger.info(log, "FD010724", "discarding record: unknown sync record type 0x%08x data %s", type, FDBinary.toString(responseData));
             channel.fireflyIceChannelSend(responseData);
         }
 
