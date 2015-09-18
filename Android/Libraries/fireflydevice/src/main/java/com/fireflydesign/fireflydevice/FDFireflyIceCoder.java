@@ -19,7 +19,7 @@ import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
 public class FDFireflyIceCoder {
-        
+
     public static final byte FD_CONTROL_PING = 1;
 
     public static final byte FD_CONTROL_GET_PROPERTIES = 2;
@@ -319,6 +319,12 @@ public class FDFireflyIceCoder {
 		binary.putUInt32(properties);
 		channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
 	}
+
+    public void sendDisconnect(FDFireflyIceChannel channel) {
+        FDBinary binary = new FDBinary();
+		binary.putUInt8(FD_CONTROL_DISCONNECT);
+		channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
+    }
 
 	void dispatchGetPropertyVersion(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDBinary binary) {
 		FDFireflyIceVersion version = new FDFireflyIceVersion();
