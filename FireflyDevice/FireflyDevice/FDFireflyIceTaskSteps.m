@@ -107,11 +107,7 @@
     [_fireflyIce.executor feedWatchdog:self];
     
     _invocation = [self invocation:selector];
-    if (arc4random_uniform) {
-        _invocationId = arc4random_uniform(0xffffffff);
-    } else {
-        _invocationId = arc4random();
-    }
+    _invocationId = arc4random_uniform(0xffffffff);
     
 //    FDFireflyDeviceLogDebug(@"setup ping 0x%08x %@ %@", _invocationId, NSStringFromClass([self class]), NSStringFromSelector(_invocation.selector));
 

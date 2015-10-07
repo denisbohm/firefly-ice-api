@@ -183,14 +183,7 @@
 
 - (void)scan:(BOOL)allowDuplicates
 {
-    if ([_centralManager respondsToSelector:@selector(retrieveConnectedPeripheralsWithServices:)]) {
-        [_centralManager retrieveConnectedPeripheralsWithServices:@[_serviceUUID]];
-    } else {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-        [_centralManager retrieveConnectedPeripherals];
-#pragma GCC diagnostic pop
-    }
+    [_centralManager retrieveConnectedPeripheralsWithServices:@[_serviceUUID]];
     NSDictionary *options = nil;
     if (allowDuplicates) {
         options = @{CBCentralManagerScanOptionAllowDuplicatesKey: @YES};
@@ -225,14 +218,7 @@
 {
     NSString *UUIDString = nil;
 #if TARGET_OS_IPHONE
-    if ([peripheral respondsToSelector:@selector(identifier)]) {
-        UUIDString = [peripheral.identifier UUIDString];
-    } else {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-        UUIDString = (NSString *)CFBridgingRelease(CFUUIDCreateString(kCFAllocatorDefault, peripheral.UUID));
-#pragma GCC diagnostic pop
-    }
+    UUIDString = [peripheral.identifier UUIDString];
 #else
     UUIDString = (NSString *)CFBridgingRelease(CFUUIDCreateString(kCFAllocatorDefault, peripheral.UUID));
 #endif

@@ -96,8 +96,12 @@
             case CBPeripheralStateConnecting:
                 _status = FDFireflyIceChannelStatusOpening;
                 break;
+            case CBPeripheralStateDisconnecting:
+                // add disconnecting status? -denis
+                break;
             case CBPeripheralStateDisconnected:
                 _status = FDFireflyIceChannelStatusClosed;
+                break;
             
         }
         
