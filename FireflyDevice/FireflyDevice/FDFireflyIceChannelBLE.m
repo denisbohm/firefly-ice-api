@@ -96,9 +96,11 @@
             case CBPeripheralStateConnecting:
                 _status = FDFireflyIceChannelStatusOpening;
                 break;
+#if TARGET_OS_IPHONE
             case CBPeripheralStateDisconnecting:
                 // add disconnecting status? -denis
                 break;
+#endif
             case CBPeripheralStateDisconnected:
                 _status = FDFireflyIceChannelStatusClosed;
                 break;
