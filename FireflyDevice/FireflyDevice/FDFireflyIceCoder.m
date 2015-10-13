@@ -794,6 +794,10 @@
         NSData *primaryServiceUUID = [binary getData:length];
         dictionary[@"BLE primaryServiceUUID"] = primaryServiceUUID;
     }
+    if (flags & FD_CONTROL_HARDWARE_FLAG_GET_MODEL) {
+        uint32_t model = [binary getUInt32];
+        dictionary[@"model"] = [NSNumber numberWithInteger:model];
+    }
     
     [_observable fireflyIce:fireflyIce channel:channel hardware:dictionary];
 }
