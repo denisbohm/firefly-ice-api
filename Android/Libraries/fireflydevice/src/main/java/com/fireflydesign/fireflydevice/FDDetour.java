@@ -36,7 +36,7 @@ public class FDDetour {
     int length;
 
     public FDDetour() {
-        buffer = new ArrayList<>();
+        buffer = new ArrayList<Byte>();
 		clear();
 	}
 

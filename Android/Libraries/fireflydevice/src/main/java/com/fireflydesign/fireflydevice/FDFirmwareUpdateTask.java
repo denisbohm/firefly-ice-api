@@ -62,7 +62,6 @@ public class FDFirmwareUpdateTask extends FDFireflyIceTaskSteps {
     public FDFireflyIceUpdateCommit _updateCommit;
 
     FDFireflyIceVersion _version;
-    FDFireflyIceVersion _bootVersion;
     FDFireflyIceLock _lock;
 
     List<Short> _getSectors;
@@ -141,7 +140,7 @@ public class FDFirmwareUpdateTask extends FDFireflyIceTaskSteps {
 		patch = 0;
         capabilities = 0;
         commitHash = new byte[20];
-        area = 1; // application area
+        area = FDFireflyIceCoder.FD_HAL_SYSTEM_AREA_APPLICATION;
 
 		commitCryptIv = new byte[16];
 
@@ -189,20 +188,16 @@ public class FDFirmwareUpdateTask extends FDFireflyIceTaskSteps {
 		begin();
 	}
 
-	public void fireflyIceVersion(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceVersion version)
+	public void fireflyIceUpdateVersion(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceUpdateVersion version)
 	{
-		_version = version;
-	}
-
-	public void fireflyIceBootVersion(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceVersion bootVersion) {
-		_bootVersion = bootVersion;
+		_version = version.revision;
 	}
 
 	void begin() {
 		_updateSectors.clear();
 		_updatePages = null;
 
-		fireflyIce.coder.sendGetProperties(channel, FDFireflyIceCoder.FD_CONTROL_PROPERTY_VERSION);
+		fireflyIce.coder.sendUpdateGetVersion(channel, area);
 		next("checkVersion");
 	}
 
@@ -234,16 +229,11 @@ public class FDFirmwareUpdateTask extends FDFireflyIceTaskSteps {
 
 	void checkOutOfDate() {
 		String versionDescription = _version.description();
-		String bootVersionDescription = "0";
-		if (_bootVersion != null) {
-			bootVersionDescription = _bootVersion.description();
-		}
 		if (isOutOfDate()) {
-			FDFireflyDeviceLogger.info(log, "FD010401", "firmware %s is out of date with latest %d.%d.%d (boot loader is %s)", versionDescription, major, minor, patch, bootVersionDescription);
+			FDFireflyDeviceLogger.info(log, "FD010401", "firmware %s is out of date with latest %d.%d.%d", versionDescription, major, minor, patch);
 			next("getSectorHashes");
-		}
-		else {
-			FDFireflyDeviceLogger.info(log, "FD010402", "firmware %s is up to date with latest %d.%d.%d (boot loader is %s)", versionDescription, major, minor, patch, bootVersionDescription);
+		} else {
+			FDFireflyDeviceLogger.info(log, "FD010402", "firmware %s is up to date with latest %d.%d.%d", versionDescription, major, minor, patch);
 			complete();
 		}
 	}
