@@ -141,7 +141,7 @@ public class FDExecutor {
 	void sortTasksByPriority() {
 		Collections.sort(tasks, new Comparator<Task>() {
             public int compare(Task a, Task b) {
-                return a.priority - b.priority;
+                return b.priority - a.priority;
             }
 		});
 	}
