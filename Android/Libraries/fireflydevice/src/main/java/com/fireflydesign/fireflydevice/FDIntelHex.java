@@ -50,28 +50,52 @@ public class FDIntelHex {
 		return value;
 	}
 
-	public void read(String content, int address, int length) {
+	int getHexProperty(String key, int fallback) {
+		String object = properties.get(key);
+		if (object != null) {
+			return FDString.parseInt(object);
+		}
+		return fallback;
+	}
+
+    final static int TypeDataRecord                   = 0;
+    final static int TypeEndOfFileRecord              = 1;
+    final static int TypeExtendedSegmentAddressRecord = 2;
+    final static int TypeStartSegmentAddressRecord    = 3;
+    final static int TypeExtendedLinearAddressRecord  = 4;
+    final static int TypeStartLinearAddressRecord     = 5;
+
+    public void read(String content, int address, int length) {
         properties = new HashMap<String, String>();
-		ArrayList<Byte> firmware = new ArrayList<Byte>();
-		int extendedAddress = 0;
-		boolean done = false;
 		String[] lines = content.split("\\r?\\n");
 		for (String line : lines) {
 			if (!line.startsWith(":")) {
 				if (line.startsWith("#! ")) {
-                    try {
-                        JSONObject object = (JSONObject) new JSONTokener(line.substring(2)).nextValue();
-                        for (Iterator<String> i = object.keys(); i.hasNext(); ) {
-                            String key = i.next();
-                            Object value = object.get(key);
-                            properties.put(key, value.toString());
-                        }
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
+					try {
+						JSONObject object = (JSONObject) new JSONTokener(line.substring(2)).nextValue();
+						for (Iterator<String> i = object.keys(); i.hasNext(); ) {
+							String key = i.next();
+							Object value = object.get(key);
+							properties.put(key, value.toString());
+						}
+					} catch (JSONException e) {
+						throw new RuntimeException(e);
+					}
 				}
 				continue;
 			}
+		}
+
+		address = getHexProperty("address", address);
+		length = getHexProperty("length", length);
+
+		ArrayList<Byte> firmware = new ArrayList<Byte>();
+		int extendedAddress = 0;
+		boolean done = false;
+		for (String line : lines) {
+            if (!line.startsWith(":")) {
+                continue;
+            }
 			if (done) {
 				continue;
 			}
@@ -91,34 +115,37 @@ public class FDIntelHex {
 				throw new RuntimeException("checksum mismatch");
 			}
 			switch (recordType) {
-			    case 0: { // Data Record
-                    int dataAddress = extendedAddress + recordAddress;
-                    int firmwareLength = dataAddress + (int)data.size();
-                    while (firmwareLength > firmware.size()) {
-                        firmware.add(Byte.MAX_VALUE);
-                    }
-                    for (int i = 0; i < data.size(); ++i) {
-                        firmware.set(dataAddress + i, data.get(i));
+			    case TypeDataRecord: {
+                    int targetAddress = extendedAddress + recordAddress;
+                    if (targetAddress >= address) {
+                        int dataAddress = targetAddress - address;
+                        int dataLength = dataAddress + (int) data.size();
+                        while (dataLength > firmware.size()) {
+                            firmware.add(Byte.MAX_VALUE);
+                        }
+                        for (int i = 0; i < data.size(); ++i) {
+                            firmware.set(dataAddress + i, data.get(i));
+                        }
                     }
 			    } break;
-			    case 1: { // End Of File Record
+			    case TypeEndOfFileRecord: {
 					done = true;
 			    } break;
-			    case 2: { // Extended Segment Address Record
+			    case TypeExtendedSegmentAddressRecord: {
 					extendedAddress = ((data.get(0) << 8) | data.get(1)) << 4;
 			    } break;
-			    case 3: { // Start Segment Address Record
+			    case TypeStartSegmentAddressRecord: {
 					// ignore
 			    } break;
-			    case 4: { // Extended Linear Address Record
-					// ignore
+			    case TypeExtendedLinearAddressRecord: {
+                    extendedAddress = (data.get(0) << 24) | (data.get(1) << 16);
 			    } break;
-			    case 5: { // Start Linear Address Record
+			    case TypeStartLinearAddressRecord: {
 					// ignore
 			    } break;
 			}
 		}
-		data = FDBinary.toByteArray(firmware.subList(address, firmware.size()));
+		data = FDBinary.toByteArray(firmware);
 	}
 
 }

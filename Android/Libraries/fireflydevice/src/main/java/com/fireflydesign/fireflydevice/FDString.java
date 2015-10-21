@@ -8,6 +8,7 @@
 
 package com.fireflydesign.fireflydevice;
 
+import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 
@@ -31,5 +32,23 @@ public class FDString {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         return formatter.format(calendar.getTime());
 	}
+
+    static int parseInt(String string) {
+        if (string.startsWith("0x") || string.startsWith("0X")) {
+            return Integer.parseInt(string.substring(2), 16);
+        }
+        return Integer.parseInt(string);
+    }
+
+    // For example: 5f8e87b7ecf9558d8704e3af7177388098387368
+    static byte[] parseBytes(String string) {
+        ByteBuffer buffer = ByteBuffer.allocate(20);
+        for (int i = 0; i < string.length(); i += 2) {
+            String substring = string.substring(i, i + 2);
+            byte b = (byte)Integer.parseInt(substring, 16);
+            buffer.put(b);
+        }
+        return buffer.array();
+    }
 
 }
