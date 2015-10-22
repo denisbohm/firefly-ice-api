@@ -217,11 +217,7 @@
 - (NSString *)nameForPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData
 {
     NSString *UUIDString = nil;
-#if TARGET_OS_IPHONE
     UUIDString = [peripheral.identifier UUIDString];
-#else
-    UUIDString = (NSString *)CFBridgingRelease(CFUUIDCreateString(kCFAllocatorDefault, peripheral.UUID));
-#endif
     NSString *name = advertisementData[CBAdvertisementDataLocalNameKey];
     if (name == nil) {
         name = @"anonymous";
