@@ -8,12 +8,10 @@
 
 package com.fireflydesign.fireflydevice;
 
-import java.util.GregorianCalendar;
-
 public class FDTime {
 
     public static double time() {
-        return (new GregorianCalendar()).getTimeInMillis() / 1000.0;
+        return System.currentTimeMillis() / 1000.0;
     }
 
 }
