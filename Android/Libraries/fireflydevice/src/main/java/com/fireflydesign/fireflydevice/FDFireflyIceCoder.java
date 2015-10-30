@@ -617,7 +617,7 @@ public class FDFireflyIceCoder {
         binary.putUInt32(FD_CONTROL_RTC_FLAG_SET_TIME | FD_CONTROL_RTC_FLAG_SET_UTC_OFFSET);
         double time = date.getTime() / 1000.0;
         binary.putTime64(time);
-        int utc_offset = timeZone.getRawOffset() / 1000;
+        int utc_offset = timeZone.getOffset(date.getTime()) / 1000;
         binary.putUInt32(utc_offset);
         channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
     }
