@@ -146,7 +146,7 @@ public class FDHelloTask extends FDFireflyIceTaskSteps {
 					FDFireflyDeviceLogger.info(log, "FD010505", "time is off by %.3f seconds for hw %s fw %s (last reset %s)", offset, hardwareIdDescription, versionDescription, resetDescription);
 					setTime();
 				} else {
-					//            FDFireflyDeviceLogDebug("FD010506", "time is off by %.3f seconds for hw %s fw %s", offset, self.fireflyIce.hardwareId, self.fireflyIce.version);
+					FDFireflyDeviceLogger.info(log, "FD010506", "time is off by %.3f seconds for hw %s fw %s", offset, hardwareIdDescription, versionDescription);
 				}
 			}
 		}
