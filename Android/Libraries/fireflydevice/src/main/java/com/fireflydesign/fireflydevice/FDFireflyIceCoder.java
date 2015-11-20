@@ -278,7 +278,7 @@ public class FDFireflyIceCoder {
 	byte[] dictionaryMap(Map<String, String> dictionary) {
 		FDBinary map = new FDBinary();
 		List<Byte> content = new ArrayList<Byte>();
-		map.putUInt16((short)dictionary.size());
+		map.putUInt16((short) dictionary.size());
         for (Map.Entry<String, String> entry : dictionary.entrySet()) {
 			String key = entry.getKey();
 			String value = entry.getValue();
@@ -301,7 +301,7 @@ public class FDFireflyIceCoder {
 		FDBinary binary = new FDBinary();
 		binary.putUInt8(FD_CONTROL_PROVISION);
 		binary.putUInt32(options);
-		binary.putUInt16((short)data.length);
+		binary.putUInt16((short) data.length);
 		binary.putData(data);
 		channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
 	}
@@ -607,7 +607,7 @@ public class FDFireflyIceCoder {
         FDBinary binary = new FDBinary();
         binary.putUInt8(FD_CONTROL_SET_PROPERTIES);
         binary.putUInt32(FD_CONTROL_PROPERTY_RECOGNITION);
-        binary.putUInt8((byte)(recognition ? 1 : 0));
+        binary.putUInt8((byte) (recognition ? 1 : 0));
         channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
     }
 
@@ -745,7 +745,7 @@ public class FDFireflyIceCoder {
         FDBinary binary = new FDBinary();
 		binary.putUInt8(FD_CONTROL_UPDATE_AREA_ERASE_SECTORS);
         binary.putUInt8(area);
-		binary.putUInt8((byte)sectors.size());
+		binary.putUInt8((byte) sectors.size());
 		for (Short sector : sectors) {
 			binary.putUInt16(sector);
 		}
@@ -763,7 +763,18 @@ public class FDFireflyIceCoder {
 	}
 
     public void sendUpdateCommit(FDFireflyIceChannel channel, byte area, int flags, int length, byte[] hash, byte[] cryptHash, byte[] cryptIv, short major, short minor, short patch, int capabilities, byte[] commit) {
-		// !!! assert that data lengths are correct -denis
+		if (hash.length != HASH_SIZE) {
+			throw new RuntimeException("invalid hash length");
+		}
+		if (cryptHash.length != HASH_SIZE) {
+			throw new RuntimeException("invalid cryptHash length");
+		}
+		if (cryptIv.length != CRYPT_IV_SIZE) {
+			throw new RuntimeException("invalid cryptIV length");
+		}
+		if (commit.length != COMMIT_SIZE) {
+			throw new RuntimeException("invalid commit length");
+		}
         FDBinary binary = new FDBinary();
 		binary.putUInt8(FD_CONTROL_UPDATE_AREA_COMMIT);
         binary.putUInt8(area);

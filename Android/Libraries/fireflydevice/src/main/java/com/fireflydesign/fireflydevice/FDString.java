@@ -42,7 +42,8 @@ public class FDString {
 
     // For example: 5f8e87b7ecf9558d8704e3af7177388098387368
     static byte[] parseBytes(String string) {
-        ByteBuffer buffer = ByteBuffer.allocate(20);
+        int byteCount = string.length() / 2;
+        ByteBuffer buffer = ByteBuffer.allocate(byteCount);
         for (int i = 0; i < string.length(); i += 2) {
             String substring = string.substring(i, i + 2);
             byte b = (byte)Integer.parseInt(substring, 16);
