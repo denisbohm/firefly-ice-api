@@ -63,6 +63,15 @@
     }
 }
 
+- (void)changeDevice:(FDUSBHIDDevice *)device
+{
+    if (self.status != FDFireflyIceChannelStatusClosed) {
+        [self close];
+    }
+
+    _device = device;
+}
+
 - (void)usbHidDevice:(FDUSBHIDDevice *)device inputReport:(NSData *)data
 {
 //    NSLog(@"usbHidDevice:inputReport: %@", data);

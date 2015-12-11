@@ -17,4 +17,6 @@
 
 - (id)initWithDevice:(FDUSBHIDDevice *)device;
 
+- (void)changeDevice:(FDUSBHIDDevice *)device;
+
 @end
