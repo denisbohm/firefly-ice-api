@@ -262,14 +262,24 @@
 
 - (void)cancel:(id<FDExecutorTask>)task
 {
+    BOOL anyAction = NO;
     if (_currentTask == task) {
+        anyAction = YES;
         NSDictionary *userInfo = @{NSLocalizedDescriptionKey: NSLocalizedString(@"executor task was canceled", @"")};
         [self fail:task error:[NSError errorWithDomain:FDExecutorErrorDomain code:FDExecutorErrorCodeCancel userInfo:userInfo]];
     }
-    [_tasks removeObject:task];
-    [_appointmentTasks removeObject:task];
+    if ([_tasks containsObject:task]) {
+        anyAction = YES;
+        [_tasks removeObject:task];
+    }
+    if ([_appointmentTasks containsObject:task]) {
+        anyAction = YES;
+        [_appointmentTasks removeObject:task];
+    }
     
-    [self schedule];
+    if (anyAction) {
+        [self schedule];
+    }
 }
 
 - (NSArray *)allTasks
