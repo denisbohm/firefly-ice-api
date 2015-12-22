@@ -103,7 +103,6 @@
     while (_data.length >= 64) {
         NSData *packet = [_data subdataWithRange:NSMakeRange(0, 64)];
         [_data replaceBytesInRange:NSMakeRange(0, 64) withBytes:nil length:0];
-        NSLog(@"socket receive %@", packet);
         [_detour detourEvent:packet];
         if (_detour.state == FDDetourStateSuccess) {
             if ([_delegate respondsToSelector:@selector(fireflyIceChannelPacket:data:)]) {
@@ -130,7 +129,6 @@
             paddedData.length = 64;
             subdata = paddedData;
         }
-        NSLog(@"socket send %@", subdata);
         @try {
             [_fileHandle writeData:subdata];
         } @catch (NSException *e) {
