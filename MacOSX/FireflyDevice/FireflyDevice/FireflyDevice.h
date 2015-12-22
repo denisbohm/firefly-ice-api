@@ -29,10 +29,13 @@ FOUNDATION_EXPORT const unsigned char FireflyDeviceVersionString[];
 #import <FireflyDevice/FDFireflyIceChannel.h>
 #import <FireflyDevice/FDFireflyIceChannelBLE.h>
 #import <FireflyDevice/FDFireflyIceChannelMock.h>
+#import <FireflyDevice/FDFireflyIceChannelSocket.h>
 #import <FireflyDevice/FDFireflyIceChannelUSB.h>
 #import <FireflyDevice/FDFireflyIceCoder.h>
 #import <FireflyDevice/FDFireflyIceDeviceMock.h>
 #import <FireflyDevice/FDFireflyIceManager.h>
+#import <FireflyDevice/FDFireflyIceService.h>
+#import <FireflyDevice/FDFireflyIceServiceBrowser.h>
 #import <FireflyDevice/FDFireflyIceSimpleTask.h>
 #import <FireflyDevice/FDFireflyIceTaskSteps.h>
 #import <FireflyDevice/FDFirmwareUpdateTask.h>

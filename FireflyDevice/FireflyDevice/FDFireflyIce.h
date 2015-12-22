@@ -98,6 +98,7 @@ enum {
     FDLockOwnerNone = 0,
     FDLockOwnerBle = FD_LOCK_OWNER_ENCODE('B', 'L', 'E', ' '),
     FDLockOwnerUsb = FD_LOCK_OWNER_ENCODE('U', 'S', 'B', ' '),
+    FDLockOwnerInet = FD_LOCK_OWNER_ENCODE('I', 'N', 'E', 'T'),
 };
 typedef uint32_t FDLockOwner;
 
