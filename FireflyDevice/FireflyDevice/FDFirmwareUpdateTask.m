@@ -276,11 +276,10 @@
     }
     if (!isFirmwareUpToDate) {
         FDFireflyDeviceLogInfo(@"FD010401", @"firmware %@ is out of date with latest %u.%u.%u", _updateVersion, _major, _minor, _patch);
-        [self next:@selector(getSectorHashes)];
     } else {
         FDFireflyDeviceLogInfo(@"FD010402", @"firmware %@ is up to date with latest %u.%u.%u", _updateVersion, _major, _minor, _patch);
-        [self commitUpdate];
     }
+    [self next:@selector(getSectorHashes)];
 }
 
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel lock:(FDFireflyIceLock *)lock
