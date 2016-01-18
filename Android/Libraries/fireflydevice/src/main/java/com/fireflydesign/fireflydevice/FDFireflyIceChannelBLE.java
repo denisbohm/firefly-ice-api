@@ -31,13 +31,16 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
 
     Activity activity;
     UUID bluetoothGattCharacteristicUUID;
+    UUID bluetoothGattCharacteristicNoResponseUUID;
     BluetoothDevice bluetoothDevice;
 
     List<FDDetourSource> detourSources;
-    boolean writePending;
+    int writePending;
+    int writePendingLimit;
     BluetoothGattCallback bluetoothGattCallback;
     BluetoothGatt bluetoothGatt;
     BluetoothGattCharacteristic bluetoothGattCharacteristic;
+    BluetoothGattCharacteristic bluetoothGattCharacteristicNoResponse;
 
     public FDFireflyIceChannelBLE(final Activity activity, final String bluetoothGattServiceUUIDString, final BluetoothDevice bluetoothDevice) {
         this.detour = new FDDetour();
@@ -46,6 +49,8 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
         StringBuffer bluetoothGattCharacteristicUUIDString = new StringBuffer(bluetoothGattServiceUUIDString);
         bluetoothGattCharacteristicUUIDString.replace(4, 8, "0002");
         this.bluetoothGattCharacteristicUUID = UUID.fromString(bluetoothGattCharacteristicUUIDString.toString());
+        bluetoothGattCharacteristicUUIDString.replace(4, 8, "0003");
+        this.bluetoothGattCharacteristicNoResponseUUID = UUID.fromString(bluetoothGattCharacteristicUUIDString.toString());
         this.bluetoothDevice = bluetoothDevice;
 
         detourSources = new ArrayList<FDDetourSource>();
@@ -145,10 +150,12 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
         }
         bluetoothGatt = null;
         bluetoothGattCharacteristic = null;
+        bluetoothGattCharacteristicNoResponse = null;
 
         detour.clear();
         detourSources.clear();
-        writePending = false;
+        writePending = 0;
+        writePendingLimit = 1;
     }
 
     public void close() {
@@ -170,17 +177,25 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
                     FDFireflyDeviceLogger.debug(log, "FD010904", "found firefly service characteristic");
 
                     bluetoothGattCharacteristic = characteristic;
-                    bluetoothGatt.setCharacteristicNotification(bluetoothGattCharacteristic, true);
 
+                    bluetoothGatt.setCharacteristicNotification(bluetoothGattCharacteristic, true);
                     // 0x2902 org.bluetooth.descriptor.gatt.client_characteristic_configuration.xml
                     UUID clientCharacteristicConfigurationUuid = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
                     BluetoothGattDescriptor descriptor = characteristic.getDescriptor(clientCharacteristicConfigurationUuid);
                     descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-                    bluetoothGatt.writeDescriptor(descriptor);
-                    writePending = true;
-                    break;
+                    boolean canWrite = bluetoothGatt.writeDescriptor(descriptor);
+                    writePending = writePendingLimit;
+                } else
+                if (uuid.equals(bluetoothGattCharacteristicNoResponseUUID)) {
+                    FDFireflyDeviceLogger.debug(log, "FD010904", "found firefly service characteristic");
+
+                    bluetoothGattCharacteristicNoResponse = characteristic;
                 }
             }
+        }
+
+        if ((bluetoothGattCharacteristic != null) && (bluetoothGattCharacteristicNoResponse != null)) {
+            writePendingLimit = 12;
         }
 
         if (bluetoothGattCharacteristic != null) {
@@ -202,43 +217,51 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
         }
     }
 
-    void checkWrite() {
-        FDFireflyDeviceLogger.debug(log, "FD010907", "check write");
-        if (writePending) {
-            return;
-        }
+    boolean attemptWrite(BluetoothGattCharacteristic characteristic, List<Byte> data) {
+        boolean canSetValue = characteristic.setValue(FDBinary.toByteArray(data));
+        Object value = characteristic.getValue();
+        BluetoothGattService service = characteristic.getService();
+        BluetoothDevice device = bluetoothGatt.getDevice();
 
-        while (!detourSources.isEmpty()) {
+        boolean canWriteCharacteristic = bluetoothGatt.writeCharacteristic(characteristic);
+        FDFireflyDeviceLogger.info(
+                log,
+                "FD010908",
+                "FDFireflyIceChannelBLE:fireflyIceChannelSend:subdata %s, set=%s, write=%s",
+                FDBinary.toHexString(FDBinary.toByteArray(data)),
+                canSetValue ? "YES" : "NO",
+                canWriteCharacteristic ? "YES" : "NO"
+        );
+        return canWriteCharacteristic;
+    }
+
+    void checkWrite() {
+        FDFireflyDeviceLogger.info(log, "FD010907", "check write");
+        while ((writePending < writePendingLimit) && !detourSources.isEmpty()) {
             FDDetourSource detourSource = detourSources.get(0);
             List<Byte> subdata = detourSource.next();
             if (subdata.size() > 0) {
-                boolean canSetValue = bluetoothGattCharacteristic.setValue(FDBinary.toByteArray(subdata));
-                Object value = bluetoothGattCharacteristic.getValue();
-                BluetoothGattService service = bluetoothGattCharacteristic.getService();
-                BluetoothDevice device = bluetoothGatt.getDevice();
-
-                boolean canWriteCharacteristic = bluetoothGatt.writeCharacteristic(bluetoothGattCharacteristic);
-                FDFireflyDeviceLogger.debug(
-                        log,
-                        "FD010908",
-                        "FDFireflyIceChannelBLE:fireflyIceChannelSend:subdata %s, set=%s, write=%s",
-                        FDBinary.toHexString(FDBinary.toByteArray(subdata)),
-                        canSetValue ? "YES" : "NO",
-                        canWriteCharacteristic ? "YES" : "NO"
-                );
-                if (!canWriteCharacteristic) {
+                boolean success;
+                ++writePending;
+                if (writePending < writePendingLimit) {
+                    success = attemptWrite(bluetoothGattCharacteristicNoResponse, subdata);
+                } else {
+                    success = attemptWrite(bluetoothGattCharacteristic, subdata);
+                }
+                if (!success) {
+                    --writePending;
+                    detourSource.pushBack(subdata);
                     return;
                 }
-                writePending = true;
-                break;
+            } else {
+                detourSources.remove(0);
             }
-            detourSources.remove(0);
         }
     }
 
     void writeComplete(final BluetoothGatt gatt, final int status) {
-        FDFireflyDeviceLogger.debug(log, "FD010909", "writeComplete %d", status);
-        writePending = false;
+        FDFireflyDeviceLogger.info(log, "FD010909", "writeComplete %d", status);
+        writePending = 0;
         checkWrite();
     }
 
@@ -248,7 +271,7 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
 	}
 
 	public void characteristicChanged(final BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic, final byte[] data) {
-		FDFireflyDeviceLogger.debug(log, "FD010910", "FDFireflyIceChannelBLE:characteristicValueChange %s", FDBinary.toHexString(data));
+        FDFireflyDeviceLogger.info(log, "FD010910", "FDFireflyIceChannelBLE:characteristicValueChange %s", FDBinary.toHexString(data));
 		detour.detourEvent(FDBinary.toList(data));
 		if (detour.state == FDDetour.State.Success) {
 			if (delegate != null) {

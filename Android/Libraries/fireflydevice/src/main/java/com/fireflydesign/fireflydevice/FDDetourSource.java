@@ -45,4 +45,11 @@ public class FDDetourSource {
 		return subdata;
 	}
 
+	public void pushBack(List<Byte> subdata) {
+		if ((subdata != null) && !subdata.isEmpty()) {
+			index -= subdata.size() - 1;
+			--sequenceNumber;
+		}
+	}
+
 }

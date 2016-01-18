@@ -10,6 +10,8 @@ package com.fireflydesign.fireflydevice;
 
 import android.app.Activity;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -190,7 +192,12 @@ public class FDExecutor {
 	}
 
 	void taskException(Exception e) {
-		FDFireflyDeviceLogger.warn(log, "FD010102", "task exception %s", e.toString());
+		StringWriter stringWriter = new StringWriter();
+		PrintWriter printWriter = new PrintWriter(stringWriter);
+		e.printStackTrace(printWriter);
+		printWriter.flush();
+		String trace = stringWriter.toString();
+		FDFireflyDeviceLogger.warn(log, "FD010102", "task exception %s: %s", e.toString(), trace);
 	}
 
 	void schedule() {
