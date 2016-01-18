@@ -224,7 +224,7 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
         BluetoothDevice device = bluetoothGatt.getDevice();
 
         boolean canWriteCharacteristic = bluetoothGatt.writeCharacteristic(characteristic);
-        FDFireflyDeviceLogger.info(
+        FDFireflyDeviceLogger.debug(
                 log,
                 "FD010908",
                 "FDFireflyIceChannelBLE:fireflyIceChannelSend:subdata %s, set=%s, write=%s",
@@ -236,7 +236,7 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
     }
 
     void checkWrite() {
-        FDFireflyDeviceLogger.info(log, "FD010907", "check write");
+        FDFireflyDeviceLogger.debug(log, "FD010907", "check write");
         while ((writePending < writePendingLimit) && !detourSources.isEmpty()) {
             FDDetourSource detourSource = detourSources.get(0);
             List<Byte> subdata = detourSource.next();
@@ -260,7 +260,7 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
     }
 
     void writeComplete(final BluetoothGatt gatt, final int status) {
-        FDFireflyDeviceLogger.info(log, "FD010909", "writeComplete %d", status);
+        FDFireflyDeviceLogger.debug(log, "FD010909", "writeComplete %d", status);
         writePending = 0;
         checkWrite();
     }
@@ -271,7 +271,7 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
 	}
 
 	public void characteristicChanged(final BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic, final byte[] data) {
-        FDFireflyDeviceLogger.info(log, "FD010910", "FDFireflyIceChannelBLE:characteristicValueChange %s", FDBinary.toHexString(data));
+        FDFireflyDeviceLogger.debug(log, "FD010910", "FDFireflyIceChannelBLE:characteristicValueChange %s", FDBinary.toHexString(data));
 		detour.detourEvent(FDBinary.toList(data));
 		if (detour.state == FDDetour.State.Success) {
 			if (delegate != null) {
