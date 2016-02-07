@@ -2,11 +2,17 @@
 //  FireflyDevice.h
 //  FireflyDevice
 //
-//  Created by Denis Bohm on 10/13/13.
-//  Copyright (c) 2013-2014 Firefly Design LLC / Denis Bohm. All rights reserved.
+//  Created by Denis Bohm on 2/7/16.
+//  Copyright © 2016 Firefly Design. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <WatchKit/WatchKit.h>
+
+//! Project version number for FireflyDevice.
+FOUNDATION_EXPORT double FireflyDeviceVersionNumber;
+
+//! Project version string for FireflyDevice.
+FOUNDATION_EXPORT const unsigned char FireflyDeviceVersionString[];
 
 #import <FireflyDevice/FDHardwareId.h>
 #import <FireflyDevice/FDBundle.h>
@@ -33,13 +39,11 @@
 #import <FireflyDevice/FDFireflyIceChannelMock.h>
 #import <FireflyDevice/FDFireflyIceCoder.h>
 #import <FireflyDevice/FDFireflyIceTaskSteps.h>
+#import <FireflyDevice/FDGZIP.h>
 #import <FireflyDevice/FDHelloTask.h>
+#import <FireflyDevice/FDPullTask.h>
 #import <FireflyDevice/FDSyncTask.h>
 #import <FireflyDevice/FDFirmwareUpdateTask.h>
 #import <FireflyDevice/FDFireflyIceSimpleTask.h>
 #import <FireflyDevice/FDJSON.h>
 #import <FireflyDevice/FDWeak.h>
-
-@interface FireflyDevice : NSObject
-
-@end

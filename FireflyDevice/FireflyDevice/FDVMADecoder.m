@@ -8,7 +8,8 @@
 
 #import "FDVMADecoder.h"
 
-#import "FDPullTask.h"
+#import <FireflyDevice/FDBinary.h>
+#import <FireflyDevice/FDFireflyDeviceLogger.h>
 
 @implementation FDVMAItem
 @end

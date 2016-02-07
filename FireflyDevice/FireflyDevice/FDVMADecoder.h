@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Firefly Design. All rights reserved.
 //
 
-#import <FireflyDevice/FireflyDevice.h>
+#import <FireflyDevice/FDPullTask.h>
 
 @interface FDVMAItem : NSObject
 @property NSTimeInterval time;
