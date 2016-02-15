@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "5A131E55697F8004CAC31E4EEC549228502767EB",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "5A131E55697F8004CAC31E4EEC549228502767EB" : 0,
+    "855710B1EB773B99E48B2BD5CABD225926A65C4A" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "3E972DC5-566C-43FA-A681-A912F38B124E",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "5A131E55697F8004CAC31E4EEC549228502767EB" : "firefly-ice-api\/",
+    "855710B1EB773B99E48B2BD5CABD225926A65C4A" : ""
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "FireflyDevice",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "watchOS\/FireflyDevice\/FireflyDevice.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/denisbohm\/firefly-ice-api.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "5A131E55697F8004CAC31E4EEC549228502767EB"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "gitlab.atlaswearables.io:atlaswearables\/firmware.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "855710B1EB773B99E48B2BD5CABD225926A65C4A"
+    }
+  ]
+}
