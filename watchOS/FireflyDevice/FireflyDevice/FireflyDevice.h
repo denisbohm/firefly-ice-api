@@ -23,6 +23,7 @@ FOUNDATION_EXPORT const unsigned char FireflyDeviceVersionString[];
 #import <FireflyDevice/FDCrypto.h>
 #import <FireflyDevice/FDDetour.h>
 #import <FireflyDevice/FDDetourSource.h>
+#import <FireflyDevice/FDIEEE754.h>
 #import <FireflyDevice/FDIntelHex.h>
 #import <FireflyDevice/FDObservable.h>
 #import <FireflyDevice/FDExecutor.h>
@@ -46,4 +47,5 @@ FOUNDATION_EXPORT const unsigned char FireflyDeviceVersionString[];
 #import <FireflyDevice/FDFirmwareUpdateTask.h>
 #import <FireflyDevice/FDFireflyIceSimpleTask.h>
 #import <FireflyDevice/FDJSON.h>
+#import <FireflyDevice/FDVMADecoder.h>
 #import <FireflyDevice/FDWeak.h>

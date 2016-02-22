@@ -45,6 +45,7 @@
 + (FDFireflyIceManager *)managerWithServiceUUID:(CBUUID *)serviceUUID withDelegate:(id<FDFireflyIceManagerDelegate>)delegate;
 
 @property id<FDFireflyIceManagerDelegate> delegate;
+@property CBUUID *serviceUUID;
 @property NSString *identifier;
 @property dispatch_queue_t centralManagerDispatchQueue;
 @property CBCentralManager *centralManager;

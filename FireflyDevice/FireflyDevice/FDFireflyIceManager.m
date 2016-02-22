@@ -16,8 +16,6 @@
 
 @interface FDFireflyIceManager () <FDFireflyIceObserver, FDHelloTaskDelegate>
 
-@property CBUUID *serviceUUID;
-
 @property NSMutableArray *dictionaries;
 
 @end
