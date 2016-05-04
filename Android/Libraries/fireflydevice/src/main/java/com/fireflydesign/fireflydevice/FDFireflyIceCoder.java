@@ -671,6 +671,10 @@ public class FDFireflyIceCoder {
             List<Byte> primaryServiceUUID = binary.getData(length);
             map.put("BLE primaryServiceUUID", primaryServiceUUID);
         }
+        if ((flags & FD_CONTROL_HARDWARE_FLAG_GET_MODEL) != 0) {
+            int model = binary.getUInt32();
+            map.put("model", new Integer(model));
+        }
 
         observable.as(FDFireflyIceObserver.class).fireflyIceHardware(fireflyIce, channel, map);
     }
