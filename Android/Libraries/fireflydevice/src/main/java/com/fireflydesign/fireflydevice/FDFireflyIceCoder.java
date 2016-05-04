@@ -87,6 +87,7 @@ public class FDFireflyIceCoder {
     public static final int FD_CONTROL_HARDWARE_FLAG_GET_UNIQUE = 0x00000001;
     public static final int FD_CONTROL_HARDWARE_FLAG_GET_USB    = 0x00000002;
     public static final int FD_CONTROL_HARDWARE_FLAG_GET_BLE    = 0x00000004;
+    public static final int FD_CONTROL_HARDWARE_FLAG_GET_MODEL  = 0x00000008;
 
     public static final int FD_CONTROL_CAPABILITY_LOCK         = 0x00000001;
     public static final int FD_CONTROL_CAPABILITY_BOOT_VERSION = 0x00000002;
