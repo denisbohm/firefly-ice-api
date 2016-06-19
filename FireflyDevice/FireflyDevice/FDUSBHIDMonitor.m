@@ -11,6 +11,7 @@
 #import <FireflyDevice/FDWeak.h>
 
 #import <IOKit/hid/IOHIDManager.h>
+#import <IOKit/usb/USB.h>
 
 static long get_long_property(IOHIDDeviceRef device, CFStringRef key)
 {
