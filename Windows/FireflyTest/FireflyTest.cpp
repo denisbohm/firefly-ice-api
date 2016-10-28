@@ -6,13 +6,87 @@
 
 #include "../FireflyDevice/FDFireflyIceChannelUSB.h"
 #include "../FireflyDevice/FDFireflyIceCoder.h"
+#include "../FireflyDevice/FDTimer.h"
 #include "../FireflyDevice/FDUsb.h"
 
 #include <iostream>
 
-using namespace fireflydesign;
+using namespace FireflyDesign;
 
-class Device : public FDUSBHIDDevice {
+class Timer : public FDTimer {
+public:
+	Timer();
+
+	virtual void setInvocation(std::function<void()> invocation);
+	virtual std::function<void()> getInvocation();
+
+	virtual void setTimeout(duration_type timeout);
+	virtual duration_type getTimeout();
+
+	virtual void setType(Type type);
+	virtual Type getType();
+
+	virtual void setEnabled(bool enabled);
+	virtual bool isEnabled();
+
+private:
+	std::function<void()> invocation;
+	duration_type timeout;
+	Type type;
+	bool enabled;
+};
+
+Timer::Timer() {
+}
+
+void Timer::setInvocation(std::function<void()> invocation) {
+	this->invocation = invocation;
+}
+
+std::function<void()> Timer::getInvocation() {
+	return invocation;
+}
+
+void Timer::setTimeout(duration_type timeout) {
+	this->timeout = timeout;
+}
+
+FDTimer::duration_type Timer::getTimeout() {
+	return timeout;
+}
+
+void Timer::setType(Type type) {
+	this->type = type;
+}
+
+FDTimer::Type Timer::getType() {
+	return type;
+}
+
+void Timer::setEnabled(bool enabled) {
+	this->enabled = enabled;
+}
+
+bool Timer::isEnabled() {
+	return enabled;
+}
+
+class TimerFactory : public FDTimerFactory {
+public:
+	TimerFactory();
+
+	std::shared_ptr<FDTimer> makeTimer(std::function<void()> invocation, FDTimer::duration_type timeout, FDTimer::Type type);
+
+};
+
+TimerFactory::TimerFactory() {
+}
+
+std::shared_ptr<FDTimer> TimerFactory::makeTimer(std::function<void()> invocation, FDTimer::duration_type timeout, FDTimer::Type type) {
+	return std::make_shared<Timer>();
+}
+
+class Device : public FDFireflyIceChannelUSBDevice {
 public:
 	Device(FDUsb *usb) {
 		_usb = usb;
@@ -20,8 +94,8 @@ public:
 	virtual ~Device() {
 	}
 
-	virtual void setDelegate(std::shared_ptr<FDUSBHIDDeviceDelegate> delegate) { _delegate = delegate; }
-	virtual std::shared_ptr<FDUSBHIDDeviceDelegate> getDelegate() { return _delegate;  }
+	virtual void setDelegate(std::shared_ptr<FDFireflyIceChannelUSBDeviceDelegate> delegate) { _delegate = delegate; }
+	virtual std::shared_ptr<FDFireflyIceChannelUSBDeviceDelegate> getDelegate() { return _delegate; }
 
 	virtual void open() {}
 	virtual void close() {}
@@ -33,21 +107,23 @@ public:
 
 private:
 	FDUsb *_usb;
-	std::shared_ptr<FDUSBHIDDeviceDelegate> _delegate;
+	std::shared_ptr<FDFireflyIceChannelUSBDeviceDelegate> _delegate;
 };
 
 void test() {
 	std::vector<std::wstring> paths = FDUsb::allDevicePaths();
 	for (std::wstring path : paths) {
-		std::cout << path.c_str() << "\n";
+		OutputDebugString(path.c_str());
+
 		DWORD result;
 		FDUsb usb(path);
 		usb.open();
 
 		std::shared_ptr<Device> device = std::make_shared<Device>(&usb);
 		std::shared_ptr<FDFireflyIceChannelUSB> channel = std::make_shared<FDFireflyIceChannelUSB>(device);
-		std::shared_ptr<FDFireflyIce> fireflyIce = std::make_shared<FDFireflyIce>();
-		fireflyIce->observable.addObserver(fireflyIce);
+		std::shared_ptr<TimerFactory> timerFactory = std::make_shared<TimerFactory>();
+		std::shared_ptr<FDFireflyIce> fireflyIce = std::make_shared<FDFireflyIce>(timerFactory);
+		fireflyIce->observable.get()->addObserver(fireflyIce);
 		fireflyIce->addChannel(channel, channel->getName());
 
 		result = WaitForSingleObject(usb.getWriteEvent(), INFINITE);

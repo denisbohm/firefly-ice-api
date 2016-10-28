@@ -12,7 +12,10 @@
 #include <string>
 #include <vector>
 
+extern "C"
+{
 #include <Hidsdi.h>
+}
 #include <Rpc.h>
 #include <Setupapi.h>
 
