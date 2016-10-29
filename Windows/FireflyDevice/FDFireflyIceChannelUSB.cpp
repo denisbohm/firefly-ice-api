@@ -80,9 +80,8 @@ namespace FireflyDesign {
 		std::vector<uint8_t> subdata;
 		while ((subdata = source.next()).size() > 0) {
 			std::vector<uint8_t> report;
-			report.push_back(0);
 			report.insert(report.end(), subdata.begin(), subdata.end());
-			report.resize(65);
+			report.resize(64);
 			_device->setReport(report);
 		}
 	}

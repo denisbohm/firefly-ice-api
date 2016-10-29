@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "FireflyTest.h"
 
+#include "../FireflyDevice/FDFireflyIce.h"
 #include "../FireflyDevice/FDFireflyIceChannelUSB.h"
 #include "../FireflyDevice/FDFireflyIceCoder.h"
 #include "../FireflyDevice/FDTimer.h"
@@ -13,6 +14,9 @@
 
 using namespace FireflyDesign;
 
+// Create a no-op FDTimer and FDTimerFactory.  You would need a real implementation that
+// works with your main event loop dispatch for a real application.  This ping test application
+// does not actually require timers.
 class Timer : public FDTimer {
 public:
 	Timer();
@@ -97,11 +101,14 @@ public:
 	virtual void setDelegate(std::shared_ptr<FDFireflyIceChannelUSBDeviceDelegate> delegate) { _delegate = delegate; }
 	virtual std::shared_ptr<FDFireflyIceChannelUSBDeviceDelegate> getDelegate() { return _delegate; }
 
-	virtual void open() {}
-	virtual void close() {}
+	virtual void open() {
+		_usb->open();
+	}
+	virtual void close() {
+		_usb->close();
+	}
 
 	virtual void setReport(std::vector<uint8_t> data) {
-		data.resize(64);
 		_usb->writeOutputReport(data);
 	}
 
@@ -110,46 +117,63 @@ private:
 	std::shared_ptr<FDFireflyIceChannelUSBDeviceDelegate> _delegate;
 };
 
+class Observer : public FDFireflyIceObserver {
+public:
+	virtual void fireflyIcePing(std::shared_ptr<FDFireflyIce> fireflyIce, std::shared_ptr<FDFireflyIceChannel> channel, std::vector<uint8_t> data) {
+		OutputDebugString(L"ping\n");
+	}
+};
+
+// This test sends a ping command to all FireflyIce devices on USB ports and prints "ping" when
+// the ping response is received.  Note that this example uses blocking waits for I/O.  Normally,
+// the I/O events should be handled in your main loop.
 void test() {
 	std::vector<std::wstring> paths = FDUsb::allDevicePaths();
 	for (std::wstring path : paths) {
 		OutputDebugString(path.c_str());
+		OutputDebugString(L"\n");
 
+		// create and configure a FireflyIce object to communicate with the device via USB
 		DWORD result;
 		FDUsb usb(path);
-		usb.open();
-
 		std::shared_ptr<Device> device = std::make_shared<Device>(&usb);
 		std::shared_ptr<FDFireflyIceChannelUSB> channel = std::make_shared<FDFireflyIceChannelUSB>(device);
 		std::shared_ptr<TimerFactory> timerFactory = std::make_shared<TimerFactory>();
 		std::shared_ptr<FDFireflyIce> fireflyIce = std::make_shared<FDFireflyIce>(timerFactory);
-		fireflyIce->observable.get()->addObserver(fireflyIce);
+		fireflyIce->observable->addObserver(fireflyIce);
 		fireflyIce->addChannel(channel, channel->getName());
 
-		result = WaitForSingleObject(usb.getWriteEvent(), INFINITE);
-		/*
-		// little endian
-		// uint8 sequence number
-		// uint16 data length
-		// uint8 command ping 1
-		// uint16 ping data length
-		// uint8[] ping data
-		uint8_t data[] = { 0, 4, 0, 1, 1, 0, 0x5a };
-		std::vector<uint8_t> outputReport(data, data + sizeof(data));
-		outputReport.resize(64);
-		usb.writeOutputReport(outputReport);
-		*/
+		// add our observer so we can get ping backs
+		std::shared_ptr<Observer> observer = std::make_shared<Observer>();
+		fireflyIce->observable->addObserver(observer);
 
+		// open the USB channel to the device
+		channel->open();
+
+		// send a ping to the device
 		std::vector<uint8_t> pingData;
 		pingData.push_back(0x5a);
 		fireflyIce->coder->sendPing(channel, pingData);
 
+		// Normally the code below would be called from the main dispatch loop,
+		// but for simplicity of this example we just do it all in a blocking
+		// manner so it is easy see the sequence.
+
+		// wait for the USB write to complete
+		result = WaitForSingleObject(usb.getWriteEvent(), INFINITE);
+		if (result == WAIT_OBJECT_0) {
+			OutputDebugString(L"write complete\n");
+		}
+		// wait for the USB response to be received
 		usb.startAsynchronousRead();
 		result = WaitForSingleObject(usb.getReadEvent(), INFINITE);
+		if (result == WAIT_OBJECT_0) {
+			OutputDebugString(L"read complete\n");
+		}
+
+		// get the USB response data and send it to the channel to decode it and dispatch it to the observers
 		std::vector<uint8_t> inputReport = usb.readInputReport();
 		channel->usbHidDeviceReport(device, inputReport);
-
-		usb.close();
 	}
 }
 
