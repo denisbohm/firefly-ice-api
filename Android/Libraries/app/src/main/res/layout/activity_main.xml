@@ -17,34 +17,38 @@
         android:onClick="onScanCheckBoxChange" />
 
     <ListView
+        android:id="@+id/listView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listView"
+        android:layout_above="@+id/connectButton"
         android:layout_below="@+id/scanCheckBox"
         android:layout_centerHorizontal="true"
-        android:layout_above="@+id/connectButton"
+        android:background="@android:color/holo_green_light"
+        android:choiceMode="singleChoice"
         android:divider="#7ffffffb"
-        android:dividerHeight="1dp"
-        android:choiceMode="singleChoice" />
+        android:dividerHeight="1dp" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Connect to Selected Firefly Ice Device"
         android:id="@+id/connectButton"
-        android:onClick="onConnectButtonClicked"
-        android:layout_above="@+id/button"
-        android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/button" />
-
-    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Disconnect From Selected Firefly Ice Device"
-        android:id="@+id/button"
-        android:layout_above="@+id/pullButton"
+        android:layout_above="@+id/disconnectButton"
+        android:layout_alignEnd="@+id/disconnectButton"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
-        android:onClick="onDisconnectButtonClicked" />
+        android:onClick="onConnectButtonClicked"
+        android:text="Connect to Selected Firefly Ice Device" />
+
+    <Button
+        android:id="@+id/disconnectButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/pullButton"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:elevation="20dp"
+        android:onClick="onDisconnectButtonClicked"
+        android:text="Disconnect From Selected Firefly Ice Device" />
 
     <Button
         android:layout_width="wrap_content"
@@ -57,14 +61,14 @@
         android:onClick="onPullButtonClicked" />
 
     <Button
+        android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Update Firmware"
-        android:id="@+id/button2"
         android:layout_above="@+id/button3"
-        android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:onClick="onFirmwareUpdateButtonClicked" />
+        android:layout_alignParentStart="true"
+        android:onClick="onFirmwareUpdateButtonClicked"
+        android:text="Update Firmware" />
 
     <Button
         android:layout_width="wrap_content"
