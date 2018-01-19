@@ -24,6 +24,7 @@ class DeviceViewController: UIViewController, FDPullTaskDelegate, PlotViewDelega
         }
         
         func progressActive() {
+            viewController?.statusLabel.isHidden = false
             viewController?.progressView.isHidden = false
         }
         
@@ -32,13 +33,13 @@ class DeviceViewController: UIViewController, FDPullTaskDelegate, PlotViewDelega
         }
         
         func progressInactive() {
+            viewController?.statusLabel.isHidden = true
             viewController?.progressView.isHidden = true
         }
         
     }
     
     @IBOutlet var deviceNameLabel: UILabel!
-    @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
     @IBOutlet var plotView: PlotView!
     @IBOutlet var statusLabel: UILabel!
     @IBOutlet var progressView: UIProgressView!
@@ -76,8 +77,6 @@ class DeviceViewController: UIViewController, FDPullTaskDelegate, PlotViewDelega
     }
     
     func stop() {
-        activityIndicatorView.stopAnimating()
-        
         if let channel = fireflyIce?.channels["BLE"] as? FDFireflyIceChannelBLE {
             channel.close()
         }

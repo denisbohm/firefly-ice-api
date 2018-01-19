@@ -25,13 +25,26 @@ class CatalogViewController: UIViewController, UITableViewDataSource, UITableVie
         
     }
     
+    class Section {
+        
+        let header: String
+        var items: [Item] = []
+        
+        init(header: String) {
+            self.header = header
+        }
+    }
+    
+    let associatedSectionIndex = 0
+    let unassociatedSectionIndex = 1
+    
     @IBOutlet var tableView: UITableView!
     
     var selectedCallback: ((_ item: Item) -> Void)? = nil
     var editCallback: ((_ item: Item) -> Void)? = nil
     var deleteCallback: ((_ item: Item) -> Void)? = nil
 
-    var items: [Item] = []
+    var sections: [Section] = [Section(header: "Your Devices"), Section(header: "Other Nearby Devices")]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,12 +53,21 @@ class CatalogViewController: UIViewController, UITableViewDataSource, UITableVie
         tableView.delegate = self
     }
     
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
+    public func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
+    public func tableView(_ tableView: UITableView, titleForHeaderInSection sectionIndex: Int) -> String? {
+        return sections[sectionIndex].header
+    }
+    
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection sectionIndex: Int) -> Int {
+        return sections[sectionIndex].items.count
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let item = items[indexPath.row]
+        let section = sections[indexPath.section]
+        let item = section.items[indexPath.row]
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "DeviceCell")!
         cell.textLabel?.text = item.fireflyIce.name
         cell.textLabel?.textColor = item.associated ? UIColor.black : UIColor.gray
@@ -55,7 +77,8 @@ class CatalogViewController: UIViewController, UITableViewDataSource, UITableVie
     
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         if let callback = selectedCallback {
-            let item = items[indexPath.row]
+            let section = sections[indexPath.section]
+            let item = section.items[indexPath.row]
             callback(item)
         }
         return nil
@@ -64,7 +87,8 @@ class CatalogViewController: UIViewController, UITableViewDataSource, UITableVie
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let editAction = UITableViewRowAction(style: .default, title: "Rename", handler: { (action, indexPath) in
             if let callback = self.editCallback {
-                let item = self.items[indexPath.row]
+                let section = self.sections[indexPath.section]
+                let item = section.items[indexPath.row]
                 callback(item)
             }
         })
@@ -72,7 +96,8 @@ class CatalogViewController: UIViewController, UITableViewDataSource, UITableVie
         
         let deleteAction = UITableViewRowAction(style: .default, title: "Forget", handler: { (action, indexPath) in
             if let callback = self.deleteCallback {
-                let item = self.items[indexPath.row]
+                let section = self.sections[indexPath.section]
+                let item = section.items[indexPath.row]
                 callback(item)
             }
         })
@@ -88,56 +113,78 @@ class CatalogViewController: UIViewController, UITableViewDataSource, UITableVie
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             if let callback = deleteCallback {
-                let item = items[indexPath.row]
+                let section = sections[indexPath.section]
+                let item = section.items[indexPath.row]
                 callback(item)
             }
         }
     }
 
     func load(fireflyIces: [FDFireflyIce]) {
-        items.removeAll()
+        for section in sections {
+            section.items.removeAll()
+        }
+        let section = sections[associatedSectionIndex]
         for fireflyIce in fireflyIces {
-            items.append(Item(fireflyIce: fireflyIce, name: fireflyIce.name, associated: true))
+            section.items.append(Item(fireflyIce: fireflyIce, name: fireflyIce.name, associated: true))
         }
         tableView.reloadData()
     }
 
-    func indexInTableView(fireflyIce: FDFireflyIce) -> Int? {
-        return items.index { item in return item.fireflyIce == fireflyIce }
+    func indexPathInTableView(fireflyIce: FDFireflyIce) -> IndexPath? {
+        for sectionIndex in 0 ..< sections.count {
+            let section = sections[sectionIndex]
+            if let rowIndex = section.items.index(where: { item in return item.fireflyIce == fireflyIce }) {
+                return IndexPath(row: rowIndex, section: sectionIndex)
+            }
+        }
+        return nil
     }
     
     func delete(item: Item) {
-        if let index = indexInTableView(fireflyIce: item.fireflyIce) {
-            items.remove(at: index)
-            let indexPath = IndexPath(row: index, section: 0)
+        if let indexPath = indexPathInTableView(fireflyIce: item.fireflyIce) {
+            let section = sections[indexPath.section]
+            section.items.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
     
     func display(fireflyIce: FDFireflyIce) {
-        if let index = indexInTableView(fireflyIce: fireflyIce) {
-            let item = items[index]
+        if let indexPath = indexPathInTableView(fireflyIce: fireflyIce) {
+            let section = sections[indexPath.section]
+            let item = section.items[indexPath.row]
             if item.name != fireflyIce.name {
                 item.name = fireflyIce.name
-                let indexPath = IndexPath(row: index, section: 0)
                 tableView.reloadRows(at: [indexPath], with: .fade)
             }
             return
         }
         
-        let indexPath = IndexPath(row: items.count, section: 0)
-        items.append(Item(fireflyIce: fireflyIce, name: fireflyIce.name, associated: false))
+        let section = sections[unassociatedSectionIndex]
+        let indexPath = IndexPath(row: section.items.count, section: unassociatedSectionIndex)
+        section.items.append(Item(fireflyIce: fireflyIce, name: fireflyIce.name, associated: false))
         tableView.insertRows(at: [indexPath], with: .fade)
     }
     
     func associate(fireflyIce: FDFireflyIce) {
-        if let index = indexInTableView(fireflyIce: fireflyIce) {
-            let item = items[index]
-            if !item.associated || (item.name != fireflyIce.name) {
+        if let indexPath = indexPathInTableView(fireflyIce: fireflyIce) {
+            let section = sections[indexPath.section]
+            let item = section.items[indexPath.row]
+            if indexPath.section == associatedSectionIndex {
+                if item.name != fireflyIce.name {
+                    item.name = fireflyIce.name
+                    tableView.reloadRows(at: [indexPath], with: .fade)
+                }
+            } else {
+                section.items.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .fade)
+                
                 item.associated = true
                 item.name = fireflyIce.name
-                let indexPath = IndexPath(row: index, section: 0)
-                tableView.reloadRows(at: [indexPath], with: .fade)
+                let newSection = sections[associatedSectionIndex]
+                let newIndexPath = IndexPath(row: newSection.items.count, section: associatedSectionIndex)
+                newSection.items.append(item)
+                tableView.insertRows(at: [newIndexPath], with: .fade)
             }
         }
     }

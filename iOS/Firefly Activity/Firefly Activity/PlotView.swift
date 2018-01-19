@@ -19,6 +19,7 @@ class PlotView: UIView, UIGestureRecognizerDelegate {
     
     class Axis {
         
+        var label: String? = nil
         var min = 0.0
         var max = 1.0
         
@@ -159,16 +160,14 @@ class PlotView: UIView, UIGestureRecognizerDelegate {
     }
     
     func drawGaps(gaps: [(start: TimeInterval, end: TimeInterval)]) {
-        let x = Double(plotInsets.left)
-        let y = Double(plotInsets.top)
         let plotWidth = bounds.size.width - plotInsets.left - plotInsets.right
         let plotHeight = Double(self.frame.size.height - plotInsets.bottom - plotInsets.top)
         let timeScale = timeAxis.scale(plotWidth)
         for (start, end) in gaps {
-            let x1 = x + (start - timeAxis.min) * timeScale
-            let x2 = x + (end - timeAxis.min) * timeScale
+            let x1 = (start - timeAxis.min) * timeScale
+            let x2 = (end - timeAxis.min) * timeScale
             let width = Swift.max(x2 - x1, 1.0)
-            UIBezierPath(rect: CGRect(x: x1, y: y, width: width, height: plotHeight)).fill()
+            UIBezierPath(rect: CGRect(x: x1, y: 0.0, width: width, height: plotHeight)).fill()
         }
     }
     
@@ -181,20 +180,28 @@ class PlotView: UIView, UIGestureRecognizerDelegate {
     func drawAxis(_ dirtyRect: CGRect) {
         let (font, attributes) = getfontAndAttributes()
         
-        UIColor.magenta.setFill()
+        UIColor.black.setFill()
         let y = self.frame.size.height - plotInsets.bottom - 1.0
         let width = self.frame.size.width - plotInsets.left - plotInsets.right
         UIBezierPath(rect: CGRect(x: plotInsets.left, y: y, width: width, height: 1.0)).fill()
-        let timeAxisName = "time"
-        let tx = plotInsets.left
-        let ty = bounds.size.height - font.ascender
-        timeAxisName.draw(at: CGPoint(x: tx, y: ty), withAttributes: attributes)
+
+        if let label = timeAxis.label {
+            let x = plotInsets.left + width / 2.0
+            let y = bounds.size.height - font.lineHeight
+            let dx = (label as NSString).size(withAttributes: attributes).width / 2.0
+            label.draw(at: CGPoint(x: x - dx, y: y), withAttributes: attributes)
+        }
         
-        UIColor.magenta.setFill()
+        UIColor.black.setFill()
         let height = self.frame.size.height - plotInsets.bottom - plotInsets.top
         UIBezierPath(rect: CGRect(x: plotInsets.left, y: plotInsets.top, width: 1.0, height: height)).fill()
-        let ry = self.frame.size.height - plotInsets.bottom
-        drawRotatedText(text: "activity", at: CGPoint(x: 0.0, y: ry), angle: -90.0, font: font, color: UIColor.black)
+        
+        if let label = valueAxis.label {
+            let x: CGFloat = 0.0
+            let y = self.frame.size.height / 2.0 - plotInsets.bottom
+            let dy = (label as NSString).size(withAttributes: attributes).width / 2.0
+            drawRotatedText(text: label, at: CGPoint(x: x, y: y + dy), angle: -90.0, font: font, color: UIColor.black)
+        }
     }
 
     func drawContent(_ dirtyRect: CGRect) {

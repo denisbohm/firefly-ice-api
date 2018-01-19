@@ -37,6 +37,11 @@ class ActivitySummaryView: PlotView {
     var days: [Day] = []
     var gaps: [(start: TimeInterval, end: TimeInterval)] = []
 
+    override func initialize() {
+        super.initialize()
+        valueAxis.label = "Activity"
+    }
+    
     func getGaps(datastore: Datastore, start: Date, end: Date) {
         gaps.removeAll()
         let spans = datastore.query(start: start.timeIntervalSince1970, end: end.timeIntervalSince1970)
@@ -123,10 +128,10 @@ class ActivitySummaryView: PlotView {
         context.translateBy(x: plotInsets.left, y: plotInsets.top)
 
         let styles = [
-            Style(backgroundColor: UIColor(red: 0.51, green: 0.69, blue: 1.00, alpha: 1.0)),
+            Style(backgroundColor: UIColor(red: 0.90, green: 0.94, blue: 1.00, alpha: 1.0)),
             Style(backgroundColor: UIColor(red: 1.00, green: 0.90, blue: 0.51, alpha: 1.0)),
             Style(backgroundColor: UIColor(red: 1.00, green: 0.90, blue: 0.51, alpha: 1.0)),
-            Style(backgroundColor: UIColor(red: 0.51, green: 0.69, blue: 1.00, alpha: 1.0)),
+            Style(backgroundColor: UIColor(red: 0.90, green: 0.94, blue: 1.00, alpha: 1.0)),
         ]
         let darkGreen = UIColor(red: 0.14, green: 0.64, blue: 0.00, alpha: 1.0)
         
@@ -140,7 +145,7 @@ class ActivitySummaryView: PlotView {
         let w = Double(frame.size.width - plotInsets.left - plotInsets.right)
         let h = Double(frame.size.height - plotInsets.top - plotInsets.bottom)
         let valueScale = valueAxis.scale(CGFloat(h))
-        let timeScale = timeAxis.scale(bounds.size.width)
+        let timeScale = timeAxis.scale(CGFloat(w))
         for day in days {
             var index = 0
             for summary in day.summaries {
