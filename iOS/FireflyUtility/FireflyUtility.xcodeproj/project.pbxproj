@@ -325,7 +325,7 @@
 			isa = PBXGroup;
 			children = (
 				9264BD9B18CBBA5500F8CB3D /* libFireflyDevice.a */,
-				9264BD9D18CBBA5500F8CB3D /* FireflyDeviceTests.library.octest */,
+				9264BD9D18CBBA5500F8CB3D /* FireflyDeviceTests.library.xctest */,
 				9264BD9F18CBBA5500F8CB3D /* FireflyDevice.framework */,
 				9264BDA118CBBA5500F8CB3D /* FireflyDeviceTests.framework.xctest */,
 			);
@@ -574,9 +574,13 @@
 				TargetAttributes = {
 					92841A8317EDF63D005C0E18 = {
 						DevelopmentTeam = TVNL896ZKT;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 0;
 							};
 							com.apple.iCloud = {
 								enabled = 1;
@@ -621,10 +625,10 @@
 			remoteRef = 9264BD9A18CBBA5500F8CB3D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		9264BD9D18CBBA5500F8CB3D /* FireflyDeviceTests.library.octest */ = {
+		9264BD9D18CBBA5500F8CB3D /* FireflyDeviceTests.library.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = FireflyDeviceTests.library.octest;
+			path = FireflyDeviceTests.library.xctest;
 			remoteRef = 9264BD9C18CBBA5500F8CB3D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -883,12 +887,15 @@
 				CODE_SIGN_ENTITLEMENTS = FireflyUtility/FireflyUtility.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = TVNL896ZKT;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FireflyUtility/FireflyUtility-Prefix.pch";
 				INFOPLIST_FILE = "FireflyUtility/FireflyUtility-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -902,12 +909,15 @@
 				CODE_SIGN_ENTITLEMENTS = FireflyUtility/FireflyUtility.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = TVNL896ZKT;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FireflyUtility/FireflyUtility-Prefix.pch";
 				INFOPLIST_FILE = "FireflyUtility/FireflyUtility-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

@@ -13,30 +13,30 @@
 
 @interface FDFireflyIceChannelBLEPeripheralObservable : FDObservable <CBPeripheralDelegate>
 
-+ (FDFireflyIceChannelBLEPeripheralObservable *)peripheralObservable;
++ (nonnull FDFireflyIceChannelBLEPeripheralObservable *)peripheralObservable;
 
 @end
 
 @interface FDFireflyIceChannelBLERSSI : NSObject
 
 @property float value;
-@property NSDate *date;
+@property NSDate * _Nonnull date;
 
-+ (FDFireflyIceChannelBLERSSI *)RSSI:(float)value date:(NSDate *)date;
-+ (FDFireflyIceChannelBLERSSI *)RSSI:(float)value;
++ (nonnull FDFireflyIceChannelBLERSSI *)RSSI:(float)value date:(nonnull NSDate *)date;
++ (nonnull FDFireflyIceChannelBLERSSI *)RSSI:(float)value;
 
 @end
 
 @interface FDFireflyIceChannelBLE : NSObject <FDFireflyIceChannel>
 
-@property (readonly) CBPeripheral *peripheral;
-@property FDFireflyIceChannelBLEPeripheralObservable *peripheralObservable;
-@property id<FDFireflyIceChannelDelegate> delegate;
-@property FDFireflyIceChannelBLERSSI *RSSI;
+@property (readonly) CBPeripheral * _Nonnull peripheral;
+@property FDFireflyIceChannelBLEPeripheralObservable * _Nonnull peripheralObservable;
+@property id <FDFireflyIceChannelDelegate> _Nullable delegate;
+@property FDFireflyIceChannelBLERSSI * _Nullable RSSI;
 
-- (id)initWithCentralManager:(CBCentralManager *)centralManager withPeripheral:(CBPeripheral *)peripheral withServiceUUID:(CBUUID *)serviceUUID;
+- (nonnull id)initWithCentralManager:(nonnull CBCentralManager *)centralManager withPeripheral:(nonnull CBPeripheral *)peripheral withServiceUUID:(nonnull CBUUID *)serviceUUID;
 
 - (void)didConnectPeripheral;
-- (void)didDisconnectPeripheralError:(NSError *)error;
+- (void)didDisconnectPeripheralError:(nullable NSError *)error;
 
 @end

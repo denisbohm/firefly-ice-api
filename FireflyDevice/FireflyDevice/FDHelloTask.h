@@ -20,27 +20,27 @@ enum {
 
 @protocol FDHelloTaskDelegate <NSObject>
 
-- (void)helloTaskSuccess:(FDHelloTask *)helloTask;
-- (void)helloTask:(FDHelloTask *)helloTask error:(NSError *)error;
+- (void)helloTaskSuccess:(nonnull FDHelloTask *)helloTask;
+- (void)helloTask:(nonnull FDHelloTask *)helloTask error:(nullable NSError *)error;
 
 @optional
 
-- (NSDate *)helloTaskDate;
-- (NSTimeZone *)helloTaskTimeZone;
+- (nullable NSDate *)helloTaskDate;
+- (nullable NSTimeZone *)helloTaskTimeZone;
 
 @end
 
 @interface FDHelloTask : FDFireflyIceTaskSteps
 
-+ (FDHelloTask *)helloTask:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel delegate:(id<FDHelloTaskDelegate>)delegate;
++ (nonnull FDHelloTask *)helloTask:(nonnull FDFireflyIce *)fireflyIce channel:(nonnull id<FDFireflyIceChannel>)channel delegate:(nullable id<FDHelloTaskDelegate>)delegate;
 
-@property id<FDHelloTaskDelegate> delegate;
+@property id <FDHelloTaskDelegate> _Nullable delegate;
 @property BOOL setTimeEnabled;
 @property NSTimeInterval setTimeTolerance;
 @property BOOL indicate;
 
-@property NSMutableDictionary *propertyValues;
+@property NSMutableDictionary * _Nonnull propertyValues;
 
-- (void)queryProperty:(uint32_t)property delegateMethodName:(NSString *)delegateMethodName;
+- (void)queryProperty:(uint32_t)property delegateMethodName:(nonnull NSString *)delegateMethodName;
 
 @end

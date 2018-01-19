@@ -11,10 +11,10 @@
 
 @interface FDFireflyIceTaskSteps : NSObject <FDExecutorTask, FDFireflyIceObserver>
 
-@property FDFireflyIce *fireflyIce;
-@property id<FDFireflyIceChannel> channel;
+@property FDFireflyIce * _Nonnull fireflyIce;
+@property id<FDFireflyIceChannel> _Nonnull channel;
 
-- (void)next:(SEL)selector;
+- (void)next:(nonnull SEL)selector;
 - (void)done;
 
 @end

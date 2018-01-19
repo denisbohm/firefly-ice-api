@@ -10,16 +10,16 @@
 
 @interface FDBinary : NSObject
 
-- (id)init;
-- (id)initWithData:(NSData *)data;
+- (nonnull id)init;
+- (nonnull id)initWithData:(nonnull NSData *)data;
 
 - (NSUInteger)length;
-- (NSData *)dataValue;
+- (nonnull NSData *)dataValue;
 
 @property uint32_t getIndex;
 - (NSUInteger)getRemainingLength;
-- (NSData *)getRemainingData;
-- (NSData *)getData:(NSUInteger)length;
+- (nonnull NSData *)getRemainingData;
+- (nonnull NSData *)getData:(NSUInteger)length;
 - (uint8_t)getUInt8;
 - (uint16_t)getUInt16;
 - (uint32_t)getUInt24;
@@ -29,7 +29,7 @@
 - (float)getFloat32;
 - (NSTimeInterval)getTime64;
 
-- (void)putData:(NSData *)data;
+- (void)putData:(nonnull NSData *)data;
 - (void)putUInt8:(uint8_t)value;
 - (void)putUInt16:(uint16_t)value;
 - (void)putUInt24:(uint32_t)value;
@@ -39,22 +39,22 @@
 - (void)putFloat32:(float)value;
 - (void)putTime64:(NSTimeInterval)value;
 
-+ (uint8_t)unpackUInt8:(uint8_t *)buffer;
-+ (uint16_t)unpackUInt16:(uint8_t *)buffer;
-+ (uint32_t)unpackUInt24:(uint8_t *)buffer;
-+ (uint32_t)unpackUInt32:(uint8_t *)buffer;
-+ (uint64_t)unpackUInt64:(uint8_t *)buffer;
-+ (float)unpackFloat16:(uint8_t *)buffer;
-+ (float)unpackFloat32:(uint8_t *)buffer;
-+ (NSTimeInterval)unpackTime64:(uint8_t *)buffer;
++ (uint8_t)unpackUInt8:(nonnull uint8_t *)buffer;
++ (uint16_t)unpackUInt16:(nonnull uint8_t *)buffer;
++ (uint32_t)unpackUInt24:(nonnull uint8_t *)buffer;
++ (uint32_t)unpackUInt32:(nonnull uint8_t *)buffer;
++ (uint64_t)unpackUInt64:(nonnull uint8_t *)buffer;
++ (float)unpackFloat16:(nonnull uint8_t *)buffer;
++ (float)unpackFloat32:(nonnull uint8_t *)buffer;
++ (NSTimeInterval)unpackTime64:(nonnull uint8_t *)buffer;
 
-+ (void)packUInt8:(uint8_t *)buffer value:(uint8_t)value;
-+ (void)packUInt16:(uint8_t *)buffer value:(uint16_t)value;
-+ (void)packUInt24:(uint8_t *)buffer value:(uint32_t)value;
-+ (void)packUInt32:(uint8_t *)buffer value:(uint32_t)value;
-+ (void)packUInt64:(uint8_t *)buffer value:(uint64_t)value;
-+ (void)packFloat16:(uint8_t *)buffer value:(float)value;
-+ (void)packFloat32:(uint8_t *)buffer value:(float)value;
-+ (void)packTime64:(uint8_t *)buffer value:(NSTimeInterval)value;
++ (void)packUInt8:(nonnull uint8_t *)buffer value:(uint8_t)value;
++ (void)packUInt16:(nonnull uint8_t *)buffer value:(uint16_t)value;
++ (void)packUInt24:(nonnull uint8_t *)buffer value:(uint32_t)value;
++ (void)packUInt32:(nonnull uint8_t *)buffer value:(uint32_t)value;
++ (void)packUInt64:(nonnull uint8_t *)buffer value:(uint64_t)value;
++ (void)packFloat16:(nonnull uint8_t *)buffer value:(float)value;
++ (void)packFloat32:(nonnull uint8_t *)buffer value:(float)value;
++ (void)packTime64:(nonnull uint8_t *)buffer value:(NSTimeInterval)value;
 
 @end
