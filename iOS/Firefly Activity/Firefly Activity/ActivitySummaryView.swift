@@ -165,7 +165,7 @@ class ActivitySummaryView: PlotView {
             }
             let x = (Double(day.end.timeIntervalSince1970 + day.start.timeIntervalSince1970) / 2.0 - timeAxis.min) * timeScale
             let y = Double(bounds.size.height - font.lineHeight)
-            let label = day.start == today ? "today" : day.label
+            let label = day.start == today ? "Today" : day.label
             let dx = Double((label as NSString).size(withAttributes: attributes).width) / 2.0
             label.draw(at: CGPoint(x: x - dx, y: y), withAttributes: attributes)
         }

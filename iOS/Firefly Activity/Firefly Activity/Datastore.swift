@@ -15,7 +15,7 @@ class Datastore {
         case CanNotFindDirectory
         case CanNotCreateFile
         case CanNotOpenFile
-        case InvalidFileHandle
+        case InvalidState
         case InvalidDayTime
     }
     
@@ -23,7 +23,7 @@ class Datastore {
     let bytesPerRecord = 8
     let interval = 10
 
-    var fileHandle: FileHandle? = nil
+    var url: URL? = nil
     var data: Data = Data()
     var timeRange = (start: 0, end: 0)
     
@@ -42,39 +42,34 @@ class Datastore {
         if !fileManager.fileExists(atPath: directory.path) {
             try fileManager.createDirectory(at: directory, withIntermediateDirectories: true, attributes: nil)
         }
-        let path = directory.appendingPathComponent(day).appendingPathExtension("dat").path
-        if !fileManager.fileExists(atPath: path) {
+        let url = directory.appendingPathComponent(day).appendingPathExtension("dat")
+        if !fileManager.fileExists(atPath: url.path) {
             let count = bytesPerRecord * (timeRange.end - timeRange.start) / interval
-            if !fileManager.createFile(atPath: path, contents: Data(count: count), attributes: nil) {
+            if !fileManager.createFile(atPath: url.path, contents: Data(count: count), attributes: nil) {
                 throw LocalError.CanNotCreateFile
             }
         }
-        self.fileHandle = FileHandle(forUpdatingAtPath: path)
-        guard let fileHandle = fileHandle else {
-            throw LocalError.CanNotOpenFile
-        }
-        self.data = fileHandle.readDataToEndOfFile()
+        self.url = url
+        self.data = try Data(contentsOf: url)  // fileHandle.readDataToEndOfFile()
         self.timeRange = timeRange
     }
     
     func save() {
-        guard let fileHandle = fileHandle else {
+        guard let url = url else {
             return
         }
 
-        fileHandle.seek(toFileOffset: 0)
-        fileHandle.write(data)
-        fileHandle.synchronizeFile()
-        
-        self.fileHandle = nil
+        try? self.data.write(to: url, options: [.atomic])
+
+        self.url = nil
         self.data = Data()
         self.timeRange = (start: 0, end: 0)
     }
     
     func update(time: Int, vma: Float) throws {
-        guard let _ = fileHandle else {
-            NSLog("invalid file handle")
-            throw LocalError.InvalidFileHandle
+        if url == nil {
+            NSLog("invalid state")
+            throw LocalError.InvalidState
         }
         if (time < timeRange.start) || (time >= timeRange.end) {
             throw LocalError.InvalidDayTime

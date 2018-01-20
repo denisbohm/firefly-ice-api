@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		925BDD83201257A800EC18CE /* ActivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925BDD82201257A800EC18CE /* ActivityManager.swift */; };
+		925C9E072013EBA8004EA3A2 /* URL+isDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925C9E062013EBA8004EA3A2 /* URL+isDirectory.swift */; };
 		9270170B2006C89500E63306 /* Catalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9270170A2006C89500E63306 /* Catalog.swift */; };
 		9270170E2006F51200E63306 /* DeviceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9270170D2006F51200E63306 /* DeviceViewController.swift */; };
 		927017122006FB1C00E63306 /* CatalogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927017112006FB1C00E63306 /* CatalogViewController.swift */; };
@@ -15,6 +17,8 @@
 		9276C76B2006606000157A97 /* ActivitySummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9276C76A2006606000157A97 /* ActivitySummaryView.swift */; };
 		9276C76E2006606F00157A97 /* PlotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9276C76D2006606F00157A97 /* PlotView.swift */; };
 		92774668200DA45700F74384 /* Bluetooth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92774667200DA45700F74384 /* Bluetooth.swift */; };
+		92C9009320119C7D00A5C1F7 /* Cloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C9009220119C7D00A5C1F7 /* Cloud.swift */; };
+		92C9009620119D8D00A5C1F7 /* GZip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C9009520119D8D00A5C1F7 /* GZip.swift */; };
 		92E95F1F1FFBE5CF001F49D7 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E95F1E1FFBE5CF001F49D7 /* Activity.swift */; };
 		92EDEA1F1FF5306700B8814A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92EDEA1E1FF5306700B8814A /* AppDelegate.swift */; };
 		92EDEA211FF5306700B8814A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92EDEA201FF5306700B8814A /* ViewController.swift */; };
@@ -67,6 +71,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		925BDD82201257A800EC18CE /* ActivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityManager.swift; sourceTree = "<group>"; };
+		925C9E062013EBA8004EA3A2 /* URL+isDirectory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+isDirectory.swift"; sourceTree = "<group>"; };
 		9270170A2006C89500E63306 /* Catalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Catalog.swift; sourceTree = "<group>"; };
 		9270170D2006F51200E63306 /* DeviceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceViewController.swift; sourceTree = "<group>"; };
 		927017112006FB1C00E63306 /* CatalogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogViewController.swift; sourceTree = "<group>"; };
@@ -75,6 +81,8 @@
 		9276C76A2006606000157A97 /* ActivitySummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitySummaryView.swift; sourceTree = "<group>"; };
 		9276C76D2006606F00157A97 /* PlotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlotView.swift; sourceTree = "<group>"; };
 		92774667200DA45700F74384 /* Bluetooth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bluetooth.swift; sourceTree = "<group>"; };
+		92C9009220119C7D00A5C1F7 /* Cloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cloud.swift; sourceTree = "<group>"; };
+		92C9009520119D8D00A5C1F7 /* GZip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GZip.swift; sourceTree = "<group>"; };
 		92E95F1E1FFBE5CF001F49D7 /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
 		92EDEA1B1FF5306700B8814A /* Firefly Activity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Firefly Activity.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		92EDEA1E1FF5306700B8814A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -142,6 +150,10 @@
 				9270170A2006C89500E63306 /* Catalog.swift */,
 				92730A071FFAF2D70022C1D2 /* Datastore.swift */,
 				92730A0A1FFBCA9E0022C1D2 /* DatastoreInsert.swift */,
+				92C9009220119C7D00A5C1F7 /* Cloud.swift */,
+				92C9009520119D8D00A5C1F7 /* GZip.swift */,
+				925BDD82201257A800EC18CE /* ActivityManager.swift */,
+				925C9E062013EBA8004EA3A2 /* URL+isDirectory.swift */,
 			);
 			path = "Firefly Activity";
 			sourceTree = "<group>";
@@ -273,17 +285,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				927017122006FB1C00E63306 /* CatalogViewController.swift in Sources */,
+				92C9009320119C7D00A5C1F7 /* Cloud.swift in Sources */,
 				9270170B2006C89500E63306 /* Catalog.swift in Sources */,
 				9276C76E2006606F00157A97 /* PlotView.swift in Sources */,
 				92EDEA211FF5306700B8814A /* ViewController.swift in Sources */,
+				925BDD83201257A800EC18CE /* ActivityManager.swift in Sources */,
 				92774668200DA45700F74384 /* Bluetooth.swift in Sources */,
 				92EDEA1F1FF5306700B8814A /* AppDelegate.swift in Sources */,
+				92C9009620119D8D00A5C1F7 /* GZip.swift in Sources */,
 				9270170E2006F51200E63306 /* DeviceViewController.swift in Sources */,
 				92EDEA351FF532A800B8814A /* ActivityView.swift in Sources */,
 				92730A081FFAF2D70022C1D2 /* Datastore.swift in Sources */,
 				9276C76B2006606000157A97 /* ActivitySummaryView.swift in Sources */,
 				92E95F1F1FFBE5CF001F49D7 /* Activity.swift in Sources */,
 				92730A0B1FFBCA9E0022C1D2 /* DatastoreInsert.swift in Sources */,
+				925C9E072013EBA8004EA3A2 /* URL+isDirectory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

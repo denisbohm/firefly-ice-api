@@ -47,6 +47,7 @@ class DeviceViewController: UIViewController, FDPullTaskDelegate, PlotViewDelega
     let logger = Logger()
     var queryRange = (start: 0.0, end: 1.0)
     var fireflyIce: FDFireflyIce? = nil
+    var identifier: String = "anonymous"
     
     var backCallback: (() -> Void)? = nil
 
@@ -66,13 +67,12 @@ class DeviceViewController: UIViewController, FDPullTaskDelegate, PlotViewDelega
         }
     }
 
-    func showDevice(fireflyIce: FDFireflyIce) {
+    func showDevice(fireflyIce: FDFireflyIce, identifier: String) {
         self.fireflyIce = fireflyIce
+        self.identifier = identifier
         
         deviceNameLabel.text = fireflyIce.name
         
-        // invalidate the data in the plot view
-        queryRange = (start: 0.0, end: 1.0)
         viewAll()
     }
     
@@ -81,6 +81,7 @@ class DeviceViewController: UIViewController, FDPullTaskDelegate, PlotViewDelega
             channel.close()
         }
         fireflyIce = nil
+        identifier = "anonymous"
     }
     
     func cancel() {
@@ -90,6 +91,9 @@ class DeviceViewController: UIViewController, FDPullTaskDelegate, PlotViewDelega
     }
     
     func viewAll() {
+        // invalidate the data in the plot view
+        queryRange = (start: 0.0, end: 1.0)
+
         let end = Date()
         let calendar = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
         let start = calendar.date(byAdding: .day, value: -7, to: end)!
@@ -111,16 +115,15 @@ class DeviceViewController: UIViewController, FDPullTaskDelegate, PlotViewDelega
         }
         logger.log(line: "syncing")
         
-        let hardwareIdentifier = FDHardwareId.hardwareId(fireflyIce.hardwareId.unique)
         let channel = fireflyIce.channels["BLE"] as! FDFireflyIceChannelBLE
         let pullTask = FDPullTask()
-        pullTask.hardwareId = hardwareIdentifier
+        pullTask.hardwareId = identifier
         pullTask.fireflyIce = fireflyIce
         pullTask.channel = channel
         pullTask.delegate = self
         pullTask.identifier = "pull"
         pullTask.timeout = 300.0
-        pullTask.upload = DatastoreInsert(identifier: hardwareIdentifier, delegate: pullTask)
+        pullTask.upload = DatastoreInsert(identifier: identifier, delegate: pullTask)
         let vmaDecoder = FDVMADecoder()
         let vmaType  = storageType("F", "D", "V", "2")
         pullTask.decoderByType[vmaType] = vmaDecoder
@@ -145,12 +148,6 @@ class DeviceViewController: UIViewController, FDPullTaskDelegate, PlotViewDelega
     }
 
     func queryActivity(start: Double, end: Double) {
-        let identifier: String
-        if let fireflyIce = fireflyIce {
-            identifier = FDHardwareId.hardwareId(fireflyIce.hardwareId.unique)
-        } else {
-            identifier = "anonymous"
-        }
         queryRange = (start: start, end: end)
         plotView.query(identifier: identifier, start: Date(timeIntervalSince1970: start), end: Date(timeIntervalSince1970: end))
     }

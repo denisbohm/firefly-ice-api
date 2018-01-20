@@ -71,7 +71,7 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate {
         bluetooth.initialize()
         
         // !!! Juat for testing, start with empty catalog -denis
-        catalog.save()
+        //catalog.save()
         
         if TARGET_OS_SIMULATOR != 0 {
             createFakeDevices()
@@ -110,17 +110,20 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate {
         catalogViewController.display(fireflyIce: fireflyIce)
     }
     
-    func catalogUpdate(fireflyIce: FDFireflyIce) {
+    func catalogUpdate(fireflyIce: FDFireflyIce) -> Catalog.Device? {
         if fireflyIce.hardwareId != nil {
             let hardwareIdentifier = FDHardwareId.hardwareId(fireflyIce.hardwareId.unique)
             let channel = fireflyIce.channels["BLE"] as! FDFireflyIceChannelBLE
             let device = Catalog.Device(name: fireflyIce.name, peripheralIdentifier: channel.peripheral.identifier, hardwareIdentifier: hardwareIdentifier)
             catalog.put(device: device)
+            return device
+        } else {
+            return nil
         }
     }
     
     func bluetoothDidUpdateName(fireflyIce: FDFireflyIce) {
-        catalogUpdate(fireflyIce: fireflyIce)
+        let _ = catalogUpdate(fireflyIce: fireflyIce)
         catalogViewController.display(fireflyIce: fireflyIce)
     }
     
@@ -160,13 +163,9 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate {
         alert.addAction(cancelAction)
         self.present(alert, animated: true, completion: nil)
         
-        if action == .check {
-            if let hardwareId = fireflyIce.hardwareId {
-                let hardwareIdentifier = FDHardwareId.hardwareId(hardwareId.unique)
-                if catalog.contains(hardwareIdentifier: hardwareIdentifier) {
-                    showDevice(fireflyIce: fireflyIce)
-                    return
-                }
+        if (action == .check) && item.associated {
+            if let device = catalog.get(peripheralIdentifier: channel.peripheral.identifier) {
+                showDevice(hardwareIdentifier: device.hardwareIdentifier, fireflyIce: fireflyIce)
             }
         }
     }
@@ -178,13 +177,12 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate {
 
     func closeDevice(item: CatalogViewController.Item) {
         action = .none
-        
-        guard let channel = item.fireflyIce.channels["BLE"] as? FDFireflyIceChannelBLE else {
-            return
+        if let channel = item.fireflyIce.channels["BLE"] as? FDFireflyIceChannelBLE {
+            channel.close()
         }
-        
-        channel.close()
-        showCatalog()
+        if !item.associated {
+            showCatalog()
+        }
     }
     
     func bluetoothDidIdentify(fireflyIce: FDFireflyIce) {
@@ -253,15 +251,17 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate {
         if action == .edit {
             let hardwareIdentifier = FDHardwareId.hardwareId(fireflyIce.hardwareId.unique)
             if catalog.contains(hardwareIdentifier: hardwareIdentifier) {
-                catalogUpdate(fireflyIce: fireflyIce)
+                let _ = catalogUpdate(fireflyIce: fireflyIce)
             }
             catalogViewController.display(fireflyIce: fireflyIce)
             bluetooth.sendPingClose(fireflyIce: fireflyIce, channel: channel)
         }
         if action == .check {
-            catalogUpdate(fireflyIce: fireflyIce)
+            let device = catalogUpdate(fireflyIce: fireflyIce)
             catalogViewController.associate(fireflyIce: fireflyIce)
-            showDevice(fireflyIce: fireflyIce)
+            if let device = device {
+                showDevice(hardwareIdentifier: device.hardwareIdentifier, fireflyIce: fireflyIce)
+            }
         }
     }
     
@@ -273,13 +273,13 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate {
         showCatalog()
     }
     
-    func showDevice(fireflyIce: FDFireflyIce) {
+    func showDevice(hardwareIdentifier: String, fireflyIce: FDFireflyIce) {
         NSLog("show device \(fireflyIce.name)")
         
         bluetooth.stopScan()
         catalogView.isHidden = true
 
-        deviceViewController.showDevice(fireflyIce: fireflyIce)
+        deviceViewController.showDevice(fireflyIce: fireflyIce, identifier: hardwareIdentifier)
         deviceViewController.pullActivityData()
         deviceView.isHidden = false
     }

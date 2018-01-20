@@ -40,6 +40,15 @@ class Catalog {
         return deviceByHardwareIdentifier[hardwareIdentifier]
     }
     
+    func get(peripheralIdentifier: UUID) -> Device? {
+        for device in deviceByHardwareIdentifier.values {
+            if device.peripheralIdentifier == peripheralIdentifier {
+                return device
+            }
+        }
+        return nil
+    }
+    
     func put(device: Device) {
         deviceByHardwareIdentifier[device.hardwareIdentifier] = device
         save()
