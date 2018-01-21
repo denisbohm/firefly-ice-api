@@ -142,12 +142,12 @@ class Cloud {
     }
     
     private func queryFiles(cursor: CKQueryCursor? = nil) {
-        let predicate = NSPredicate(format: "installationUUID == %@", installationUUID)
-        let query = CKQuery(recordType: fileRecordType, predicate: predicate)
         let operation: CKQueryOperation
         if let cursor = cursor {
             operation = CKQueryOperation(cursor: cursor)
         } else {
+            let predicate = NSPredicate(format: "installationUUID == %@", installationUUID)
+            let query = CKQuery(recordType: fileRecordType, predicate: predicate)
             operation = CKQueryOperation(query: query)
         }
         operation.qualityOfService = .userInteractive
