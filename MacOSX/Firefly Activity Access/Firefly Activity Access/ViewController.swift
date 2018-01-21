@@ -25,6 +25,9 @@ class ViewController: NSViewController {
         let queryOperation: CKQueryOperation
     }
     
+    private let dispatchQueue = DispatchQueue(label:"ViewControllerQueue")
+    private var cancelValue: Bool = false
+
     var state: State? = nil
     var records: [CKRecord] = []
     var queuedOperations: [CKDatabaseOperation] = []
@@ -37,14 +40,27 @@ class ViewController: NSViewController {
         }
     }
     
+    var cancel: Bool {
+        set(value) {
+            dispatchQueue.sync {
+                cancelValue = value
+            }
+        }
+        get {
+            var value: Bool = false
+            dispatchQueue.sync {
+                value = cancelValue
+            }
+            return value
+        }
+    }
+    
     func isOutOfDate(url: URL, date: Date) -> Bool {
         if !FileManager.default.fileExists(atPath: url.path) {
             return true
         }
         if let values = try? url.resourceValues(forKeys: [.contentModificationDateKey]) {
             if let contentModificationDate = values.contentModificationDate {
-                let d = date.timeIntervalSince1970 - contentModificationDate.timeIntervalSince1970
-                NSLog("diff \(d)")
                 return date > contentModificationDate
             }
         }
@@ -69,6 +85,10 @@ class ViewController: NSViewController {
     }
     
     func save(url: URL, path: String, modificationDate: Date, record: CKRecord) {
+        if cancel {
+            syncComplete()
+            return
+        }
         guard let asset = record["data"] as? CKAsset else {
             return
         }
@@ -101,13 +121,13 @@ class ViewController: NSViewController {
             records.append(record)
         }
         operation.queryCompletionBlock = { (cursor, error) in
-            if let error = error {
-                self.log("error: \(error.localizedDescription)")
-                self.syncComplete()
-                return
-            }
-            for record in records {
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                if let error = error {
+                    self.log("error: \(error.localizedDescription)")
+                    self.syncComplete()
+                    return
+                }
+                for record in records {
                     self.save(url: url, path: path, modificationDate: modificationDate, record: record)
                 }
             }
@@ -126,6 +146,10 @@ class ViewController: NSViewController {
         log("destinatioin directory: \(directory.path)")
         ensure(directory: directory)
         for record in records {
+            if cancel {
+                syncComplete()
+                return
+            }
             guard let path = record["path"] as? String else {
                 continue
             }
@@ -142,6 +166,11 @@ class ViewController: NSViewController {
     }
     
     func queryFiles(cursor: CKQueryCursor? = nil) {
+        if cancel {
+            syncComplete()
+            return
+        }
+        
         let operation:CKQueryOperation
         if let cursor = cursor {
             operation = CKQueryOperation(cursor: cursor)
@@ -153,13 +182,15 @@ class ViewController: NSViewController {
         operation.desiredKeys = ["path", "fileModificationDate"]
         operation.qualityOfService = .userInteractive
         operation.recordFetchedBlock = { (record) in
-            self.records.append(record)
+            DispatchQueue.main.async {
+                self.records.append(record)
+            }
         }
         operation.queryCompletionBlock = { (cursor, error) in
-            if let cursor = cursor {
-                self.queryFiles(cursor: cursor)
-            } else {
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                if let cursor = cursor {
+                    self.queryFiles(cursor: cursor)
+                } else {
                     self.queryFilesComplete(error: error)
                 }
             }
@@ -169,11 +200,17 @@ class ViewController: NSViewController {
     }
     
     @IBAction func sync(_ sender: AnyObject) {
-        syncButton?.isEnabled = false
+        if state != nil {
+            cancel = true
+            return
+        }
+        
+        syncButton?.title = "Cancel"
         syncProgressIndicator?.isHidden = false
         syncProgressIndicator?.startAnimation(self)
         logTextView?.textStorage?.mutableString.setString("")
         
+        cancel = false
         queryFiles()
     }
     
@@ -183,7 +220,7 @@ class ViewController: NSViewController {
         queuedOperations.removeAll()
         currentOperation = nil
         
-        self.syncButton?.isEnabled = true
+        syncButton?.title = "Sync"
         self.syncProgressIndicator?.stopAnimation(self)
         self.syncProgressIndicator?.isHidden = true
     }
