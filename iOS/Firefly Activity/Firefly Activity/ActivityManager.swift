@@ -15,8 +15,6 @@ class ActivityManager {
     let installationDate: Date!
     let installationUUID: String!
     
-    var cloud: Cloud? = nil
-    
     init() {
         let userDefaults = UserDefaults.standard
         
@@ -49,26 +47,4 @@ class ActivityManager {
         }
     }
     
-    func pushToCloud() {
-        if cloud != nil {
-            NSLog("deferring push to cloud - previous cloud push still running")
-        }
-        let fileManager = FileManager.default
-        guard let documentDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
-            NSLog("document directory not found")
-            return
-        }
-        let directory = documentDirectory.appendingPathComponent("database", isDirectory: true)
-        cloud = Cloud(installationUUID: installationUUID, directory: directory) { (error) in
-            DispatchQueue.main.async {
-                self.pushToCloudComplete(error: error)
-            }
-        }
-        cloud!.start()
-    }
-    
-    func pushToCloudComplete(error: Error?) {
-        cloud = nil
-    }
-
 }

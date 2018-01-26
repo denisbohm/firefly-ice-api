@@ -15,8 +15,11 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate {
         case none
         case check
         case edit
+        case close
     }
     
+    @IBOutlet var bluetoothImageView: UIImageView!
+    @IBOutlet var cloudImageView: UIImageView!
     @IBOutlet var catalogView: UIView!
     @IBOutlet var deviceView: UIView!
     
@@ -26,7 +29,8 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate {
     let bluetooth = Bluetooth()
     let catalog = Catalog()
     var action: Action = .none
-
+    var cloud: Cloud? = nil
+    
     func findChildViewController<T>() -> T? where T: UIViewController {
         if let index = (childViewControllers.index { $0 is T }) {
             return childViewControllers[index] as? T
@@ -71,7 +75,7 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate {
         bluetooth.initialize()
         
         // !!! Juat for testing, start with empty catalog -denis
-        //catalog.save()
+//        catalog.save()
         
         if TARGET_OS_SIMULATOR != 0 {
             createFakeDevices()
@@ -95,15 +99,19 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate {
         }
         catalogViewController.load(fireflyIces: fireflyIces)
         showCatalog()
+        
+        pushToCloud()
     }
     
     func bluetoothPoweredOn() {
+        bluetoothImageView.tintColor = UIColor.lightGray
         if !catalogView.isHidden {
             bluetooth.scan()
         }
     }
     
     func bluetoothPoweredOff() {
+        bluetoothImageView.tintColor = UIColor.red
     }
     
     func bluetoothDidDiscover(fireflyIce: FDFireflyIce, advertisementData: [String : Any], rssi RSSI: NSNumber) {
@@ -111,12 +119,11 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate {
     }
     
     func catalogUpdate(fireflyIce: FDFireflyIce) -> Catalog.Device? {
-        if fireflyIce.hardwareId != nil {
-            let hardwareIdentifier = FDHardwareId.hardwareId(fireflyIce.hardwareId.unique)
-            let channel = fireflyIce.channels["BLE"] as! FDFireflyIceChannelBLE
-            let device = Catalog.Device(name: fireflyIce.name, peripheralIdentifier: channel.peripheral.identifier, hardwareIdentifier: hardwareIdentifier)
-            catalog.put(device: device)
-            return device
+        let channel = fireflyIce.channels["BLE"] as! FDFireflyIceChannelBLE
+        if let device = catalog.get(peripheralIdentifier: channel.peripheral.identifier) {
+            let newDevice = Catalog.Device(name: fireflyIce.name, peripheralIdentifier: channel.peripheral.identifier, hardwareIdentifier: device.hardwareIdentifier)
+            catalog.put(device: newDevice)
+            return newDevice
         } else {
             return nil
         }
@@ -137,11 +144,9 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate {
     
     func forgetDevice(item: CatalogViewController.Item) {
         let fireflyIce = item.fireflyIce
-        if let hardwareId = fireflyIce.hardwareId {
-            let hardwareIdentifier = FDHardwareId.hardwareId(hardwareId.unique)
-            if let device = catalog.get(hardwareIdentifier: hardwareIdentifier) {
-                catalog.remove(device: device)
-            }
+        let channel = fireflyIce.channels["BLE"] as! FDFireflyIceChannelBLE
+        if let device = catalog.get(peripheralIdentifier: channel.peripheral.identifier) {
+            catalog.remove(device: device)
         }
         catalogViewController.delete(item: item)
     }
@@ -154,6 +159,7 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate {
         
         self.action = action
         channel.open()
+        bluetoothImageView.tintColor = UIColor.orange
 
         let message = "Connecting to the device.  The device can then be identified by a pulsing blue light."
         let alert = UIAlertController(title: "Connecting", message: message, preferredStyle: UIAlertControllerStyle.alert)
@@ -170,13 +176,28 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate {
         }
     }
     
+    func bluetoothIsOpening(fireflyIce: FDFireflyIce) {
+        bluetoothImageView.tintColor = UIColor.green
+    }
+    
+    func bluetoothDidOpen(fireflyIce: FDFireflyIce) {
+    }
+    
+    func bluetoothIsClosing(fireflyIce: FDFireflyIce) {
+        action = .close
+    }
+    
     func bluetoothDidClose(fireflyIce: FDFireflyIce) {
+        if action != .close {
+            bluetoothImageView.tintColor = UIColor.red
+        } else {
+            bluetoothImageView.tintColor = UIColor.lightGray
+        }
         action = .none
         self.dismiss(animated: true, completion: nil)
     }
-
+    
     func closeDevice(item: CatalogViewController.Item) {
-        action = .none
         if let channel = item.fireflyIce.channels["BLE"] as? FDFireflyIceChannelBLE {
             channel.close()
         }
@@ -188,6 +209,8 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate {
     func bluetoothDidIdentify(fireflyIce: FDFireflyIce) {
         self.dismiss(animated: true, completion: nil)
         
+        bluetoothImageView.tintColor = UIColor.blue
+
         if action == .edit {
             useDevice(fireflyIce: fireflyIce)
             return
@@ -247,17 +270,13 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate {
         
         fireflyIce.coder.sendSetPropertyName(channel, name: name)
         fireflyIce.name = name
+        let device = catalogUpdate(fireflyIce: fireflyIce)
         
         if action == .edit {
-            let hardwareIdentifier = FDHardwareId.hardwareId(fireflyIce.hardwareId.unique)
-            if catalog.contains(hardwareIdentifier: hardwareIdentifier) {
-                let _ = catalogUpdate(fireflyIce: fireflyIce)
-            }
             catalogViewController.display(fireflyIce: fireflyIce)
             bluetooth.sendPingClose(fireflyIce: fireflyIce, channel: channel)
         }
         if action == .check {
-            let device = catalogUpdate(fireflyIce: fireflyIce)
             catalogViewController.associate(fireflyIce: fireflyIce)
             if let device = device {
                 showDevice(hardwareIdentifier: device.hardwareIdentifier, fireflyIce: fireflyIce)
@@ -269,7 +288,7 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate {
         if let channel = fireflyIce.channels["BLE"] as? FDFireflyIceChannelBLE {
             channel.close()
         }
-        
+
         showCatalog()
     }
     
@@ -294,6 +313,31 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate {
             bluetooth.scan()
         }
         catalogView.isHidden = false
+    }
+    
+    @IBAction func pushToCloud() {
+        if cloud != nil {
+            NSLog("deferring push to cloud - previous cloud push still running")
+        }
+        let fileManager = FileManager.default
+        guard let documentDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            NSLog("document directory not found")
+            return
+        }
+        cloudImageView.tintColor = UIColor.blue
+        let directory = documentDirectory.appendingPathComponent("database", isDirectory: true)
+        let activityManager = ActivityManager.shared
+        cloud = Cloud(installationUUID: activityManager.installationUUID, directory: directory) { (error) in
+            DispatchQueue.main.async {
+                self.pushToCloudComplete(error: error)
+            }
+        }
+        cloud!.start()
+    }
+    
+    func pushToCloudComplete(error: Error?) {
+        cloudImageView.tintColor = error == nil ? UIColor.lightGray : UIColor.red
+        cloud = nil
     }
     
 }

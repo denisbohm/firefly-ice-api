@@ -143,6 +143,11 @@
     [self shutdown];
     
     [_centralManager cancelPeripheralConnection:_peripheral];
+    
+    self.status = FDFireflyIceChannelStatusClosing;
+    if ([_delegate respondsToSelector:@selector(fireflyIceChannel:status:)]) {
+        [_delegate fireflyIceChannel:self status:self.status];
+    }
 }
 
 - (void)didConnectPeripheral

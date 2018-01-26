@@ -14,6 +14,9 @@ protocol BluetoothObserver {
     func bluetoothPoweredOff()
     func bluetoothDidDiscover(fireflyIce: FDFireflyIce, advertisementData: [String : Any], rssi RSSI: NSNumber)
     func bluetoothDidUpdateName(fireflyIce: FDFireflyIce)
+    func bluetoothIsOpening(fireflyIce: FDFireflyIce)
+    func bluetoothDidOpen(fireflyIce: FDFireflyIce)
+    func bluetoothIsClosing(fireflyIce: FDFireflyIce)
     func bluetoothDidClose(fireflyIce: FDFireflyIce)
     func bluetoothDidIdentify(fireflyIce: FDFireflyIce)
 }
@@ -137,17 +140,25 @@ class Bluetooth: NSObject, CBCentralManagerDelegate, FDFireflyIceObserver, FDHel
             fireflyIceOpen(fireflyIce: fireflyIce, channel: channel);
         case .opening:
             fireflyIceOpening(fireflyIce: fireflyIce, channel: channel);
+        case .closing:
+            fireflyIceClosing(fireflyIce: fireflyIce, channel: channel);
         case .closed:
             fireflyIceClosed(fireflyIce: fireflyIce, channel: channel);
         }
     }
     
     func fireflyIceOpening(fireflyIce: FDFireflyIce, channel: FDFireflyIceChannel) {
+        bluetoothObservers.forEach { $0.bluetoothIsOpening(fireflyIce: fireflyIce) }
     }
     
     func fireflyIceOpen(fireflyIce: FDFireflyIce, channel: FDFireflyIceChannel) {
+        bluetoothObservers.forEach { $0.bluetoothDidOpen(fireflyIce: fireflyIce) }
         fireflyIce.coder.sendIdentify(channel, duration: 10.0)
         fireflyIce.executor.execute(FDHelloTask(fireflyIce, channel: channel, delegate: self))
+    }
+    
+    func fireflyIceClosing(fireflyIce: FDFireflyIce, channel: FDFireflyIceChannel) {
+        bluetoothObservers.forEach { $0.bluetoothIsClosing(fireflyIce: fireflyIce) }
     }
     
     func fireflyIceClosed(fireflyIce: FDFireflyIce, channel: FDFireflyIceChannel) {
