@@ -36,6 +36,14 @@ class Activity {
         
     }
     
+    static func rfc3339(date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone(identifier: "UTC")!
+        dateFormatter.dateFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"
+        return dateFormatter.string(from:date)
+    }
+    
+
     static func dayConversions() -> (dateFormatter: DateFormatter, calendar: NSCalendar) {
         let timeZone = TimeZone(identifier: "UTC")!
         
@@ -83,6 +91,11 @@ class Activity {
         let endDate = calendar.date(byAdding: .day, value: 1, to: startDate)!
         let end = Int(endDate.timeIntervalSince1970)
         return (start: start, end: end)
+    }
+    
+    static func day(of date: Date) -> String {
+        let (dateFormatter, calendar) = dayConversions()
+        return dateFormatter.string(from: calendar.startOfDay(for: date))
     }
     
     static func daysInRange(start: Date, end: Date) -> [String] {

@@ -14,6 +14,7 @@ class ActivityManager {
     
     let installationDate: Date!
     let installationUUID: String!
+    var studyIdentifier: String? = nil
     
     init() {
         let userDefaults = UserDefaults.standard
@@ -32,19 +33,15 @@ class ActivityManager {
             userDefaults.set(self.installationUUID, forKey: "installationUUID")
         }
         
-        let fileManager = FileManager.default
-        guard let documentDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
-            NSLog("document directory not found")
-            return
-        }
-        let directory = documentDirectory.appendingPathComponent("database", isDirectory: true)
-        if let contents = try? fileManager.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil, options: [.skipsSubdirectoryDescendants, .skipsHiddenFiles]) {
-            for child in contents {
-                if !child.isDirectory {
-                    try? fileManager.removeItem(atPath: child.path)
-                }
-            }
-        }
+        studyIdentifier = userDefaults.string(forKey: "studyIdentifier")
+    }
+    
+    func save(studyIdentifier: String) {
+        self.studyIdentifier = studyIdentifier
+        
+        let userDefaults = UserDefaults.standard
+        
+        userDefaults.set(studyIdentifier, forKey: "studyIdentifier")
     }
     
 }

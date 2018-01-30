@@ -84,7 +84,7 @@ class ViewController: NSViewController {
         database.add(operation)
     }
     
-    func save(url: URL, path: String, modificationDate: Date, record: CKRecord) {
+    func save(url: URL, installationUUID: String, path: String, modificationDate: Date, record: CKRecord) {
         if cancel {
             syncComplete()
             return
@@ -102,19 +102,19 @@ class ViewController: NSViewController {
             let date = calendar.date(byAdding: .nanosecond, value: 1000000, to: modificationDate)!
             let attributes = [FileAttributeKey.modificationDate: date]
             try fileManager.setAttributes(attributes, ofItemAtPath: url.path)
-            log("updated out of date file " + path)
+            log("updated out of date file \(installationUUID)/\(path)")
         } catch {
-            log("error updating out of date file " + path)
+            log("error updating out of date file  \(installationUUID)/\(path)")
         }
         
         nextOperation()
     }
 
-    func queueGet(url: URL, path: String, modificationDate: Date, recordID: CKRecordID) {
+    func queueGet(url: URL, installationUUID: String, path: String, modificationDate: Date, recordID: CKRecordID) {
         let predicate = NSPredicate(format: "recordID == %@", recordID)
         let query = CKQuery(recordType: "File", predicate: predicate)
         let operation = CKQueryOperation(query: query)
-        operation.desiredKeys = ["path", "fileModificationDate", "data"]
+        operation.desiredKeys = ["installationUUID", "path", "fileModificationDate", "data"]
         operation.qualityOfService = .userInteractive
         var records: [CKRecord] = []
         operation.recordFetchedBlock = { (record) in
@@ -128,7 +128,7 @@ class ViewController: NSViewController {
                     return
                 }
                 for record in records {
-                    self.save(url: url, path: path, modificationDate: modificationDate, record: record)
+                    self.save(url: url, installationUUID: installationUUID, path: path, modificationDate: modificationDate, record: record)
                 }
             }
         }
@@ -150,15 +150,18 @@ class ViewController: NSViewController {
                 syncComplete()
                 return
             }
+            guard let installationUUID = record["installationUUID"] as? String else {
+                continue
+            }
             guard let path = record["path"] as? String else {
                 continue
             }
             guard let modificationDate = record["fileModificationDate"] as? Date else {
                 continue
             }
-            let url = directory.appendingPathComponent(path)
+            let url = directory.appendingPathComponent(installationUUID).appendingPathComponent(path)
             if isOutOfDate(url: url, date: modificationDate) {
-                queueGet(url: url, path: path, modificationDate: modificationDate, recordID: record.recordID)
+                queueGet(url: url, installationUUID: installationUUID, path: path, modificationDate: modificationDate, recordID: record.recordID)
             }
         }
         
@@ -179,7 +182,7 @@ class ViewController: NSViewController {
             let query = CKQuery(recordType: "File", predicate: predicate)
             operation = CKQueryOperation(query: query)
         }
-        operation.desiredKeys = ["path", "fileModificationDate"]
+        operation.desiredKeys = ["installationUUID", "path", "fileModificationDate"]
         operation.qualityOfService = .userInteractive
         operation.recordFetchedBlock = { (record) in
             DispatchQueue.main.async {

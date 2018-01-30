@@ -26,6 +26,11 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate {
     var catalogViewController: CatalogViewController!
     var deviceViewController: DeviceViewController!
 
+    var installationDate: Date? = nil
+    var installationUUID: String? = nil
+    var studyIdentifier: String? = nil
+
+    let history = History()
     let bluetooth = Bluetooth()
     let catalog = Catalog()
     var action: Action = .none
@@ -68,20 +73,47 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate {
         catalog.save()
     }
     
+    func metaHistoryValue() -> [String: Any] {
+        var value: [String: Any] = [:]
+        if let installationDate = installationDate {
+            value["installationDate"] = Activity.rfc3339(date: installationDate)
+        }
+        if let installationUUID = installationUUID {
+            value["installationUUID"] = installationUUID
+        }
+        if let studyIdentifier = studyIdentifier {
+            value["studyIdentifier"] = studyIdentifier
+        }
+        var devices: [[String: String]] = []
+        for device in catalog.devices {
+            let item: [String: String] = ["name": device.name, "hardwareIdentifier": device.hardwareIdentifier]
+            devices.append(item)
+        }
+        value["devices"] = devices
+        return value
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        bluetooth.bluetoothObservers.append(self)
-        bluetooth.initialize()
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            appDelegate.viewController = self
+        }
         
         // !!! Juat for testing, start with empty catalog -denis
-//        catalog.save()
+        //        catalog.save()
         
         if TARGET_OS_SIMULATOR != 0 {
             createFakeDevices()
         }
         
         catalog.load()
+        
+        initializeFromUserDefaults()
+        try? history.save(type: "launch", value: metaHistoryValue())
+        
+        bluetooth.bluetoothObservers.append(self)
+        bluetooth.initialize()
         
         catalogViewController = findChildViewController()
         deviceViewController = findChildViewController()
@@ -90,6 +122,7 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate {
         catalogViewController.editCallback = editDevice
         catalogViewController.deleteCallback = forgetDevice
         deviceViewController.backCallback = showCatalog
+        deviceViewController.pullCallback = pullComplete
         
         var fireflyIces: [FDFireflyIce] = []
         for device in catalog.devices {
@@ -101,6 +134,36 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate {
         showCatalog()
         
         pushToCloud()
+    }
+    
+    func initializeFromUserDefaults() {
+        let userDefaults = UserDefaults.standard
+        
+        if let installationDate = userDefaults.object(forKey: "installationDate") as? Date {
+            self.installationDate = installationDate
+        } else {
+            self.installationDate = Date()
+            userDefaults.set(self.installationDate, forKey: "installatonDate")
+        }
+        
+        if let installationUUID = userDefaults.string(forKey: "installationUUID") {
+            self.installationUUID = installationUUID
+        } else {
+            self.installationUUID = UUID().uuidString
+            userDefaults.set(self.installationUUID, forKey: "installationUUID")
+        }
+        
+        studyIdentifier = userDefaults.string(forKey: "studyIdentifier")
+    }
+    
+    func save(studyIdentifier: String) {
+        self.studyIdentifier = studyIdentifier
+        
+        let userDefaults = UserDefaults.standard
+        
+        userDefaults.set(studyIdentifier, forKey: "studyIdentifier")
+
+        try? history.save(type: "saveStudy", value: metaHistoryValue())
     }
     
     func bluetoothPoweredOn() {
@@ -147,6 +210,9 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate {
         let channel = fireflyIce.channels["BLE"] as! FDFireflyIceChannelBLE
         if let device = catalog.get(peripheralIdentifier: channel.peripheral.identifier) {
             catalog.remove(device: device)
+            try? history.save(type: "forgetDevice",
+                              value: ["name": device.name,
+                                      "hardwareIdentifier": device.hardwareIdentifier])
         }
         catalogViewController.delete(item: item)
     }
@@ -272,6 +338,12 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate {
         fireflyIce.name = name
         let device = catalogUpdate(fireflyIce: fireflyIce)
         
+        if let device = device {
+            try? history.save(type: "nameDevice",
+                              value: ["name": name,
+                                      "hardwareIdentifier": device.hardwareIdentifier])
+        }
+        
         if action == .edit {
             catalogViewController.display(fireflyIce: fireflyIce)
             bluetooth.sendPingClose(fireflyIce: fireflyIce, channel: channel)
@@ -295,12 +367,21 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate {
     func showDevice(hardwareIdentifier: String, fireflyIce: FDFireflyIce) {
         NSLog("show device \(fireflyIce.name)")
         
+        try? history.save(type: "showDevice",
+                          value: ["hardwareIdentifier": hardwareIdentifier])
+
         bluetooth.stopScan()
         catalogView.isHidden = true
 
         deviceViewController.showDevice(fireflyIce: fireflyIce, identifier: hardwareIdentifier)
         deviceViewController.pullActivityData()
         deviceView.isHidden = false
+    }
+    
+    func pullComplete(hardwareIdentifier: String, error: Error?) {
+        try? history.save(type: "pullComplete",
+                          value: ["hardwareIdentifier": hardwareIdentifier,
+                                  "error": error?.localizedDescription ?? "none"])
     }
     
     func showCatalog() {

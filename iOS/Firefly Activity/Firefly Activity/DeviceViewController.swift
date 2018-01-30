@@ -50,6 +50,7 @@ class DeviceViewController: UIViewController, FDPullTaskDelegate, PlotViewDelega
     var identifier: String = "anonymous"
     
     var backCallback: (() -> Void)? = nil
+    var pullCallback: ((String, Error?) -> Void)? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -144,6 +145,10 @@ class DeviceViewController: UIViewController, FDPullTaskDelegate, PlotViewDelega
         
         if let channel = self.fireflyIce?.channels["BLE"] as? FDFireflyIceChannelBLE {
             channel.close()
+        }
+        
+        if let callback = pullCallback {
+            callback(identifier, task.error)
         }
     }
 

@@ -9,49 +9,18 @@
 import FireflyDevice
 import Foundation
 
-class Datastore {
+class Datastore: Store {
 
-    enum LocalError: Error {
-        case CanNotFindDirectory
-        case CanNotCreateFile
-        case CanNotOpenFile
-        case InvalidState
-        case InvalidDayTime
-    }
-    
-    let identifier: String
     let bytesPerRecord = 8
     let interval = 10
 
-    var url: URL? = nil
     var data: Data = Data()
-    var timeRange = (start: 0, end: 0)
     
-    init(identifier: String) {
-        self.identifier = identifier
-    }
-
     func load(day: String) throws {
-        let timeRange = Activity.timeRange(day: day)
-        let fileManager = FileManager.default
-        let roots = fileManager.urls(for: .documentDirectory, in: .userDomainMask)
-        guard let root = roots.first else {
-            throw LocalError.CanNotFindDirectory
+        try ensure(day: day)
+        if let url = url {
+            self.data = try Data(contentsOf: url)
         }
-        let directory = root.appendingPathComponent("database", isDirectory: true).appendingPathComponent(identifier, isDirectory: true)
-        if !fileManager.fileExists(atPath: directory.path) {
-            try fileManager.createDirectory(at: directory, withIntermediateDirectories: true, attributes: nil)
-        }
-        let url = directory.appendingPathComponent(day).appendingPathExtension("dat")
-        if !fileManager.fileExists(atPath: url.path) {
-            let count = bytesPerRecord * (timeRange.end - timeRange.start) / interval
-            if !fileManager.createFile(atPath: url.path, contents: Data(count: count), attributes: nil) {
-                throw LocalError.CanNotCreateFile
-            }
-        }
-        self.url = url
-        self.data = try Data(contentsOf: url)  // fileHandle.readDataToEndOfFile()
-        self.timeRange = timeRange
     }
     
     func save() {
@@ -61,9 +30,8 @@ class Datastore {
 
         try? self.data.write(to: url, options: [.atomic])
 
-        self.url = nil
         self.data = Data()
-        self.timeRange = (start: 0, end: 0)
+        clear()
     }
     
     func update(time: Int, vma: Float) throws {

@@ -11,9 +11,9 @@ import FireflyDevice
 class DatastoreInsert : NSObject, FDPullTaskUpload {
     
     let identifier: String
-    var delegate: FDPullTaskUploadDelegate!
+    var delegate: FDPullTaskUploadDelegate?
     var isConnectionOpen: Bool = false
-    var site: String! = ""
+    var site: String? = ""
     
     init(identifier: String, delegate: FDPullTaskUploadDelegate) {
         self.identifier = identifier
@@ -33,7 +33,7 @@ class DatastoreInsert : NSObject, FDPullTaskUpload {
         datastore.save()
     }
     
-    func post(_ site: String!, items: [Any]!, backlog: UInt) {
+    func post(_ site: String?, items: [Any], backlog: UInt) {
         do {
             for item in items {
                 if let vmaItem = item as? FDVMAItem {
@@ -50,10 +50,10 @@ class DatastoreInsert : NSObject, FDPullTaskUpload {
             return
         }
         
-        delegate.upload(self, complete: nil)
+        delegate?.upload(self, complete: nil)
     }
     
-    func cancel(_ error: Error!) {
+    func cancel(_ error: Error?) {
     }
     
 }

@@ -12,7 +12,24 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var viewController: ViewController? = nil
 
+    func getQueryStringParameter(url: URL, parameter: String) -> String? {
+        guard let components = URLComponents(string: url.absoluteString) else {
+            return nil
+        }
+        return components.queryItems?.first(where: { $0.name == parameter })?.value
+    }
+    
+    func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        guard let viewController = viewController else {
+            return false
+        }
+        if let studyIdentifier = getQueryStringParameter(url: url, parameter: "studyIdentifier") {
+            viewController.save(studyIdentifier: studyIdentifier)
+        }
+        return true
+    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
