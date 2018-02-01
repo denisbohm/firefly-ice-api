@@ -181,19 +181,24 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate {
         catalogViewController.display(fireflyIce: fireflyIce)
     }
     
-    func catalogUpdate(fireflyIce: FDFireflyIce) -> Catalog.Device? {
+    func catalogPut(fireflyIce: FDFireflyIce) -> Catalog.Device {
         let channel = fireflyIce.channels["BLE"] as! FDFireflyIceChannelBLE
-        if let device = catalog.get(peripheralIdentifier: channel.peripheral.identifier) {
-            let newDevice = Catalog.Device(name: fireflyIce.name, peripheralIdentifier: channel.peripheral.identifier, hardwareIdentifier: device.hardwareIdentifier)
-            catalog.put(device: newDevice)
-            return newDevice
-        } else {
-            return nil
+        let peripheralIdentifier = channel.peripheral.identifier
+        let hardwareIdentifier = FDHardwareId.hardwareId(fireflyIce.hardwareId.unique)
+        let device = Catalog.Device(name: fireflyIce.name, peripheralIdentifier: peripheralIdentifier, hardwareIdentifier: hardwareIdentifier)
+        catalog.put(device: device)
+        return device
+    }
+    
+    func catalogUpdate(fireflyIce: FDFireflyIce) {
+        let channel = fireflyIce.channels["BLE"] as! FDFireflyIceChannelBLE
+        if catalog.contains(peripheralIdentifier: channel.peripheral.identifier) {
+            let _ = catalogPut(fireflyIce: fireflyIce)
         }
     }
     
     func bluetoothDidUpdateName(fireflyIce: FDFireflyIce) {
-        let _ = catalogUpdate(fireflyIce: fireflyIce)
+        catalogUpdate(fireflyIce: fireflyIce)
         catalogViewController.display(fireflyIce: fireflyIce)
     }
     
@@ -336,23 +341,20 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate {
         
         fireflyIce.coder.sendSetPropertyName(channel, name: name)
         fireflyIce.name = name
-        let device = catalogUpdate(fireflyIce: fireflyIce)
-        
-        if let device = device {
-            try? history.save(type: "nameDevice",
+        let _ = catalogUpdate(fireflyIce: fireflyIce)
+        let hardwareIdentifier = FDHardwareId.hardwareId(fireflyIce.hardwareId.unique)
+        try? history.save(type: "nameDevice",
                               value: ["name": name,
-                                      "hardwareIdentifier": device.hardwareIdentifier])
-        }
+                                      "hardwareIdentifier": hardwareIdentifier])
         
         if action == .edit {
             catalogViewController.display(fireflyIce: fireflyIce)
             bluetooth.sendPingClose(fireflyIce: fireflyIce, channel: channel)
-        }
+        } else
         if action == .check {
             catalogViewController.associate(fireflyIce: fireflyIce)
-            if let device = device {
-                showDevice(hardwareIdentifier: device.hardwareIdentifier, fireflyIce: fireflyIce)
-            }
+            let device = catalogPut(fireflyIce: fireflyIce)
+            showDevice(hardwareIdentifier: device.hardwareIdentifier, fireflyIce: fireflyIce)
         }
     }
     

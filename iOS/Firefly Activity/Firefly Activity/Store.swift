@@ -28,7 +28,11 @@ class Store {
         self.identifier = identifier
     }
     
-    func ensure(day: String, count: Int = 0) throws {
+    func initialDayContents(timeRange: (start: Int, end: Int)) -> Data {
+        return Data()
+    }
+    
+    func ensure(day: String) throws {
         let timeRange = Activity.timeRange(day: day)
         let fileManager = FileManager.default
         let roots = fileManager.urls(for: .documentDirectory, in: .userDomainMask)
@@ -41,7 +45,8 @@ class Store {
         }
         let url = directory.appendingPathComponent(day).appendingPathExtension("dat")
         if !fileManager.fileExists(atPath: url.path) {
-            if !fileManager.createFile(atPath: url.path, contents: Data(count: count), attributes: nil) {
+            let contents = initialDayContents(timeRange: timeRange)
+            if !fileManager.createFile(atPath: url.path, contents: contents, attributes: nil) {
                 throw LocalError.CanNotCreateFile
             }
         }

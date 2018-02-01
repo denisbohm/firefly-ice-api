@@ -124,6 +124,7 @@ class Cloud {
         operation.savePolicy = .allKeys
         operation.modifyRecordsCompletionBlock = modifyRecordsCompletion
         queuedOperations.append(operation)
+        NSLog("queue save \(file.path)")
     }
     
     private func queryRecordFetched(record: CKRecord) {

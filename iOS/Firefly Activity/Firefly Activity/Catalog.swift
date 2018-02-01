@@ -49,6 +49,10 @@ class Catalog {
         return nil
     }
     
+    func contains(peripheralIdentifier: UUID) -> Bool {
+        return get(peripheralIdentifier: peripheralIdentifier) != nil
+    }
+    
     func put(device: Device) {
         deviceByHardwareIdentifier[device.hardwareIdentifier] = device
         save()

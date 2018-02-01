@@ -16,6 +16,11 @@ class Datastore: Store {
 
     var data: Data = Data()
     
+    override func initialDayContents(timeRange: (start: Int, end: Int)) -> Data {
+        let recordCount = (timeRange.end - timeRange.start) / interval
+        return Data(count: bytesPerRecord * recordCount)
+    }
+
     func load(day: String) throws {
         try ensure(day: day)
         if let url = url {
