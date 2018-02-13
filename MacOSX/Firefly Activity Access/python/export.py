@@ -1,5 +1,4 @@
-# https://developer.apple.com/library/content/documentation/DataManagement/Conceptual/CloudKitWebServicesReference/SettingUpWebServices.html#//apple_ref/doc/uid/TP40015240-CH24-SW1
-
+import argparse
 import base64
 import datetime
 from dateutil import parser
@@ -13,6 +12,7 @@ from requests.auth import AuthBase
 import struct
 
 
+# https://developer.apple.com/library/content/documentation/DataManagement/Conceptual/CloudKitWebServicesReference/SettingUpWebServices.html#//apple_ref/doc/uid/TP40015240-CH24-SW1
 class CloudKitAuth(AuthBase):
     def __init__(self, key_id, key_file_name):
         self.key_id = key_id
@@ -41,16 +41,19 @@ class CloudKitAuth(AuthBase):
 
 
 class CloudKit:
-    def __init__(self, cloudkit_private_key_path, cloudkit_key_id, cloudkit_base_url, datastore_path):
-        self.cloudkit_private_key_path = cloudkit_private_key_path
-        self.cloudkit_key_id = cloudkit_key_id
-        self.cloudkit_base_url = cloudkit_base_url
+    def __init__(self, private_key_path, key_id, container, environment, datastore_path):
+        self.private_key_path = private_key_path
+        self.key_id = key_id
+        self.base_url = 'https://api.apple-cloudkit.com/database/1/' + container + '/' + environment + '/'
         self.datastore_path = datastore_path
 
     def get_file(self, path, modification_time_ms, download_url):
-        auth = CloudKitAuth(key_id=self.cloudkit_key_id, key_file_name=self.cloudkit_private_key_path)
+        auth = CloudKitAuth(key_id=self.key_id, key_file_name=self.private_key_path)
         download_response = requests.get(download_url, auth=auth)
         content = download_response.content
+        directory = os.path.dirname(path)
+        if not os.path.exists(directory):
+            os.makedirs(directory)
         with open(path, "wb") as file:
             file.write(content)
         time_in_ns = modification_time_ms * 1000000
@@ -70,8 +73,8 @@ class CloudKit:
         records = []
         continuation_marker = None
         while True:
-            url = self.cloudkit_base_url + 'public/records/query'
-            auth = CloudKitAuth(key_id=self.cloudkit_key_id, key_file_name=self.cloudkit_private_key_path)
+            url = self.base_url + 'public/records/query'
+            auth = CloudKitAuth(key_id=self.key_id, key_file_name=self.private_key_path)
             data = {
               "zoneID": {
                 "zoneName": "_defaultZone",
@@ -302,31 +305,50 @@ class ActivityDatastore:
         return spans
 
 
-datastore_path = '/Users/denis/Downloads/Firefly Activity'
+class Main:
+    def __init__(self):
+        self.datastore_path = os.path.expanduser('~/Downloads/Firefly Activity')
+        self.private_key_path = os.path.expanduser('~/Documents/Firefly Activity/eckey.pem')
+        self.key_id = None
+        with open(os.path.expanduser('~/Documents/Firefly Activity/key_id'), "r") as file:
+            self.key_id = file.readline().rstrip()
+        self.container = 'iCloud.com.fireflydesign.Firefly-Activity'
+        self.environment = 'development'
 
-cloud_kit = CloudKit(
-    '/Users/denis/sandbox/denisbohm/firefly-ice-api/MacOSX/Firefly Activity Access/python/eckey.pem',
-    '50d006025da2466b0462d6c670d059124bf4d843177b05f4e03265f6789a7676',
-    'https://api.apple-cloudkit.com/database/1/iCloud.com.fireflydesign.Firefly-Activity/development/',
-    datastore_path)
-cloud_kit.query_files()
+    def run(self):
+        parser = argparse.ArgumentParser()
+        parser.add_argument("--sync", action="store_true", help="synchronize local files with those stored in CloudKit")
+        parser.add_argument("--list", action="store_true", help="list all installations found in local files")
+        parser.add_argument("--test", action="store_true", help="print vmas for first span of first name of first installation")
+        args = parser.parse_args()
+        if args.sync:
+            cloud_kit = CloudKit(self.private_key_path, self.key_id, self.container, self.environment, self.datastore_path)
+            cloud_kit.query_files()
+        if args.list:
+            datastore = Datastore(self.datastore_path)
+            installations = datastore.list()
+            print(installations)
+        if args.test:
+            datastore = Datastore(self.datastore_path)
+            installations = datastore.list()
+            installation = installations[0]
+            installation_uuid = installation['installationUUID']
+            name_ranges = installation['name_ranges']
+            name_range = name_ranges[0]
+            name = name_range.name
+            hardware_range = name_range.hardware_ranges[0]
 
-datastore = Datastore(datastore_path)
-installations = datastore.list()
+            activity = ActivityDatastore(self.datastore_path, installation_uuid, hardware_range.hardware_identifier)
+            if hardware_range.start is not None:
+                start = hardware_range.start
+            else:
+                start = datetime.datetime(2016, 1, 19, 9, 47, 0, 432000, tzinfo=pytz.utc).timestamp()
+            end = datetime.datetime.now().timestamp()
+            spans = activity.query(start, end)
+            print(name)
+            print(spans)
 
-installation = installations[0]
-installation_uuid = installation['installationUUID']
-name_ranges = installation['name_ranges']
-name_range = name_ranges[0]
-name = name_range.name
-hardware_range = name_range.hardware_ranges[0]
 
-activity = ActivityDatastore(datastore_path, installation_uuid, hardware_range.hardware_identifier)
-if hardware_range.start is not None:
-    start = hardware_range.start
-else:
-    start = datetime.datetime(2016, 1, 19, 9, 47, 0, 432000, tzinfo=pytz.utc).timestamp()
-end = datetime.datetime.now().timestamp()
-spans = activity.query(start, end)
-print(name)
-print(spans)
+if __name__ == "__main__":
+    main = Main()
+    main.run()
