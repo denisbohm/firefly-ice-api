@@ -30,6 +30,7 @@
 - (void)fireflyIceManager:(FDFireflyIceManager *)manager advertisement:(FDFireflyIce *)fireflyIce;
 
 - (void)fireflyIceManager:(FDFireflyIceManager *)manager openedBLE:(FDFireflyIce *)fireflyIce;
+- (void)fireflyIceManager:(FDFireflyIceManager *)manager closingBLE:(FDFireflyIce *)fireflyIce;
 - (void)fireflyIceManager:(FDFireflyIceManager *)manager closedBLE:(FDFireflyIce *)fireflyIce;
 
 - (void)fireflyIceManager:(FDFireflyIceManager *)manager identified:(FDFireflyIce *)fireflyIce;

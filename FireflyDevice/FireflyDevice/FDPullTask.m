@@ -301,7 +301,7 @@
 
 - (void)uploadComplete
 {
-    [self upload:nil complete:nil];
+    [self uploadComplete:nil];
 }
 
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel detour:(FDDetour *)detour error:(NSError *)error
@@ -417,6 +417,11 @@
 }
 
 - (void)upload:(FDPullTaskUpload *)upload complete:(NSError *)error
+{
+    [self uploadComplete:error];
+}
+
+- (void)uploadComplete:(NSError *)error
 {
     if (!_isActive) {
         return;

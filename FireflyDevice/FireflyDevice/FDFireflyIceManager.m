@@ -126,6 +126,11 @@
                 [_delegate fireflyIceManager:self openedBLE:fireflyIce];
             }
             break;
+        case FDFireflyIceChannelStatusClosing:
+            if ([_delegate respondsToSelector:@selector(fireflyIceManager:closedBLE:)]) { // !!! should not be BLE specific
+                [_delegate fireflyIceManager:self closingBLE:fireflyIce];
+            }
+            break;
         case FDFireflyIceChannelStatusClosed:
             if ([_delegate respondsToSelector:@selector(fireflyIceManager:closedBLE:)]) { // !!! should not be BLE specific
                 [_delegate fireflyIceManager:self closedBLE:fireflyIce];

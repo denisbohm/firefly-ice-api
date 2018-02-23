@@ -10,6 +10,6 @@
 
 @interface FDHardwareId : NSObject
 
-+ (NSString *)hardwareId:(NSData *)unique;
++ (nonnull NSString *)hardwareId:(nonnull NSData *)unique;
 
 @end

@@ -54,7 +54,8 @@ enum {
 
 - (void)execute:(id<FDExecutorTask>)task;
 - (void)cancel:(id<FDExecutorTask>)task;
-- (NSArray *)allTasks;
+- (void)cancelAll;
+- (NSArray<id<FDExecutorTask>> *)allTasks;
 @property(readonly) BOOL hasTasks;
 
 - (void)feedWatchdog:(id<FDExecutorTask>)task;

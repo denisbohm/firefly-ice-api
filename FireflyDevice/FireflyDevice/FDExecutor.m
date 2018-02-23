@@ -282,6 +282,14 @@
     }
 }
 
+- (void)cancelAll
+{
+    NSArray *tasks = [[[self allTasks] reverseObjectEnumerator] allObjects];
+    for (id<FDExecutorTask> task in tasks) {
+        [self cancel: task];
+    }
+}
+
 - (NSArray *)allTasks
 {
     NSMutableArray *tasks = [NSMutableArray array];

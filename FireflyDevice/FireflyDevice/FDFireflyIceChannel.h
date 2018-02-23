@@ -12,7 +12,12 @@
 @protocol FDFireflyDeviceLog;
 @protocol FDFireflyIceChannel;
 
-typedef enum {FDFireflyIceChannelStatusClosed, FDFireflyIceChannelStatusOpening, FDFireflyIceChannelStatusOpen} FDFireflyIceChannelStatus;
+typedef NS_ENUM(NSInteger, FDFireflyIceChannelStatus) {
+    FDFireflyIceChannelStatusClosed,
+    FDFireflyIceChannelStatusOpening,
+    FDFireflyIceChannelStatusOpen,
+    FDFireflyIceChannelStatusClosing,
+};
 
 @protocol FDFireflyIceChannelDelegate <NSObject>
 
