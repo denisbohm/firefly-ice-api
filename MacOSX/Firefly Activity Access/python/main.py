@@ -21,7 +21,21 @@ class Main:
         parser.add_argument("--sync", action="store_true", help="synchronize local files with those stored in CloudKit")
         parser.add_argument("--list", action="store_true", help="list all installations found in local files")
         parser.add_argument("--test", action="store_true", help="print vmas for first span of first name of first installation")
+        parser.add_argument("--app", help="app name - used to form directory names to find private key, store downloads, etc (Firefly Activity)")
+        parser.add_argument("--container", help="iCloud container (iCloud.com.fireflydesign.Firefly-Activity)")
+        parser.add_argument("--production", action="store_true", help="use production environment")
         args = parser.parse_args()
+        if args.app is not None:
+            self.datastore_path = os.path.expanduser('~/Downloads/' + args.app)
+            print('datastore path: ' + self.datastore_path)
+            self.private_key_path = os.path.expanduser('~/Documents/' + args.app + '/eckey.pem')
+            print('private key path: ' + self.private_key_path)
+        if args.container is not None:
+            self.container = args.container
+            print('container: ' + self.container)
+        if args.production:
+            self.environment = 'production'
+            print('environment: ' + self.environment)
         if args.sync:
             cloud_kit = CloudKit(self.private_key_path, self.key_id, self.container, self.environment, self.datastore_path)
             cloud_kit.query_files()

@@ -192,8 +192,9 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate {
     
     func catalogUpdate(fireflyIce: FDFireflyIce) {
         let channel = fireflyIce.channels["BLE"] as! FDFireflyIceChannelBLE
-        if catalog.contains(peripheralIdentifier: channel.peripheral.identifier) {
-            let _ = catalogPut(fireflyIce: fireflyIce)
+        if let oldDevice = catalog.get(peripheralIdentifier: channel.peripheral.identifier) {
+            let device = Catalog.Device(name: fireflyIce.name, peripheralIdentifier: oldDevice.peripheralIdentifier, hardwareIdentifier: oldDevice.hardwareIdentifier)
+            catalog.put(device: device)
         }
     }
     
