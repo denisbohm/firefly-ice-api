@@ -46,9 +46,13 @@ class Main:
         if args.test:
             datastore = Datastore(self.datastore_path)
             installations = datastore.list()
+            if len(installations) == 0:
+                return
             installation = installations[0]
             installation_uuid = installation['installationUUID']
             name_ranges = installation['name_ranges']
+            if len(name_ranges) == 0:
+                return
             name_range = name_ranges[0]
             name = name_range.name
             hardware_range = name_range.hardware_ranges[0]

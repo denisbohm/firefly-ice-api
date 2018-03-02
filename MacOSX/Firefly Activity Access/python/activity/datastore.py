@@ -1,14 +1,7 @@
-import argparse
-import base64
 import datetime
 from dateutil import parser
-import ecdsa
-import hashlib
 import json
 import os
-import pytz
-import requests
-from requests.auth import AuthBase
 import struct
 
 
@@ -91,6 +84,23 @@ class NameRangeExtractor:
         return name_ranges
 
 
+class StudyIdentifierExtractor:
+    def __init__(self):
+        self.studyIdentifier = None
+
+    def process(self, item):
+        type = item['type']
+        try:
+            method = getattr(self, type)
+            method(item)
+        except AttributeError:
+            pass
+
+    def saveStudy(self, item):
+        value = item['value']
+        self.studyIdentifier = value['studyIdentifier']
+
+
 class Datastore:
     def __init__(self, path):
         self.path = path
@@ -101,6 +111,7 @@ class Datastore:
         for installation_uuid in installation_uuids:
             installation_uuid_path = os.path.join(self.path, installation_uuid)
             name_range_extractor = NameRangeExtractor()
+            study_identifier_extractor = StudyIdentifierExtractor()
             datastores = os.listdir(installation_uuid_path)
             for datastore in datastores:
                 datastore_path = os.path.join(installation_uuid_path, datastore)
@@ -112,9 +123,14 @@ class Datastore:
                             for _, line in enumerate(file):
                                 item = json.loads(line)
                                 name_range_extractor.process(item)
+                                study_identifier_extractor.process(item)
                 elif datastore.startswith('FireflyIce-'):
                     pass
-            installations.append({"installationUUID": installation_uuid, "name_ranges": name_range_extractor.name_ranges()})
+            installations.append({
+                "installationUUID": installation_uuid,
+                "name_ranges": name_range_extractor.name_ranges(),
+                'study_identifier': study_identifier_extractor.studyIdentifier
+            })
         return installations
 
 

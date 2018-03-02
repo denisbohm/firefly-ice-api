@@ -1,7 +1,5 @@
-import argparse
 import base64
 import datetime
-from dateutil import parser
 import ecdsa
 import hashlib
 import json
@@ -9,7 +7,6 @@ import os
 import pytz
 import requests
 from requests.auth import AuthBase
-import struct
 
 
 # https://developer.apple.com/library/content/documentation/DataManagement/Conceptual/CloudKitWebServicesReference/SettingUpWebServices.html#//apple_ref/doc/uid/TP40015240-CH24-SW1
