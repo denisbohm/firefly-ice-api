@@ -106,7 +106,7 @@
     
     _discovery = discovery;
     
-    if (_centralManager.state == CBCentralManagerStatePoweredOn) {
+    if (_centralManager.state == CBManagerStatePoweredOn) {
         if (_discovery) {
             [self scan:YES];
         } else {
@@ -204,14 +204,14 @@
 - (void)centralManagerDidUpdateState:(CBCentralManager *)central
 {
     switch (central.state) {
-        case CBCentralManagerStateUnknown:
-        case CBCentralManagerStateResetting:
-        case CBCentralManagerStateUnsupported:
-        case CBCentralManagerStateUnauthorized:
+        case CBManagerStateUnknown:
+        case CBManagerStateResetting:
+        case CBManagerStateUnsupported:
+        case CBManagerStateUnauthorized:
             break;
-        case CBCentralManagerStatePoweredOff:
+        case CBManagerStatePoweredOff:
             break;
-        case CBCentralManagerStatePoweredOn:
+        case CBManagerStatePoweredOn:
             [self centralManagerPoweredOn];
             break;
     }

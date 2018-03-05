@@ -142,7 +142,7 @@ void FDUSBHIDDeviceInputReportCallback(void *context, IOReturn result, void *sen
     // !!! It appears that the HID manager does the open and scheduling. -denis
     // !!! If we close and unregister we (sometimes) won't get removal callbacks, etc... -denis
 //    IOHIDDeviceClose(_hidDeviceRef, kIOHIDOptionsTypeNone);
-    IOHIDDeviceRegisterInputReportCallback(_hidDeviceRef, NULL, 0, NULL, (__bridge void *)self);
+    IOHIDDeviceRegisterInputReportCallback(_hidDeviceRef, (uint8_t *)_inputData.bytes, 0, NULL, (__bridge void *)self);
 //    IOHIDDeviceUnscheduleFromRunLoop(_hidDeviceRef, _monitor.runLoopRef, kCFRunLoopDefaultMode);
     
     _isOpen = false;
