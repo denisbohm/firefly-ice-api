@@ -331,7 +331,7 @@
     self.RSSI = [FDFireflyIceChannelBLERSSI RSSI:[RSSI floatValue]];
 }
 
-#if __MAC_OS_X_VERSION_MIN_REQUIRED < 101300
+#if (__MAC_OS_X_VERSION_MIN_REQUIRED < 101300) && (__IPHONE_OS_VERSION_MIN_REQUIRED < 80000)
 
 - (void)peripheralDidUpdateRSSI:(CBPeripheral *)peripheral error:(NSError *)error
 {

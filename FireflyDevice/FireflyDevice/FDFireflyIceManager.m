@@ -243,7 +243,7 @@
 {
     NSArray *peripherals = state[CBCentralManagerRestoredStatePeripheralsKey];
     for (CBPeripheral *peripheral in peripherals) {
-        [self onMainCentralManager:_centralManager didDiscoverPeripheral:peripheral advertisementData:nil RSSI:peripheral.RSSI];
+        [self onMainCentralManager:_centralManager didDiscoverPeripheral:peripheral advertisementData:nil RSSI:nil];
     }
 }
 #endif
@@ -257,7 +257,9 @@
     if (dictionary != nil) {
         FDFireflyIce *fireflyIce = dictionary[@"fireflyIce"];
         FDFireflyIceChannelBLE *channel = (FDFireflyIceChannelBLE *)fireflyIce.channels[@"BLE"];
-        channel.RSSI = [FDFireflyIceChannelBLERSSI RSSI:[RSSI floatValue]];
+        if (RSSI != nil) {
+            channel.RSSI = [FDFireflyIceChannelBLERSSI RSSI:[RSSI floatValue]];
+        }
         if ([_delegate respondsToSelector:@selector(fireflyIceManager:advertisement:)]) {
             [_delegate fireflyIceManager:self advertisement:fireflyIce];
         }
