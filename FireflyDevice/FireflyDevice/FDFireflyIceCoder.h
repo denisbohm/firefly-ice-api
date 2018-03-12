@@ -57,6 +57,8 @@
 
 #define FD_CONTROL_HARDWARE 32
 
+#define FD_CONTROL_NOTIFY 33
+
 #define FD_CONTROL_DIAGNOSTICS_BLE        0x00000001
 #define FD_CONTROL_DIAGNOSTICS_BLE_TIMING 0x00000002
 
@@ -120,6 +122,7 @@
 #define FD_CONTROL_PROPERTY_INDICATE         0x00020000
 #define FD_CONTROL_PROPERTY_RECOGNITION      0x00040000
 #define FD_CONTROL_PROPERTY_HARDWARE_VERSION 0x00080000
+#define FD_CONTROL_PROPERTY_SUBSCRIBE        0x00100000
 
 #define FD_CONTROL_PROVISION_OPTION_DEBUG_LOCK    0x00000001
 #define FD_CONTROL_PROVISION_OPTION_RESET         0x00000002
@@ -165,6 +168,7 @@ typedef void (^FDFireflyIceCoderCommandBlock)(FDFireflyIce *fireflyIce, id<FDFir
 @interface FDFireflyIceCoder : NSObject
 
 @property FDFireflyIceObservable *observable;
+@property FDFireflyIceObservable *notifyObservable;
 
 - (void)setCommand:(uint8_t)code block:(FDFireflyIceCoderCommandBlock)block;
 - (FDFireflyIceCoderCommandBlock)getCommandBlock:(uint8_t)code;
@@ -183,6 +187,7 @@ typedef void (^FDFireflyIceCoderCommandBlock)(FDFireflyIce *fireflyIce, id<FDFir
 - (void)sendSetPropertySensingCount:(id<FDFireflyIceChannel>)channel count:(uint32_t)count;
 - (void)sendSetPropertyIndicate:(id<FDFireflyIceChannel>)channel indicate:(BOOL)indicate;
 - (void)sendSetPropertyRecognition:(id<FDFireflyIceChannel>)channel recognition:(BOOL)recognition;
+- (void)sendSetPropertySubscribe:(id<FDFireflyIceChannel>)channel subscribe:(uint32_t)properties;
 
 - (void)sendSetRTC:(id<FDFireflyIceChannel>)channel date:(NSDate *)date timeZone:(NSTimeZone *)timeZone;
 - (void)sendGetRTC:(id<FDFireflyIceChannel>)channel;

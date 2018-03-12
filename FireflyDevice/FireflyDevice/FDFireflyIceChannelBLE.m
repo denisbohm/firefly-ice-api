@@ -96,11 +96,9 @@
             case CBPeripheralStateConnecting:
                 _status = FDFireflyIceChannelStatusOpening;
                 break;
-#if TARGET_OS_IPHONE
             case CBPeripheralStateDisconnecting:
                 // add disconnecting status? -denis
                 break;
-#endif
             case CBPeripheralStateDisconnected:
                 _status = FDFireflyIceChannelStatusClosed;
                 break;
@@ -328,16 +326,28 @@
     });
 }
 
-- (void)didUpdateRSSI:(NSError *)error
+- (void)didUpdateRSSI:(NSNumber *)RSSI error:(NSError *)error
 {
-    self.RSSI = [FDFireflyIceChannelBLERSSI RSSI:[_peripheral.RSSI floatValue]];
+    self.RSSI = [FDFireflyIceChannelBLERSSI RSSI:[RSSI floatValue]];
 }
+
+#if (__MAC_OS_X_VERSION_MIN_REQUIRED < 101300) && (__IPHONE_OS_VERSION_MIN_REQUIRED < 80000)
 
 - (void)peripheralDidUpdateRSSI:(CBPeripheral *)peripheral error:(NSError *)error
 {
     __FDWeak FDFireflyIceChannelBLE *weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
-        [weakSelf didUpdateRSSI:error];
+        [weakSelf didUpdateRSSI:peripheral.RSSI error:error];
+    });
+}
+
+#endif
+
+- (void)peripheral:(CBPeripheral *)peripheral didReadRSSI:(NSNumber *)RSSI error:(NSError *)error
+{
+    __FDWeak FDFireflyIceChannelBLE *weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [weakSelf didUpdateRSSI:RSSI error:error];
     });
 }
 
