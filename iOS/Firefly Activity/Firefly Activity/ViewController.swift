@@ -7,9 +7,10 @@
 //
 
 import UIKit
+import MessageUI
 import FireflyDevice
 
-class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate {
+class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate, MFMailComposeViewControllerDelegate {
 
     enum Action {
         case none
@@ -382,6 +383,9 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate {
     }
     
     func pullComplete(hardwareIdentifier: String, error: Error?) {
+        if let error = error {
+            Log.error(error)
+        }
         try? history.save(type: "pullComplete",
                           value: ["hardwareIdentifier": hardwareIdentifier,
                                   "error": error?.localizedDescription ?? "none"])
@@ -420,8 +424,57 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate {
     }
     
     func pushToCloudComplete(error: Error?) {
+        if let error = error {
+            Log.error(error)
+        }
         cloudImageView.tintColor = error == nil ? UIColor.lightGray : UIColor.red
         cloud = nil
     }
     
+    @IBAction func help() {
+        let email = Bundle.main.infoDictionary!["supportemail"] as? String ?? "denis@fireflydesign.com"
+        sendMail(recipients: [email])
+    }
+    
+    func alert(message: String) {
+        let alertController = UIAlertController(title: "Mail Result", message: message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func sendMail(recipients: [String]) {
+        if !MFMailComposeViewController.canSendMail() {
+            alert(message: "No mail account found.")
+        }
+        
+        if let mailCompose: MFMailComposeViewController = MFMailComposeViewController() as MFMailComposeViewController? {
+            mailCompose.mailComposeDelegate = self
+            mailCompose.setToRecipients(recipients)
+            let name = Bundle.main.infoDictionary![kCFBundleNameKey as String] as! String
+            mailCompose.setSubject("\(name) Debug")
+            mailCompose.setMessageBody("See attachment for details.", isHTML: false)
+            if let url = try? Log.shared.getURL(), let data = try? Data(contentsOf: url, options: []) {
+                let fileName = url.lastPathComponent
+                mailCompose.addAttachmentData(data, mimeType: "text/plain", fileName: fileName)
+            }
+            present(mailCompose, animated: true, completion: nil)
+        } else {
+            alert(message: "Mail is not available.")
+        }
+    }
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        switch result {
+        case .cancelled:
+            alert(message: "Mail was cancelled.")
+        case .saved:
+            alert(message: "Mail was saved.")
+        case .sent:
+            alert(message: "Mail was sent.")
+        case .failed:
+            alert(message: "Sending mail failed: \(String(describing: error)).")
+        }
+        dismiss(animated: false, completion: nil)
+    }
+
 }

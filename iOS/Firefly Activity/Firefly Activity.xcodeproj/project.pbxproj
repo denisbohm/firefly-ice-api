@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		920C7CE12056ED8C00E61E88 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920C7CE02056ED8C00E61E88 /* Log.swift */; };
 		92320D08201EBA6300349204 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92320D07201EBA6300349204 /* History.swift */; };
 		925BDD83201257A800EC18CE /* ActivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925BDD82201257A800EC18CE /* ActivityManager.swift */; };
 		925C9E072013EBA8004EA3A2 /* URL+isDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925C9E062013EBA8004EA3A2 /* URL+isDirectory.swift */; };
@@ -73,6 +74,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		920C7CE02056ED8C00E61E88 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		92320D07201EBA6300349204 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		925BDD82201257A800EC18CE /* ActivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityManager.swift; sourceTree = "<group>"; };
 		925C9E062013EBA8004EA3A2 /* URL+isDirectory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+isDirectory.swift"; sourceTree = "<group>"; };
@@ -160,6 +162,7 @@
 				92C9009520119D8D00A5C1F7 /* GZip.swift */,
 				925BDD82201257A800EC18CE /* ActivityManager.swift */,
 				925C9E062013EBA8004EA3A2 /* URL+isDirectory.swift */,
+				920C7CE02056ED8C00E61E88 /* Log.swift */,
 			);
 			path = "Firefly Activity";
 			sourceTree = "<group>";
@@ -304,6 +307,7 @@
 				9270170E2006F51200E63306 /* DeviceViewController.swift in Sources */,
 				92EDEA351FF532A800B8814A /* ActivityView.swift in Sources */,
 				92730A081FFAF2D70022C1D2 /* Datastore.swift in Sources */,
+				920C7CE12056ED8C00E61E88 /* Log.swift in Sources */,
 				9276C76B2006606000157A97 /* ActivitySummaryView.swift in Sources */,
 				92E95F1F1FFBE5CF001F49D7 /* Activity.swift in Sources */,
 				92730A0B1FFBCA9E0022C1D2 /* DatastoreInsert.swift in Sources */,

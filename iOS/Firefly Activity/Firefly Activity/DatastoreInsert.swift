@@ -54,6 +54,9 @@ class DatastoreInsert : NSObject, FDPullTaskUpload {
     }
     
     func cancel(_ error: Error?) {
+        if let error = error {
+            Log.error(error)
+        }
     }
     
 }

@@ -87,6 +87,9 @@ class Bluetooth: NSObject, CBCentralManagerDelegate, FDFireflyIceObserver, FDHel
     
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         NSLog("bluetooth peripheral did disconnect")
+        if let error = error {
+            Log.error(error)
+        }
         guard let fireflyIce = fireflyIceByPeripheralIdentifier[peripheral.identifier] else {
             return
         }
@@ -98,6 +101,9 @@ class Bluetooth: NSObject, CBCentralManagerDelegate, FDFireflyIceObserver, FDHel
     
     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
         NSLog("bluetooth peripheral did fail to connect")
+        if let error = error {
+            Log.error(error)
+        }
     }
     
     func getFireflyIce(peripheral: CBPeripheral, advertisementData: [String: Any] = [:]) -> FDFireflyIce {
@@ -171,6 +177,9 @@ class Bluetooth: NSObject, CBCentralManagerDelegate, FDFireflyIceObserver, FDHel
     }
     
     func helloTask(_ helloTask: FDHelloTask, error: Error?) {
+        if let error = error {
+            Log.error(error)
+        }
         helloTask.channel.close()
     }
     

@@ -70,9 +70,11 @@ class Datastore: Store {
         let days = Activity.daysInRange(start: startDate, end: endDate)
         for day in days {
             do {
-                try load(day: day)
+                try find(day: day, ensure: false)
+                if let url = url {
+                    self.data = try Data(contentsOf: url)
+                }
             } catch {
-                NSLog("warning: cannot load day \(day)")
                 continue
             }
             var time = timeRange.start

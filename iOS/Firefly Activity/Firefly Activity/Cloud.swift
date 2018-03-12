@@ -76,6 +76,7 @@ class Cloud {
     
     private func nextOperation(error: Error?) {
         if let error = error {
+            Log.error(error)
             NSLog("Cloud modify records error: \(error.localizedDescription)")
             completion(error)
             return
@@ -135,6 +136,9 @@ class Cloud {
     
     private func queryCompletion(_ cursor: CKQueryCursor?, _ error: Error?) {
         NSLog("Cloud query completion")
+        if let error = error {
+            Log.error(error)
+        }
         if let cursor = cursor {
             queryFiles(cursor: cursor)
         } else {
@@ -183,6 +187,7 @@ class Cloud {
     
     private func queryFilesComplete(error: Error?) {
         if let error = error {
+            Log.error(error)
             NSLog("Cloud query error: \(error.localizedDescription)")
             completion(error)
             return

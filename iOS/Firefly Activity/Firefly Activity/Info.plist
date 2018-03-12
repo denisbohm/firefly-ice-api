@@ -16,10 +16,23 @@
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.fireflydesign.Firefly-Activity</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.fireflydesign.Firefly-Activity</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>This app requires Bluetooth to connect to our hardware.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>bluetooth-central</string>
@@ -45,18 +58,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>com.fireflydesign.Firefly-Activity</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>com.fireflydesign.Firefly-Activity</string>
-			</array>
-		</dict>
-	</array>
-	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>This app requires Bluetooth to connect to our hardware.</string>
+	<key>supportemail</key>
+	<string>denis@fireflydesign.com</string>
 </dict>
 </plist>

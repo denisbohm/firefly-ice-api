@@ -12,6 +12,7 @@ class Store {
     
     enum LocalError: Error {
         case CanNotFindDirectory
+        case CanNotFindFile
         case CanNotCreateFile
         case CanNotOpenFile
         case InvalidState
@@ -32,7 +33,7 @@ class Store {
         return Data()
     }
     
-    func ensure(day: String) throws {
+    func find(day: String, ensure: Bool) throws {
         let timeRange = Activity.timeRange(day: day)
         let fileManager = FileManager.default
         let roots = fileManager.urls(for: .documentDirectory, in: .userDomainMask)
@@ -41,10 +42,16 @@ class Store {
         }
         let directory = root.appendingPathComponent("database", isDirectory: true).appendingPathComponent(identifier, isDirectory: true)
         if !fileManager.fileExists(atPath: directory.path) {
+            if !ensure {
+                throw LocalError.CanNotFindDirectory
+            }
             try fileManager.createDirectory(at: directory, withIntermediateDirectories: true, attributes: nil)
         }
         let url = directory.appendingPathComponent(day).appendingPathExtension("dat")
         if !fileManager.fileExists(atPath: url.path) {
+            if !ensure {
+                throw LocalError.CanNotFindFile
+            }
             let contents = initialDayContents(timeRange: timeRange)
             if !fileManager.createFile(atPath: url.path, contents: contents, attributes: nil) {
                 throw LocalError.CanNotCreateFile
@@ -52,6 +59,10 @@ class Store {
         }
         self.url = url
         self.timeRange = timeRange
+    }
+    
+    func ensure(day: String) throws {
+        try find(day: day, ensure: true)
     }
     
     func clear() {
