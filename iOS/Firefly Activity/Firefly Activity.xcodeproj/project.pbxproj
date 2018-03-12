@@ -33,6 +33,8 @@
 		92EDEA4B1FF54CEE00B8814A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92EDEA4A1FF54CEE00B8814A /* Default-568h@2x.png */; };
 		92EDEA551FF54D6E00B8814A /* FireflyDevice.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92EDEA521FF54D5000B8814A /* FireflyDevice.framework */; };
 		92EDEA561FF54D6E00B8814A /* FireflyDevice.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 92EDEA521FF54D5000B8814A /* FireflyDevice.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		92FC707220570CBF005F2123 /* Firefly_Activity_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92FC707120570CBF005F2123 /* Firefly_Activity_Tests.swift */; };
+		92FC707C20570DFA005F2123 /* FireflyDevice.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92EDEA521FF54D5000B8814A /* FireflyDevice.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +53,20 @@
 			remoteInfo = FireflyDeviceTests;
 		};
 		92EDEA571FF54D6E00B8814A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92EDEA4C1FF54D5000B8814A /* FireflyDevice.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 92F767671A7EE81C00166284;
+			remoteInfo = FireflyDevice;
+		};
+		92FC707420570CBF005F2123 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92EDEA131FF5306700B8814A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 92EDEA1A1FF5306700B8814A;
+			remoteInfo = "Firefly Activity";
+		};
+		92FC707A20570DF4005F2123 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 92EDEA4C1FF54D5000B8814A /* FireflyDevice.xcodeproj */;
 			proxyType = 1;
@@ -102,6 +118,9 @@
 		92EDEA341FF532A800B8814A /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		92EDEA4A1FF54CEE00B8814A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		92EDEA4C1FF54D5000B8814A /* FireflyDevice.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FireflyDevice.xcodeproj; path = ../FireflyDevice/FireflyDevice.xcodeproj; sourceTree = "<group>"; };
+		92FC706F20570CBF005F2123 /* Firefly Activity Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Firefly Activity Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		92FC707120570CBF005F2123 /* Firefly_Activity_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Firefly_Activity_Tests.swift; sourceTree = "<group>"; };
+		92FC707320570CBF005F2123 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +133,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		92FC706C20570CBF005F2123 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92FC707C20570DFA005F2123 /* FireflyDevice.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -122,6 +149,7 @@
 			children = (
 				92EDEA4C1FF54D5000B8814A /* FireflyDevice.xcodeproj */,
 				92EDEA1D1FF5306700B8814A /* Firefly Activity */,
+				92FC707020570CBF005F2123 /* Firefly Activity Tests */,
 				92EDEA1C1FF5306700B8814A /* Products */,
 				92EDEA311FF530B500B8814A /* Frameworks */,
 			);
@@ -131,6 +159,7 @@
 			isa = PBXGroup;
 			children = (
 				92EDEA1B1FF5306700B8814A /* Firefly Activity.app */,
+				92FC706F20570CBF005F2123 /* Firefly Activity Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -184,6 +213,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		92FC707020570CBF005F2123 /* Firefly Activity Tests */ = {
+			isa = PBXGroup;
+			children = (
+				92FC707120570CBF005F2123 /* Firefly_Activity_Tests.swift */,
+				92FC707320570CBF005F2123 /* Info.plist */,
+			);
+			path = "Firefly Activity Tests";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -205,6 +243,25 @@
 			productName = "Firefly Activity";
 			productReference = 92EDEA1B1FF5306700B8814A /* Firefly Activity.app */;
 			productType = "com.apple.product-type.application";
+		};
+		92FC706E20570CBF005F2123 /* Firefly Activity Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 92FC707920570CBF005F2123 /* Build configuration list for PBXNativeTarget "Firefly Activity Tests" */;
+			buildPhases = (
+				92FC706B20570CBF005F2123 /* Sources */,
+				92FC706C20570CBF005F2123 /* Frameworks */,
+				92FC706D20570CBF005F2123 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				92FC707B20570DF4005F2123 /* PBXTargetDependency */,
+				92FC707520570CBF005F2123 /* PBXTargetDependency */,
+			);
+			name = "Firefly Activity Tests";
+			productName = "Firefly Activity Tests";
+			productReference = 92FC706F20570CBF005F2123 /* Firefly Activity Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -231,6 +288,11 @@
 							};
 						};
 					};
+					92FC706E20570CBF005F2123 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 92EDEA1A1FF5306700B8814A;
+					};
 				};
 			};
 			buildConfigurationList = 92EDEA161FF5306700B8814A /* Build configuration list for PBXProject "Firefly Activity" */;
@@ -253,6 +315,7 @@
 			projectRoot = "";
 			targets = (
 				92EDEA1A1FF5306700B8814A /* Firefly Activity */,
+				92FC706E20570CBF005F2123 /* Firefly Activity Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -286,6 +349,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		92FC706D20570CBF005F2123 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -315,6 +385,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		92FC706B20570CBF005F2123 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92FC707220570CBF005F2123 /* Firefly_Activity_Tests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -322,6 +400,16 @@
 			isa = PBXTargetDependency;
 			name = FireflyDevice;
 			targetProxy = 92EDEA571FF54D6E00B8814A /* PBXContainerItemProxy */;
+		};
+		92FC707520570CBF005F2123 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 92EDEA1A1FF5306700B8814A /* Firefly Activity */;
+			targetProxy = 92FC707420570CBF005F2123 /* PBXContainerItemProxy */;
+		};
+		92FC707B20570DF4005F2123 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FireflyDevice;
+			targetProxy = 92FC707A20570DF4005F2123 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -484,6 +572,38 @@
 			};
 			name = Release;
 		};
+		92FC707620570CBF005F2123 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = TVNL896ZKT;
+				INFOPLIST_FILE = "Firefly Activity Tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.atlaswearables.Firefly-Activity-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Firefly Activity.app/Firefly Activity";
+			};
+			name = Debug;
+		};
+		92FC707720570CBF005F2123 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = TVNL896ZKT;
+				INFOPLIST_FILE = "Firefly Activity Tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.atlaswearables.Firefly-Activity-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Firefly Activity.app/Firefly Activity";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -501,6 +621,15 @@
 			buildConfigurations = (
 				92EDEA2E1FF5306700B8814A /* Debug */,
 				92EDEA2F1FF5306700B8814A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		92FC707920570CBF005F2123 /* Build configuration list for PBXNativeTarget "Firefly Activity Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				92FC707620570CBF005F2123 /* Debug */,
+				92FC707720570CBF005F2123 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

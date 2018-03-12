@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Log {
+public class Log {
     
     static let shared = Log()
     
@@ -46,6 +46,24 @@ class Log {
         return url!
     }
     
+    func roll() {
+        guard let url = try? getURL() else {
+            return
+        }
+        let attributes = try? FileManager.default.attributesOfItem(atPath: url.path)
+        guard let fileSize = attributes?[FileAttributeKey.size] as? UInt64 else {
+            return
+        }
+        if fileSize <= fileSizeLimit {
+            return
+        }
+        guard let data = try? Data(contentsOf: url, options: []) else {
+            return
+        }
+        let subdata = data.subdata(in: Int(fileSize) - fileSizeRoll ..< Int(fileSize))
+        try? subdata.write(to: url, options: .atomic)
+    }
+    
     func append(message: String) {
         guard let url = try? getURL() else {
             return
@@ -62,24 +80,7 @@ class Log {
         }
         fileHandle.seekToEndOfFile()
         fileHandle.write(data)
-    }
-    
-    func roll() {
-        guard let url = try? getURL() else {
-            return
-        }
-        let attributes = try? FileManager.default.attributesOfItem(atPath: url.path)
-        guard let fileSize = attributes?[FileAttributeKey.size] as? UInt64 else {
-            return
-        }
-        if fileSize < fileSizeLimit {
-            return
-        }
-        guard let data = try? Data(contentsOf: url, options: []) else {
-            return
-        }
-        let subdata = data.subdata(in: Int(fileSize) - fileSizeRoll ..< Int(fileSize))
-        try? subdata.write(to: url, options: .atomic)
+        roll()
     }
     
     func getName(_ path: String) -> String {
@@ -91,7 +92,6 @@ class Log {
         let date = dateFormatter.string(from: Date())
         let name = getName(file)
         append(message: "\(date) \(name):\(line) \(function) \(message)")
-        roll()
     }
     
     static func info(_ message: String, file: String = #file, line: Int = #line, function: String = #function) {
