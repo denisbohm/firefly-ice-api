@@ -25,6 +25,8 @@
 @property FDFireflyIceVersion *updateVersion;
 @property FDFireflyIceLock *lock;
 
+@property BOOL wasCheckUpToDate;
+
 // sector and page size for external flash memory
 @property uint32_t sectorSize;
 @property uint32_t pageSize;
@@ -278,6 +280,9 @@
         FDFireflyDeviceLogInfo(@"FD010401", @"firmware %@ is out of date with latest %u.%u.%u", _updateVersion, _major, _minor, _patch);
     } else {
         FDFireflyDeviceLogInfo(@"FD010402", @"firmware %@ is up to date with latest %u.%u.%u", _updateVersion, _major, _minor, _patch);
+        _wasCheckUpToDate = YES;
+        [self complete];
+        return;
     }
     [self next:@selector(getSectorHashes)];
 }
@@ -480,7 +485,7 @@
     }
     
     BOOL isFirmwareUpToDate = (_updatePages.count == 0);
-    BOOL success = isFirmwareUpToDate && (!_commit || ((_updateCommit != nil) && (_updateCommit.result == FD_UPDATE_COMMIT_SUCCESS)));
+    BOOL success = isFirmwareUpToDate && (_wasCheckUpToDate || !_commit || ((_updateCommit != nil) && (_updateCommit.result == FD_UPDATE_COMMIT_SUCCESS)));
     FDFireflyDeviceLogInfo(@"FD010409", @"success = %@, isFirmwareUpToDate = %@, commit %@ result = %u", success ? @"YES" : @"NO", isFirmwareUpToDate ? @"YES" : @"NO", _updateCommit != nil ? @"YES" : @"NO", _updateCommit.result);
     if ([_delegate respondsToSelector:@selector(firmwareUpdateTask:complete:)]) {
         [_delegate firmwareUpdateTask:self complete:success];
