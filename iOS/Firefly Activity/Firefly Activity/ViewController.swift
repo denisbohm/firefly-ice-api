@@ -158,13 +158,18 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate, 
     }
     
     func save(studyIdentifier: String) {
+        Log.info("save study identifier \(studyIdentifier)")
+
         self.studyIdentifier = studyIdentifier
         
         let userDefaults = UserDefaults.standard
-        
         userDefaults.set(studyIdentifier, forKey: "studyIdentifier")
+        userDefaults.synchronize()
 
         try? history.save(type: "saveStudy", value: metaHistoryValue())
+        
+        let savedStudyIdentifier = userDefaults.string(forKey: "studyIdentifier")
+        Log.info("saved study identifier \(String(describing: savedStudyIdentifier))")
     }
     
     func bluetoothPoweredOn() {

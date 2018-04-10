@@ -22,10 +22,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        Log.info("open url \(url.description)")
         guard let viewController = viewController else {
             return false
         }
         if let studyIdentifier = getQueryStringParameter(url: url, parameter: "studyIdentifier") {
+            Log.info("open url study identifier \(studyIdentifier)")
             viewController.save(studyIdentifier: studyIdentifier)
         }
         return true
