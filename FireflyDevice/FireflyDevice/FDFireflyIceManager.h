@@ -35,7 +35,7 @@
 
 - (void)fireflyIceManager:(FDFireflyIceManager *)manager identified:(FDFireflyIce *)fireflyIce;
 
-- (FDFirmwareUpdateTask *)fireflyIceManager:(FDFireflyIceManager *)manager firmwareUpdateTask:(FDFireflyIce *)fireflyIce;
+- (FDFirmwareUpdateTask * _Nullable)fireflyIceManager:(FDFireflyIceManager *)manager firmwareUpdateTask:(FDFireflyIce *)fireflyIce;
 
 @end
 
