@@ -63,4 +63,6 @@
 
 - (NSString *)nameForPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData;
 
+- (FDFireflyIce * _Nullable)newFireflyIce:(NSUUID *)identifier;
+
 @end
