@@ -118,6 +118,8 @@
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel status:(FDFireflyIceChannelStatus)status
 {
     switch (status) {
+        case FDFireflyIceChannelStatusConnecting:
+            break;
         case FDFireflyIceChannelStatusOpening:
             break;
         case FDFireflyIceChannelStatusOpen:
