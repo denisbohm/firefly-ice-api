@@ -153,7 +153,15 @@
 
 - (void)sendProvision:(id<FDFireflyIceChannel>)channel dictionary:(NSDictionary *)dictionary options:(uint32_t)options
 {
-    NSData *data = [self dictionaryMap:dictionary];
+    uint8_t key[16] = { 0 };
+    FDBinary *provisionBinary = [[FDBinary alloc] init];
+    [provisionBinary putUInt16:1]; // provision.version
+    [provisionBinary putUInt16:0]; // provision.flags
+    [provisionBinary putData:[NSData dataWithBytes:key length:sizeof(key)]]; // provision.key AES
+    NSData *map = [self dictionaryMap:dictionary];
+    [provisionBinary putData:map];
+    NSData *data = [provisionBinary dataValue];
+    
     FDBinary *binary = [[FDBinary alloc] init];
     [binary putUInt8:FD_CONTROL_PROVISION];
     [binary putUInt32:options];
