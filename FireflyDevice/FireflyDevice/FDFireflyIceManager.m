@@ -188,7 +188,7 @@
 
 - (void)scan:(BOOL)allowDuplicates
 {
-    [_centralManager retrieveConnectedPeripheralsWithServices:@[_serviceUUID]];
+//    [_centralManager retrieveConnectedPeripheralsWithServices:@[_serviceUUID]];
     NSDictionary *options = nil;
     if (allowDuplicates) {
         options = @{CBCentralManagerScanOptionAllowDuplicatesKey: @YES};
@@ -240,7 +240,7 @@
     return NO;
 }
 
-#if TARGET_OS_IPHONE
+#if 0
 - (void)centralManager:(CBCentralManager *)centralManager willRestoreState:(NSDictionary *)state
 {
     NSArray *peripherals = state[CBCentralManagerRestoredStatePeripheralsKey];
