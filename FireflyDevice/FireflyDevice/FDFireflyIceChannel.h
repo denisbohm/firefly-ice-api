@@ -14,6 +14,7 @@
 
 typedef NS_ENUM(NSInteger, FDFireflyIceChannelStatus) {
     FDFireflyIceChannelStatusClosed,
+    FDFireflyIceChannelStatusConnecting,
     FDFireflyIceChannelStatusOpening,
     FDFireflyIceChannelStatusOpen,
     FDFireflyIceChannelStatusClosing,

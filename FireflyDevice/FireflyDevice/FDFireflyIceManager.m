@@ -118,6 +118,8 @@
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel status:(FDFireflyIceChannelStatus)status
 {
     switch (status) {
+        case FDFireflyIceChannelStatusConnecting:
+            break;
         case FDFireflyIceChannelStatusOpening:
             break;
         case FDFireflyIceChannelStatusOpen:
@@ -186,7 +188,7 @@
 
 - (void)scan:(BOOL)allowDuplicates
 {
-    [_centralManager retrieveConnectedPeripheralsWithServices:@[_serviceUUID]];
+//    [_centralManager retrieveConnectedPeripheralsWithServices:@[_serviceUUID]];
     NSDictionary *options = nil;
     if (allowDuplicates) {
         options = @{CBCentralManagerScanOptionAllowDuplicatesKey: @YES};
@@ -238,7 +240,7 @@
     return NO;
 }
 
-#if TARGET_OS_IPHONE
+#if 0
 - (void)centralManager:(CBCentralManager *)centralManager willRestoreState:(NSDictionary *)state
 {
     NSArray *peripherals = state[CBCentralManagerRestoredStatePeripheralsKey];
@@ -247,6 +249,27 @@
     }
 }
 #endif
+
+- (FDFireflyIce *)newFireflyIce:(NSUUID *)identifier {
+    NSArray<CBPeripheral *> *peripherals = [_centralManager retrievePeripheralsWithIdentifiers:@[identifier]];
+    CBPeripheral *peripheral = [peripherals firstObject];
+    if (peripheral == nil) {
+        return nil;
+    }
+    return [self newFireflyIceWithPeripheral:peripheral];
+}
+
+- (FDFireflyIce *)newFireflyIceWithPeripheral:(CBPeripheral *)peripheral {
+    FDFireflyIce *fireflyIce = [[FDFireflyIce alloc] init];
+    [fireflyIce.observable addObserver:self];
+    FDFireflyIceChannelBLE *channel = [[FDFireflyIceChannelBLE alloc] initWithCentralManager:_centralManager withPeripheral:peripheral withServiceUUID:_serviceUUID];
+    [fireflyIce addChannel:channel type:@"BLE"];
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+    [dictionary setObject:peripheral forKey:@"peripheral"];
+    [dictionary setObject:fireflyIce forKey:@"fireflyIce"];
+    [_dictionaries insertObject:dictionary atIndex:0];
+    return fireflyIce;
+}
 
 - (void)onMainCentralManager:(CBCentralManager *)central
        didDiscoverPeripheral:(CBPeripheral *)peripheral
@@ -284,19 +307,12 @@
         return;
     }
     
-    FDFireflyIce *fireflyIce = [[FDFireflyIce alloc] init];
-    
+    FDFireflyIce *fireflyIce = [self newFireflyIceWithPeripheral:peripheral];
     fireflyIce.name = [self nameForPeripheral:peripheral advertisementData:advertisementData];
-
-    [fireflyIce.observable addObserver:self];
-    FDFireflyIceChannelBLE *channel = [[FDFireflyIceChannelBLE alloc] initWithCentralManager:central withPeripheral:peripheral withServiceUUID:_serviceUUID];
+    FDFireflyIceChannelBLE *channel = fireflyIce.channels[@"BLE"];
     channel.RSSI = [FDFireflyIceChannelBLERSSI RSSI:[RSSI floatValue]];
-    [fireflyIce addChannel:channel type:@"BLE"];
-    dictionary = [NSMutableDictionary dictionary];
+    dictionary = [self dictionaryForPeripheral:peripheral];
     [dictionary setObject:advertisementData forKey:@"advertisementData"];
-    [dictionary setObject:peripheral forKey:@"peripheral"];
-    [dictionary setObject:fireflyIce forKey:@"fireflyIce"];
-    [_dictionaries insertObject:dictionary atIndex:0];
     
     [_delegate fireflyIceManager:self discovered:fireflyIce];
 }

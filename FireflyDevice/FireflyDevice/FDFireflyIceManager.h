@@ -35,7 +35,7 @@
 
 - (void)fireflyIceManager:(FDFireflyIceManager *)manager identified:(FDFireflyIce *)fireflyIce;
 
-- (FDFirmwareUpdateTask *)fireflyIceManager:(FDFireflyIceManager *)manager firmwareUpdateTask:(FDFireflyIce *)fireflyIce;
+- (FDFirmwareUpdateTask * _Nullable)fireflyIceManager:(FDFireflyIceManager *)manager firmwareUpdateTask:(FDFireflyIce *)fireflyIce;
 
 @end
 
@@ -62,5 +62,7 @@
 - (NSMutableDictionary *)dictionaryFor:(id)object key:(NSString *)key;
 
 - (NSString *)nameForPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData;
+
+- (FDFireflyIce * _Nullable)newFireflyIce:(NSUUID *)identifier;
 
 @end

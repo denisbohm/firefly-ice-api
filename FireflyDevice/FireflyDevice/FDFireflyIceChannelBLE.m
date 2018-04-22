@@ -118,6 +118,10 @@
 - (void)open
 {
     [_centralManager connectPeripheral:_peripheral options:nil];
+    self.status = FDFireflyIceChannelStatusConnecting;
+    if ([_delegate respondsToSelector:@selector(fireflyIceChannel:status:)]) {
+        [_delegate fireflyIceChannel:self status:self.status];
+    }
 }
 
 - (void)shutdown
