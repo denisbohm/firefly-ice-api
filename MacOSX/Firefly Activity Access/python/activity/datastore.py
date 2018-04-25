@@ -183,7 +183,8 @@ class ActivityDatastore:
         with open(path, "rb") as file:
             self.data = file.read()
 
-    def days_in_range(self, start, end):
+    @staticmethod
+    def days_in_range(start, end):
         days = []
         start_of_day = datetime.datetime.fromtimestamp(start).replace(hour=0, minute=0, second=0, microsecond=0)
         end_datetime = datetime.datetime.fromtimestamp(end)
@@ -196,7 +197,7 @@ class ActivityDatastore:
         spans = []
         vmas = []
         last_time = 0
-        days = self.days_in_range(start, end)
+        days = ActivityDatastore.days_in_range(start, end)
         for day in days:
             try:
                 self.load(day)

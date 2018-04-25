@@ -282,6 +282,9 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate, 
         }
     }
     
+    func bluetoothIsConnecting(fireflyIce: FDFireflyIce) {
+    }
+    
     func bluetoothIsOpening(fireflyIce: FDFireflyIce) {
         bluetoothImageView.tintColor = UIColor.green
     }

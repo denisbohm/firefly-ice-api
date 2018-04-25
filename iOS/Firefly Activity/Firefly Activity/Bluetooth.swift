@@ -14,6 +14,7 @@ protocol BluetoothObserver {
     func bluetoothPoweredOff()
     func bluetoothDidDiscover(fireflyIce: FDFireflyIce, advertisementData: [String : Any], rssi RSSI: NSNumber)
     func bluetoothDidUpdateName(fireflyIce: FDFireflyIce)
+    func bluetoothIsConnecting(fireflyIce: FDFireflyIce)
     func bluetoothIsOpening(fireflyIce: FDFireflyIce)
     func bluetoothDidOpen(fireflyIce: FDFireflyIce)
     func bluetoothIsClosing(fireflyIce: FDFireflyIce)
@@ -142,6 +143,8 @@ class Bluetooth: NSObject, CBCentralManagerDelegate, FDFireflyIceObserver, FDHel
     
     func fireflyIce(_ fireflyIce: FDFireflyIce!, channel: FDFireflyIceChannel!, status: FDFireflyIceChannelStatus) {
         switch status {
+        case .connecting:
+            fireflyIceConnecting(fireflyIce: fireflyIce, channel: channel);
         case .open:
             fireflyIceOpen(fireflyIce: fireflyIce, channel: channel);
         case .opening:
@@ -155,6 +158,10 @@ class Bluetooth: NSObject, CBCentralManagerDelegate, FDFireflyIceObserver, FDHel
     
     func fireflyIceOpening(fireflyIce: FDFireflyIce, channel: FDFireflyIceChannel) {
         bluetoothObservers.forEach { $0.bluetoothIsOpening(fireflyIce: fireflyIce) }
+    }
+    
+    func fireflyIceConnecting(fireflyIce: FDFireflyIce, channel: FDFireflyIceChannel) {
+        bluetoothObservers.forEach { $0.bluetoothIsConnecting(fireflyIce: fireflyIce) }
     }
     
     func fireflyIceOpen(fireflyIce: FDFireflyIce, channel: FDFireflyIceChannel) {
