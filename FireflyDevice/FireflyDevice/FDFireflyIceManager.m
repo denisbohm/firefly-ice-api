@@ -221,13 +221,11 @@
 
 - (NSString *)nameForPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData
 {
-    NSString *UUIDString = nil;
-    UUIDString = [peripheral.identifier UUIDString];
     NSString *name = advertisementData[CBAdvertisementDataLocalNameKey];
     if (name == nil) {
         name = @"anonymous";
     }
-    return [NSString stringWithFormat:@"%@ %@", name, UUIDString];
+    return name;
 }
 
 - (BOOL)isFireflyIce:(NSArray *)serviceUUIDs
