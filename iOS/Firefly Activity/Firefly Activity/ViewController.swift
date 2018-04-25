@@ -6,11 +6,12 @@
 //  Copyright © 2017 Firefly Design LLC. All rights reserved.
 //
 
+import CloudKit
 import UIKit
 import MessageUI
 import FireflyDevice
 
-class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate, MFMailComposeViewControllerDelegate {
+class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate, MFMailComposeViewControllerDelegate, HelpViewControllerDelegate {
 
     enum Action {
         case none
@@ -36,7 +37,9 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate, 
     let catalog = Catalog()
     var action: Action = .none
     var cloud: Cloud? = nil
-    
+    let container = CKContainer.default()
+    var accountStatus: CKAccountStatus = .couldNotDetermine
+
     func findChildViewController<T>() -> T? where T: UIViewController {
         if let index = (childViewControllers.index { $0 is T }) {
             return childViewControllers[index] as? T
@@ -101,12 +104,12 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate, 
             appDelegate.viewController = self
         }
         
-        // !!! Juat for testing, start with empty catalog -denis
+        // !!! Just for testing, start with empty catalog -denis
         //        catalog.save()
         
-        if TARGET_OS_SIMULATOR != 0 {
-            createFakeDevices()
-        }
+#if targetEnvironment(simulator)
+        createFakeDevices()
+#endif
         
         catalog.load()
         
@@ -134,7 +137,32 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate, 
         catalogViewController.load(fireflyIces: fireflyIces)
         showCatalog()
         
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(accountChanged(_:)), name: Notification.Name.CKAccountChanged, object: nil)
+        requestAccountStatus()
+
         pushToCloud()
+    }
+    
+    func updateAccountStatus(accountStatus: CKAccountStatus) {
+        self.accountStatus = accountStatus
+        Log.info("cloud kit account status: \(accountStatus)")
+    }
+    
+    func requestAccountStatus() {
+        container.accountStatus { (accountStatus, error) in
+            if let error = error {
+                Log.error(error)
+            } else {
+                DispatchQueue.main.async {
+                    self.updateAccountStatus(accountStatus: accountStatus)
+                }
+            }
+        }
+    }
+    
+    @objc func accountChanged(_ notification: Notification) {
+        requestAccountStatus()
     }
     
     func initializeFromUserDefaults() {
@@ -436,15 +464,98 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate, 
         cloud = nil
     }
     
-    @IBAction func help() {
+    @IBAction func showHelp() {
+        let helpViewController = storyboard!.instantiateViewController(withIdentifier: "help") as! HelpViewController
+        helpViewController.delegate = self
+        helpViewController.text = "Contact support by touching the 'Email Support' button below.\n\n\n" + supportDescription()
+        helpViewController.modalPresentationStyle = .overFullScreen
+        helpViewController.modalTransitionStyle = .crossDissolve
+        self.present(helpViewController, animated: true, completion: nil)
+    }
+    
+    func emailSupport(helpViewController: HelpViewController) {
+        closeHelp(helpViewController: helpViewController)
+        
         let email = Bundle.main.infoDictionary!["supportemail"] as? String ?? "denis@fireflydesign.com"
         sendMail(recipients: [email])
+    }
+    
+    func closeHelp(helpViewController: HelpViewController) {
+        helpViewController.dismiss(animated: false, completion: nil)
     }
     
     func alert(message: String) {
         let alertController = UIAlertController(title: "Mail Result", message: message, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alertController, animated: true, completion: nil)
+    }
+    
+    func datastoreDescription(identifier: String) -> String {
+        let end = Date()
+        let calendar = NSCalendar(calendarIdentifier: .gregorian)!
+        let start = calendar.date(byAdding: .day, value: -7, to: end)!
+        let datastore = Datastore(identifier: identifier)
+        let spans = datastore.query(start: start.timeIntervalSince1970, end: end.timeIntervalSince1970)
+        var description = "\(spans.count) span"
+        if spans.count != 1 {
+            description += "s"
+        }
+        if let first = spans.first, let last = spans.last {
+            let (start, _) = first.timeRange()
+            let (_, end) = last.timeRange()
+            let formatter = DateFormatter()
+            formatter.dateStyle = .short
+            formatter.timeStyle = .short
+            let startString = formatter.string(from: Date(timeIntervalSince1970: start))
+            let endString = formatter.string(from: Date(timeIntervalSince1970: end))
+            description += " from \(startString) to \(endString)"
+        }
+        description += "."
+        return description
+    }
+    
+    func datastoreDescriptions() -> String {
+        var description = "Data:\n"
+        for (_, device) in catalog.deviceByHardwareIdentifier {
+            description += "  \(device.name) (\(device.hardwareIdentifier)) " + datastoreDescription(identifier: device.hardwareIdentifier) + "\n"
+        }
+        return description
+    }
+    
+    func accountStatusDescription(_ status: CKAccountStatus) -> String {
+        switch status {
+        case .couldNotDetermine:
+            return "could not be determined"
+        case .available:
+            return "available"
+        case .noAccount:
+            return "no account"
+        case .restricted:
+            return "restricted"
+        }
+    }
+    
+    func supportDescription() -> String {
+        var description = ""
+        let statusString = accountStatusDescription(accountStatus)
+        description += "Cloud Kit Account Status: \(statusString)\n"
+        if let studyIdentifier = studyIdentifier {
+            description += "Study Identifier: \(studyIdentifier)\n"
+        }
+        description += "\n"
+        description += datastoreDescriptions()
+        description += "\n"
+        if let installationDate = installationDate {
+            let formatter = DateFormatter()
+            formatter.dateStyle = .short
+            formatter.timeStyle = .short
+            let intallationDateString = formatter.string(from: installationDate)
+            description += "Installation Date: \(intallationDateString)\n"
+        }
+        if let installationUUID = installationUUID {
+            description += "Installation UUID: \(installationUUID)\n"
+        }
+        return description
     }
     
     func sendMail(recipients: [String]) {
@@ -456,8 +567,13 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate, 
             mailCompose.mailComposeDelegate = self
             mailCompose.setToRecipients(recipients)
             let name = Bundle.main.infoDictionary![kCFBundleNameKey as String] as! String
-            mailCompose.setSubject("\(name) Debug")
-            mailCompose.setMessageBody("See attachment for details.", isHTML: false)
+            var subject = "\(name) Help"
+            if let studyIdentifier = studyIdentifier {
+                subject += " for Study Identifier \(studyIdentifier)"
+            }
+            mailCompose.setSubject(subject)
+            let message = supportDescription() + "\n\nLog is attached."
+            mailCompose.setMessageBody(message, isHTML: false)
             if let url = try? Log.shared.getURL(), let data = try? Data(contentsOf: url, options: []) {
                 let fileName = url.lastPathComponent
                 mailCompose.addAttachmentData(data, mimeType: "text/plain", fileName: fileName)

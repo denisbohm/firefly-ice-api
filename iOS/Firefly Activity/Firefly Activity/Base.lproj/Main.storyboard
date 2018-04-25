@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Gbx-CE-RvN">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Gbx-CE-RvN">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -65,7 +65,7 @@
                                 <rect key="frame" x="272" y="538" width="32" height="30"/>
                                 <state key="normal" title="Help"/>
                                 <connections>
-                                    <action selector="help" destination="BYZ-38-t0r" eventType="touchUpInside" id="6QM-Fu-LGz"/>
+                                    <action selector="showHelp" destination="BYZ-38-t0r" eventType="touchUpInside" id="XMD-C0-fmP"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -185,7 +185,72 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cL0-jz-7xo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2666.25" y="130.98591549295776"/>
+            <point key="canvasLocation" x="2621" y="107"/>
+        </scene>
+        <!--Help View Controller-->
+        <scene sceneID="uqk-La-dXF">
+            <objects>
+                <viewController storyboardIdentifier="help" id="NJY-K4-JgS" customClass="HelpViewController" customModule="Firefly_Activity" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="CK6-by-G4o">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rWM-3c-v7e">
+                                <rect key="frame" x="16" y="20" width="288" height="528"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hE2-yL-dCX">
+                                        <rect key="frame" x="8" y="490" width="272" height="30"/>
+                                        <state key="normal" title="Close"/>
+                                        <connections>
+                                            <action selector="closeHelp" destination="NJY-K4-JgS" eventType="touchUpInside" id="gkY-oO-LRH"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fwm-AS-hrT">
+                                        <rect key="frame" x="8" y="452" width="272" height="30"/>
+                                        <state key="normal" title="Email Support"/>
+                                        <connections>
+                                            <action selector="emailSupport:" destination="NJY-K4-JgS" eventType="touchUpInside" id="CYp-z8-bPy"/>
+                                        </connections>
+                                    </button>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="8To-0h-SFv">
+                                        <rect key="frame" x="8" y="8" width="272" height="436"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
+                                </subviews>
+                                <color key="backgroundColor" red="0.46202266219999999" green="0.83828371759999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstItem="8To-0h-SFv" firstAttribute="leading" secondItem="Fwm-AS-hrT" secondAttribute="leading" id="BXP-6S-8pH"/>
+                                    <constraint firstItem="hE2-yL-dCX" firstAttribute="bottom" secondItem="rWM-3c-v7e" secondAttribute="bottomMargin" id="DNp-s6-v0m"/>
+                                    <constraint firstItem="8To-0h-SFv" firstAttribute="trailing" secondItem="rWM-3c-v7e" secondAttribute="trailingMargin" id="OTd-O3-yrK"/>
+                                    <constraint firstItem="8To-0h-SFv" firstAttribute="top" secondItem="rWM-3c-v7e" secondAttribute="topMargin" id="RmV-Yn-8KE"/>
+                                    <constraint firstItem="8To-0h-SFv" firstAttribute="leading" secondItem="rWM-3c-v7e" secondAttribute="leadingMargin" id="ewm-7J-eIs"/>
+                                    <constraint firstItem="Fwm-AS-hrT" firstAttribute="trailing" secondItem="hE2-yL-dCX" secondAttribute="trailing" id="hWr-BH-yeZ"/>
+                                    <constraint firstItem="hE2-yL-dCX" firstAttribute="top" secondItem="Fwm-AS-hrT" secondAttribute="bottom" constant="8" symbolic="YES" id="lc5-Qr-e71"/>
+                                    <constraint firstItem="Fwm-AS-hrT" firstAttribute="leading" secondItem="hE2-yL-dCX" secondAttribute="leading" id="qLE-Ss-YC6"/>
+                                    <constraint firstItem="Fwm-AS-hrT" firstAttribute="top" secondItem="8To-0h-SFv" secondAttribute="bottom" constant="8" symbolic="YES" id="rVI-65-mf3"/>
+                                    <constraint firstItem="8To-0h-SFv" firstAttribute="trailing" secondItem="Fwm-AS-hrT" secondAttribute="trailing" id="sLg-VP-neM"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="rWM-3c-v7e" secondAttribute="bottom" constant="20" symbolic="YES" id="80z-YV-ZAl"/>
+                            <constraint firstItem="rWM-3c-v7e" firstAttribute="leading" secondItem="CK6-by-G4o" secondAttribute="leadingMargin" id="HmI-Pf-dJd"/>
+                            <constraint firstItem="rWM-3c-v7e" firstAttribute="trailing" secondItem="CK6-by-G4o" secondAttribute="trailingMargin" id="Uk6-I0-BH1"/>
+                            <constraint firstItem="rWM-3c-v7e" firstAttribute="top" secondItem="7TZ-4z-Onf" secondAttribute="top" id="jwO-IT-phT"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="7TZ-4z-Onf"/>
+                    </view>
+                    <connections>
+                        <outlet property="textView" destination="8To-0h-SFv" id="Hpv-rB-n3S"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="52A-Qi-sNV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3435" y="132"/>
         </scene>
         <!--Catalog View Controller-->
         <scene sceneID="zIa-uv-UDh">
@@ -237,7 +302,7 @@ Select a device to use.
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mcb-42-cXZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1839.375" y="130.98591549295776"/>
+            <point key="canvasLocation" x="1879" y="107"/>
         </scene>
     </scenes>
     <resources>

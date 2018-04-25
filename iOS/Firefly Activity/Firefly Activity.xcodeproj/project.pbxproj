@@ -19,6 +19,7 @@
 		9276C76B2006606000157A97 /* ActivitySummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9276C76A2006606000157A97 /* ActivitySummaryView.swift */; };
 		9276C76E2006606F00157A97 /* PlotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9276C76D2006606F00157A97 /* PlotView.swift */; };
 		92774668200DA45700F74384 /* Bluetooth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92774667200DA45700F74384 /* Bluetooth.swift */; };
+		92AC6092208A537300D2D40D /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92AC6091208A537300D2D40D /* HelpViewController.swift */; };
 		92C8DDD3201FE671001D2106 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C8DDD2201FE671001D2106 /* Store.swift */; };
 		92C9009320119C7D00A5C1F7 /* Cloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C9009220119C7D00A5C1F7 /* Cloud.swift */; };
 		92C9009620119D8D00A5C1F7 /* GZip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C9009520119D8D00A5C1F7 /* GZip.swift */; };
@@ -102,6 +103,7 @@
 		9276C76A2006606000157A97 /* ActivitySummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitySummaryView.swift; sourceTree = "<group>"; };
 		9276C76D2006606F00157A97 /* PlotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlotView.swift; sourceTree = "<group>"; };
 		92774667200DA45700F74384 /* Bluetooth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bluetooth.swift; sourceTree = "<group>"; };
+		92AC6091208A537300D2D40D /* HelpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewController.swift; sourceTree = "<group>"; };
 		92C8DDD2201FE671001D2106 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		92C9009220119C7D00A5C1F7 /* Cloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cloud.swift; sourceTree = "<group>"; };
 		92C9009520119D8D00A5C1F7 /* GZip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GZip.swift; sourceTree = "<group>"; };
@@ -192,6 +194,7 @@
 				925BDD82201257A800EC18CE /* ActivityManager.swift */,
 				925C9E062013EBA8004EA3A2 /* URL+isDirectory.swift */,
 				920C7CE02056ED8C00E61E88 /* Log.swift */,
+				92AC6091208A537300D2D40D /* HelpViewController.swift */,
 			);
 			path = "Firefly Activity";
 			sourceTree = "<group>";
@@ -270,7 +273,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0920;
-				LastUpgradeCheck = 0920;
+				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = "Firefly Design LLC";
 				TargetAttributes = {
 					92EDEA1A1FF5306700B8814A = {
@@ -382,6 +385,7 @@
 				92E95F1F1FFBE5CF001F49D7 /* Activity.swift in Sources */,
 				92730A0B1FFBCA9E0022C1D2 /* DatastoreInsert.swift in Sources */,
 				925C9E072013EBA8004EA3A2 /* URL+isDirectory.swift in Sources */,
+				92AC6092208A537300D2D40D /* HelpViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -447,6 +451,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -454,6 +459,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -504,6 +510,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -511,6 +518,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
