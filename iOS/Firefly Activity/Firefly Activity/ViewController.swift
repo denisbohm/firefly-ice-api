@@ -172,7 +172,7 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate, 
             self.installationDate = installationDate
         } else {
             self.installationDate = Date()
-            userDefaults.set(self.installationDate, forKey: "installatonDate")
+            userDefaults.set(self.installationDate, forKey: "installationDate")
         }
         
         if let installationUUID = userDefaults.string(forKey: "installationUUID") {
