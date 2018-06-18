@@ -48,6 +48,7 @@ class CloudKit:
         auth = CloudKitAuth(key_id=self.key_id, key_file_name=self.private_key_path)
         download_response = requests.get(download_url, auth=auth)
         download_response.raise_for_status()
+        json.loads(download_response.content)
         content = download_response.content
         directory = os.path.dirname(path)
         if not os.path.exists(directory):
