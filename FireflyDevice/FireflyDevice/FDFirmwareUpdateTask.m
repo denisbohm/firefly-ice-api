@@ -344,6 +344,8 @@
 - (void)getSomeSectors
 {
     if (_getSectors.count > 0) {
+        [self.fireflyIce.executor feedWatchdog:self];
+        
         NSUInteger n = MIN(_getSectors.count, 10);
         NSRange range = NSMakeRange(0, n);
         NSArray *sectors = [_getSectors subarrayWithRange:range];
