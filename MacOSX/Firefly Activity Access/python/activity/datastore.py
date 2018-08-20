@@ -34,7 +34,7 @@ class Naming:
 
 class NameRangeExtractor:
     def __init__(self):
-        self.namingByName = {}
+        self.namingByHardwareIdentifier = {}
 
     def process(self, item):
         type = item['type']
@@ -49,9 +49,9 @@ class NameRangeExtractor:
         value = item['value']
         name = value['name']
         hardware_identifier = value['hardwareIdentifier']
-        naming = self.namingByName.get(name)
+        naming = self.namingByHardwareIdentifier.get(hardware_identifier)
         if naming is None:
-            self.namingByName[name] = Naming(name, hardware_identifier, date)
+            self.namingByHardwareIdentifier[hardware_identifier] = Naming(name, hardware_identifier, date)
         else:
             if naming.hardware_identifier is None:
                 naming.hardware_identifier = hardware_identifier
@@ -67,20 +67,20 @@ class NameRangeExtractor:
         value = item['value']
         name = value['name']
         hardware_identifier = value['hardwareIdentifier']
-        naming = self.namingByName.get(name)
+        naming = self.namingByHardwareIdentifier.get(hardware_identifier)
         if naming is None:
             naming = Naming(name, None, None)
-            self.namingByName[name] = naming
+            self.namingByHardwareIdentifier[hardware_identifier] = naming
         naming.hardware_ranges.append(HardwareRange(naming.hardware_identifier, naming.start, date))
         naming.hardware_identifier = None
         naming.start = None
 
     def name_ranges(self):
         name_ranges = []
-        for name, naming in self.namingByName.items():
+        for hardware_identifier, naming in self.namingByHardwareIdentifier.items():
             if naming.start is not None:
                 naming.hardware_ranges.append(HardwareRange(naming.hardware_identifier, naming.start, None))
-                name_ranges.append(NameRange(name, naming.hardware_ranges))
+            name_ranges.append(NameRange(naming.name, naming.hardware_ranges))
         return name_ranges
 
 
