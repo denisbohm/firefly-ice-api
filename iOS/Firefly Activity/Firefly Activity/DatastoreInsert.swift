@@ -38,7 +38,7 @@ class DatastoreInsert : NSObject, FDPullTaskUpload {
             for item in items {
                 if let vmaItem = item as? FDVMAItem {
                     let time = UInt32(vmaItem.time)
-                    let vmas = vmaItem.vmas.map { ($0 as! NSNumber).floatValue }
+                    let vmas = vmaItem.vmas.map { $0.floatValue }
                     let itemsByDay = Activity.splitByDay(time: time, vmas: vmas)
                     for itemByDay in itemsByDay {
                         try update(item: itemByDay)

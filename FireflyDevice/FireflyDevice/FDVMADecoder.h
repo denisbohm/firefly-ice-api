@@ -11,7 +11,7 @@
 @interface FDVMAItem : NSObject
 @property NSTimeInterval time;
 @property uint16_t interval;
-@property NSArray *vmas;
+@property NSArray<NSNumber *> *vmas;
 @end
 
 @interface FDVMADecoder : NSObject <FDPullTaskDecoder>

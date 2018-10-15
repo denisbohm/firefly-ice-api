@@ -135,7 +135,7 @@ class PlotView: UIView, UIGestureRecognizerDelegate {
     }
     
     func drawRotatedText(text: String, at p: CGPoint, angle: CGFloat, font: UIFont, color: UIColor) {
-        let attrs = [NSAttributedStringKey.font: font, NSAttributedStringKey.foregroundColor: color]
+        let attrs = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: color]
         let context = UIGraphicsGetCurrentContext()!
         context.saveGState()
         context.translateBy(x: p.x, y: p.y)
@@ -171,9 +171,9 @@ class PlotView: UIView, UIGestureRecognizerDelegate {
         }
     }
     
-    func getfontAndAttributes() -> (font: UIFont, attributes: [NSAttributedStringKey: NSObject]) {
+    func getfontAndAttributes() -> (font: UIFont, attributes: [NSAttributedString.Key: NSObject]) {
         let font = UIFont.systemFont(ofSize: 10)
-        let attributes = [NSAttributedStringKey.font: font, NSAttributedStringKey.foregroundColor: UIColor.black]
+        let attributes = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor.black]
         return (font: font, attributes: attributes)
     }
     

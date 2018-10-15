@@ -41,8 +41,8 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate, 
     var accountStatus: CKAccountStatus = .couldNotDetermine
 
     func findChildViewController<T>() -> T? where T: UIViewController {
-        if let index = (childViewControllers.index { $0 is T }) {
-            return childViewControllers[index] as? T
+        if let index = (children.index { $0 is T }) {
+            return children[index] as? T
         }
         return nil
     }
@@ -268,7 +268,7 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate, 
         bluetoothImageView.tintColor = UIColor.orange
 
         let message = "Connecting to the device.  The device can then be identified by a pulsing blue light."
-        let alert = UIAlertController(title: "Connecting", message: message, preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "Connecting", message: message, preferredStyle: UIAlertController.Style.alert)
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: { action in
             self.closeDevice(item: item)
         })
@@ -330,7 +330,7 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate, 
         }
 
         let message = "Do you want to use the device indicated by its pulsing blue light?"
-        let alert = UIAlertController(title: "Use Device?", message: message, preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "Use Device?", message: message, preferredStyle: UIAlertController.Style.alert)
         let okAction = UIAlertAction(title: "Ok", style: .default, handler: { action in
             self.useDevice(fireflyIce: fireflyIce)
         })
@@ -351,7 +351,7 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate, 
     
     func useDevice(fireflyIce: FDFireflyIce) {
         let message = "What name would you like to use for this device?"
-        let alert = UIAlertController(title: "Name Device", message: message, preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "Name Device", message: message, preferredStyle: UIAlertController.Style.alert)
         alert.addTextField { (textField: UITextField) -> Void in
             textField.text = fireflyIce.name
             textField.delegate = self
@@ -405,7 +405,7 @@ class ViewController: UIViewController, BluetoothObserver, UITextFieldDelegate, 
     }
     
     func showDevice(hardwareIdentifier: String, fireflyIce: FDFireflyIce) {
-        NSLog("show device \(fireflyIce.name)")
+        NSLog("show device \(String(describing: fireflyIce.name))")
         
         try? history.save(type: "showDevice",
                           value: ["hardwareIdentifier": hardwareIdentifier])

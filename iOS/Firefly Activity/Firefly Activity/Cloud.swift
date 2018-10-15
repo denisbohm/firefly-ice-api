@@ -37,9 +37,9 @@ class Cloud {
     
     class FileResult: File {
         
-        let recordID: CKRecordID
+        let recordID: CKRecord.ID
         
-        init(path: String, modificationDate: Date, recordID: CKRecordID) {
+        init(path: String, modificationDate: Date, recordID: CKRecord.ID) {
             self.recordID = recordID
             super.init(path: path, modificationDate: modificationDate)
         }
@@ -91,11 +91,11 @@ class Cloud {
         database.add(operation)
     }
 
-    private func modifyRecordsCompletion(records: [CKRecord]?, recordIDs: [CKRecordID]?, error: Error?) {
+    private func modifyRecordsCompletion(records: [CKRecord]?, recordIDs: [CKRecord.ID]?, error: Error?) {
         nextOperation(error: error)
     }
     
-    private func queueSave(file: File, recordID: CKRecordID? = nil) {
+    private func queueSave(file: File, recordID: CKRecord.ID? = nil) {
         let record: CKRecord
         if let recordID = recordID {
             record = CKRecord(recordType: fileRecordType, recordID: recordID)
@@ -134,7 +134,7 @@ class Cloud {
         }
     }
     
-    private func queryCompletion(_ cursor: CKQueryCursor?, _ error: Error?) {
+    private func queryCompletion(_ cursor: CKQueryOperation.Cursor?, _ error: Error?) {
         NSLog("Cloud query completion")
         if let error = error {
             Log.error(error)
@@ -146,7 +146,7 @@ class Cloud {
         }
     }
     
-    private func queryFiles(cursor: CKQueryCursor? = nil) {
+    private func queryFiles(cursor: CKQueryOperation.Cursor? = nil) {
         let operation: CKQueryOperation
         if let cursor = cursor {
             operation = CKQueryOperation(cursor: cursor)
