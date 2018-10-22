@@ -43,7 +43,8 @@
 enum {
     FDPullTaskErrorCodeCancelling,
     FDPullTaskErrorCodeException,
-    FDPullTaskErrorCodeCouldNotAcquireLock
+    FDPullTaskErrorCodeCouldNotAcquireLock,
+    FDPullTaskErrorCodeTimeout
 };
 
 @class FDPullTask;

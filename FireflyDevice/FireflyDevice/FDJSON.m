@@ -217,6 +217,9 @@
     if ([object isKindOfClass:[NSNumber class]]) {
         [self number:[((NSNumber *)object) doubleValue]];
     } else
+    if ([object isKindOfClass:[NSUUID class]]) {
+        [self string:[((NSUUID *)object) UUIDString]];
+    } else
     if ([[object class] conformsToProtocol:@protocol(FDJSONSerializable)]) {
         id<FDJSONSerializable> serializable = object;
         [serializable serialize:self];

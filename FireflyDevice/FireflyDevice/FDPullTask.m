@@ -47,12 +47,14 @@
 @property BOOL isActive;
 @property BOOL complete;
 @property NSTimer *timer;
+@property NSUInteger resyncs;
 
 // Wait time between pull attempts.  Starts at minWait.  On error backs off linearly until maxWait.
 // On success reverts to minWait.
 @property NSTimeInterval wait;
 @property NSTimeInterval minWait;
 @property NSTimeInterval maxWait;
+@property NSTimeInterval maxResyncs;
 
 @end
 
@@ -81,6 +83,7 @@
         _timeout = 60;
         _minWait = 60;
         _maxWait = 3600;
+        _maxResyncs = 3;
         _wait = _minWait;
         _pullAheadLimit = 8;
         _decoderByType = [NSMutableDictionary dictionary];
@@ -97,7 +100,12 @@
 - (void)timerFired:(NSTimer *)timer
 {
     NSLog(@"timeout waiting for sync data response");
-    [self resync];
+    if (++_resyncs <= _maxResyncs) {
+        [self resync];
+    } else {
+        NSError *error = [NSError errorWithDomain:FDPullTaskErrorDomain code:FDPullTaskErrorCodeTimeout userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"timeout waiting for sync data response", @"")}];
+        [self.fireflyIce.executor fail:self error:error];
+    }
 }
 
 - (void)cancelTimer
