@@ -49,22 +49,269 @@
 
 @end
 
-@interface FDFireflyIceChannelBLE () <CBPeripheralDelegate>
+@protocol FDFireflyIceChannelBLEPipeDelegate
 
-@property FDFireflyIceChannelStatus status;
+- (void)pipeReady;
+- (void)pipeReceived:(NSData *)data;
 
-@property CBUUID *serviceUUID;
+- (void)detour:(FDDetour *)detour error:(NSError *)error;
+- (void)writeValue:(NSData *)data forCharacteristic:(CBCharacteristic *)characteristic type:(CBCharacteristicWriteType)type;
+- (void)setNotifyValue:(BOOL)enabled forCharacteristic:(CBCharacteristic *)characteristic;
+
+@end
+
+@protocol FDFireflyIceChannelBLEPipe <NSObject>
+
+@property id<FDFireflyIceChannelBLEPipeDelegate> delegate;
+
+- (void)shutdown;
+- (void)send:(NSData *)data;
+
+- (void)didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error;
+- (void)didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic value:(NSData *)value error:(NSError *)error;
+- (void)didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error;
+- (void)didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error;
+
+@end
+
+@interface FDFireflyIceChannelBLEPipeCharacteristic: NSObject <FDFireflyIceChannelBLEPipe>
+
 @property CBUUID *characteristicUUID;
 @property CBUUID *characteristicNoResponseUUID;
 
-@property CBCentralManager *centralManager;
-@property CBPeripheral *peripheral;
 @property CBCharacteristic *characteristic;
 @property CBCharacteristic *characteristicNoResponse;
+
 @property FDDetour *detour;
 @property NSMutableArray *detourSources;
+
 @property NSUInteger writePending;
 @property NSUInteger writePendingLimit;
+
+@end
+
+@implementation FDFireflyIceChannelBLEPipeCharacteristic
+
+@synthesize delegate;
+
+- (id)init:(CBUUID *)characteristicUUID noResponse:(CBUUID *)characteristicNoResponseUUID
+{
+    if (self = [super init]) {
+        _characteristicUUID = characteristicUUID;
+        _characteristicNoResponseUUID = characteristicNoResponseUUID;
+        
+        _detour = [[FDDetour alloc] init];
+        _detourSources = [NSMutableArray array];
+
+        _writePendingLimit = 1;
+    }
+    return self;
+}
+
+- (void)shutdown
+{
+    [delegate setNotifyValue:NO forCharacteristic:_characteristic];
+    
+    _characteristic = nil;
+    _characteristicNoResponse = nil;
+    [_detour clear];
+    [_detourSources removeAllObjects];
+    _writePending = 0;
+    _writePendingLimit = 1;
+}
+
+- (void)didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
+{
+    _writePending = 0;
+    [self checkWrite];
+}
+
+- (void)didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic value:(NSData *)value error:(NSError *)error
+{
+    [_detour detourEvent:value];
+    if (_detour.state == FDDetourStateSuccess) {
+        [delegate pipeReceived:_detour.data];
+        [_detour clear];
+    } else
+    if (_detour.state == FDDetourStateError) {
+        [delegate detour:_detour error:_detour.error];
+        [_detour clear];
+    }
+}
+
+- (void)checkWrite
+{
+    while ((_writePending < _writePendingLimit) && (_detourSources.count > 0)) {
+        FDDetourSource *detourSource = [_detourSources objectAtIndex:0];
+        NSData *subdata = [detourSource next];
+        if (subdata != nil) {
+            ++_writePending;
+            if (_writePending < _writePendingLimit) {
+                [delegate writeValue:subdata forCharacteristic:_characteristicNoResponse type:CBCharacteristicWriteWithoutResponse];
+            } else {
+                [delegate writeValue:subdata forCharacteristic:_characteristic type:CBCharacteristicWriteWithResponse];
+            }
+        } else {
+            [_detourSources removeObjectAtIndex:0];
+        }
+    }
+}
+
+- (void)send:(NSData *)data
+{
+    [_detourSources addObject:[[FDDetourSource alloc] initWithSize:20 data:data]];
+    [self checkWrite];
+}
+
+- (void)didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
+{
+    if (characteristic == _characteristic) {
+        [delegate pipeReady];
+    }
+}
+
+- (void)didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error
+{
+    for (CBCharacteristic *characteristic in service.characteristics) {
+        if ([_characteristicUUID isEqual:characteristic.UUID]) {
+            _characteristic = characteristic;
+            
+            [delegate setNotifyValue:YES forCharacteristic:_characteristic];
+        } else
+        if ([_characteristicNoResponseUUID isEqual:characteristic.UUID]) {
+            NSLog(@"found characteristic no response");
+            _characteristicNoResponse = characteristic;
+        }
+    }
+    if ((_characteristic != nil) && (_characteristicNoResponse != nil)) {
+        _writePendingLimit = 12;
+    }
+}
+
+@end
+
+@interface FDFireflyIceChannelBLEPipeL2CAP: NSObject <FDFireflyIceChannelBLEPipe, NSStreamDelegate>
+
+@property CBL2CAPChannel *l2capChannel;
+@property NSMutableData *dataToSend;
+
+@end
+
+@implementation FDFireflyIceChannelBLEPipeL2CAP
+
+@synthesize delegate;
+
+- (id)init
+{
+    if (self = [super init]) {
+        _dataToSend = [NSMutableData data];
+    }
+    return self;
+}
+
+- (void)open:(CBL2CAPChannel *)l2capChannel
+{
+    _l2capChannel = l2capChannel;
+    
+    _l2capChannel.inputStream.delegate = self;
+    [_l2capChannel.inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    [_l2capChannel.inputStream open];
+    
+    _l2capChannel.outputStream.delegate = self;
+    [_l2capChannel.outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    [_l2capChannel.outputStream open];
+}
+
+- (void)shutdown
+{
+    _l2capChannel.inputStream.delegate = nil;
+    [_l2capChannel.inputStream close];
+    [_l2capChannel.inputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+
+    _l2capChannel.outputStream.delegate = nil;
+    [_l2capChannel.outputStream close];
+    [_l2capChannel.outputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    
+    _l2capChannel = nil;
+}
+
+- (void)checkSend
+{
+    while ((_dataToSend.length > 0) && _l2capChannel.outputStream.hasSpaceAvailable) {
+        NSInteger n = [_l2capChannel.outputStream write:_dataToSend.bytes maxLength:_dataToSend.length];
+        NSLog(@"L2CAP TX %ld", (long)n);
+        if (n > 0) {
+            [_dataToSend replaceBytesInRange:NSMakeRange(0, n) withBytes:nil length:0];
+        }
+    }
+}
+
+- (void)send:(NSData *)data
+{
+    [_dataToSend appendData:data];
+    [self checkSend];
+}
+
+- (void)stream:(NSStream *)stream handleEvent:(NSStreamEvent)eventCode
+{
+    switch (eventCode) {
+        case NSStreamEventNone:
+            NSLog(@"NSStreamEventNone");
+            break;
+        case NSStreamEventOpenCompleted:
+            NSLog(@"NSStreamEventOpenCompleted");
+            break;
+        case NSStreamEventHasBytesAvailable: {
+            NSLog(@"NSStreamEventHasBytesAvailable");
+            while (_l2capChannel.inputStream.hasBytesAvailable) {
+                uint8_t buffer[512];
+                NSInteger n = [_l2capChannel.inputStream read:buffer maxLength:sizeof(buffer)];
+                NSLog(@"L2CAP RX %ld", (long)n);
+                if (n > 0) {
+                    [delegate pipeReceived:[NSData dataWithBytes:buffer length:n]];
+                }
+            }
+        } break;
+        case NSStreamEventHasSpaceAvailable:
+            NSLog(@"NSStreamEventHasSpaceAvailable");
+            [self checkSend];
+            break;
+        case NSStreamEventErrorOccurred:
+            NSLog(@"NSStreamEventErrorOccurred");
+            break;
+        case NSStreamEventEndEncountered:
+            NSLog(@"NSStreamEventEndEncountered");
+            break;
+    }
+}
+
+- (void)didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error {
+}
+
+- (void)didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic value:(NSData *)value error:(NSError *)error {
+}
+
+- (void)didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error {
+}
+
+- (void)didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error {
+}
+
+@end
+
+@interface FDFireflyIceChannelBLE () <CBPeripheralDelegate, FDFireflyIceChannelBLEPipeDelegate>
+
+@property FDFireflyIceChannelStatus status;
+@property CBUUID *serviceUUID;
+@property CBCentralManager *centralManager;
+@property CBPeripheral *peripheral;
+
+@property NSMutableDictionary<NSNumber *, CBL2CAPChannel *> *l2capChannelByPsm;
+
+@property FDFireflyIceChannelBLEPipeCharacteristic *pipeCharacteristic;
+@property FDFireflyIceChannelBLEPipeL2CAP *pipeL2cap;
+
+@property id<FDFireflyIceChannelBLEPipe> pipe;
 
 @end
 
@@ -72,23 +319,40 @@
 
 @synthesize log;
 
++ (NSString *)CBUUIDString:(CBUUID *)uuid;
+{
+    NSData *data = uuid.data;
+    
+    NSUInteger bytesToConvert = [data length];
+    const unsigned char *uuidBytes = [data bytes];
+    NSMutableString *outputString = [NSMutableString stringWithCapacity:16];
+    
+    for (NSUInteger currentByteIndex = 0; currentByteIndex < bytesToConvert; currentByteIndex++)
+    {
+        switch (currentByteIndex)
+        {
+            case 3:
+            case 5:
+            case 7:
+            case 9:[outputString appendFormat:@"%02x-", uuidBytes[currentByteIndex]]; break;
+            default:[outputString appendFormat:@"%02x", uuidBytes[currentByteIndex]];
+        }
+        
+    }
+    
+    return outputString;
+}
+
 - (id)initWithCentralManager:(CBCentralManager *)centralManager withPeripheral:(CBPeripheral *)peripheral withServiceUUID:(CBUUID *)serviceUUID
 {
     if (self = [super init]) {
         _serviceUUID = serviceUUID;
-        NSString *baseUUID = [FDFireflyIceChannelBLE CBUUIDString:serviceUUID];
-        _characteristicUUID = [CBUUID UUIDWithString:[baseUUID stringByReplacingCharactersInRange:NSMakeRange(4, 4) withString:@"0002"]];
-        _characteristicNoResponseUUID = [CBUUID UUIDWithString:[baseUUID stringByReplacingCharactersInRange:NSMakeRange(4, 4) withString:@"0003"]];
-
-        _peripheralObservable = [FDFireflyIceChannelBLEPeripheralObservable peripheralObservable];
-        [_peripheralObservable addObserver:self];
 
         _centralManager = centralManager;
         _peripheral = peripheral;
+        _peripheralObservable = [FDFireflyIceChannelBLEPeripheralObservable peripheralObservable];
+        [_peripheralObservable addObserver:self];
         _peripheral.delegate = _peripheralObservable;
-        _detour = [[FDDetour alloc] init];
-        _detourSources = [NSMutableArray array];
-        
         switch (_peripheral.state) {
             case CBPeripheralStateConnected:
                 _status = FDFireflyIceChannelStatusOpen;
@@ -102,10 +366,19 @@
             case CBPeripheralStateDisconnected:
                 _status = FDFireflyIceChannelStatusClosed;
                 break;
-            
+                
         }
+
+        NSString *baseUUID = [FDFireflyIceChannelBLE CBUUIDString:serviceUUID];
+        CBUUID *characteristicUUID = [CBUUID UUIDWithString:[baseUUID stringByReplacingCharactersInRange:NSMakeRange(4, 4) withString:@"0002"]];
+        CBUUID *characteristicNoResponseUUID = [CBUUID UUIDWithString:[baseUUID stringByReplacingCharactersInRange:NSMakeRange(4, 4) withString:@"0003"]];
+        _pipeCharacteristic = [[FDFireflyIceChannelBLEPipeCharacteristic alloc] init:characteristicUUID noResponse:characteristicNoResponseUUID];
+        _pipeCharacteristic.delegate = self;
+
+        _pipeL2cap = [[FDFireflyIceChannelBLEPipeL2CAP alloc] init];
+        _pipeL2cap.delegate = self;
         
-        _writePendingLimit = 1;
+        _l2capChannelByPsm = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -124,20 +397,52 @@
     }
 }
 
-- (void)shutdown
+- (void)pipeReady
+{
+    _pipe = _pipeCharacteristic;
+    
+    self.status = FDFireflyIceChannelStatusOpen;
+    
+    if ([_delegate respondsToSelector:@selector(fireflyIceChannel:status:)]) {
+        [_delegate fireflyIceChannel:self status:self.status];
+    }
+}
+
+- (void)pipeReceived:(NSData *)data
+{
+    if ([_delegate respondsToSelector:@selector(fireflyIceChannelPacket:data:)]) {
+        [_delegate fireflyIceChannelPacket:self data:data];
+    }
+}
+
+- (void)detour:(FDDetour *)detour error:(NSError *)error {
+    if ([_delegate respondsToSelector:@selector(fireflyIceChannel:detour:error:)]) {
+        [_delegate fireflyIceChannel:self detour:detour error:error];
+    }
+}
+
+- (void)writeValue:(NSData *)data forCharacteristic:(CBCharacteristic *)characteristic type:(CBCharacteristicWriteType)type
+{
+    [_peripheral writeValue:data forCharacteristic:characteristic type:type];
+}
+
+- (void)setNotifyValue:(BOOL)enabled forCharacteristic:(CBCharacteristic *)characteristic
 {
     if (
-        (![_peripheral respondsToSelector:@selector(state)] || (_peripheral.state == CBPeripheralStateConnected)) &&
-        (_characteristic != nil)
+        ([_peripheral respondsToSelector:@selector(state)] && (_peripheral.state != CBPeripheralStateConnected)) ||
+        (characteristic == nil)
     ) {
-        [_peripheral setNotifyValue:NO forCharacteristic:_characteristic];
+        return;
     }
-    _characteristic = nil;
-    _characteristicNoResponse = nil;
-    [_detour clear];
-    [_detourSources removeAllObjects];
-    _writePending = 0;
-    _writePendingLimit = 1;
+
+    [_peripheral setNotifyValue:enabled forCharacteristic:characteristic];
+}
+
+- (void)shutdown
+{
+    [_pipeCharacteristic shutdown];
+    [_pipeL2cap shutdown];
+    _pipe = nil;
 }
 
 - (void)close
@@ -173,9 +478,8 @@
 
 - (void)didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 {
-//    FDFireflyDeviceLogDebug(@"didWriteValueForCharacteristic %@", error);
-    _writePending = 0;
-    [self checkWrite];
+    [_pipeCharacteristic didWriteValueForCharacteristic:characteristic error:error];
+    [_pipeL2cap didWriteValueForCharacteristic:characteristic error:error];
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
@@ -186,63 +490,30 @@
     });
 }
 
-- (void)didUpdateValueForCharacteristic:(NSData *)value error:(NSError *)error
+- (void)didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic value:(NSData *)value error:(NSError *)error
 {
-//    FDFireflyDeviceLogDebug(@"didUpdateValueForCharacteristic %@ %@", value, error);
-    [_detour detourEvent:value];
-    if (_detour.state == FDDetourStateSuccess) {
-        if ([_delegate respondsToSelector:@selector(fireflyIceChannelPacket:data:)]) {
-            [_delegate fireflyIceChannelPacket:self data:_detour.data];
-        }
-        [_detour clear];
-    } else
-    if (_detour.state == FDDetourStateError) {
-        if ([_delegate respondsToSelector:@selector(fireflyIceChannel:detour:error:)]) {
-            [_delegate fireflyIceChannel:self detour:_detour error:_detour.error];
-        }
-        [_detour clear];
-    }
+    [_pipeCharacteristic didUpdateValueForCharacteristic:characteristic value:value error:error];
+    [_pipeL2cap didUpdateValueForCharacteristic:characteristic value:value error:error];
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 {
-    if (characteristic == _characteristic) {
-        NSData *data = characteristic.value;
-        __FDWeak FDFireflyIceChannelBLE *weakSelf = self;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [weakSelf didUpdateValueForCharacteristic:data error:error];
-        });
-    }
-}
-
-- (void)checkWrite
-{
-    while ((_writePending < _writePendingLimit) && (_detourSources.count > 0)) {
-        FDDetourSource *detourSource = [_detourSources objectAtIndex:0];
-        NSData *subdata = [detourSource next];
-        if (subdata != nil) {
-            ++_writePending;
-            if (_writePending < _writePendingLimit) {
-                [_peripheral writeValue:subdata forCharacteristic:_characteristicNoResponse type:CBCharacteristicWriteWithoutResponse];
-            } else {
-                [_peripheral writeValue:subdata forCharacteristic:_characteristic type:CBCharacteristicWriteWithResponse];
-            }
-        } else {
-            [_detourSources removeObjectAtIndex:0];
-        }
-    }
+    NSData *data = characteristic.value;
+    __FDWeak FDFireflyIceChannelBLE *weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [weakSelf didUpdateValueForCharacteristic:characteristic value:data error:error];
+    });
 }
 
 - (void)fireflyIceChannelSend:(NSData *)data
 {
-    [_detourSources addObject:[[FDDetourSource alloc] initWithSize:20 data:data]];
-    [self checkWrite];
+    [_pipe send:data];
 }
 
 - (void)didDiscoverServices:(NSError *)error
 {
+    NSLog(@"didDiscoverServices");
     for (CBService *service in _peripheral.services) {
-//        FDFireflyDeviceLogDebug(@"didDiscoverService %@", [FDFireflyIceChannelBLE CBUUIDString:service.UUID]);
         if ([service.UUID isEqual:_serviceUUID]) {
             [_peripheral discoverCharacteristics:nil/*@[_characteristicUUID]*/ forService:service];
         }
@@ -257,40 +528,10 @@
     });
 }
 
-+ (NSString *)CBUUIDString:(CBUUID *)uuid;
-{
-    NSData *data = uuid.data;
-    
-    NSUInteger bytesToConvert = [data length];
-    const unsigned char *uuidBytes = [data bytes];
-    NSMutableString *outputString = [NSMutableString stringWithCapacity:16];
-    
-    for (NSUInteger currentByteIndex = 0; currentByteIndex < bytesToConvert; currentByteIndex++)
-    {
-        switch (currentByteIndex)
-        {
-            case 3:
-            case 5:
-            case 7:
-            case 9:[outputString appendFormat:@"%02x-", uuidBytes[currentByteIndex]]; break;
-            default:[outputString appendFormat:@"%02x", uuidBytes[currentByteIndex]];
-        }
-        
-    }
-    
-    return outputString;
-}
-
 - (void)didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 {
-//    NSLog(@"didUpdateNotificationStateForCharacteristic");
-    
-    if (characteristic == _characteristic) {
-        self.status = FDFireflyIceChannelStatusOpen;
-        if ([_delegate respondsToSelector:@selector(fireflyIceChannel:status:)]) {
-            [_delegate fireflyIceChannel:self status:self.status];
-        }
-    }
+    [_pipeCharacteristic didUpdateNotificationStateForCharacteristic:characteristic error:error];
+    [_pipeL2cap didUpdateNotificationStateForCharacteristic:characteristic error:error];
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
@@ -303,23 +544,8 @@
 
 - (void)didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error
 {
-//    FDFireflyDeviceLogDebug(@"didDiscoverCharacteristicsForService %@", service.UUID);
-    for (CBCharacteristic *characteristic in service.characteristics) {
-//        FDFireflyDeviceLogDebug(@"didDiscoverServiceCharacteristic %@", [FDFireflyIceChannelBLE CBUUIDString:characteristic.UUID]);
-        if ([_characteristicUUID isEqual:characteristic.UUID]) {
-//            FDFireflyDeviceLogDebug(@"found characteristic");
-            _characteristic = characteristic;
-            
-            [_peripheral setNotifyValue:YES forCharacteristic:_characteristic];
-        } else
-        if ([_characteristicNoResponseUUID isEqual:characteristic.UUID]) {
-            NSLog(@"found characteristic no response");
-            _characteristicNoResponse = characteristic;
-        }
-    }
-    if ((_characteristic != nil) && (_characteristicNoResponse != nil)) {
-        _writePendingLimit = 12;
-    }
+    [_pipeCharacteristic didDiscoverCharacteristicsForService:service error:error];
+    [_pipeL2cap didDiscoverCharacteristicsForService:service error:error];
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error
@@ -352,6 +578,23 @@
     __FDWeak FDFireflyIceChannelBLE *weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         [weakSelf didUpdateRSSI:RSSI error:error];
+    });
+}
+
+- (void)didOpenL2CAPChannel:(CBL2CAPChannel *)channel error:(NSError *)error
+{
+    NSNumber *key = [NSNumber numberWithUnsignedShort:channel.PSM];
+    _l2capChannelByPsm[key] = channel;
+    
+    [_pipeL2cap open:channel];
+    _pipe = _pipeL2cap;
+}
+
+- (void)peripheral:(CBPeripheral *)peripheral didOpenL2CAPChannel:(CBL2CAPChannel *)channel error:(NSError *)error
+{
+    __FDWeak FDFireflyIceChannelBLE *weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [weakSelf didOpenL2CAPChannel:channel error:error];
     });
 }
 
