@@ -7,6 +7,7 @@
 //
 
 #import <FireflyDevice/FDBinary.h>
+#import <FireflyDevice/FDCobs.h>
 #import <FireflyDevice/FDDetour.h>
 #import <FireflyDevice/FDDetourSource.h>
 #import <FireflyDevice/FDFireflyIceChannelBLE.h>
@@ -194,6 +195,7 @@
 
 @property CBL2CAPChannel *l2capChannel;
 @property NSMutableData *dataToSend;
+@property NSMutableData *dataReceived;
 
 @end
 
@@ -205,6 +207,7 @@
 {
     if (self = [super init]) {
         _dataToSend = [NSMutableData data];
+        _dataReceived = [NSMutableData data];
     }
     return self;
 }
@@ -248,8 +251,28 @@
 
 - (void)send:(NSData *)data
 {
-    [_dataToSend appendData:data];
+    NSData *encodedData = [FDCobs encode:data];
+    [_dataToSend appendData:encodedData];
+    uint8_t delimiter = 0;
+    [_dataToSend appendBytes:&delimiter length:1];
     [self checkSend];
+}
+
+- (void)received:(NSData *)data
+{
+    [_dataReceived appendData:data];
+    
+    uint8_t *bytes = (uint8_t *)_dataReceived.bytes;
+    for (NSUInteger i = 0; i < _dataReceived.length; ++i) {
+        uint8_t byte = bytes[i];
+        if (byte == 0x00) {
+            NSData *encoded = [_dataReceived subdataWithRange:NSMakeRange(0, i)];
+            [_dataReceived replaceBytesInRange:NSMakeRange(0, i + 1) withBytes:0 length:0];
+            i = 0;
+            NSData *decoded = [FDCobs decode:encoded];
+            [delegate pipeReceived:decoded];
+        }
+    }
 }
 
 - (void)stream:(NSStream *)stream handleEvent:(NSStreamEvent)eventCode
@@ -268,7 +291,7 @@
                 NSInteger n = [_l2capChannel.inputStream read:buffer maxLength:sizeof(buffer)];
                 NSLog(@"L2CAP RX %ld", (long)n);
                 if (n > 0) {
-                    [delegate pipeReceived:[NSData dataWithBytes:buffer length:n]];
+                    [self received:[NSData dataWithBytes:buffer length:n]];
                 }
             }
         } break;
