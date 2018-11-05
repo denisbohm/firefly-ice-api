@@ -262,8 +262,8 @@
 {
     [_dataReceived appendData:data];
     
-    uint8_t *bytes = (uint8_t *)_dataReceived.bytes;
     for (NSUInteger i = 0; i < _dataReceived.length; ++i) {
+        uint8_t *bytes = (uint8_t *)_dataReceived.bytes;
         uint8_t byte = bytes[i];
         if (byte == 0x00) {
             NSData *encoded = [_dataReceived subdataWithRange:NSMakeRange(0, i)];
