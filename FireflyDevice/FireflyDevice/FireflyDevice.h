@@ -11,6 +11,7 @@
 #import <FireflyDevice/FDHardwareId.h>
 #import <FireflyDevice/FDBundle.h>
 #import <FireflyDevice/FDBundleManager.h>
+#import <FireflyDevice/FDCobs.h>
 #import <FireflyDevice/FDFireflyDeviceLogger.h>
 #import <FireflyDevice/FDFileLog.h>
 #import <FireflyDevice/FDBinary.h>
