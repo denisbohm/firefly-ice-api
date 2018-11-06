@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		9231F5791AFD4668009FE970 /* FDVMADecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 9231F5771AFD4668009FE970 /* FDVMADecoder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9231F57A1AFD4668009FE970 /* FDVMADecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9231F5781AFD4668009FE970 /* FDVMADecoder.m */; };
+		924B52AB2191FBC300537A01 /* FDCobs.m in Sources */ = {isa = PBXBuildFile; fileRef = 924B52A92191FBC200537A01 /* FDCobs.m */; };
+		924B52AC2191FBC300537A01 /* FDCobs.h in Headers */ = {isa = PBXBuildFile; fileRef = 924B52AA2191FBC300537A01 /* FDCobs.h */; };
 		928ACBAD1A93E62D00799E83 /* FDGZIP.h in Headers */ = {isa = PBXBuildFile; fileRef = 928ACBA91A93E62D00799E83 /* FDGZIP.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		928ACBAE1A93E62D00799E83 /* FDGZIP.m in Sources */ = {isa = PBXBuildFile; fileRef = 928ACBAA1A93E62D00799E83 /* FDGZIP.m */; };
 		928ACBAF1A93E62D00799E83 /* FDPullTask.h in Headers */ = {isa = PBXBuildFile; fileRef = 928ACBAB1A93E62D00799E83 /* FDPullTask.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -87,6 +89,8 @@
 /* Begin PBXFileReference section */
 		9231F5771AFD4668009FE970 /* FDVMADecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FDVMADecoder.h; path = ../../../FireflyDevice/FireflyDevice/FDVMADecoder.h; sourceTree = "<group>"; };
 		9231F5781AFD4668009FE970 /* FDVMADecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FDVMADecoder.m; path = ../../../FireflyDevice/FireflyDevice/FDVMADecoder.m; sourceTree = "<group>"; };
+		924B52A92191FBC200537A01 /* FDCobs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FDCobs.m; path = ../../../FireflyDevice/FireflyDevice/FDCobs.m; sourceTree = "<group>"; };
+		924B52AA2191FBC300537A01 /* FDCobs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FDCobs.h; path = ../../../FireflyDevice/FireflyDevice/FDCobs.h; sourceTree = "<group>"; };
 		928ACBA91A93E62D00799E83 /* FDGZIP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FDGZIP.h; path = ../../../FireflyDevice/FireflyDevice/FDGZIP.h; sourceTree = "<group>"; };
 		928ACBAA1A93E62D00799E83 /* FDGZIP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FDGZIP.m; path = ../../../FireflyDevice/FireflyDevice/FDGZIP.m; sourceTree = "<group>"; };
 		928ACBAB1A93E62D00799E83 /* FDPullTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FDPullTask.h; path = ../../../FireflyDevice/FireflyDevice/FDPullTask.h; sourceTree = "<group>"; };
@@ -232,6 +236,8 @@
 		92F767841A7EE83D00166284 /* common */ = {
 			isa = PBXGroup;
 			children = (
+				924B52AA2191FBC300537A01 /* FDCobs.h */,
+				924B52A92191FBC200537A01 /* FDCobs.m */,
 				928ACBA91A93E62D00799E83 /* FDGZIP.h */,
 				928ACBAA1A93E62D00799E83 /* FDGZIP.m */,
 				9231F5771AFD4668009FE970 /* FDVMADecoder.h */,
@@ -319,6 +325,7 @@
 				92F767EC1A7EE86400166284 /* FDHardwareId.h in Headers */,
 				92F767F21A7EE86400166284 /* FDIntelHex.h in Headers */,
 				92F767D21A7EE86400166284 /* FDFileLog.h in Headers */,
+				924B52AC2191FBC300537A01 /* FDCobs.h in Headers */,
 				92F767F61A7EE86400166284 /* FDObservable.h in Headers */,
 				92F767CA1A7EE86400166284 /* FDCrypto.h in Headers */,
 				92F767F41A7EE86400166284 /* FDJSON.h in Headers */,
@@ -480,6 +487,7 @@
 				92F767E51A7EE86400166284 /* FDFireflyIceManager.m in Sources */,
 				92F767CD1A7EE86400166284 /* FDDetour.m in Sources */,
 				92F767F31A7EE86400166284 /* FDIntelHex.m in Sources */,
+				924B52AB2191FBC300537A01 /* FDCobs.m in Sources */,
 				92F767F91A7EE86400166284 /* FDSyncTask.m in Sources */,
 				92F767D51A7EE86400166284 /* FDFireflyDeviceLogger.m in Sources */,
 				92F767D11A7EE86400166284 /* FDExecutor.m in Sources */,
