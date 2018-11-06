@@ -21,7 +21,7 @@
 + (NSData *)encode:(NSData *)srcData {
     NSMutableData *dstData = [NSMutableData data];
     uint32_t dst = 0;
-    uint8_t code_index = dst++;
+    uint32_t code_index = dst++;
     uint8_t code = 1;
     const uint8_t *src = [srcData bytes];
     const uint8_t *src_end = src + srcData.length;

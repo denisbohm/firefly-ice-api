@@ -242,7 +242,7 @@
 {
     while ((_dataToSend.length > 0) && _l2capChannel.outputStream.hasSpaceAvailable) {
         NSInteger n = [_l2capChannel.outputStream write:_dataToSend.bytes maxLength:_dataToSend.length];
-        NSLog(@"L2CAP TX %ld", (long)n);
+        NSLog(@"L2CAP TX %ld %@", (long)n, [_dataToSend debugDescription]);
         if (n > 0) {
             [_dataToSend replaceBytesInRange:NSMakeRange(0, n) withBytes:nil length:0];
         }
@@ -251,6 +251,7 @@
 
 - (void)send:(NSData *)data
 {
+    NSLog(@"L2CAP send %@", [data debugDescription]);
     NSData *encodedData = [FDCobs encode:data];
     [_dataToSend appendData:encodedData];
     uint8_t delimiter = 0;
@@ -270,9 +271,12 @@
             [_dataReceived replaceBytesInRange:NSMakeRange(0, i + 1) withBytes:0 length:0];
             i = 0;
             NSData *decoded = [FDCobs decode:encoded];
+            NSLog(@"L2CAP process %@", [decoded debugDescription]);
             [delegate pipeReceived:decoded];
         }
     }
+    
+    NSLog(@"L2CAP received %@", [_dataReceived debugDescription]);
 }
 
 - (void)stream:(NSStream *)stream handleEvent:(NSStreamEvent)eventCode

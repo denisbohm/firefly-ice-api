@@ -27,6 +27,11 @@
 - (void)encodeDecode:(uint8_t *)src_bytes length:(size_t)src_length {
     NSData *srcData = [NSData dataWithBytes:src_bytes length:src_length];
     NSData *encodedData = [FDCobs encode:srcData];
+    const uint8_t *encodedBytes = encodedData.bytes;
+    for (int i = 0; i < encodedData.length; ++i) {
+        uint8_t encodedByte = encodedBytes[i];
+        XCTAssert(encodedByte != 0);
+    }
     NSData *decodedData = [FDCobs decode:encodedData];
     XCTAssert([srcData isEqualToData:decodedData]);
 }
@@ -46,6 +51,12 @@
     
     uint8_t example5[] = {0x11, 0x00, 0x00, 0x00};
     [self encodeDecode:example5 length:sizeof(example5)];
+
+    uint8_t example6[300] = {0x00};
+    for (int i = 0; i < 250; ++i) {
+        example6[i] = i;
+    }
+    [self encodeDecode:example6 length:sizeof(example6)];
 }
 
 @end
