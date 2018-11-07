@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Firefly Design. All rights reserved.
 //
 
-#import "FDVMADecoder.h"
+#import <FireflyDevice/FDVMADecoder.h>
 
 #import <FireflyDevice/FDBinary.h>
 #import <FireflyDevice/FDFireflyDeviceLogger.h>

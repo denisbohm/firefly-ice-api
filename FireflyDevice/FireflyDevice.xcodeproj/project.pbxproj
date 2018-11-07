@@ -51,6 +51,10 @@
 		9261C35C18AF2E8D00CDB9F2 /* FDBundleManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9261C35918AF2E8D00CDB9F2 /* FDBundleManager.m */; };
 		9261C35D18AF2EE900CDB9F2 /* FDBundleManager.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9261C35818AF2E8D00CDB9F2 /* FDBundleManager.h */; };
 		926F7BC419D0E599003124D1 /* FireflyIce-41.hex in Resources */ = {isa = PBXBuildFile; fileRef = 92222FB119D0DD5700486C77 /* FireflyIce-41.hex */; };
+		927108D221936DAA007C4584 /* FDVMADecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 927108CE21936DAA007C4584 /* FDVMADecoder.m */; };
+		927108D321936DAA007C4584 /* FDPullTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 927108D121936DAA007C4584 /* FDPullTask.m */; };
+		927108D421936E14007C4584 /* FDPullTask.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 927108CF21936DAA007C4584 /* FDPullTask.h */; };
+		927108D521936E1B007C4584 /* FDVMADecoder.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 927108D021936DAA007C4584 /* FDVMADecoder.h */; };
 		927F3DB717FA20A200C933DD /* FDFireflyIceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 927F3DB617FA20A200C933DD /* FDFireflyIceManager.m */; };
 		927F3DBC17FA4F0B00C933DD /* FDSyncTask.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 92F863F317F3B4E0000E23AF /* FDSyncTask.h */; };
 		927F3DBD17FA4F0B00C933DD /* FDFireflyIceManager.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 927F3DB517FA20A200C933DD /* FDFireflyIceManager.h */; };
@@ -79,6 +83,10 @@
 		929EF50317EA07D60044F6F9 /* FDBinary.m in Sources */ = {isa = PBXBuildFile; fileRef = 929EF50017EA07D60044F6F9 /* FDBinary.m */; };
 		929EF50417EA07D60044F6F9 /* FDCrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = 929EF50217EA07D60044F6F9 /* FDCrypto.m */; };
 		929EF50717EA0F420044F6F9 /* FDIntelHex.m in Sources */ = {isa = PBXBuildFile; fileRef = 929EF50617EA0F420044F6F9 /* FDIntelHex.m */; };
+		92A9C21521936F4D0036AC55 /* FDPullTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 927108D121936DAA007C4584 /* FDPullTask.m */; };
+		92A9C21621936F4D0036AC55 /* FDVMADecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 927108CE21936DAA007C4584 /* FDVMADecoder.m */; };
+		92A9C21721936F5F0036AC55 /* FDPullTask.h in Headers */ = {isa = PBXBuildFile; fileRef = 927108CF21936DAA007C4584 /* FDPullTask.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		92A9C21821936F5F0036AC55 /* FDVMADecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 927108D021936DAA007C4584 /* FDVMADecoder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		92D7338517EAB5DA007A1254 /* FDBinary.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 929EF4FF17EA07D60044F6F9 /* FDBinary.h */; };
 		92D7338617EAB5DA007A1254 /* FDCrypto.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 929EF50117EA07D60044F6F9 /* FDCrypto.h */; };
 		92D7338717EAB5DA007A1254 /* FDDetour.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 929EF4E117EA06C10044F6F9 /* FDDetour.h */; };
@@ -179,6 +187,8 @@
 			dstPath = "include/${PRODUCT_NAME}";
 			dstSubfolderSpec = 16;
 			files = (
+				927108D521936E1B007C4584 /* FDVMADecoder.h in CopyFiles */,
+				927108D421936E14007C4584 /* FDPullTask.h in CopyFiles */,
 				9244664D2191F3F600749864 /* FDCobs.h in CopyFiles */,
 				922931ED18C3D580007F8514 /* FDHardwareId.h in CopyFiles */,
 				92EB9F2118B93C6000F105CE /* FDFireflyIceDeviceMock.h in CopyFiles */,
@@ -240,6 +250,10 @@
 		9261C34818AEE6BF00CDB9F2 /* FireflyDevice-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "FireflyDevice-Info.plist"; sourceTree = "<group>"; };
 		9261C35818AF2E8D00CDB9F2 /* FDBundleManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDBundleManager.h; sourceTree = "<group>"; };
 		9261C35918AF2E8D00CDB9F2 /* FDBundleManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDBundleManager.m; sourceTree = "<group>"; };
+		927108CE21936DAA007C4584 /* FDVMADecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDVMADecoder.m; sourceTree = "<group>"; };
+		927108CF21936DAA007C4584 /* FDPullTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDPullTask.h; sourceTree = "<group>"; };
+		927108D021936DAA007C4584 /* FDVMADecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDVMADecoder.h; sourceTree = "<group>"; };
+		927108D121936DAA007C4584 /* FDPullTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDPullTask.m; sourceTree = "<group>"; };
 		927F3DB517FA20A200C933DD /* FDFireflyIceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFireflyIceManager.h; sourceTree = "<group>"; };
 		927F3DB617FA20A200C933DD /* FDFireflyIceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFireflyIceManager.m; sourceTree = "<group>"; };
 		9283B51F1889B85B00F3A3BE /* FDWeak.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDWeak.h; sourceTree = "<group>"; };
@@ -458,10 +472,14 @@
 				9231EBB118871342003C78AC /* FDJSON.m */,
 				929EF4F317EA06C10044F6F9 /* FDObservable.h */,
 				929EF4F417EA06C10044F6F9 /* FDObservable.m */,
+				927108CF21936DAA007C4584 /* FDPullTask.h */,
+				927108D121936DAA007C4584 /* FDPullTask.m */,
 				92F863F317F3B4E0000E23AF /* FDSyncTask.h */,
 				92F863F417F3B4E0000E23AF /* FDSyncTask.m */,
 				92DF13FA180B047400A1B849 /* FDUSBHIDMonitor.h */,
 				92DF13FB180B047400A1B849 /* FDUSBHIDMonitor.m */,
+				927108D021936DAA007C4584 /* FDVMADecoder.h */,
+				927108CE21936DAA007C4584 /* FDVMADecoder.m */,
 				9283B51F1889B85B00F3A3BE /* FDWeak.h */,
 				929EF4BE17EA06580044F6F9 /* FireflyDevice.h */,
 				929EF4C017EA06580044F6F9 /* FireflyDevice.m */,
@@ -549,6 +567,8 @@
 				92376C3918B8FE9800A67A0B /* FDFireflyIceChannelMock.h in Headers */,
 				9244664E2191F40900749864 /* FDCobs.h in Headers */,
 				922F8E61182D5D3100DC853F /* FireflyDevice.h in Headers */,
+				92A9C21721936F5F0036AC55 /* FDPullTask.h in Headers */,
+				92A9C21821936F5F0036AC55 /* FDVMADecoder.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -762,6 +782,8 @@
 				929EF4FB17EA06C10044F6F9 /* FDFireflyIceCoder.m in Sources */,
 				929EF4FC17EA06C10044F6F9 /* FDFireflyIceTaskSteps.m in Sources */,
 				929EF4FD17EA06C10044F6F9 /* FDFirmwareUpdateTask.m in Sources */,
+				927108D221936DAA007C4584 /* FDVMADecoder.m in Sources */,
+				927108D321936DAA007C4584 /* FDPullTask.m in Sources */,
 				92EAA71C1801CD24004DADFC /* FDHelloTask.m in Sources */,
 				929EF4FE17EA06C10044F6F9 /* FDObservable.m in Sources */,
 				929EF50317EA07D60044F6F9 /* FDBinary.m in Sources */,
@@ -786,6 +808,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				92A9C21521936F4D0036AC55 /* FDPullTask.m in Sources */,
+				92A9C21621936F4D0036AC55 /* FDVMADecoder.m in Sources */,
 				92376C3818B8FE8500A67A0B /* FDFireflyIceChannelMock.m in Sources */,
 				9261C34D18AEEFD600CDB9F2 /* FDBundle.m in Sources */,
 				9261C35C18AF2E8D00CDB9F2 /* FDBundleManager.m in Sources */,
