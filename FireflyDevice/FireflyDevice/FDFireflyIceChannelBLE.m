@@ -50,10 +50,12 @@
 
 @end
 
+@protocol FDFireflyIceChannelBLEPipe;
+
 @protocol FDFireflyIceChannelBLEPipeDelegate
 
-- (void)pipeReady;
-- (void)pipeReceived:(NSData *)data;
+- (void)pipeReady:(id<FDFireflyIceChannelBLEPipe>)pipe;
+- (void)pipe:(id<FDFireflyIceChannelBLEPipe>)pipe received:(NSData *)data;
 
 - (void)detour:(FDDetour *)detour error:(NSError *)error;
 - (void)writeValue:(NSData *)data forCharacteristic:(CBCharacteristic *)characteristic type:(CBCharacteristicWriteType)type;
@@ -131,7 +133,7 @@
 {
     [_detour detourEvent:value];
     if (_detour.state == FDDetourStateSuccess) {
-        [delegate pipeReceived:_detour.data];
+        [delegate pipe:self received:_detour.data];
         [_detour clear];
     } else
     if (_detour.state == FDDetourStateError) {
@@ -169,7 +171,7 @@
     NSLog(@"didUpdateNotificationStateForCharacteristic %@ %@", characteristic, _characteristic);
     if (characteristic == _characteristic) {
         NSLog(@"pipeReady");
-        [delegate pipeReady];
+        [delegate pipeReady:self];
     }
 }
 
@@ -201,6 +203,7 @@
 @property NSOutputStream *outputStream;
 @property NSMutableData *dataToSend;
 @property NSMutableData *dataReceived;
+@property NSUInteger streamOpenCount;
 
 @end
 
@@ -245,6 +248,8 @@
     _outputStream = nil;
     
     _l2capChannel = nil;
+    
+    _streamOpenCount = 0;
 }
 
 - (void)checkSend
@@ -281,7 +286,7 @@
             i = 0;
             NSData *decoded = [FDCobs decode:encoded];
             NSLog(@"L2CAP process %@", [decoded debugDescription]);
-            [delegate pipeReceived:decoded];
+            [delegate pipe:self received:decoded];
         }
     }
     
@@ -296,6 +301,10 @@
             break;
         case NSStreamEventOpenCompleted:
             NSLog(@"NSStreamEventOpenCompleted");
+            ++_streamOpenCount;
+            if (_streamOpenCount == 2) {
+                [delegate pipeReady:self];
+            }
             break;
         case NSStreamEventHasBytesAvailable: {
             NSLog(@"NSStreamEventHasBytesAvailable");
@@ -339,8 +348,6 @@
 @property CBUUID *serviceUUID;
 @property CBCentralManager *centralManager;
 @property CBPeripheral *peripheral;
-
-@property NSMutableDictionary<NSNumber *, CBL2CAPChannel *> *l2capChannelByPsm;
 
 @property FDFireflyIceChannelBLEPipeCharacteristic *pipeCharacteristic;
 @property FDFireflyIceChannelBLEPipeL2CAP *pipeL2cap;
@@ -411,8 +418,6 @@
 
         _pipeL2cap = [[FDFireflyIceChannelBLEPipeL2CAP alloc] init];
         _pipeL2cap.delegate = self;
-        
-        _l2capChannelByPsm = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -431,18 +436,7 @@
     }
 }
 
-- (void)pipeReady
-{
-    _pipe = _pipeCharacteristic;
-    
-    self.status = FDFireflyIceChannelStatusOpen;
-    
-    if ([_delegate respondsToSelector:@selector(fireflyIceChannel:status:)]) {
-        [_delegate fireflyIceChannel:self status:self.status];
-    }
-}
-
-- (void)pipeReceived:(NSData *)data
+- (void)pipe:(id<FDFireflyIceChannelBLEPipe>)pipe received:(NSData *)data
 {
     if ([_delegate respondsToSelector:@selector(fireflyIceChannelPacket:data:)]) {
         [_delegate fireflyIceChannelPacket:self data:data];
@@ -615,18 +609,51 @@
     });
 }
 
+- (void)onOpen
+{
+    self.status = FDFireflyIceChannelStatusOpen;
+    
+    if ([_delegate respondsToSelector:@selector(fireflyIceChannel:status:)]) {
+        [_delegate fireflyIceChannel:self status:self.status];
+    }
+}
+
+- (void)usePipeCharacteristic
+{
+    _pipe = _pipeCharacteristic;
+    [self onOpen];
+}
+
+- (void)pipeReady:(id<FDFireflyIceChannelBLEPipe>)pipe
+{
+    if (pipe == _pipeCharacteristic) {
+        if (NSClassFromString(@"CBL2CAPChannel")) {
+            NSLog(@"attempting to open L2CAP channel");
+            [_peripheral openL2CAPChannel:0x25]; // 0x1001];
+        } else {
+            [self usePipeCharacteristic];
+        }
+    }
+    if (pipe == _pipeL2cap) {
+        [self usePipeL2cap];
+    }
+}
+
+- (void)usePipeL2cap
+{
+    _pipe = _pipeL2cap;
+    [self onOpen];
+}
+
 - (void)didOpenL2CAPChannel:(CBL2CAPChannel *)channel error:(NSError *)error
 {
-    if (error != nil) {
+    if (channel == nil) {
         NSLog(@"openL2CAPChannel error: %@", error.description);
+        [self usePipeCharacteristic];
         return;
     }
     
-    NSNumber *key = [NSNumber numberWithUnsignedShort:channel.PSM];
-    _l2capChannelByPsm[key] = channel;
-    
     [_pipeL2cap open:channel];
-    _pipe = _pipeL2cap;
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didOpenL2CAPChannel:(CBL2CAPChannel *)channel error:(NSError *)error
