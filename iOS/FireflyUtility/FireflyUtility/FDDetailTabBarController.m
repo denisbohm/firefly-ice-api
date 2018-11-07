@@ -12,6 +12,7 @@
 #import "FDHelpController.h"
 
 #import <FireflyDevice/FDFireflyIce.h>
+#import <FireflyDevice/FDFireflyIceSimpleTask.h>
 
 @interface FDDetailTabBarController () <FDHelpControllerDelegate, FDDetailViewControllerDelegate, FDFireflyIceObserver>
 
@@ -68,11 +69,17 @@
         case FDFireflyIceChannelStatusClosed:
             title = @"Connect";
             break;
+        case FDFireflyIceChannelStatusConnecting:
+            title = @"Connecting";
+            break;
         case FDFireflyIceChannelStatusOpening:
             title = @"Cancel";
             break;
         case FDFireflyIceChannelStatusOpen:
             title = @"Disconnect";
+            break;
+        case FDFireflyIceChannelStatusClosing:
+            title = @"Closing";
             break;
     }
     [_connectButton setTitle:title forState:UIControlStateNormal];
@@ -86,8 +93,23 @@
     FDFireflyIce *fireflyIce = self.device[@"fireflyIce"];
     id<FDFireflyIceChannel> channel = self.device[@"channel"];
     if (channel.status == FDFireflyIceChannelStatusOpen) {
-        FDFireflyIceCollector *collector = _device[@"collector"];
-        [fireflyIce.executor execute:collector];
+/*
+        if (self.device[@"l2cap"] == nil) {
+            self.device[@"l2cap"] = [NSNumber numberWithBool:YES];
+            if ([channel isKindOfClass:[FDFireflyIceChannelBLE class]]) {
+                FDFireflyIceChannelBLE *channelBLE = (FDFireflyIceChannelBLE *)channel;
+                if (@available(macOS 10.14, *)) {
+//                    [fireflyIce.executor execute:[FDFireflyIceSimpleTask simpleTask:fireflyIce channel:channel comment:@"L2CAP" wait:NO block:^(){
+                        NSLog(@"switching to L2CAP channel for communication");
+                        [channelBLE.peripheral openL2CAPChannel:0x1001];
+//                    }]];
+                }
+            }
+        } else {
+*/
+            FDFireflyIceCollector *collector = self.device[@"collector"];
+            [fireflyIce.executor execute:collector];
+//        }
     }
 }
 

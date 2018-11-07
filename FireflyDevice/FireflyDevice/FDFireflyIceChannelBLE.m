@@ -617,6 +617,11 @@
 
 - (void)didOpenL2CAPChannel:(CBL2CAPChannel *)channel error:(NSError *)error
 {
+    if (error != nil) {
+        NSLog(@"openL2CAPChannel error: %@", error.description);
+        return;
+    }
+    
     NSNumber *key = [NSNumber numberWithUnsignedShort:channel.PSM];
     _l2capChannelByPsm[key] = channel;
     

@@ -22,47 +22,47 @@
 
 @protocol FDFireflyIceManagerDelegate <NSObject>
 
-- (void)fireflyIceManager:(FDFireflyIceManager *)manager discovered:(FDFireflyIce *)fireflyIce;
+- (void)fireflyIceManager:(FDFireflyIceManager * _Nonnull)manager discovered:(FDFireflyIce * _Nonnull )fireflyIce;
 
 @optional
 
-- (void)fireflyIceManager:(FDFireflyIceManager *)manager advertisementDataHasChanged:(FDFireflyIce *)fireflyIce;
-- (void)fireflyIceManager:(FDFireflyIceManager *)manager advertisement:(FDFireflyIce *)fireflyIce;
+- (void)fireflyIceManager:(FDFireflyIceManager * _Nonnull)manager advertisementDataHasChanged:(FDFireflyIce * _Nonnull)fireflyIce;
+- (void)fireflyIceManager:(FDFireflyIceManager * _Nonnull)manager advertisement:(FDFireflyIce * _Nonnull)fireflyIce;
 
-- (void)fireflyIceManager:(FDFireflyIceManager *)manager openedBLE:(FDFireflyIce *)fireflyIce;
-- (void)fireflyIceManager:(FDFireflyIceManager *)manager closingBLE:(FDFireflyIce *)fireflyIce;
-- (void)fireflyIceManager:(FDFireflyIceManager *)manager closedBLE:(FDFireflyIce *)fireflyIce;
+- (void)fireflyIceManager:(FDFireflyIceManager * _Nonnull)manager openedBLE:(FDFireflyIce * _Nonnull)fireflyIce;
+- (void)fireflyIceManager:(FDFireflyIceManager * _Nonnull)manager closingBLE:(FDFireflyIce * _Nonnull)fireflyIce;
+- (void)fireflyIceManager:(FDFireflyIceManager * _Nonnull)manager closedBLE:(FDFireflyIce * _Nonnull)fireflyIce;
 
-- (void)fireflyIceManager:(FDFireflyIceManager *)manager identified:(FDFireflyIce *)fireflyIce;
+- (void)fireflyIceManager:(FDFireflyIceManager * _Nonnull)manager identified:(FDFireflyIce * _Nonnull)fireflyIce;
 
-- (FDFirmwareUpdateTask * _Nullable)fireflyIceManager:(FDFireflyIceManager *)manager firmwareUpdateTask:(FDFireflyIce *)fireflyIce;
+- (FDFirmwareUpdateTask * _Nullable)fireflyIceManager:(FDFireflyIceManager * _Nonnull)manager firmwareUpdateTask:(FDFireflyIce * _Nonnull)fireflyIce;
 
 @end
 
 @interface FDFireflyIceManager : NSObject <CBCentralManagerDelegate>
 
-+ (FDFireflyIceManager *)manager;
-+ (FDFireflyIceManager *)managerWithDelegate:(id<FDFireflyIceManagerDelegate>)delegate;
-+ (FDFireflyIceManager *)managerWithServiceUUID:(CBUUID *)serviceUUID withDelegate:(id<FDFireflyIceManagerDelegate>)delegate;
++ (FDFireflyIceManager * _Nullable)manager;
++ (FDFireflyIceManager * _Nullable)managerWithDelegate:(id<FDFireflyIceManagerDelegate>_Nullable)delegate;
++ (FDFireflyIceManager * _Nullable)managerWithServiceUUID:(CBUUID *_Nonnull)serviceUUID withDelegate:(id<FDFireflyIceManagerDelegate>_Nullable)delegate;
 
-@property id<FDFireflyIceManagerDelegate> delegate;
-@property CBUUID *serviceUUID;
-@property NSString *identifier;
-@property dispatch_queue_t centralManagerDispatchQueue;
-@property CBCentralManager *centralManager;
+@property id<FDFireflyIceManagerDelegate> _Nullable delegate;
+@property CBUUID * _Nullable serviceUUID;
+@property NSString * _Nullable identifier;
+@property dispatch_queue_t _Nullable centralManagerDispatchQueue;
+@property CBCentralManager * _Nullable centralManager;
 
 @property(nonatomic) BOOL active;
 @property(nonatomic) BOOL discovery;
 
 - (void)scan:(BOOL)allowDuplicates;
 
-- (void)connectBLE:(FDFireflyIce *)fireflyIce;
-- (void)disconnectBLE:(FDFireflyIce *)fireflyIce;
+- (void)connectBLE:(FDFireflyIce *_Nonnull)fireflyIce;
+- (void)disconnectBLE:(FDFireflyIce *_Nonnull)fireflyIce;
 
-- (NSMutableDictionary *)dictionaryFor:(id)object key:(NSString *)key;
+- (NSMutableDictionary *_Nullable)dictionaryFor:(id _Nonnull )object key:(NSString *_Nonnull)key;
 
-- (NSString *)nameForPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData;
+- (NSString *_Nullable)nameForPeripheral:(CBPeripheral *_Nonnull)peripheral advertisementData:(NSDictionary *_Nonnull)advertisementData;
 
-- (FDFireflyIce * _Nullable)newFireflyIce:(NSUUID *)identifier;
+- (FDFireflyIce * _Nullable)newFireflyIce:(NSUUID *_Nullable)identifier;
 
 @end

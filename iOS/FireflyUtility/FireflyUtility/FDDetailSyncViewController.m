@@ -192,6 +192,7 @@
         return;
     }
     
+    FDDetailSyncViewController *me = self;
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^() {
         NSURL *ubiquitousURL = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
         if (ubiquitousURL == nil) {
@@ -207,7 +208,7 @@
         }
         NSLog(@"samples saved to iCloud");
         
-        [self discardSamples:_discardSamplesButton];
+        [me discardSamples:me.discardSamplesButton];
     });
 }
 

@@ -7,7 +7,7 @@
 //
 
 #import "FDColorGamutControl.h"
-#import "FDColorTouchview.h"
+#import "FDColorTouchView.h"
 
 @interface FDColorGamutControl ()
 
