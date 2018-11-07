@@ -166,7 +166,9 @@
 
 - (void)didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 {
+    NSLog(@"didUpdateNotificationStateForCharacteristic %@ %@", characteristic, _characteristic);
     if (characteristic == _characteristic) {
+        NSLog(@"pipeReady");
         [delegate pipeReady];
     }
 }
@@ -175,6 +177,7 @@
 {
     for (CBCharacteristic *characteristic in service.characteristics) {
         if ([_characteristicUUID isEqual:characteristic.UUID]) {
+            NSLog(@"found characteristic");
             _characteristic = characteristic;
             
             [delegate setNotifyValue:YES forCharacteristic:_characteristic];
@@ -194,6 +197,8 @@
 @interface FDFireflyIceChannelBLEPipeL2CAP: NSObject <FDFireflyIceChannelBLEPipe, NSStreamDelegate>
 
 @property CBL2CAPChannel *l2capChannel;
+@property NSInputStream *inputStream;
+@property NSOutputStream *outputStream;
 @property NSMutableData *dataToSend;
 @property NSMutableData *dataReceived;
 
@@ -216,32 +221,36 @@
 {
     _l2capChannel = l2capChannel;
     
-    _l2capChannel.inputStream.delegate = self;
-    [_l2capChannel.inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-    [_l2capChannel.inputStream open];
+    _inputStream = _l2capChannel.inputStream;
+    _inputStream.delegate = self;
+    [_inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    [_inputStream open];
     
-    _l2capChannel.outputStream.delegate = self;
-    [_l2capChannel.outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-    [_l2capChannel.outputStream open];
+    _outputStream = _l2capChannel.outputStream;
+    _outputStream.delegate = self;
+    [_outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    [_outputStream open];
 }
 
 - (void)shutdown
 {
-    _l2capChannel.inputStream.delegate = nil;
-    [_l2capChannel.inputStream close];
-    [_l2capChannel.inputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    _inputStream.delegate = nil;
+    [_inputStream close];
+    [_inputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    _inputStream = nil;
 
-    _l2capChannel.outputStream.delegate = nil;
-    [_l2capChannel.outputStream close];
-    [_l2capChannel.outputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    _outputStream.delegate = nil;
+    [_outputStream close];
+    [_outputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    _outputStream = nil;
     
     _l2capChannel = nil;
 }
 
 - (void)checkSend
 {
-    while ((_dataToSend.length > 0) && _l2capChannel.outputStream.hasSpaceAvailable) {
-        NSInteger n = [_l2capChannel.outputStream write:_dataToSend.bytes maxLength:_dataToSend.length];
+    while ((_dataToSend.length > 0) && _outputStream.hasSpaceAvailable) {
+        NSInteger n = [_outputStream write:_dataToSend.bytes maxLength:_dataToSend.length];
         NSLog(@"L2CAP TX %ld %@", (long)n, [_dataToSend debugDescription]);
         if (n > 0) {
             [_dataToSend replaceBytesInRange:NSMakeRange(0, n) withBytes:nil length:0];
@@ -290,13 +299,11 @@
             break;
         case NSStreamEventHasBytesAvailable: {
             NSLog(@"NSStreamEventHasBytesAvailable");
-            while (_l2capChannel.inputStream.hasBytesAvailable) {
-                uint8_t buffer[512];
-                NSInteger n = [_l2capChannel.inputStream read:buffer maxLength:sizeof(buffer)];
-                NSLog(@"L2CAP RX %ld", (long)n);
-                if (n > 0) {
-                    [self received:[NSData dataWithBytes:buffer length:n]];
-                }
+            uint8_t buffer[512];
+            NSInteger n = [_inputStream read:buffer maxLength:sizeof(buffer)];
+            NSLog(@"L2CAP RX %ld", (long)n);
+            if (n > 0) {
+                [self received:[NSData dataWithBytes:buffer length:n]];
             }
         } break;
         case NSStreamEventHasSpaceAvailable:
