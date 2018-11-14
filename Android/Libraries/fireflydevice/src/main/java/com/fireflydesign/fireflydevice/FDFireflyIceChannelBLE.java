@@ -54,6 +54,7 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
         this.bluetoothDevice = bluetoothDevice;
 
         detourSources = new ArrayList<FDDetourSource>();
+        writePendingLimit = 1;
         bluetoothGattCallback = new BluetoothGattCallback() {
             @Override
             public void onCharacteristicChanged(final BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic) {

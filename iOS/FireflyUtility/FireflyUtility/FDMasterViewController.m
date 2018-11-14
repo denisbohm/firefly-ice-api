@@ -122,6 +122,9 @@
     id<FDFireflyIceChannel> channel = fireflyIce.channels[@"BLE"];
     dictionary[@"channel"] = channel;
     
+    FDFireflyIceChannelBLE *channelBle = (FDFireflyIceChannelBLE *)channel;
+    channelBle.useL2cap = NO;
+    
     FDFireflyIceCollector *collector = [[FDFireflyIceCollector alloc] init];
     collector.fireflyIce = fireflyIce;
     collector.channel = channel;

@@ -410,6 +410,8 @@
                 
         }
 
+        _useL2cap = YES;
+        
         NSString *baseUUID = [FDFireflyIceChannelBLE CBUUIDString:serviceUUID];
         CBUUID *characteristicUUID = [CBUUID UUIDWithString:[baseUUID stringByReplacingCharactersInRange:NSMakeRange(4, 4) withString:@"0002"]];
         CBUUID *characteristicNoResponseUUID = [CBUUID UUIDWithString:[baseUUID stringByReplacingCharactersInRange:NSMakeRange(4, 4) withString:@"0003"]];
@@ -627,7 +629,7 @@
 - (void)pipeReady:(id<FDFireflyIceChannelBLEPipe>)pipe
 {
     if (pipe == _pipeCharacteristic) {
-        if (NSClassFromString(@"CBL2CAPChannel")) {
+        if (self.useL2cap && (NSClassFromString(@"CBL2CAPChannel") != nil)) {
             NSLog(@"attempting to open L2CAP channel");
             [_peripheral openL2CAPChannel:0x25]; // 0x1001];
         } else {

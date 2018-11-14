@@ -70,8 +70,8 @@
      FD_CONTROL_PROPERTY_TX_POWER |
      FD_CONTROL_PROPERTY_REGULATOR |
      FD_CONTROL_PROPERTY_NAME |
-     FD_CONTROL_PROPERTY_RETAINED |
-     FD_CONTROL_PROPERTY_RECOGNITION];
+     FD_CONTROL_PROPERTY_RETAINED /* |
+     FD_CONTROL_PROPERTY_RECOGNITION */];
     [self.fireflyIce.coder sendDirectTestModeReport:self.channel];
     
     [self next:@selector(complete)];

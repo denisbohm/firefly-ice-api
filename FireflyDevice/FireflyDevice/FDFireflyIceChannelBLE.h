@@ -33,6 +33,7 @@
 @property FDFireflyIceChannelBLEPeripheralObservable * _Nonnull peripheralObservable;
 @property id <FDFireflyIceChannelDelegate> _Nullable delegate;
 @property FDFireflyIceChannelBLERSSI * _Nullable RSSI;
+@property BOOL useL2cap;
 
 - (nonnull id)initWithCentralManager:(nonnull CBCentralManager *)centralManager withPeripheral:(nonnull CBPeripheral *)peripheral withServiceUUID:(nonnull CBUUID *)serviceUUID;
 
