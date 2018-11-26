@@ -11,6 +11,7 @@ package com.fireflydesign.fireflydevice;
 import android.app.Activity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,10 +25,16 @@ import android.bluetooth.BluetoothProfile;
 
 public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
 
+    public class Rssi {
+        float value;
+        Date date;
+    }
+
     FDFireflyDeviceLog log;
     FDDetour detour;
     FDFireflyIceChannel.Delegate delegate;
     FDFireflyIceChannel.Status status;
+    Rssi rssi;
 
     Activity activity;
     UUID bluetoothGattCharacteristicUUID;
@@ -127,6 +134,14 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
 	public FDFireflyIceChannel.Status getStatus() {
 		return status;
 	}
+
+	public void setRssi(Rssi rssi) {
+        this.rssi = rssi;
+    }
+
+	public Rssi getRssi() {
+        return rssi;
+    }
 
 	public void open() {
         FDFireflyDeviceLogger.debug(log, "FD010901", "opening firefly");
