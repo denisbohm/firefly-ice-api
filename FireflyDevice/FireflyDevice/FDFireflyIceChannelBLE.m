@@ -168,9 +168,9 @@
 
 - (void)didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 {
-    NSLog(@"didUpdateNotificationStateForCharacteristic %@ %@", characteristic, _characteristic);
+//    NSLog(@"didUpdateNotificationStateForCharacteristic %@ %@", characteristic, _characteristic);
     if (characteristic == _characteristic) {
-        NSLog(@"pipeReady");
+//        NSLog(@"pipeReady");
         [delegate pipeReady:self];
     }
 }
@@ -179,13 +179,13 @@
 {
     for (CBCharacteristic *characteristic in service.characteristics) {
         if ([_characteristicUUID isEqual:characteristic.UUID]) {
-            NSLog(@"found characteristic");
+//            NSLog(@"found characteristic");
             _characteristic = characteristic;
             
             [delegate setNotifyValue:YES forCharacteristic:_characteristic];
         } else
         if ([_characteristicNoResponseUUID isEqual:characteristic.UUID]) {
-            NSLog(@"found characteristic no response");
+//            NSLog(@"found characteristic no response");
             _characteristicNoResponse = characteristic;
         }
     }
@@ -256,7 +256,7 @@
 {
     while ((_dataToSend.length > 0) && _outputStream.hasSpaceAvailable) {
         NSInteger n = [_outputStream write:_dataToSend.bytes maxLength:_dataToSend.length];
-        NSLog(@"L2CAP TX %ld %@", (long)n, [_dataToSend debugDescription]);
+//        NSLog(@"L2CAP TX %ld %@", (long)n, [_dataToSend debugDescription]);
         if (n > 0) {
             [_dataToSend replaceBytesInRange:NSMakeRange(0, n) withBytes:nil length:0];
         }
@@ -265,7 +265,7 @@
 
 - (void)send:(NSData *)data
 {
-    NSLog(@"L2CAP send %@", [data debugDescription]);
+//    NSLog(@"L2CAP send %@", [data debugDescription]);
     NSData *encodedData = [FDCobs encode:data];
     [_dataToSend appendData:encodedData];
     uint8_t delimiter = 0;
@@ -285,45 +285,45 @@
             [_dataReceived replaceBytesInRange:NSMakeRange(0, i + 1) withBytes:0 length:0];
             i = 0;
             NSData *decoded = [FDCobs decode:encoded];
-            NSLog(@"L2CAP process %@", [decoded debugDescription]);
+//            NSLog(@"L2CAP process %@", [decoded debugDescription]);
             [delegate pipe:self received:decoded];
         }
     }
     
-    NSLog(@"L2CAP received %@", [_dataReceived debugDescription]);
+//    NSLog(@"L2CAP received %@", [_dataReceived debugDescription]);
 }
 
 - (void)stream:(NSStream *)stream handleEvent:(NSStreamEvent)eventCode
 {
     switch (eventCode) {
         case NSStreamEventNone:
-            NSLog(@"NSStreamEventNone");
+//            NSLog(@"NSStreamEventNone");
             break;
         case NSStreamEventOpenCompleted:
-            NSLog(@"NSStreamEventOpenCompleted");
+//            NSLog(@"NSStreamEventOpenCompleted");
             ++_streamOpenCount;
             if (_streamOpenCount == 2) {
                 [delegate pipeReady:self];
             }
             break;
         case NSStreamEventHasBytesAvailable: {
-            NSLog(@"NSStreamEventHasBytesAvailable");
+//            NSLog(@"NSStreamEventHasBytesAvailable");
             uint8_t buffer[512];
             NSInteger n = [_inputStream read:buffer maxLength:sizeof(buffer)];
-            NSLog(@"L2CAP RX %ld", (long)n);
+//            NSLog(@"L2CAP RX %ld", (long)n);
             if (n > 0) {
                 [self received:[NSData dataWithBytes:buffer length:n]];
             }
         } break;
         case NSStreamEventHasSpaceAvailable:
-            NSLog(@"NSStreamEventHasSpaceAvailable");
+//            NSLog(@"NSStreamEventHasSpaceAvailable");
             [self checkSend];
             break;
         case NSStreamEventErrorOccurred:
-            NSLog(@"NSStreamEventErrorOccurred");
+//            NSLog(@"NSStreamEventErrorOccurred");
             break;
         case NSStreamEventEndEncountered:
-            NSLog(@"NSStreamEventEndEncountered");
+//            NSLog(@"NSStreamEventEndEncountered");
             break;
     }
 }
@@ -542,7 +542,7 @@
 
 - (void)didDiscoverServices:(NSError *)error
 {
-    NSLog(@"didDiscoverServices");
+//    NSLog(@"didDiscoverServices");
     for (CBService *service in _peripheral.services) {
         if ([service.UUID isEqual:_serviceUUID]) {
             [_peripheral discoverCharacteristics:nil/*@[_characteristicUUID]*/ forService:service];
@@ -630,7 +630,7 @@
 {
     if (pipe == _pipeCharacteristic) {
         if (self.useL2cap && (NSClassFromString(@"CBL2CAPChannel") != nil)) {
-            NSLog(@"attempting to open L2CAP channel");
+//            NSLog(@"attempting to open L2CAP channel");
             [_peripheral openL2CAPChannel:0x25]; // 0x1001];
         } else {
             [self usePipeCharacteristic];
@@ -650,7 +650,7 @@
 - (void)didOpenL2CAPChannel:(CBL2CAPChannel *)channel error:(NSError *)error
 {
     if (channel == nil) {
-        NSLog(@"openL2CAPChannel error: %@", error.description);
+//        NSLog(@"openL2CAPChannel error: %@", error.description);
         [self usePipeCharacteristic];
         return;
     }
