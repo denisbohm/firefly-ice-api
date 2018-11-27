@@ -75,6 +75,7 @@ public class FDPullTask extends FDExecutor.Task implements FDFireflyIceObserver,
     public FDFireflyIceChannel channel;
     public Delegate delegate;
     public String identifier;
+    public String hardwareId;
     public Map<Integer, Decoder> decoderByType;
     public FDPullTaskUpload upload;
     public int pullAheadLimit;
