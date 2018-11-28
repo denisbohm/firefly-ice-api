@@ -106,6 +106,7 @@
 
 + (NSString *)causeDescription:(uint32_t)cause
 {
+#ifdef FD_MCU_STM32
     if (cause & 1) {
         return @"Power On Reset";
     }
@@ -127,6 +128,36 @@
     if (cause & 64) {
         return @"System Request Reset";
     }
+#else
+//#ifdef FD_MCU_NRF52
+    if (cause & 0b0001) {
+        return @"External Pin Reset";
+    }
+    if (cause & 0b0010) {
+        return @"Watchdog Reset";
+    }
+    if (cause & 0b0100) {
+        return @"System Request Reset";
+    }
+    if (cause & 0b1000) {
+        return @"LOCKUP Reset";
+    }
+    if (cause & 0x010000) {
+        return @"Detect from System Off";
+    }
+    if (cause & 0x020000) {
+        return @"Analog Detect from System Off";
+    }
+    if (cause & 0x040000) {
+        return @"Debug from System Off";
+    }
+    if (cause & 0x080000) {
+        return @"NFC from System Off";
+    }
+    if (cause & 0x100000) {
+        return @"VBUS from System Off";
+    }
+#endif
     if (cause == 0) {
         return @"No Reset";
     }
