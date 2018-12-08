@@ -22,10 +22,20 @@
 
 @implementation FDFireflyIceManager
 
++ (FDFireflyIceManager *)managerWithServiceUUIDs:(NSArray<CBUUID *> *)serviceUUIDs withDelegate:(id<FDFireflyIceManagerDelegate>)delegate
+{
+    FDFireflyIceManager *manager = [[FDFireflyIceManager alloc] init];
+    manager.serviceUUIDs = serviceUUIDs;
+    manager.delegate = delegate;
+    manager.active = YES;
+    manager.discovery = YES;
+    return manager;
+}
+
 + (FDFireflyIceManager *)managerWithServiceUUID:(CBUUID *)serviceUUID withDelegate:(id<FDFireflyIceManagerDelegate>)delegate
 {
     FDFireflyIceManager *manager = [[FDFireflyIceManager alloc] init];
-    manager.serviceUUID = serviceUUID;
+    manager.serviceUUIDs = @[serviceUUID];
     manager.delegate = delegate;
     manager.active = YES;
     manager.discovery = YES;
@@ -49,7 +59,7 @@
 - (id)init
 {
     if (self = [super init]) {
-        _serviceUUID = [CBUUID UUIDWithString:@"310a0001-1b95-5091-b0bd-b7a681846399"];
+        _serviceUUIDs = @[[CBUUID UUIDWithString:@"310a0001-1b95-5091-b0bd-b7a681846399"]];
         
         _dictionaries = [NSMutableArray array];
         _identifier = @"com.fireflydesign.device.centralManagerDispatchQueue";
@@ -193,7 +203,11 @@
     if (allowDuplicates) {
         options = @{CBCentralManagerScanOptionAllowDuplicatesKey: @YES};
     }
-    [_centralManager scanForPeripheralsWithServices:@[_serviceUUID] options:options];
+    NSArray<CBUUID *> *requiredServiceUUIDs = nil;
+    if (_serviceUUIDs.count == 1) {
+        requiredServiceUUIDs = @[_serviceUUIDs[0]];
+    }
+    [_centralManager scanForPeripheralsWithServices:requiredServiceUUIDs options:options];
 }
 
 - (void)centralManagerPoweredOn
@@ -228,14 +242,16 @@
     return name;
 }
 
-- (BOOL)isFireflyIce:(NSArray *)serviceUUIDs
+- (CBUUID *)isFireflyIce:(NSArray *)serviceUUIDs
 {
     for (CBUUID *serviceUUID in serviceUUIDs) {
-        if ([_serviceUUID isEqual:serviceUUID]) {
-            return YES;
+        for (CBUUID *candidateServiceUUID in self.serviceUUIDs) {
+            if ([candidateServiceUUID isEqual:serviceUUID]) {
+                return candidateServiceUUID;
+            }
         }
     }
-    return NO;
+    return 0;
 }
 
 #if 0
@@ -248,19 +264,24 @@
 }
 #endif
 
-- (FDFireflyIce *)newFireflyIce:(NSUUID *)identifier {
+- (FDFireflyIce *)newFireflyIce:(NSUUID *)identifier withServiceUUID:(CBUUID *)serviceUUID withName:(NSString *)name {
     NSArray<CBPeripheral *> *peripherals = [_centralManager retrievePeripheralsWithIdentifiers:@[identifier]];
     CBPeripheral *peripheral = [peripherals firstObject];
     if (peripheral == nil) {
         return nil;
     }
-    return [self newFireflyIceWithPeripheral:peripheral];
+    return [self newFireflyIceWithPeripheral:peripheral withServiceUUID:serviceUUID withName:name];
 }
 
-- (FDFireflyIce *)newFireflyIceWithPeripheral:(CBPeripheral *)peripheral {
+- (FDFireflyIce *)newFireflyIce:(NSUUID *)identifier {
+    return [self newFireflyIce:identifier withServiceUUID:self.serviceUUIDs[0] withName:@"anonymous"];
+}
+
+- (FDFireflyIce *)newFireflyIceWithPeripheral:(CBPeripheral *)peripheral withServiceUUID:(CBUUID *)serviceUUID withName:(NSString *)name {
     FDFireflyIce *fireflyIce = [[FDFireflyIce alloc] init];
+    fireflyIce.name = name;
     [fireflyIce.observable addObserver:self];
-    FDFireflyIceChannelBLE *channel = [[FDFireflyIceChannelBLE alloc] initWithCentralManager:_centralManager withPeripheral:peripheral withServiceUUID:_serviceUUID];
+    FDFireflyIceChannelBLE *channel = [[FDFireflyIceChannelBLE alloc] initWithCentralManager:_centralManager withPeripheral:peripheral withServiceUUID:serviceUUID];
     [fireflyIce addChannel:channel type:@"BLE"];
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     [dictionary setObject:peripheral forKey:@"peripheral"];
@@ -301,12 +322,14 @@
         return;
     }
     
-    if (![self isFireflyIce:advertisementData[CBAdvertisementDataServiceUUIDsKey]]) {
+    NSArray<CBUUID *> *serviceUUIDs = advertisementData[CBAdvertisementDataServiceUUIDsKey];
+    CBUUID *serviceUUID;
+    if ((serviceUUID = [self isFireflyIce:serviceUUIDs]) == nil) {
         return;
     }
     
-    FDFireflyIce *fireflyIce = [self newFireflyIceWithPeripheral:peripheral];
-    fireflyIce.name = [self nameForPeripheral:peripheral advertisementData:advertisementData];
+    NSString *name = [self nameForPeripheral:peripheral advertisementData:advertisementData];
+    FDFireflyIce *fireflyIce = [self newFireflyIceWithPeripheral:peripheral withServiceUUID:serviceUUID withName:name];
     FDFireflyIceChannelBLE *channel = fireflyIce.channels[@"BLE"];
     channel.RSSI = [FDFireflyIceChannelBLERSSI RSSI:[RSSI floatValue]];
     dictionary = [self dictionaryForPeripheral:peripheral];

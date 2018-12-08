@@ -44,9 +44,10 @@
 + (FDFireflyIceManager * _Nullable)manager;
 + (FDFireflyIceManager * _Nullable)managerWithDelegate:(id<FDFireflyIceManagerDelegate>_Nullable)delegate;
 + (FDFireflyIceManager * _Nullable)managerWithServiceUUID:(CBUUID *_Nonnull)serviceUUID withDelegate:(id<FDFireflyIceManagerDelegate>_Nullable)delegate;
++ (FDFireflyIceManager * _Nullable)managerWithServiceUUIDs:(NSArray<CBUUID *> *_Nonnull)serviceUUID withDelegate:(id<FDFireflyIceManagerDelegate>_Nullable)delegate;
 
 @property id<FDFireflyIceManagerDelegate> _Nullable delegate;
-@property CBUUID * _Nullable serviceUUID;
+@property NSArray<CBUUID *> *_Nullable serviceUUIDs;
 @property NSString * _Nullable identifier;
 @property dispatch_queue_t _Nullable centralManagerDispatchQueue;
 @property CBCentralManager * _Nullable centralManager;
@@ -63,6 +64,7 @@
 
 - (NSString *_Nullable)nameForPeripheral:(CBPeripheral *_Nonnull)peripheral advertisementData:(NSDictionary *_Nonnull)advertisementData;
 
-- (FDFireflyIce * _Nullable)newFireflyIce:(NSUUID *_Nullable)identifier;
+- (FDFireflyIce *)newFireflyIce:(NSUUID *)identifier withServiceUUID:(CBUUID *)serviceUUID withName:(NSString *)name;
+- (FDFireflyIce *)newFireflyIce:(NSUUID *)identifier;
 
 @end
