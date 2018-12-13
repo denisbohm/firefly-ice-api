@@ -265,7 +265,7 @@
 
 - (void)send:(NSData *)data
 {
-    NSLog(@"L2CAP send %@", [data debugDescription]);
+//    NSLog(@"L2CAP send %@", [data debugDescription]);
     NSData *encodedData = [FDCobs encode:data];
     [_dataToSend appendData:encodedData];
     uint8_t delimiter = 0;
@@ -285,7 +285,7 @@
             [_dataReceived replaceBytesInRange:NSMakeRange(0, i + 1) withBytes:0 length:0];
             i = 0;
             NSData *decoded = [FDCobs decode:encoded];
-            NSLog(@"L2CAP process %@", [decoded debugDescription]);
+//            NSLog(@"L2CAP process %@", [decoded debugDescription]);
             [delegate pipe:self received:decoded];
         }
     }
