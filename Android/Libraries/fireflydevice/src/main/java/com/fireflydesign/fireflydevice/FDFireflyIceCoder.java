@@ -66,7 +66,9 @@ public class FDFireflyIceCoder {
 
     public static final byte FD_CONTROL_HARDWARE = 32;
 
-    public static final int FD_CONTROL_DIAGNOSTICS_BLE        = 0x00000001;
+	public static final byte FD_CONTROL_NOTIFY = 33;
+
+	public static final int FD_CONTROL_DIAGNOSTICS_BLE        = 0x00000001;
     public static final int FD_CONTROL_DIAGNOSTICS_BLE_TIMING = 0x00000002;
 
     public static final int FD_CONTROL_SYNC_AHEAD = 0x00000001;
@@ -120,6 +122,7 @@ public class FDFireflyIceCoder {
 	public static final int FD_CONTROL_PROPERTY_INDICATE         = 0x00020000;
 	public static final int FD_CONTROL_PROPERTY_RECOGNITION      = 0x00040000;
 	public static final int FD_CONTROL_PROPERTY_HARDWARE_VERSION = 0x00080000;
+    public static final int FD_CONTROL_PROPERTY_SUBSCRIBE        = 0x00100000;
 
     public static final int FD_CONTROL_PROVISION_OPTION_DEBUG_LOCK = 0x00000001;
     public static final int FD_CONTROL_PROVISION_OPTION_RESET      = 0x00000002;
@@ -163,13 +166,15 @@ public class FDFireflyIceCoder {
 
 	public Map<Number, Command> commandByCode;
     public FDObservable observable;
+    public FDObservable notifyObservable;
 
     public static final int HASH_SIZE = 20;
     public static final int COMMIT_SIZE = 20;
     public static final int CRYPT_IV_SIZE = 16;
 
-	public FDFireflyIceCoder(FDObservable observable) {
+	public FDFireflyIceCoder(FDObservable observable, FDObservable notifyObservable) {
 		this.observable = observable;
+		this.notifyObservable = notifyObservable;
 
 		commandByCode = new HashMap<Number, Command>();
 		setCommand(FDFireflyIceCoder.FD_CONTROL_PING, new Command() {
@@ -177,11 +182,17 @@ public class FDFireflyIceCoder {
 				dispatchPing(fireflyIce, channel, binary);
 			}
 		});
-        setCommand(FDFireflyIceCoder.FD_CONTROL_GET_PROPERTIES, new Command() {
-            public void execute(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDBinary binary) {
-                dispatchGetProperties(fireflyIce, channel, binary);
-            }
-        });
+		final FDFireflyIceCoder self = this;
+		setCommand(FDFireflyIceCoder.FD_CONTROL_GET_PROPERTIES, new Command() {
+			public void execute(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDBinary binary) {
+				dispatchGetProperties(fireflyIce, channel, self.observable, binary);
+			}
+		});
+		setCommand(FDFireflyIceCoder.FD_CONTROL_NOTIFY, new Command() {
+			public void execute(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDBinary binary) {
+				dispatchGetProperties(fireflyIce, channel, self.notifyObservable, binary);
+			}
+		});
         setCommand(FDFireflyIceCoder.FD_CONTROL_RTC, new Command() {
             public void execute(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDBinary binary) {
                 dispatchRTC(fireflyIce, channel, binary);
@@ -327,7 +338,7 @@ public class FDFireflyIceCoder {
 		channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
     }
 
-	void dispatchGetPropertyVersion(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDBinary binary) {
+	void dispatchGetPropertyVersion(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
 		FDFireflyIceVersion version = new FDFireflyIceVersion();
 		version.major = binary.getUInt16();
 		version.minor = binary.getUInt16();
@@ -338,7 +349,7 @@ public class FDFireflyIceCoder {
 		observable.as(FDFireflyIceObserver.class).fireflyIceVersion(fireflyIce, channel, version);
 	}
 
-	void dispatchGetPropertyBootVersion(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDBinary binary) {
+	void dispatchGetPropertyBootVersion(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
 		FDFireflyIceVersion version = new FDFireflyIceVersion();
 		version.major = binary.getUInt16();
 		version.minor = binary.getUInt16();
@@ -349,7 +360,7 @@ public class FDFireflyIceCoder {
 		observable.as(FDFireflyIceObserver.class).fireflyIceBootVersion(fireflyIce, channel, version);
 	}
 
-	void dispatchGetPropertyHardwareId(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDBinary binary) {
+	void dispatchGetPropertyHardwareId(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
 		FDFireflyIceHardwareId hardwareId = new FDFireflyIceHardwareId();
 		hardwareId.vendor = binary.getUInt16();
 		hardwareId.product = binary.getUInt16();
@@ -360,19 +371,19 @@ public class FDFireflyIceCoder {
 		observable.as(FDFireflyIceObserver.class).fireflyIceHardwareId(fireflyIce, channel, hardwareId);
 	}
 
-	void dispatchGetPropertyDebugLock(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDBinary binary) {
+	void dispatchGetPropertyDebugLock(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
 		boolean debugLock = binary.getUInt8() != 0;
 
 		observable.as(FDFireflyIceObserver.class).fireflyIceDebugLock(fireflyIce, channel, debugLock);
 	}
 
-	void dispatchGetPropertyRTC(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDBinary binary) {
+	void dispatchGetPropertyRTC(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
 		double time = binary.getTime64();
 
 		observable.as(FDFireflyIceObserver.class).fireflyIceTime(fireflyIce, channel, time);
 	}
 
-	void dispatchGetPropertyPower(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDBinary binary) {
+	void dispatchGetPropertyPower(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
 		FDFireflyIcePower power = new FDFireflyIcePower();
 		power.batteryLevel = binary.getFloat32();
 		power.batteryVoltage = binary.getFloat32();
@@ -384,13 +395,13 @@ public class FDFireflyIceCoder {
 		observable.as(FDFireflyIceObserver.class).fireflyIcePower(fireflyIce, channel, power);
 	}
 
-	void dispatchGetPropertySite(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDBinary binary) {
+	void dispatchGetPropertySite(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
 		String site = binary.getString16();
 
 		observable.as(FDFireflyIceObserver.class).fireflyIceSite(fireflyIce, channel, site);
 	}
 
-	void dispatchGetPropertyReset(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDBinary binary) {
+	void dispatchGetPropertyReset(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
 		FDFireflyIceReset reset = new FDFireflyIceReset();
 		reset.cause = binary.getUInt32();
 		reset.date = binary.getTime64();
@@ -398,50 +409,50 @@ public class FDFireflyIceCoder {
 		observable.as(FDFireflyIceObserver.class).fireflyIceReset(fireflyIce, channel, reset);
 	}
 
-	void dispatchGetPropertyStorage(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDBinary binary) {
+	void dispatchGetPropertyStorage(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
 		FDFireflyIceStorage storage = new FDFireflyIceStorage();
 		storage.pageCount = binary.getUInt32();
 
 		observable.as(FDFireflyIceObserver.class).fireflyIceStorage(fireflyIce, channel, storage);
 	}
 
-	void dispatchGetPropertyMode(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDBinary binary) {
+	void dispatchGetPropertyMode(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
 		byte mode = binary.getUInt8();
 
 		observable.as(FDFireflyIceObserver.class).fireflyIceMode(fireflyIce, channel, mode);
 	}
 
-	void dispatchGetPropertyTxPower(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDBinary binary) {
+	void dispatchGetPropertyTxPower(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
 		byte txPower = binary.getUInt8();
 
 		observable.as(FDFireflyIceObserver.class).fireflyIceTxPower(fireflyIce, channel, txPower);
 	}
 
-    void dispatchGetPropertyRegulator(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDBinary binary) {
+    void dispatchGetPropertyRegulator(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
         Byte regulator = new Byte(binary.getUInt8());
 
         observable.as(FDFireflyIceObserver.class).fireflyIceRegulator(fireflyIce, channel, regulator);
     }
 
-    void dispatchGetPropertySensingCount(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDBinary binary) {
+    void dispatchGetPropertySensingCount(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
         Integer sensingCount = new Integer(binary.getUInt32());
 
         observable.as(FDFireflyIceObserver.class).fireflyIceSensingCount(fireflyIce, channel, sensingCount);
     }
 
-    void dispatchGetPropertyIndicate(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDBinary binary) {
+    void dispatchGetPropertyIndicate(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
         Boolean indicate = new Boolean(binary.getUInt8() != 0);
 
         observable.as(FDFireflyIceObserver.class).fireflyIceIndicate(fireflyIce, channel, indicate);
     }
 
-    void dispatchGetPropertyRecognition(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDBinary binary) {
+    void dispatchGetPropertyRecognition(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
         Boolean recognition = new Boolean(binary.getUInt8() != 0);
 
         observable.as(FDFireflyIceObserver.class).fireflyIceRecognition(fireflyIce, channel, recognition);
     }
 
-    void dispatchGetPropertyHardwareVersion(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDBinary binary) {
+    void dispatchGetPropertyHardwareVersion(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
         FDFireflyIceHardwareVersion version = new FDFireflyIceHardwareVersion();
         version.major = binary.getUInt16();
         version.minor = binary.getUInt16();
@@ -449,7 +460,7 @@ public class FDFireflyIceCoder {
         observable.as(FDFireflyIceObserver.class).fireflyIceHardwareVersion(fireflyIce, channel, version);
     }
 
-    void dispatchGetPropertyLogging(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDBinary binary) {
+    void dispatchGetPropertyLogging(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
 		FDFireflyIceLogging logging = new FDFireflyIceLogging();
 		logging.flags = binary.getUInt32();
 		if ((logging.flags & FD_CONTROL_LOGGING_STATE) != 0) {
@@ -462,13 +473,13 @@ public class FDFireflyIceCoder {
 		observable.as(FDFireflyIceObserver.class).fireflyIceLogging(fireflyIce, channel, logging);
 	}
 
-	void dispatchGetPropertyName(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDBinary binary) {
+	void dispatchGetPropertyName(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
 		String name = binary.getString8();
 
 		observable.as(FDFireflyIceObserver.class).fireflyIceName(fireflyIce, channel, name);
 	}
 
-	void dispatchGetPropertyRetained(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDBinary binary) {
+	void dispatchGetPropertyRetained(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
 		FDFireflyIceRetained retained = new FDFireflyIceRetained();
 		retained.retained = binary.getUInt8() != 0;
 		int length = binary.getUInt32();
@@ -477,65 +488,65 @@ public class FDFireflyIceCoder {
 		observable.as(FDFireflyIceObserver.class).fireflyIceRetained(fireflyIce, channel, retained);
 	}
 
-	void dispatchGetProperties(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDBinary binary)
+	void dispatchGetProperties(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary)
 	{
 		int properties = binary.getUInt32();
 		if ((properties & FD_CONTROL_PROPERTY_VERSION) != 0) {
-			dispatchGetPropertyVersion(fireflyIce, channel, binary);
+			dispatchGetPropertyVersion(fireflyIce, channel, observable, binary);
 		}
 		if ((properties & FD_CONTROL_PROPERTY_HARDWARE_ID) != 0) {
-			dispatchGetPropertyHardwareId(fireflyIce, channel, binary);
+			dispatchGetPropertyHardwareId(fireflyIce, channel, observable, binary);
 		}
 		if ((properties & FD_CONTROL_PROPERTY_DEBUG_LOCK) != 0) {
-			dispatchGetPropertyDebugLock(fireflyIce, channel, binary);
+			dispatchGetPropertyDebugLock(fireflyIce, channel, observable, binary);
 		}
 		if ((properties & FD_CONTROL_PROPERTY_RTC) != 0) {
-			dispatchGetPropertyRTC(fireflyIce, channel, binary);
+			dispatchGetPropertyRTC(fireflyIce, channel, observable, binary);
 		}
 		if ((properties & FD_CONTROL_PROPERTY_POWER) != 0) {
-			dispatchGetPropertyPower(fireflyIce, channel, binary);
+			dispatchGetPropertyPower(fireflyIce, channel, observable, binary);
 		}
 		if ((properties & FD_CONTROL_PROPERTY_SITE) != 0) {
-			dispatchGetPropertySite(fireflyIce, channel, binary);
+			dispatchGetPropertySite(fireflyIce, channel, observable, binary);
 		}
 		if ((properties & FD_CONTROL_PROPERTY_RESET) != 0) {
-			dispatchGetPropertyReset(fireflyIce, channel, binary);
+			dispatchGetPropertyReset(fireflyIce, channel, observable, binary);
         }
         if ((properties & FD_CONTROL_PROPERTY_STORAGE) != 0) {
-			dispatchGetPropertyStorage(fireflyIce, channel, binary);
+			dispatchGetPropertyStorage(fireflyIce, channel, observable, binary);
 		}
 		if ((properties & FD_CONTROL_PROPERTY_MODE) != 0) {
-			dispatchGetPropertyMode(fireflyIce, channel, binary);
+			dispatchGetPropertyMode(fireflyIce, channel, observable, binary);
 		}
 		if ((properties & FD_CONTROL_PROPERTY_TX_POWER) != 0) {
-			dispatchGetPropertyTxPower(fireflyIce, channel, binary);
+			dispatchGetPropertyTxPower(fireflyIce, channel, observable, binary);
 		}
 		if ((properties & FD_CONTROL_PROPERTY_BOOT_VERSION) != 0) {
-			dispatchGetPropertyBootVersion(fireflyIce, channel, binary);
+			dispatchGetPropertyBootVersion(fireflyIce, channel, observable, binary);
 		}
 		if ((properties & FD_CONTROL_PROPERTY_LOGGING) != 0) {
-			dispatchGetPropertyLogging(fireflyIce, channel, binary);
+			dispatchGetPropertyLogging(fireflyIce, channel, observable, binary);
 		}
 		if ((properties & FD_CONTROL_PROPERTY_NAME) != 0) {
-			dispatchGetPropertyName(fireflyIce, channel, binary);
+			dispatchGetPropertyName(fireflyIce, channel, observable, binary);
 		}
 		if ((properties & FD_CONTROL_PROPERTY_RETAINED) != 0) {
-			dispatchGetPropertyRetained(fireflyIce, channel, binary);
+			dispatchGetPropertyRetained(fireflyIce, channel, observable, binary);
 		}
         if ((properties & FD_CONTROL_PROPERTY_REGULATOR) != 0) {
-            dispatchGetPropertyRegulator(fireflyIce, channel, binary);
+            dispatchGetPropertyRegulator(fireflyIce, channel, observable, binary);
         }
         if ((properties & FD_CONTROL_PROPERTY_SENSING_COUNT) != 0) {
-            dispatchGetPropertySensingCount(fireflyIce, channel, binary);
+            dispatchGetPropertySensingCount(fireflyIce, channel, observable, binary);
         }
         if ((properties & FD_CONTROL_PROPERTY_INDICATE) != 0) {
-            dispatchGetPropertyIndicate(fireflyIce, channel, binary);
+            dispatchGetPropertyIndicate(fireflyIce, channel, observable, binary);
         }
         if ((properties & FD_CONTROL_PROPERTY_RECOGNITION) != 0) {
-            dispatchGetPropertyRecognition(fireflyIce, channel, binary);
+            dispatchGetPropertyRecognition(fireflyIce, channel, observable, binary);
         }
         if ((properties & FD_CONTROL_PROPERTY_HARDWARE_VERSION) != 0) {
-            dispatchGetPropertyHardwareVersion(fireflyIce, channel, binary);
+            dispatchGetPropertyHardwareVersion(fireflyIce, channel, observable, binary);
         }
 	}
 
@@ -609,6 +620,14 @@ public class FDFireflyIceCoder {
         binary.putUInt8(FD_CONTROL_SET_PROPERTIES);
         binary.putUInt32(FD_CONTROL_PROPERTY_RECOGNITION);
         binary.putUInt8((byte) (recognition ? 1 : 0));
+        channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
+    }
+
+    public void sendSetPropertySubscribe(FDFireflyIceChannel channel, int properties) {
+        FDBinary binary = new FDBinary();
+        binary.putUInt8(FD_CONTROL_SET_PROPERTIES);
+        binary.putUInt32(FD_CONTROL_PROPERTY_SUBSCRIBE);
+        binary.putUInt32(properties);
         channel.fireflyIceChannelSend(FDBinary.toByteArray(binary.dataValue()));
     }
 
