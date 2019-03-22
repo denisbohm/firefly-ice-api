@@ -274,7 +274,7 @@
 {
     BOOL isFirmwareUpToDate = ![self isOutOfDate];
     if ([_delegate respondsToSelector:@selector(firmwareUpdateTask:check:)]) {
-        [_delegate firmwareUpdateTask:self check:isFirmwareUpToDate];
+        isFirmwareUpToDate = [_delegate firmwareUpdateTask:self check:isFirmwareUpToDate];
     }
     if (!isFirmwareUpToDate) {
         FDFireflyDeviceLogInfo(@"FD010401", @"firmware %@ is out of date with latest %u.%u.%u", _updateVersion, _major, _minor, _patch);

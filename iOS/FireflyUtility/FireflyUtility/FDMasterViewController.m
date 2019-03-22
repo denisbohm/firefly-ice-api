@@ -97,8 +97,10 @@
     _devices = [NSMutableArray array];
   
 // For making screen shots in the simulator. -denis
-//    [_devices addObject:[self makeMockDevice:@"Firefly 43216789-BC01-F900"]];
-    
+    [_devices addObject:[self makeMockDevice:@"ICE-37"]];
+    [_devices addObject:[self makeMockDevice:@"PET-01"]];
+    [_devices addObject:[self makeMockDevice:@"FIT-23"]];
+
     [_devices addObject:[self makeMockDevice:@"Mock"]];
 }
 
