@@ -29,6 +29,7 @@ import com.fireflydesign.fireflydevice.FDFireflyDeviceLogger;
 import com.fireflydesign.fireflydevice.FDFireflyIce;
 import com.fireflydesign.fireflydevice.FDFireflyIceChannel;
 import com.fireflydesign.fireflydevice.FDFireflyIceChannelBLE;
+import com.fireflydesign.fireflydevice.FDFireflyIceCoder;
 import com.fireflydesign.fireflydevice.FDFireflyIceDiagnostics;
 import com.fireflydesign.fireflydevice.FDFireflyIceDirectTestModeReport;
 import com.fireflydesign.fireflydevice.FDFireflyIceHardwareId;
@@ -173,7 +174,9 @@ public class MainActivity extends Activity implements FDFireflyIceManager.Delega
         listView.setAdapter(adapter);
 
 //        baseUUID = "310a0001-1b95-5091-b0bd-b7a681846399"; // Firefly Ice
-        baseUUID = "577FB8B4-553E-4807-9779-8647481D49B3"; // Atlas
+//        baseUUID = "577FB8B4-553E-4807-9779-8647481D49B3"; // Atlas A102
+//        baseUUID = "39316b41-d4a3-be84-594d-4d0805f9d380"; // Atlas FIT
+        baseUUID = "2fa1a5ed-2c05-4bb2-9e4a-a7f16f1c395c"; // Atlas PET
         UUID serviceUUID = UUID.fromString(baseUUID);
         BluetoothManager bluetoothManager = (BluetoothManager)getSystemService(Context.BLUETOOTH_SERVICE);
         BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
@@ -198,6 +201,7 @@ public class MainActivity extends Activity implements FDFireflyIceManager.Delega
 
         FDFireflyIce fireflyIce = new FDFireflyIce(this);
         fireflyIce.observable.addObserver(this);
+        fireflyIce.notifyObservable.addObserver(this);
         FDFireflyIceChannelBLE channel = new FDFireflyIceChannelBLE(this, baseUUID, bluetoothDevice);
         fireflyIce.addChannel(channel, "BLE");
 
@@ -347,10 +351,16 @@ public class MainActivity extends Activity implements FDFireflyIceManager.Delega
     }
 
     @Override
-    public void fireflyIceStatus(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceChannel.Status status) {
+    public void fireflyIceStatus(final FDFireflyIce fireflyIce, final FDFireflyIceChannel channel, FDFireflyIceChannel.Status status) {
         if (status == FDFireflyIceChannel.Status.Open) {
             FDFireflyDeviceLogger.info(null, "FD020012", "executing hello task");
             fireflyIce.executor.execute(new FDHelloTask(fireflyIce, channel, null));
+            FDFireflyIceSimpleTask.Delegate delegate = new FDFireflyIceSimpleTask.Delegate() {
+                public void run() {
+                    fireflyIce.coder.sendSetPropertySubscribe(channel, FDFireflyIceCoder.FD_CONTROL_PROPERTY_STORAGE);
+                }
+            };
+            fireflyIce.executor.execute(new FDFireflyIceSimpleTask(fireflyIce, channel, delegate));
         }
     }
 
@@ -421,7 +431,7 @@ public class MainActivity extends Activity implements FDFireflyIceManager.Delega
 
     @Override
     public void fireflyIceStorage(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceStorage storage) {
-
+        FDFireflyDeviceLogger.info(null, "FD020014", "rx storage property");
     }
 
     @Override
