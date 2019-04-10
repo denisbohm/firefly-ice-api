@@ -631,7 +631,11 @@
     if (pipe == _pipeCharacteristic) {
         if (self.useL2cap && (NSClassFromString(@"CBL2CAPChannel") != nil)) {
 //            NSLog(@"attempting to open L2CAP channel");
-            [_peripheral openL2CAPChannel:0x25]; // 0x1001];
+            if (@available(macOS 10.14, *)) {
+                [_peripheral openL2CAPChannel:0x25]; // 0x1001];
+            } else {
+                // Fallback on earlier versions
+            }
         } else {
             [self usePipeCharacteristic];
         }

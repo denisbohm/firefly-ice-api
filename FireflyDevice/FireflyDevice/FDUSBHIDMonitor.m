@@ -18,7 +18,7 @@ static long get_long_property(IOHIDDeviceRef device, CFStringRef key)
     CFTypeRef ref = IOHIDDeviceGetProperty(device, key);
     if (ref) {
         if (CFGetTypeID(ref) == CFNumberGetTypeID()) {
-            long value;
+            long value = 0;
             CFNumberGetValue((CFNumberRef) ref, kCFNumberSInt32Type, &value);
             return value;
         }

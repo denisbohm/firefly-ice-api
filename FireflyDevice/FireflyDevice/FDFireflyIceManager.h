@@ -64,7 +64,7 @@
 
 - (NSString *_Nullable)nameForPeripheral:(CBPeripheral *_Nonnull)peripheral advertisementData:(NSDictionary *_Nonnull)advertisementData;
 
-- (FDFireflyIce *_Nonnull)newFireflyIce:(NSUUID *_Nonnull)identifier withServiceUUID:(CBUUID *_Nonnull)serviceUUID withName:(NSString *_Nonnull)name;
-- (FDFireflyIce *_Nonnull)newFireflyIce:(NSUUID *_Nonnull)identifier;
+- (FDFireflyIce *_Nullable)newFireflyIce:(NSUUID *_Nonnull)identifier withServiceUUID:(CBUUID *_Nonnull)serviceUUID withName:(NSString *_Nonnull)name;
+- (FDFireflyIce *_Nullable)newFireflyIce:(NSUUID *_Nonnull)identifier;
 
 @end
