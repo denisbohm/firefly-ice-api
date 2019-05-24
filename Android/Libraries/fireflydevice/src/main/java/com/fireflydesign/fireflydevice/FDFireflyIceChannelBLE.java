@@ -23,6 +23,8 @@ import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
 
+import static android.bluetooth.BluetoothGatt.CONNECTION_PRIORITY_HIGH;
+
 public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
 
     public class Rssi {
@@ -212,6 +214,11 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
 
         if ((bluetoothGattCharacteristic != null) && (bluetoothGattCharacteristicNoResponse != null)) {
             writePendingLimit = 12;
+        }
+
+        boolean result = bluetoothGatt.requestConnectionPriority(CONNECTION_PRIORITY_HIGH);
+        if (!result) {
+            FDFireflyDeviceLogger.debug(log, "FD010911", "cannot set BLE connection to high priority");
         }
 
         if (bluetoothGattCharacteristic != null) {
