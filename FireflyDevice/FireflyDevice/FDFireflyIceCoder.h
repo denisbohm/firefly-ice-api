@@ -6,6 +6,7 @@
 //  Copyright (c) 2013-2014 Firefly Design LLC / Denis Bohm. All rights reserved.
 //
 
+#import <FireflyDevice/FDBinary.h>
 #import <FireflyDevice/FDFireflyIce.h>
 #import <FireflyDevice/FDFireflyIceChannel.h>
 
@@ -165,6 +166,8 @@ typedef enum {
 
 typedef void (^FDFireflyIceCoderCommandBlock)(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, NSData *data);
 
+typedef void (^FDFireflyIceCoderPropertyBlock)(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, FDFireflyIceObservable *observable, FDBinary *binary);
+
 @interface FDFireflyIceCoder : NSObject
 
 @property FDFireflyIceObservable *observable;
@@ -172,6 +175,9 @@ typedef void (^FDFireflyIceCoderCommandBlock)(FDFireflyIce *fireflyIce, id<FDFir
 
 - (void)setCommand:(uint8_t)code block:(FDFireflyIceCoderCommandBlock)block;
 - (FDFireflyIceCoderCommandBlock)getCommandBlock:(uint8_t)code;
+
+- (void)setProperty:(uint32_t)code block:(FDFireflyIceCoderPropertyBlock)block;
+- (FDFireflyIceCoderPropertyBlock)getPropertyBlock:(uint32_t)code;
 
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel packet:(NSData *)data;
 

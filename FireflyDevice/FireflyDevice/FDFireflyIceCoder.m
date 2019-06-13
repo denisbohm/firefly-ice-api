@@ -18,6 +18,7 @@
 @interface FDFireflyIceCoder ()
 
 @property NSMutableDictionary *commandBlockByCode;
+@property NSMutableDictionary *propertyBlockByCode;
 
 @end
 
@@ -29,6 +30,7 @@
         _observable = [[FDFireflyIceObservable alloc] init];
         _notifyObservable = [[FDFireflyIceObservable alloc] init];
         _commandBlockByCode = [NSMutableDictionary dictionary];
+        _propertyBlockByCode = [NSMutableDictionary dictionary];
 
         FDFireflyIceCoder *coder = self;
         [self setCommand:FD_CONTROL_PING block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, NSData *data) {
@@ -82,6 +84,67 @@
         [self setCommand:0xff block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, NSData *data) {
             [coder fireflyIce:fireflyIce channel:channel sensing:data];
         }];
+        
+        [self setProperty:FD_CONTROL_PROPERTY_VERSION block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, FDFireflyIceObservable *observable, FDBinary *binary) {
+            [coder fireflyIce:fireflyIce channel:channel observable:observable getPropertyVersion:binary];
+        }];
+        [self setProperty:FD_CONTROL_PROPERTY_HARDWARE_ID block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, FDFireflyIceObservable *observable, FDBinary *binary) {
+            [coder fireflyIce:fireflyIce channel:channel observable:observable getPropertyHardwareId:binary];
+        }];
+        [self setProperty:FD_CONTROL_PROPERTY_DEBUG_LOCK block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, FDFireflyIceObservable *observable, FDBinary *binary) {
+            [coder fireflyIce:fireflyIce channel:channel observable:observable getPropertyDebugLock:binary];
+        }];
+        [self setProperty:FD_CONTROL_PROPERTY_RTC block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, FDFireflyIceObservable *observable, FDBinary *binary) {
+            [coder fireflyIce:fireflyIce channel:channel observable:observable getPropertyRTC:binary];
+        }];
+        [self setProperty:FD_CONTROL_PROPERTY_POWER block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, FDFireflyIceObservable *observable, FDBinary *binary) {
+            [coder fireflyIce:fireflyIce channel:channel observable:observable getPropertyPower:binary];
+        }];
+        [self setProperty:FD_CONTROL_PROPERTY_SITE block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, FDFireflyIceObservable *observable, FDBinary *binary) {
+            [coder fireflyIce:fireflyIce channel:channel observable:observable getPropertySite:binary];
+        }];
+        [self setProperty:FD_CONTROL_PROPERTY_RESET block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, FDFireflyIceObservable *observable, FDBinary *binary) {
+            [coder fireflyIce:fireflyIce channel:channel observable:observable getPropertyReset:binary];
+        }];
+        [self setProperty:FD_CONTROL_PROPERTY_STORAGE block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, FDFireflyIceObservable *observable, FDBinary *binary) {
+            [coder fireflyIce:fireflyIce channel:channel observable:observable getPropertyStorage:binary];
+        }];
+        [self setProperty:FD_CONTROL_PROPERTY_MODE block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, FDFireflyIceObservable *observable, FDBinary *binary) {
+            [coder fireflyIce:fireflyIce channel:channel observable:observable getPropertyMode:binary];
+        }];
+        [self setProperty:FD_CONTROL_PROPERTY_TX_POWER block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, FDFireflyIceObservable *observable, FDBinary *binary) {
+            [coder fireflyIce:fireflyIce channel:channel observable:observable getPropertyTxPower:binary];
+        }];
+        [self setProperty:FD_CONTROL_PROPERTY_BOOT_VERSION block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, FDFireflyIceObservable *observable, FDBinary *binary) {
+            [coder fireflyIce:fireflyIce channel:channel observable:observable getPropertyBootVersion:binary];
+        }];
+        [self setProperty:FD_CONTROL_PROPERTY_LOGGING block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, FDFireflyIceObservable *observable, FDBinary *binary) {
+            [coder fireflyIce:fireflyIce channel:channel observable:observable getPropertyLogging:binary];
+        }];
+        [self setProperty:FD_CONTROL_PROPERTY_NAME block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, FDFireflyIceObservable *observable, FDBinary *binary) {
+            [coder fireflyIce:fireflyIce channel:channel observable:observable getPropertyName:binary];
+        }];
+        [self setProperty:FD_CONTROL_PROPERTY_RETAINED block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, FDFireflyIceObservable *observable, FDBinary *binary) {
+            [coder fireflyIce:fireflyIce channel:channel observable:observable getPropertyRetained:binary];
+        }];
+        [self setProperty:FD_CONTROL_PROPERTY_REGULATOR block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, FDFireflyIceObservable *observable, FDBinary *binary) {
+            [coder fireflyIce:fireflyIce channel:channel observable:observable getPropertyRegulator:binary];
+        }];
+        [self setProperty:FD_CONTROL_PROPERTY_SENSING_COUNT block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, FDFireflyIceObservable *observable, FDBinary *binary) {
+            [coder fireflyIce:fireflyIce channel:channel observable:observable getPropertySensingCount:binary];
+        }];
+        [self setProperty:FD_CONTROL_PROPERTY_INDICATE block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, FDFireflyIceObservable *observable, FDBinary *binary) {
+            [coder fireflyIce:fireflyIce channel:channel observable:observable getPropertyIndicate:binary];
+        }];
+        [self setProperty:FD_CONTROL_PROPERTY_RECOGNITION block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, FDFireflyIceObservable *observable, FDBinary *binary) {
+            [coder fireflyIce:fireflyIce channel:channel observable:observable getPropertyRecognition:binary];
+        }];
+        [self setProperty:FD_CONTROL_PROPERTY_HARDWARE_VERSION block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, FDFireflyIceObservable *observable, FDBinary *binary) {
+            [coder fireflyIce:fireflyIce channel:channel observable:observable getPropertyHardwareVersion:binary];
+        }];
+        [self setProperty:FD_CONTROL_PROPERTY_SUBSCRIBE block:^(FDFireflyIce *fireflyIce, id<FDFireflyIceChannel> channel, FDFireflyIceObservable *observable, FDBinary *binary) {
+            [coder fireflyIce:fireflyIce channel:channel observable:observable getPropertySubscribe:binary];
+        }];
     }
     return self;
 }
@@ -96,6 +159,18 @@
 {
     NSNumber *key = [NSNumber numberWithInt:code];
     return _commandBlockByCode[key];
+}
+
+- (void)setProperty:(uint32_t)code block:(FDFireflyIceCoderPropertyBlock)block
+{
+    NSNumber *key = [NSNumber numberWithInt:code];
+    _propertyBlockByCode[key] = block;
+}
+
+- (FDFireflyIceCoderPropertyBlock)getPropertyBlock:(uint32_t)code
+{
+    NSNumber *key = [NSNumber numberWithInt:code];
+    return _propertyBlockByCode[key];
 }
 
 - (void)sendPing:(id<FDFireflyIceChannel>)channel data:(NSData *)data
@@ -369,67 +444,16 @@
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel observable:(FDFireflyIceObservable *)observable getProperties:(NSData *)data
 {
     FDBinary *binary = [[FDBinary alloc] initWithData:data];
-    uint8_t code __attribute__((unused)) = [binary getUInt8];
+    uint8_t commandCode __attribute__((unused)) = [binary getUInt8];
     uint32_t properties = [binary getUInt32];
-    if (properties & FD_CONTROL_PROPERTY_VERSION) {
-        [self fireflyIce:fireflyIce channel:channel observable:observable getPropertyVersion:binary];
-    }
-    if (properties & FD_CONTROL_PROPERTY_HARDWARE_ID) {
-        [self fireflyIce:fireflyIce channel:channel observable:observable getPropertyHardwareId:binary];
-    }
-    if (properties & FD_CONTROL_PROPERTY_DEBUG_LOCK) {
-        [self fireflyIce:fireflyIce channel:channel observable:observable getPropertyDebugLock:binary];
-    }
-    if (properties & FD_CONTROL_PROPERTY_RTC) {
-        [self fireflyIce:fireflyIce channel:channel observable:observable getPropertyRTC:binary];
-    }
-    if (properties & FD_CONTROL_PROPERTY_POWER) {
-        [self fireflyIce:fireflyIce channel:channel observable:observable getPropertyPower:binary];
-    }
-    if (properties & FD_CONTROL_PROPERTY_SITE) {
-        [self fireflyIce:fireflyIce channel:channel observable:observable getPropertySite:binary];
-    }
-    if (properties & FD_CONTROL_PROPERTY_RESET) {
-        [self fireflyIce:fireflyIce channel:channel observable:observable getPropertyReset:binary];
-    }
-    if (properties & FD_CONTROL_PROPERTY_STORAGE) {
-        [self fireflyIce:fireflyIce channel:channel observable:observable getPropertyStorage:binary];
-    }
-    if (properties & FD_CONTROL_PROPERTY_MODE) {
-        [self fireflyIce:fireflyIce channel:channel observable:observable getPropertyMode:binary];
-    }
-    if (properties & FD_CONTROL_PROPERTY_TX_POWER) {
-        [self fireflyIce:fireflyIce channel:channel observable:observable getPropertyTxPower:binary];
-    }
-    if (properties & FD_CONTROL_PROPERTY_BOOT_VERSION) {
-        [self fireflyIce:fireflyIce channel:channel observable:observable getPropertyBootVersion:binary];
-    }
-    if (properties & FD_CONTROL_PROPERTY_LOGGING) {
-        [self fireflyIce:fireflyIce channel:channel observable:observable getPropertyLogging:binary];
-    }
-    if (properties & FD_CONTROL_PROPERTY_NAME) {
-        [self fireflyIce:fireflyIce channel:channel observable:observable getPropertyName:binary];
-    }
-    if (properties & FD_CONTROL_PROPERTY_RETAINED) {
-        [self fireflyIce:fireflyIce channel:channel observable:observable getPropertyRetained:binary];
-    }
-    if (properties & FD_CONTROL_PROPERTY_REGULATOR) {
-        [self fireflyIce:fireflyIce channel:channel observable:observable getPropertyRegulator:binary];
-    }
-    if (properties & FD_CONTROL_PROPERTY_SENSING_COUNT) {
-        [self fireflyIce:fireflyIce channel:channel observable:observable getPropertySensingCount:binary];
-    }
-    if (properties & FD_CONTROL_PROPERTY_INDICATE) {
-        [self fireflyIce:fireflyIce channel:channel observable:observable getPropertyIndicate:binary];
-    }
-    if (properties & FD_CONTROL_PROPERTY_RECOGNITION) {
-        [self fireflyIce:fireflyIce channel:channel observable:observable getPropertyRecognition:binary];
-    }
-    if (properties & FD_CONTROL_PROPERTY_HARDWARE_VERSION) {
-        [self fireflyIce:fireflyIce channel:channel observable:observable getPropertyHardwareVersion:binary];
-    }
-    if (properties & FD_CONTROL_PROPERTY_SUBSCRIBE) {
-        [self fireflyIce:fireflyIce channel:channel observable:observable getPropertySubscribe:binary];
+    for (int i = 0; i < 32; ++i) {
+        uint32_t propertyCode = 1 << i;
+        if ((properties & propertyCode) != 0) {
+            FDFireflyIceCoderPropertyBlock property = [self getPropertyBlock:propertyCode];
+            if (property != nil) {
+                property(fireflyIce, channel, observable, binary);
+            }
+        }
     }
 }
 
