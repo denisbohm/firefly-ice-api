@@ -85,7 +85,7 @@
         _maxWait = 3600;
         _maxResyncs = 3;
         _wait = _minWait;
-        _pullAheadLimit = 8;
+        _pullAheadLimit = 1;
         _decoderByType = [NSMutableDictionary dictionary];
     }
     return self;
