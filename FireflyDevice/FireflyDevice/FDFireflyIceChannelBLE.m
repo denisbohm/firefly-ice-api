@@ -226,12 +226,12 @@
     
     _inputStream = _l2capChannel.inputStream;
     _inputStream.delegate = self;
-    [_inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    [_inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
     [_inputStream open];
     
     _outputStream = _l2capChannel.outputStream;
     _outputStream.delegate = self;
-    [_outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    [_outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
     [_outputStream open];
 }
 
@@ -239,12 +239,12 @@
 {
     _inputStream.delegate = nil;
     [_inputStream close];
-    [_inputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    [_inputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
     _inputStream = nil;
 
     _outputStream.delegate = nil;
     [_outputStream close];
-    [_outputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    [_outputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
     _outputStream = nil;
     
     _l2capChannel = nil;
