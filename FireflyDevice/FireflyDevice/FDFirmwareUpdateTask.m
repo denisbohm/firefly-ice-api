@@ -41,6 +41,7 @@
 
 @property NSMutableArray *getSectors;
 @property NSMutableArray *sectorHashes;
+@property NSData *cryptHash;
 
 @property FDFireflyIceUpdateCommit *updateCommit;
 
@@ -366,16 +367,26 @@
 
 - (void)getSectorHashes
 {
+    _cryptHash = nil;
+    uint32_t address = 0;
+    uint32_t length = (uint32_t)self.commitLength;
+    [self.fireflyIce.coder sendUpdateGetExternalHash:self.channel area:_area address:address length:length];
+
     _sectorHashes = [NSMutableArray array];
 
-    uint16_t sectorCount = (uint16_t)(_firmware.length / _sectorSize);
     _getSectors = [NSMutableArray array];
+    uint16_t sectorCount = (uint16_t)(_firmware.length / _sectorSize);
     for (uint16_t i = 0; i < sectorCount; ++i) {
         [_getSectors addObject:[NSNumber numberWithUnsignedShort:i]];
     }
     _usedSectors = [NSArray arrayWithArray:_getSectors];
     
     [self getSomeSectors];
+}
+
+- (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel externalHash:(NSData *)externalHash
+{
+    _cryptHash = externalHash;
 }
 
 - (void)fireflyIce:(FDFireflyIce *)fireflyIce channel:(id<FDFireflyIceChannel>)channel sectorHashes:(NSArray *)sectorHashes
@@ -405,6 +416,21 @@
             uint16_t page = sector * _pagesPerSector;
             for (uint16_t i = 0; i < _pagesPerSector; ++i) {
                 [updatePages addObject:[NSNumber numberWithUnsignedShort:page + i]];
+            }
+        }
+    }
+
+    if ((updateSectors.count == 0) && !self.onlyCheckSectors) {
+        BOOL different = ![self.commitCryptHash isEqualToData:self.cryptHash];
+        if (different) {
+            FDFireflyDeviceLogInfo(@"FD010411", @"different - update all");
+            for (uint16_t i = 0; i < sectorCount; ++i) {
+                uint16_t sector = i;
+                [updateSectors addObject:[NSNumber numberWithUnsignedShort:sector]];
+                uint16_t page = sector * _pagesPerSector;
+                for (uint16_t i = 0; i < _pagesPerSector; ++i) {
+                    [updatePages addObject:[NSNumber numberWithUnsignedShort:page + i]];
+                }
             }
         }
     }
@@ -486,9 +512,10 @@
         [self.fireflyIce.coder sendLock:self.channel identifier:FDLockIdentifierUpdate operation:FDLockOperationRelease];
     }
     
+    BOOL different = ![self.commitCryptHash isEqualToData:_cryptHash];
     BOOL isFirmwareUpToDate = (_updatePages.count == 0);
     BOOL success = isFirmwareUpToDate && (_wasCheckUpToDate || !_commit || ((_updateCommit != nil) && (_updateCommit.result == FD_UPDATE_COMMIT_SUCCESS)));
-    FDFireflyDeviceLogInfo(@"FD010409", @"success = %@, isFirmwareUpToDate = %@, commit %@ result = %u", success ? @"YES" : @"NO", isFirmwareUpToDate ? @"YES" : @"NO", _updateCommit != nil ? @"YES" : @"NO", _updateCommit.result);
+    FDFireflyDeviceLogInfo(@"FD010409", @"success = %@, isFirmwareUpToDate = %@, commit %@, result = %u, different = %@", success ? @"YES" : @"NO", isFirmwareUpToDate ? @"YES" : @"NO", _updateCommit != nil ? @"YES" : @"NO", _updateCommit.result, different ? @"YES" : @"NO");
     if ([_delegate respondsToSelector:@selector(firmwareUpdateTask:complete:)]) {
         [_delegate firmwareUpdateTask:self complete:success];
     }

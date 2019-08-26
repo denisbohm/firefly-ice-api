@@ -41,6 +41,7 @@
 @property BOOL downgrade;
 @property BOOL commit;
 @property BOOL reset;
+@property BOOL onlyCheckSectors;
 
 @property BOOL useArea;
 @property uint8_t area;
