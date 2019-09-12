@@ -38,10 +38,11 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
     FDFireflyIceChannel.Status status;
     Rssi rssi;
 
-    Activity activity;
-    UUID bluetoothGattCharacteristicUUID;
-    UUID bluetoothGattCharacteristicNoResponseUUID;
-    BluetoothDevice bluetoothDevice;
+    public Activity activity;
+    public UUID bluetoothGattCharacteristicUUID;
+    public UUID bluetoothGattCharacteristicNoResponseUUID;
+    public BluetoothDevice bluetoothDevice;
+    public Boolean autoConnect;
 
     List<FDDetourSource> detourSources;
     int writePending;
@@ -152,7 +153,7 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
 			delegate.fireflyIceChannelStatus(this, status);
 		}
 
-        bluetoothGatt = bluetoothDevice.connectGatt(activity, false, bluetoothGattCallback);
+        bluetoothGatt = bluetoothDevice.connectGatt(activity, autoConnect, bluetoothGattCallback);
 	}
 
     void shutdown() {
@@ -174,14 +175,14 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
         detourSources.clear();
         writePending = 0;
         writePendingLimit = 1;
+
+        if (delegate != null) {
+            delegate.fireflyIceChannelStatus(this, status);
+        }
     }
 
     public void close() {
         shutdown();
-
-		if (delegate != null) {
-			delegate.fireflyIceChannelStatus(this, status);
-		}
 	}
 
     void servicesDiscovered(final BluetoothGatt gatt, final int status) {
@@ -232,7 +233,10 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
     void connectionStateChange(final BluetoothGatt gatt, final int status, final int newState) {
         if (newState == BluetoothProfile.STATE_CONNECTED) {
             FDFireflyDeviceLogger.debug(log, "FD010905", "connected to firefly");
-            bluetoothGatt.discoverServices();
+            // !!! with autoConnect, restart device - will get disconnected event...  then connected??? -denis
+            if (bluetoothGatt != null) {
+                bluetoothGatt.discoverServices();
+            }
         } else
         if (newState == BluetoothProfile.STATE_DISCONNECTED) {
             FDFireflyDeviceLogger.debug(log, "FD010906", "disconnected from firefly");

@@ -20,143 +20,143 @@ import java.util.TimeZone;
 
 public class FDFireflyIceCoder {
 
-    public static final byte FD_CONTROL_PING = 1;
+	public static final byte FD_CONTROL_PING = 1;
 
-    public static final byte FD_CONTROL_GET_PROPERTIES = 2;
-    public static final byte FD_CONTROL_SET_PROPERTIES = 3;
+	public static final byte FD_CONTROL_GET_PROPERTIES = 2;
+	public static final byte FD_CONTROL_SET_PROPERTIES = 3;
 
-    public static final byte FD_CONTROL_PROVISION = 4;
-    public static final byte FD_CONTROL_RESET = 5;
+	public static final byte FD_CONTROL_PROVISION = 4;
+	public static final byte FD_CONTROL_RESET = 5;
 
-    public static final byte FD_CONTROL_UPDATE_GET_SECTOR_HASHES = 6;
-    public static final byte FD_CONTROL_UPDATE_ERASE_SECTORS = 7;
-    public static final byte FD_CONTROL_UPDATE_WRITE_PAGE = 8;
-    public static final byte FD_CONTROL_UPDATE_COMMIT = 9;
+	public static final byte FD_CONTROL_UPDATE_GET_SECTOR_HASHES = 6;
+	public static final byte FD_CONTROL_UPDATE_ERASE_SECTORS = 7;
+	public static final byte FD_CONTROL_UPDATE_WRITE_PAGE = 8;
+	public static final byte FD_CONTROL_UPDATE_COMMIT = 9;
 
-    public static final byte FD_CONTROL_RADIO_DIRECT_TEST_MODE_ENTER = 10;
-    public static final byte FD_CONTROL_RADIO_DIRECT_TEST_MODE_EXIT = 11;
-    public static final byte FD_CONTROL_RADIO_DIRECT_TEST_MODE_REPORT = 12;
+	public static final byte FD_CONTROL_RADIO_DIRECT_TEST_MODE_ENTER = 10;
+	public static final byte FD_CONTROL_RADIO_DIRECT_TEST_MODE_EXIT = 11;
+	public static final byte FD_CONTROL_RADIO_DIRECT_TEST_MODE_REPORT = 12;
 
-    public static final byte FD_CONTROL_DISCONNECT = 13;
+	public static final byte FD_CONTROL_DISCONNECT = 13;
 
-    public static final byte FD_CONTROL_LED_OVERRIDE = 14;
+	public static final byte FD_CONTROL_LED_OVERRIDE = 14;
 
-    public static final byte FD_CONTROL_SYNC_START = 15;
-    public static final byte FD_CONTROL_SYNC_DATA = 16;
-    public static final byte FD_CONTROL_SYNC_ACK = 17;
+	public static final byte FD_CONTROL_SYNC_START = 15;
+	public static final byte FD_CONTROL_SYNC_DATA = 16;
+	public static final byte FD_CONTROL_SYNC_ACK = 17;
 
-    public static final byte FD_CONTROL_UPDATE_GET_EXTERNAL_HASH = 18;
-    public static final byte FD_CONTROL_UPDATE_READ_PAGE = 19;
+	public static final byte FD_CONTROL_UPDATE_GET_EXTERNAL_HASH = 18;
+	public static final byte FD_CONTROL_UPDATE_READ_PAGE = 19;
 
-    public static final byte FD_CONTROL_LOCK = 20;
+	public static final byte FD_CONTROL_LOCK = 20;
 
-    public static final byte FD_CONTROL_IDENTIFY = 21;
+	public static final byte FD_CONTROL_IDENTIFY = 21;
 
-    public static final byte FD_CONTROL_DIAGNOSTICS = 22;
+	public static final byte FD_CONTROL_DIAGNOSTICS = 22;
 
-    public static final byte FD_CONTROL_UPDATE_AREA_GET_VERSION = 24;
-    public static final byte FD_CONTROL_UPDATE_AREA_GET_EXTERNAL_HASH = 25;
-    public static final byte FD_CONTROL_UPDATE_AREA_GET_SECTOR_HASHES = 26;
-    public static final byte FD_CONTROL_UPDATE_AREA_ERASE_SECTORS = 27;
-    public static final byte FD_CONTROL_UPDATE_AREA_WRITE_PAGE = 28;
-    public static final byte FD_CONTROL_UPDATE_AREA_READ_PAGE = 29;
-    public static final byte FD_CONTROL_UPDATE_AREA_COMMIT = 30;
+	public static final byte FD_CONTROL_UPDATE_AREA_GET_VERSION = 24;
+	public static final byte FD_CONTROL_UPDATE_AREA_GET_EXTERNAL_HASH = 25;
+	public static final byte FD_CONTROL_UPDATE_AREA_GET_SECTOR_HASHES = 26;
+	public static final byte FD_CONTROL_UPDATE_AREA_ERASE_SECTORS = 27;
+	public static final byte FD_CONTROL_UPDATE_AREA_WRITE_PAGE = 28;
+	public static final byte FD_CONTROL_UPDATE_AREA_READ_PAGE = 29;
+	public static final byte FD_CONTROL_UPDATE_AREA_COMMIT = 30;
 
-    public static final byte FD_CONTROL_RTC = 31;
+	public static final byte FD_CONTROL_RTC = 31;
 
-    public static final byte FD_CONTROL_HARDWARE = 32;
+	public static final byte FD_CONTROL_HARDWARE = 32;
 
 	public static final byte FD_CONTROL_NOTIFY = 33;
 
-	public static final int FD_CONTROL_DIAGNOSTICS_BLE        = 0x00000001;
-    public static final int FD_CONTROL_DIAGNOSTICS_BLE_TIMING = 0x00000002;
+	public static final int FD_CONTROL_DIAGNOSTICS_BLE = 0x00000001;
+	public static final int FD_CONTROL_DIAGNOSTICS_BLE_TIMING = 0x00000002;
 
-    public static final int FD_CONTROL_SYNC_AHEAD = 0x00000001;
+	public static final int FD_CONTROL_SYNC_AHEAD = 0x00000001;
 
-    public static final int FD_CONTROL_LOGGING_STATE = 0x00000001;
-    public static final int FD_CONTROL_LOGGING_COUNT = 0x00000002;
+	public static final int FD_CONTROL_LOGGING_STATE = 0x00000001;
+	public static final int FD_CONTROL_LOGGING_COUNT = 0x00000002;
 
-    public static final int FD_CONTROL_LOGGING_STORAGE = 0x00000001;
+	public static final int FD_CONTROL_LOGGING_STORAGE = 0x00000001;
 
-    public static final int FD_CONTROL_UPDATE_AREA_GET_VERSION_FLAG_REVISION = 0x00000001;
-    public static final int FD_CONTROL_UPDATE_AREA_GET_VERSION_FLAG_METADATA = 0x00000002;
+	public static final int FD_CONTROL_UPDATE_AREA_GET_VERSION_FLAG_REVISION = 0x00000001;
+	public static final int FD_CONTROL_UPDATE_AREA_GET_VERSION_FLAG_METADATA = 0x00000002;
 
-    public static final int FD_CONTROL_RTC_FLAG_GET_TIME       = 0x00000001;
-    public static final int FD_CONTROL_RTC_FLAG_SET_TIME       = 0x00000002;
-    public static final int FD_CONTROL_RTC_FLAG_GET_UTC_OFFSET = 0x00000004;
-    public static final int FD_CONTROL_RTC_FLAG_SET_UTC_OFFSET = 0x00000008;
+	public static final int FD_CONTROL_RTC_FLAG_GET_TIME = 0x00000001;
+	public static final int FD_CONTROL_RTC_FLAG_SET_TIME = 0x00000002;
+	public static final int FD_CONTROL_RTC_FLAG_GET_UTC_OFFSET = 0x00000004;
+	public static final int FD_CONTROL_RTC_FLAG_SET_UTC_OFFSET = 0x00000008;
 
-    public static final int FD_CONTROL_HARDWARE_FLAG_GET_UNIQUE = 0x00000001;
-    public static final int FD_CONTROL_HARDWARE_FLAG_GET_USB    = 0x00000002;
-    public static final int FD_CONTROL_HARDWARE_FLAG_GET_BLE    = 0x00000004;
-    public static final int FD_CONTROL_HARDWARE_FLAG_GET_MODEL  = 0x00000008;
+	public static final int FD_CONTROL_HARDWARE_FLAG_GET_UNIQUE = 0x00000001;
+	public static final int FD_CONTROL_HARDWARE_FLAG_GET_USB = 0x00000002;
+	public static final int FD_CONTROL_HARDWARE_FLAG_GET_BLE = 0x00000004;
+	public static final int FD_CONTROL_HARDWARE_FLAG_GET_MODEL = 0x00000008;
 
-    public static final int FD_CONTROL_CAPABILITY_LOCK         = 0x00000001;
-    public static final int FD_CONTROL_CAPABILITY_BOOT_VERSION = 0x00000002;
-    public static final int FD_CONTROL_CAPABILITY_SYNC_FLAGS   = 0x00000004;
-    public static final int FD_CONTROL_CAPABILITY_SYNC_AHEAD   = 0x00000004;
-    public static final int FD_CONTROL_CAPABILITY_IDENTIFY     = 0x00000008;
-    public static final int FD_CONTROL_CAPABILITY_LOGGING      = 0x00000010;
-    public static final int FD_CONTROL_CAPABILITY_DIAGNOSTICS  = 0x00000010;
-    public static final int FD_CONTROL_CAPABILITY_NAME         = 0x00000020;
-    public static final int FD_CONTROL_CAPABILITY_RETAINED     = 0x00000040;
+	public static final int FD_CONTROL_CAPABILITY_LOCK = 0x00000001;
+	public static final int FD_CONTROL_CAPABILITY_BOOT_VERSION = 0x00000002;
+	public static final int FD_CONTROL_CAPABILITY_SYNC_FLAGS = 0x00000004;
+	public static final int FD_CONTROL_CAPABILITY_SYNC_AHEAD = 0x00000004;
+	public static final int FD_CONTROL_CAPABILITY_IDENTIFY = 0x00000008;
+	public static final int FD_CONTROL_CAPABILITY_LOGGING = 0x00000010;
+	public static final int FD_CONTROL_CAPABILITY_DIAGNOSTICS = 0x00000010;
+	public static final int FD_CONTROL_CAPABILITY_NAME = 0x00000020;
+	public static final int FD_CONTROL_CAPABILITY_RETAINED = 0x00000040;
 
 	// property bits for get/set property commands
-    public static final int FD_CONTROL_PROPERTY_VERSION          = 0x00000001;
-    public static final int FD_CONTROL_PROPERTY_HARDWARE_ID      = 0x00000002;
-    public static final int FD_CONTROL_PROPERTY_DEBUG_LOCK       = 0x00000004;
-    public static final int FD_CONTROL_PROPERTY_RTC              = 0x00000008;
-    public static final int FD_CONTROL_PROPERTY_POWER            = 0x00000010;
-    public static final int FD_CONTROL_PROPERTY_SITE             = 0x00000020;
-    public static final int FD_CONTROL_PROPERTY_RESET            = 0x00000040;
-    public static final int FD_CONTROL_PROPERTY_STORAGE          = 0x00000080;
-    public static final int FD_CONTROL_PROPERTY_MODE             = 0x00000100;
-    public static final int FD_CONTROL_PROPERTY_TX_POWER         = 0x00000200;
-    public static final int FD_CONTROL_PROPERTY_BOOT_VERSION     = 0x00000400;
-    public static final int FD_CONTROL_PROPERTY_LOGGING          = 0x00000800;
-    public static final int FD_CONTROL_PROPERTY_NAME             = 0x00001000;
-    public static final int FD_CONTROL_PROPERTY_RETAINED         = 0x00002000;
-	public static final int FD_CONTROL_PROPERTY_ADC_VDD          = 0x00004000;
-	public static final int FD_CONTROL_PROPERTY_REGULATOR        = 0x00008000;
-	public static final int FD_CONTROL_PROPERTY_SENSING_COUNT    = 0x00010000;
-	public static final int FD_CONTROL_PROPERTY_INDICATE         = 0x00020000;
-	public static final int FD_CONTROL_PROPERTY_RECOGNITION      = 0x00040000;
+	public static final int FD_CONTROL_PROPERTY_VERSION = 0x00000001;
+	public static final int FD_CONTROL_PROPERTY_HARDWARE_ID = 0x00000002;
+	public static final int FD_CONTROL_PROPERTY_DEBUG_LOCK = 0x00000004;
+	public static final int FD_CONTROL_PROPERTY_RTC = 0x00000008;
+	public static final int FD_CONTROL_PROPERTY_POWER = 0x00000010;
+	public static final int FD_CONTROL_PROPERTY_SITE = 0x00000020;
+	public static final int FD_CONTROL_PROPERTY_RESET = 0x00000040;
+	public static final int FD_CONTROL_PROPERTY_STORAGE = 0x00000080;
+	public static final int FD_CONTROL_PROPERTY_MODE = 0x00000100;
+	public static final int FD_CONTROL_PROPERTY_TX_POWER = 0x00000200;
+	public static final int FD_CONTROL_PROPERTY_BOOT_VERSION = 0x00000400;
+	public static final int FD_CONTROL_PROPERTY_LOGGING = 0x00000800;
+	public static final int FD_CONTROL_PROPERTY_NAME = 0x00001000;
+	public static final int FD_CONTROL_PROPERTY_RETAINED = 0x00002000;
+	public static final int FD_CONTROL_PROPERTY_ADC_VDD = 0x00004000;
+	public static final int FD_CONTROL_PROPERTY_REGULATOR = 0x00008000;
+	public static final int FD_CONTROL_PROPERTY_SENSING_COUNT = 0x00010000;
+	public static final int FD_CONTROL_PROPERTY_INDICATE = 0x00020000;
+	public static final int FD_CONTROL_PROPERTY_RECOGNITION = 0x00040000;
 	public static final int FD_CONTROL_PROPERTY_HARDWARE_VERSION = 0x00080000;
-    public static final int FD_CONTROL_PROPERTY_SUBSCRIBE        = 0x00100000;
+	public static final int FD_CONTROL_PROPERTY_SUBSCRIBE = 0x00100000;
 
-    public static final int FD_CONTROL_PROVISION_OPTION_DEBUG_LOCK = 0x00000001;
-    public static final int FD_CONTROL_PROVISION_OPTION_RESET      = 0x00000002;
+	public static final int FD_CONTROL_PROVISION_OPTION_DEBUG_LOCK = 0x00000001;
+	public static final int FD_CONTROL_PROVISION_OPTION_RESET = 0x00000002;
 
-    public static final byte FD_CONTROL_RESET_SYSTEM_REQUEST = 1;
-    public static final byte FD_CONTROL_RESET_WATCHDOG = 2;
-    public static final byte FD_CONTROL_RESET_HARD_FAULT = 3;
+	public static final byte FD_CONTROL_RESET_SYSTEM_REQUEST = 1;
+	public static final byte FD_CONTROL_RESET_WATCHDOG = 2;
+	public static final byte FD_CONTROL_RESET_HARD_FAULT = 3;
 
-    public static final int FD_CONTROL_MODE_STORAGE = 1;
+	public static final int FD_CONTROL_MODE_STORAGE = 1;
 
 	public static final int FD_HAL_SYSTEM_AREA_BOOTLOADER = 0;
 	public static final int FD_HAL_SYSTEM_AREA_APPLICATION = 1;
 	public static final int FD_HAL_SYSTEM_AREA_OPERATING_SYSTEM = 2;
 
-    public static final int FD_UPDATE_METADATA_FLAG_ENCRYPTED = 0x00000001;
+	public static final int FD_UPDATE_METADATA_FLAG_ENCRYPTED = 0x00000001;
 
-    public static final int FD_UPDATE_COMMIT_SUCCESS = 0;
-    public static final int FD_UPDATE_COMMIT_FAIL_HASH_MISMATCH = 1;
-    public static final int FD_UPDATE_COMMIT_FAIL_CRYPT_HASH_MISMATCH = 2;
-    public static final int FD_UPDATE_COMMIT_FAIL_UNSUPPORTED = 3;
+	public static final int FD_UPDATE_COMMIT_SUCCESS = 0;
+	public static final int FD_UPDATE_COMMIT_FAIL_HASH_MISMATCH = 1;
+	public static final int FD_UPDATE_COMMIT_FAIL_CRYPT_HASH_MISMATCH = 2;
+	public static final int FD_UPDATE_COMMIT_FAIL_UNSUPPORTED = 3;
 
-    public enum FDDirectTestModeCommand {
-        Reset,
-        ReceiverTest,
-        TransmitterTest,
-        TestEnd
-    }
+	public enum FDDirectTestModeCommand {
+		Reset,
+		ReceiverTest,
+		TransmitterTest,
+		TestEnd
+	}
 
-    public enum FDDirectTestModePacketType {
-        PRBS9,
-        F0,
-        AA,
-        VendorSpecific
-    }
+	public enum FDDirectTestModePacketType {
+		PRBS9,
+		F0,
+		AA,
+		VendorSpecific
+	}
 
 	public interface Command {
 
@@ -164,7 +164,14 @@ public class FDFireflyIceCoder {
 
 	}
 
+	public interface Property {
+
+		void execute(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary);
+
+	}
+
 	public Map<Number, Command> commandByCode;
+	public Map<Number, Property> propertyByCode;
     public FDObservable observable;
     public FDObservable notifyObservable;
 
@@ -253,6 +260,108 @@ public class FDFireflyIceCoder {
 				dispatchSensing(fireflyIce, channel, binary);
 			}
 		});
+
+		propertyByCode = new HashMap<Number, Property>();
+        setProperty(FDFireflyIceCoder.FD_CONTROL_PROPERTY_VERSION, new Property() {
+        	public void execute(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
+				dispatchGetPropertyVersion(fireflyIce, channel, observable, binary);
+			}
+		});
+        setProperty(FDFireflyIceCoder.FD_CONTROL_PROPERTY_HARDWARE_ID, new Property() {
+        	public void execute(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
+				dispatchGetPropertyHardwareId(fireflyIce, channel, observable, binary);
+			}
+		});
+        setProperty(FDFireflyIceCoder.FD_CONTROL_PROPERTY_DEBUG_LOCK, new Property() {
+        	public void execute(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
+				dispatchGetPropertyDebugLock(fireflyIce, channel, observable, binary);
+			}
+		});
+        setProperty(FDFireflyIceCoder.FD_CONTROL_PROPERTY_RTC, new Property() {
+        	public void execute(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
+				dispatchGetPropertyRTC(fireflyIce, channel, observable, binary);
+			}
+		});
+        setProperty(FDFireflyIceCoder.FD_CONTROL_PROPERTY_POWER, new Property() {
+        	public void execute(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
+				dispatchGetPropertyPower(fireflyIce, channel, observable, binary);
+			}
+		});
+        setProperty(FDFireflyIceCoder.FD_CONTROL_PROPERTY_SITE, new Property() {
+        	public void execute(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
+				dispatchGetPropertySite(fireflyIce, channel, observable, binary);
+			}
+		});
+        setProperty(FDFireflyIceCoder.FD_CONTROL_PROPERTY_RESET, new Property() {
+        	public void execute(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
+				dispatchGetPropertyReset(fireflyIce, channel, observable, binary);
+			}
+		});
+        setProperty(FDFireflyIceCoder.FD_CONTROL_PROPERTY_STORAGE, new Property() {
+        	public void execute(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
+				dispatchGetPropertyStorage(fireflyIce, channel, observable, binary);
+			}
+		});
+        setProperty(FDFireflyIceCoder.FD_CONTROL_PROPERTY_MODE, new Property() {
+        	public void execute(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
+				dispatchGetPropertyMode(fireflyIce, channel, observable, binary);
+			}
+		});
+        setProperty(FDFireflyIceCoder.FD_CONTROL_PROPERTY_TX_POWER, new Property() {
+        	public void execute(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
+				dispatchGetPropertyTxPower(fireflyIce, channel, observable, binary);
+			}
+		});
+        setProperty(FDFireflyIceCoder.FD_CONTROL_PROPERTY_BOOT_VERSION, new Property() {
+        	public void execute(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
+				dispatchGetPropertyBootVersion(fireflyIce, channel, observable, binary);
+			}
+		});
+        setProperty(FDFireflyIceCoder.FD_CONTROL_PROPERTY_LOGGING, new Property() {
+        	public void execute(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
+				dispatchGetPropertyLogging(fireflyIce, channel, observable, binary);
+			}
+		});
+        setProperty(FDFireflyIceCoder.FD_CONTROL_PROPERTY_NAME, new Property() {
+        	public void execute(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
+				dispatchGetPropertyName(fireflyIce, channel, observable, binary);
+			}
+		});
+        setProperty(FDFireflyIceCoder.FD_CONTROL_PROPERTY_RETAINED, new Property() {
+        	public void execute(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
+				dispatchGetPropertyRetained(fireflyIce, channel, observable, binary);
+			}
+		});
+        setProperty(FDFireflyIceCoder.FD_CONTROL_PROPERTY_REGULATOR, new Property() {
+        	public void execute(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
+				dispatchGetPropertyRegulator(fireflyIce, channel, observable, binary);
+			}
+		});
+        setProperty(FDFireflyIceCoder.FD_CONTROL_PROPERTY_SENSING_COUNT, new Property() {
+        	public void execute(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
+				dispatchGetPropertySensingCount(fireflyIce, channel, observable, binary);
+			}
+		});
+        setProperty(FDFireflyIceCoder.FD_CONTROL_PROPERTY_INDICATE, new Property() {
+        	public void execute(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
+				dispatchGetPropertyIndicate(fireflyIce, channel, observable, binary);
+			}
+		});
+        setProperty(FDFireflyIceCoder.FD_CONTROL_PROPERTY_RECOGNITION, new Property() {
+        	public void execute(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
+				dispatchGetPropertyRecognition(fireflyIce, channel, observable, binary);
+			}
+		});
+        setProperty(FDFireflyIceCoder.FD_CONTROL_PROPERTY_HARDWARE_VERSION, new Property() {
+        	public void execute(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
+				dispatchGetPropertyHardwareVersion(fireflyIce, channel, observable, binary);
+			}
+		});
+        setProperty(FDFireflyIceCoder.FD_CONTROL_PROPERTY_SUBSCRIBE, new Property() {
+        	public void execute(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
+				dispatchGetPropertySubscribe(fireflyIce, channel, observable, binary);
+			}
+		});
 	}
 
 	public void setCommand(byte code, Command command) {
@@ -262,6 +371,14 @@ public class FDFireflyIceCoder {
     public Command getCommand(byte code) {
         return commandByCode.get(new Byte(code));
     }
+
+    public void setProperty(int code, Property property) {
+		propertyByCode.put(new Integer(code), property);
+	}
+
+	public Property getProperty(byte code) {
+		return propertyByCode.get(new Integer(code));
+	}
 
 	public void sendPing(FDFireflyIceChannel channel, byte[] data) {
 		FDBinary binary = new FDBinary();
@@ -460,7 +577,13 @@ public class FDFireflyIceCoder {
         observable.as(FDFireflyIceObserver.class).fireflyIceHardwareVersion(fireflyIce, channel, version);
     }
 
-    void dispatchGetPropertyLogging(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
+    void dispatchGetPropertySubscribe(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
+		int properties = binary.getUInt32();
+
+    	observable.as(FDFireflyIceObserver.class).fireflyIceSubscribe(fireflyIce, channel, properties);
+	}
+
+	void dispatchGetPropertyLogging(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
 		FDFireflyIceLogging logging = new FDFireflyIceLogging();
 		logging.flags = binary.getUInt32();
 		if ((logging.flags & FD_CONTROL_LOGGING_STATE) != 0) {
@@ -488,66 +611,17 @@ public class FDFireflyIceCoder {
 		observable.as(FDFireflyIceObserver.class).fireflyIceRetained(fireflyIce, channel, retained);
 	}
 
-	void dispatchGetProperties(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary)
-	{
+	void dispatchGetProperties(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDObservable observable, FDBinary binary) {
 		int properties = binary.getUInt32();
-		if ((properties & FD_CONTROL_PROPERTY_VERSION) != 0) {
-			dispatchGetPropertyVersion(fireflyIce, channel, observable, binary);
+		for (int i = 0; i < 32; ++i) {
+			int propertyCode = 1 << i;
+			if ((properties & propertyCode) != 0) {
+				Property property = propertyByCode.get(new Integer(propertyCode));
+				if (property != null) {
+					property.execute(fireflyIce, channel, observable, binary);
+				}
+			}
 		}
-		if ((properties & FD_CONTROL_PROPERTY_HARDWARE_ID) != 0) {
-			dispatchGetPropertyHardwareId(fireflyIce, channel, observable, binary);
-		}
-		if ((properties & FD_CONTROL_PROPERTY_DEBUG_LOCK) != 0) {
-			dispatchGetPropertyDebugLock(fireflyIce, channel, observable, binary);
-		}
-		if ((properties & FD_CONTROL_PROPERTY_RTC) != 0) {
-			dispatchGetPropertyRTC(fireflyIce, channel, observable, binary);
-		}
-		if ((properties & FD_CONTROL_PROPERTY_POWER) != 0) {
-			dispatchGetPropertyPower(fireflyIce, channel, observable, binary);
-		}
-		if ((properties & FD_CONTROL_PROPERTY_SITE) != 0) {
-			dispatchGetPropertySite(fireflyIce, channel, observable, binary);
-		}
-		if ((properties & FD_CONTROL_PROPERTY_RESET) != 0) {
-			dispatchGetPropertyReset(fireflyIce, channel, observable, binary);
-        }
-        if ((properties & FD_CONTROL_PROPERTY_STORAGE) != 0) {
-			dispatchGetPropertyStorage(fireflyIce, channel, observable, binary);
-		}
-		if ((properties & FD_CONTROL_PROPERTY_MODE) != 0) {
-			dispatchGetPropertyMode(fireflyIce, channel, observable, binary);
-		}
-		if ((properties & FD_CONTROL_PROPERTY_TX_POWER) != 0) {
-			dispatchGetPropertyTxPower(fireflyIce, channel, observable, binary);
-		}
-		if ((properties & FD_CONTROL_PROPERTY_BOOT_VERSION) != 0) {
-			dispatchGetPropertyBootVersion(fireflyIce, channel, observable, binary);
-		}
-		if ((properties & FD_CONTROL_PROPERTY_LOGGING) != 0) {
-			dispatchGetPropertyLogging(fireflyIce, channel, observable, binary);
-		}
-		if ((properties & FD_CONTROL_PROPERTY_NAME) != 0) {
-			dispatchGetPropertyName(fireflyIce, channel, observable, binary);
-		}
-		if ((properties & FD_CONTROL_PROPERTY_RETAINED) != 0) {
-			dispatchGetPropertyRetained(fireflyIce, channel, observable, binary);
-		}
-        if ((properties & FD_CONTROL_PROPERTY_REGULATOR) != 0) {
-            dispatchGetPropertyRegulator(fireflyIce, channel, observable, binary);
-        }
-        if ((properties & FD_CONTROL_PROPERTY_SENSING_COUNT) != 0) {
-            dispatchGetPropertySensingCount(fireflyIce, channel, observable, binary);
-        }
-        if ((properties & FD_CONTROL_PROPERTY_INDICATE) != 0) {
-            dispatchGetPropertyIndicate(fireflyIce, channel, observable, binary);
-        }
-        if ((properties & FD_CONTROL_PROPERTY_RECOGNITION) != 0) {
-            dispatchGetPropertyRecognition(fireflyIce, channel, observable, binary);
-        }
-        if ((properties & FD_CONTROL_PROPERTY_HARDWARE_VERSION) != 0) {
-            dispatchGetPropertyHardwareVersion(fireflyIce, channel, observable, binary);
-        }
 	}
 
 	public void sendSetPropertyTime(FDFireflyIceChannel channel, double time) {

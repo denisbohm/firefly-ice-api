@@ -314,6 +314,11 @@ public class FDPullTask extends FDExecutor.Task implements FDFireflyIceObserver,
     }
 
     @Override
+    public void fireflyIceSubscribe(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, int properties) {
+
+    }
+
+    @Override
     public void fireflyIceLock(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceLock lock) {
         if ((lock.identifier == FDFireflyIceLock.Identifier.Sync) && channel.getName().equals(lock.ownerName())) {
             beginSync();

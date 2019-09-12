@@ -38,5 +38,6 @@ public interface FDFireflyIceObserver {
     void fireflyIceUpdateCommit(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceUpdateCommit updateCommit);
     void fireflyIceSensing(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, FDFireflyIceSensing sensing);
     void fireflyIceSync(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, byte[] syncData);
+    void fireflyIceSubscribe(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, int properties);
 
 }

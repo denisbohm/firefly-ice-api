@@ -266,4 +266,8 @@ public class FDFireflyIceTaskSteps extends FDExecutor.Task implements FDFireflyI
     public void fireflyIceSync(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, byte[] syncData) {
     }
 
+    @Override
+    public void fireflyIceSubscribe(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, int properties) {
+    }
+
 }

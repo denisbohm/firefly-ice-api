@@ -333,6 +333,11 @@ public class FDSyncTask extends FDExecutor.Task implements FDFireflyIceObserver 
 
     }
 
+	@Override
+	public void fireflyIceSubscribe(FDFireflyIce fireflyIce, FDFireflyIceChannel channel, int properties) {
+
+	}
+
     void activate(FDExecutor executor) {
 		_isActive = true;
 		fireflyIce.observable.addObserver(this);
