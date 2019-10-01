@@ -54,20 +54,21 @@ public class FDExecutor {
     public FDFireflyDeviceLog log;
     public double timeoutCheckInterval;
 
+	FDFireflyIceMediator mediator;
     List<Task> tasks;
     List<Task> appointmentTasks;
     Task currentTask;
-    FDTimerFactory timerFactory;
     boolean run;
     double currentFeedTime;
     FDTimer timer;
 
-    public FDExecutor(Activity activity) {
+    public FDExecutor(FDFireflyIceMediator mediator) {
+    	this.mediator = mediator;
+
         tasks = new ArrayList<Task>();
         appointmentTasks = new ArrayList<Task>();
 
         timeoutCheckInterval = 5;
-        timerFactory = new FDTimerFactory(activity);
 		run = false;
 		currentFeedTime = 0;
 	}
@@ -85,7 +86,7 @@ public class FDExecutor {
 
 	void start() {
 		if (timer == null) {
-			timer = timerFactory.makeTimer(new FDTimer.Delegate() {
+			timer = mediator.makeTimer(new FDTimer.Delegate() {
                 public void timerFired() {
                     check();
                 }

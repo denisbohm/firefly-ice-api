@@ -126,7 +126,7 @@ public class FDPullTask extends FDExecutor.Task implements FDFireflyIceObserver,
 
     void startTimer() {
         cancelTimer();
-        timer = fireflyIce.executor.timerFactory.makeTimer(new FDTimer.Delegate() { public void timerFired() { timeout(); } }, 2.0 , FDTimer.Type.OneShot);
+        timer = fireflyIce.executor.mediator.makeTimer(new FDTimer.Delegate() { public void timerFired() { timeout(); } }, 2.0 , FDTimer.Type.OneShot);
     }
 
     void timeout() {

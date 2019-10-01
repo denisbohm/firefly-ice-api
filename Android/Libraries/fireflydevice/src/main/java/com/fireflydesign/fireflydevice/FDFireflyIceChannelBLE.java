@@ -42,7 +42,7 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
     FDFireflyIceChannel.Status status;
     Rssi rssi;
 
-    public Activity activity;
+    public FDFireflyIceMediator mediator;
     public UUID bluetoothGattCharacteristicUUID;
     public UUID bluetoothGattCharacteristicNoResponseUUID;
     public String bluetoothDeviceAddress;
@@ -56,10 +56,10 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
     BluetoothGattCharacteristic bluetoothGattCharacteristic;
     BluetoothGattCharacteristic bluetoothGattCharacteristicNoResponse;
 
-    public FDFireflyIceChannelBLE(final Activity activity, final String bluetoothGattServiceUUIDString, final String bluetoothDeviceAddress) {
+    public FDFireflyIceChannelBLE(final FDFireflyIceMediator mediator, final String bluetoothGattServiceUUIDString, final String bluetoothDeviceAddress) {
         this.detour = new FDDetour();
 
-        this.activity = activity;
+        this.mediator = mediator;
         StringBuffer bluetoothGattCharacteristicUUIDString = new StringBuffer(bluetoothGattServiceUUIDString);
         bluetoothGattCharacteristicUUIDString.replace(4, 8, "0002");
         this.bluetoothGattCharacteristicUUID = UUID.fromString(bluetoothGattCharacteristicUUIDString.toString());
@@ -73,7 +73,7 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
             @Override
             public void onCharacteristicChanged(final BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic) {
                 final byte[] data = characteristic.getValue();
-                activity.runOnUiThread(new Runnable() {
+                mediator.runOnThread(new Runnable() {
                     public void run() {
                         characteristicChanged(gatt, characteristic, data);
                     }
@@ -82,7 +82,7 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
 
             @Override
             public void onCharacteristicWrite(final BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic, final int status) {
-                activity.runOnUiThread(new Runnable() {
+                mediator.runOnThread(new Runnable() {
                     public void run() {
                         writeComplete(gatt, status);
                     }
@@ -91,7 +91,7 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
 
             @Override
             public void onDescriptorWrite(final BluetoothGatt gatt, final BluetoothGattDescriptor descriptor, final int status) {
-                activity.runOnUiThread(new Runnable() {
+                mediator.runOnThread(new Runnable() {
                     public void run() {
                         writeComplete(gatt, status);
                     }
@@ -100,7 +100,7 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
 
             @Override
             public void onConnectionStateChange(final BluetoothGatt gatt, final int status, final int newState) {
-                activity.runOnUiThread(new Runnable() {
+                mediator.runOnThread(new Runnable() {
                     public void run() {
                         connectionStateChange(gatt, status, newState);
                     }
@@ -109,7 +109,7 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
 
             @Override
             public void onServicesDiscovered(final BluetoothGatt gatt, final int status) {
-                activity.runOnUiThread(new Runnable() {
+                mediator.runOnThread(new Runnable() {
                     public void run() {
                         servicesDiscovered(gatt, status);
                     }
@@ -157,10 +157,7 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
 			delegate.fireflyIceChannelStatus(this, status);
 		}
 
-        BluetoothManager bluetoothManager = (BluetoothManager)activity.getSystemService(Context.BLUETOOTH_SERVICE);
-        BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
-		BluetoothDevice bluetoothDevice = bluetoothAdapter.getRemoteDevice(bluetoothDeviceAddress);
-        bluetoothGatt = bluetoothDevice.connectGatt(activity, autoConnect, bluetoothGattCallback);
+        bluetoothGatt = mediator.connectGatt(bluetoothDeviceAddress, autoConnect, bluetoothGattCallback);
 	}
 
     void shutdown() {
@@ -199,7 +196,7 @@ public class FDFireflyIceChannelBLE implements FDFireflyIceChannel {
 	}
 
 	void bluetoothTurningOff() {
-        activity.runOnUiThread(new Runnable() {
+        mediator.runOnThread(new Runnable() {
             public void run() {
                 shutdown();
             }

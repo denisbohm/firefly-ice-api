@@ -32,7 +32,7 @@ public class FDFireflyIceManager {
         void fireflyIceManagerAdded(FDFireflyIceManager manager, FDFireflyIce fireflyIce);
     }
 
-    Activity activity;
+    FDFireflyIceMediator mediator;
     BluetoothAdapter bluetoothAdapter;
     UUID serviceUUID;
     Delegate delegate;
@@ -43,8 +43,8 @@ public class FDFireflyIceManager {
     ScanCallback scanCallback;
     BroadcastReceiver broadcastReceiver;
 
-    public FDFireflyIceManager(final Activity activity, BluetoothAdapter bluetoothAdapter, UUID serviceUUID, Delegate delegate) {
-        this.activity = activity;
+    public FDFireflyIceManager(final FDFireflyIceMediator mediator, BluetoothAdapter bluetoothAdapter, UUID serviceUUID, Delegate delegate) {
+        this.mediator = mediator;
         this.bluetoothAdapter = bluetoothAdapter;
         this.serviceUUID = serviceUUID;
         this.delegate = delegate;
@@ -53,7 +53,7 @@ public class FDFireflyIceManager {
         scanCallback = new ScanCallback() {
 
             public void onScanResult(final int callbackType, final ScanResult result) {
-                activity.runOnUiThread(
+                mediator.runOnThread(
                         new Runnable() {
                             public void run() {
                                 scanResult(result);
@@ -100,8 +100,23 @@ public class FDFireflyIceManager {
             }
 
         };
+        activate();
+    }
+
+    public void activate() {
         IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
-        this.activity.registerReceiver(broadcastReceiver, filter);
+        this.mediator.registerReceiver(broadcastReceiver, filter);
+    }
+
+    public void deactivate() {
+        if (bluetoothLeScanner != null) {
+            bluetoothLeScanner.stopScan(scanCallback);
+            bluetoothLeScanner = null;
+        }
+
+        this.discovered = new HashMap();
+
+        this.mediator.unregisterReceiver(broadcastReceiver);
     }
 
     public UUID getServiceUUID() {
@@ -182,8 +197,8 @@ public class FDFireflyIceManager {
         String address = bluetoothDevice.getAddress();
         Map<String, Object> map = this.discovered.get(address);
         if (map == null) {
-            FDFireflyIce fireflyIce = new FDFireflyIce(this.activity);
-            FDFireflyIceChannelBLE channel = new FDFireflyIceChannelBLE(this.activity, this.serviceUUID.toString(), address);
+            FDFireflyIce fireflyIce = new FDFireflyIce(this.mediator);
+            FDFireflyIceChannelBLE channel = new FDFireflyIceChannelBLE(this.mediator, this.serviceUUID.toString(), address);
             fireflyIce.addChannel(channel, "BLE");
 
             map = new HashMap();

@@ -145,7 +145,7 @@ public class FDSyncTask extends FDExecutor.Task implements FDFireflyIceObserver 
 	void startTimer() {
 		cancelTimer();
 
-		_timer = fireflyIce.executor.timerFactory.makeTimer(
+		_timer = fireflyIce.executor.mediator.makeTimer(
             new FDTimer.Delegate() {
                 public void timerFired() {
                     timerFired();
