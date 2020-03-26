@@ -206,7 +206,7 @@ class ActivityDatastore:
 
             time = self.start
             binary = FDBinary(self.data)
-            while binary.get_remaining_length() > self.bytes_per_record:
+            while binary.get_remaining_length() >= self.bytes_per_record:
                 flags = binary.get_uint32()
                 vma = binary.get_float32()
                 if (start < time) and (time < end):
